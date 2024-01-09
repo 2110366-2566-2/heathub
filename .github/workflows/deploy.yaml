@@ -9,13 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: use node 14
+      - name: Install node 18
         uses: actions/setup-node@v2
         with:
-          node-version: 14
-      - name: install vercel cli
+          node-version: 18
+      - name: Install vercel cli
         run: npm i -g vercel
-      - name: deploy
+      - name: Deploy
         run: vercel --prod --token $VERCEL_TOKEN
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
