@@ -16,6 +16,6 @@ jobs:
       - name: Install vercel cli
         run: npm i -g vercel
       - name: Deploy
-        run: vercel --prod --token $VERCEL_TOKEN
+        run: vercel --prod --token $VERCEL_TOKEN --confirm --scope onfirebyte deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
