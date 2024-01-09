@@ -9,14 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: amondnet/vercel-action@v19
+      - name: use node 14
+        uses: actions/setup-node@v2
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
-          github-token: ${{ secrets.GITHUB_TOKEN }} #Optional
-          vercel-args: "--prod" #Optional
-          vercel-org-id: ${{ secrets.ORG_ID}} #Required
-          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
-          working-directory: ./sub-directory #Your Working Directory, Optional
-          alias-domains: | #Optional
-            staging.angular.vercel-action.amond.dev
-            pr-{{PR_NUMBER}}.angular.vercel-action.amond.dev
+          node-version: 14
+      - name: install vercel cli
+        run: npm i -g vercel
+      - name: deploy
+        run: vercel --prod --token $VERCEL_TOKEN
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
