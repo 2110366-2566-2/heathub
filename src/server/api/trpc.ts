@@ -6,11 +6,13 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "@/server/db";
+import { Session } from "lucia";
+import { auth } from "./auth";
 
 /**
  * 1. CONTEXT
@@ -24,9 +26,13 @@ import { db } from "@/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: {
+  headers: Headers;
+  session: Session | null;
+}) => {
   return {
     db,
+    auth,
     ...opts,
   };
 };
@@ -74,3 +80,20 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+export const userProcedure = t.procedure.use(async (opt) => {
+  // check if user is authenticated
+  const session = opt.ctx.session;
+  if (!session) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "We don't take kindly to out-of-town folk",
+    });
+  }
+
+  return opt.next({
+    ctx: {
+      session: session,
+    },
+  });
+});

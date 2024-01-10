@@ -4,7 +4,7 @@ import { CreatePost } from "@/app/_components/create-post";
 import { api } from "@/trpc/server";
 
 export default async function Home() {
-  const hello = await api.post.hello.query({ text: "from tRPC" });
+  const user = await api.auth.me.query();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -38,11 +38,17 @@ export default async function Home() {
         </div>
         <div className="flex flex-col items-center gap-2">
           <p className="text-2xl text-white">
-            {hello ? hello.greeting : "Loading tRPC query..."}
+            {user ? user.firstName : "Loading tRPC query..."}
           </p>
         </div>
 
         <CrudShowcase />
+
+        <a href="/signout">
+          <button className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20">
+            Sign Out
+          </button>
+        </a>
       </div>
     </main>
   );
