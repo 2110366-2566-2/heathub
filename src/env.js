@@ -11,6 +11,11 @@ export const env = createEnv({
     DATABASE_USERNAME: z.string(),
     DATABASE_PASSWORD: z.string(),
     DATABASE_NAME: z.string(),
+    USE_LOCAL_DB: z
+      .string()
+      .toLowerCase()
+      .transform((x) => x === "true")
+      .pipe(z.boolean()),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -35,6 +40,7 @@ export const env = createEnv({
     DATABASE_USERNAME: process.env.DATABASE_USERNAME,
     DATABASE_NAME: process.env.DATABASE_NAME,
     NODE_ENV: process.env.NODE_ENV,
+    USE_LOCAL_DB: process.env.USE_LOCAL_DB,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { auth } from "./../api/auth";
+import { auth } from "../server/api/auth";
 
 import { cookies } from "next/headers";
 
@@ -23,4 +23,8 @@ export async function signIn(formData: FormData) {
   const sessionCookie = auth.createSessionCookie(session);
   cookies().set(sessionCookie);
   redirect("/");
+}
+
+export async function plus(a: number, b: number) {
+  return a + b;
 }

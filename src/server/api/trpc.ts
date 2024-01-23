@@ -86,8 +86,8 @@ export const userProcedure = t.procedure.use(async (opt) => {
   const session = opt.ctx.session;
   if (!session) {
     throw new TRPCError({
-      code: "FORBIDDEN",
-      message: "We don't take kindly to out-of-town folk",
+      code: "UNAUTHORIZED",
+      message: "You must be signed in to perform this action.",
     });
   }
 

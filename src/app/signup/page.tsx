@@ -1,5 +1,6 @@
 "use client";
 
+import { plus } from "@/action/auth";
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -9,6 +10,8 @@ export default function Home() {
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
 
   let { data: userData } = api.auth.me.useQuery();
+
+  plus(1, 2).then(console.log);
 
   useEffect(() => {
     if (userData) {
@@ -23,7 +26,6 @@ export default function Home() {
     console.log("submit");
 
     if (!formRef.current) {
-      console.log("no form", formRef.current);
       return;
     }
 

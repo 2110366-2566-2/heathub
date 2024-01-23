@@ -1,9 +1,9 @@
-import { api } from "@/trpc/server";
+import { serverapi } from "@/trpc/server";
 import { redirect } from "next/navigation";
-import { signIn } from "../../server/action/auth";
+import { signIn } from "../../action/auth";
 
 export default async function SignIn() {
-  let user = await api.auth.me.query();
+  let user = await serverapi.auth.me.query();
 
   if (user) {
     redirect("/");
