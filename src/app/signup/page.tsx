@@ -43,7 +43,7 @@ export default function Home() {
         <h1>Sign up</h1>
 
         {isSuccess ? (
-          data.map((user) => <p key={user}>{user}</p>)
+          data.map((user) => <p key={user.id}>{user.username}</p>)
         ) : (
           <p>loading</p>
         )}
