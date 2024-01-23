@@ -1,6 +1,5 @@
 "use client";
 
-import { plus } from "@/action/auth";
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useRef } from "react";
@@ -9,9 +8,7 @@ export default function Home() {
   const signUpUser = api.auth.signup.useMutation();
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
 
-  let { data: userData } = api.auth.me.useQuery();
-
-  plus(1, 2).then(console.log);
+  const { data: userData } = api.auth.me.useQuery();
 
   useEffect(() => {
     if (userData) {
@@ -23,7 +20,6 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
 
     if (!formRef.current) {
       return;
@@ -46,7 +42,11 @@ export default function Home() {
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1>Sign up</h1>
 
-        {isSuccess ? data.map((user) => <p>{user}</p>) : <p>loading</p>}
+        {isSuccess ? (
+          data.map((user) => <p key={user}>{user}</p>)
+        ) : (
+          <p>loading</p>
+        )}
 
         <form
           onSubmit={handleSubmit}

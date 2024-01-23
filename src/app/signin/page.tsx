@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { signIn } from "../../action/auth";
 
 export default async function SignIn() {
-  let user = await serverapi.auth.me.query();
+  const user = await serverapi.auth.me.query();
 
   if (user) {
     redirect("/");

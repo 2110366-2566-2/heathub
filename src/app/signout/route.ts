@@ -1,5 +1,5 @@
 import { auth } from "@/server/api/auth";
-import { NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 
 const handler = async (req: NextRequest) => {
   const authRequest = auth.handleRequest(req);

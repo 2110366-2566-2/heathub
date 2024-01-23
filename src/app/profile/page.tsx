@@ -2,7 +2,7 @@ import { serverapi } from "@/trpc/server";
 import { redirect } from "next/navigation";
 
 export default async function SignIn() {
-  let user = await serverapi.auth.me.query();
+  const user = await serverapi.auth.me.query();
 
   if (!user) {
     redirect("/");

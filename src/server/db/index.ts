@@ -1,5 +1,5 @@
 import { env } from "@/env";
-import { Connection, connect } from "@planetscale/database";
+import { type Connection, connect } from "@planetscale/database";
 import { drizzle as mysqlDrizzle } from "drizzle-orm/mysql2";
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 

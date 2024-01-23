@@ -8,7 +8,7 @@ export const authRouter = createTRPCRouter({
 
   getAllUsers: publicProcedure.query(async ({ ctx }) => {
     const users = await ctx.db.query.user.findMany();
-    return ["users"];
+    return users;
   }),
 
   signup: publicProcedure
