@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   index,
@@ -22,6 +22,7 @@ export const posts = mysqlTable(
   {
     id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
     name: varchar("name", { length: 256 }),
+    authorID: varchar("author_id", { length: 64 }).notNull(),
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -31,6 +32,13 @@ export const posts = mysqlTable(
     nameIndex: index("name_idx").on(example.name),
   }),
 );
+
+export const postsRelation = relations(posts, ({ one }) => ({
+  postedBy: one(user, {
+    fields: [posts.authorID],
+    references: [user.id],
+  }),
+}));
 
 export const user = mysqlTable(
   "user",

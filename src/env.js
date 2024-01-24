@@ -16,6 +16,8 @@ export const env = createEnv({
       .toLowerCase()
       .transform((x) => x === "true")
       .pipe(z.boolean()),
+    PUSHER_SECRET: z.string(),
+    PUSHER_APP_ID: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -27,7 +29,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_PUSHER_KEY: z.string(),
   },
 
   /**
@@ -41,6 +43,9 @@ export const env = createEnv({
     DATABASE_NAME: process.env.DATABASE_NAME,
     NODE_ENV: process.env.NODE_ENV,
     USE_LOCAL_DB: process.env.USE_LOCAL_DB,
+    PUSHER_SECRET: process.env.PUSHER_SECRET,
+    PUSHER_APP_ID: process.env.PUSHER_APP_ID,
+    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

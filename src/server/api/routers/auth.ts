@@ -23,8 +23,6 @@ export const authRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      console.log("input", input);
-
       const res = await ctx.auth.createUser({
         key: {
           providerId: "username",

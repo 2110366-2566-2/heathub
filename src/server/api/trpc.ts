@@ -12,6 +12,7 @@ import { ZodError } from "zod";
 
 import { db } from "@/server/db";
 import { type Session } from "lucia";
+import { pusher } from "../pusher/pusher";
 import { auth } from "./auth";
 
 /**
@@ -33,6 +34,7 @@ export const createTRPCContext = async (opts: {
   return {
     db,
     auth,
+    pusher,
     ...opts,
   };
 };

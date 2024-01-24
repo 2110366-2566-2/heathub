@@ -1,20 +1,60 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  userProcedure,
+} from "@/server/api/trpc";
 import { posts } from "@/server/db/schema";
 
+import { db } from "@/server/db";
+
+async function getLatestPosts(database: typeof db) {
+  return await database.query.posts.findMany({
+    orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+    limit: 10,
+    with: {
+      postedBy: {
+        columns: {
+          username: true,
+        },
+      },
+    },
+  });
+}
+
 export const postRouter = createTRPCRouter({
-  create: publicProcedure
+  create: userProcedure
     .input(z.object({ name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.insert(posts).values({
-        name: input.name,
+      const result = await ctx.db.transaction(async (tx) => {
+        await tx.insert(posts).values({
+          name: input.name,
+          authorID: ctx.session.user.userId,
+        });
+
+        const result = await tx.query.posts.findFirst({
+          orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+          with: {
+            postedBy: {
+              columns: {
+                username: true,
+              },
+            },
+          },
+        });
+
+        return result;
       });
+
+      ctx.pusher.trigger("global", "add_post", result);
     }),
 
-  getLatest: publicProcedure.query(({ ctx }) => {
-    return ctx.db.query.posts.findFirst({
-      orderBy: (posts, { desc }) => [desc(posts.createdAt)],
-    });
+  getLatest: publicProcedure.query(async ({ ctx }) => {
+    return await getLatestPosts(ctx.db);
+  }),
+
+  removeAll: userProcedure.mutation(async ({ ctx }) => {
+    await ctx.db.delete(posts);
   }),
 });
