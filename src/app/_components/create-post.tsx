@@ -32,7 +32,7 @@ export function CrudShowcase() {
       postChannel.unbind("add_post");
       pusher.unsubscribe("global");
     };
-  }, []);
+  }, [pusher]);
   const removePost = api.post.removeAll.useMutation();
 
   const removeHandler = async () => {

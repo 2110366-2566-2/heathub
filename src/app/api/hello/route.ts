@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
-export function GET(req: NextRequest) {
+export function GET(_req: NextRequest) {
   return NextResponse.json("Hello, world!");
 }

@@ -7,7 +7,7 @@ import {
 } from "@/server/api/trpc";
 import { posts } from "@/server/db/schema";
 
-import { db } from "@/server/db";
+import { type db } from "@/server/db";
 
 async function getLatestPosts(database: typeof db) {
   return await database.query.posts.findMany({
@@ -47,7 +47,7 @@ export const postRouter = createTRPCRouter({
         return result;
       });
 
-      ctx.pusher.trigger("global", "add_post", result);
+      await ctx.pusher.trigger("global", "add_post", result);
     }),
 
   getLatest: publicProcedure.query(async ({ ctx }) => {
