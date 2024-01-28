@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .h1 {
+    @apply font-sans text-5xl font-extrabold;
+  }
+  .h2 {
+    @apply font-sans text-3xl font-extrabold;
+  }
+  .h3 {
+    @apply font-sans text-2xl font-semibold;
+  }
+  .h4 {
+    @apply font-sans text-xl font-semibold;
+  }
+  .h5 {
+    @apply font-sans text-base font-semibold;
+  }
+  .h6 {
+    @apply font-sans text-sm font-semibold;
+  }
+  .body5 {
+    @apply font-sans text-base font-normal;
+  }
+  .body6 {
+    @apply font-sans text-sm font-normal;
+  }
+  .small {
+    @apply font-sans text-xs font-normal;
+  }
+  .p {
+    @apply font-sans text-base font-normal;
+  }
+  .blockquote {
+    @apply font-sans text-base font-normal italic;
+  }
+  .subtle {
+    @apply font-sans text-sm font-normal;
+  }
+}
