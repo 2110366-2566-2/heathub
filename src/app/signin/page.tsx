@@ -34,8 +34,8 @@ export default function SignIn() {
           <input
             className="rounded-md p-2"
             type="text"
-            name="username"
-            placeholder="username"
+            name="email"
+            placeholder="email"
           />
           <input
             className="rounded-md p-2"

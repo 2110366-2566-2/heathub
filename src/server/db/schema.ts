@@ -4,8 +4,10 @@
 import { relations, sql } from "drizzle-orm";
 import {
   bigint,
+  date,
   index,
   mysqlTable,
+  primaryKey,
   timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
@@ -46,15 +48,62 @@ export const user = mysqlTable(
     id: varchar("id", {
       length: 64,
     }).primaryKey(),
-    username: varchar("username", { length: 128 }).notNull().unique(),
+    aka: varchar("aka", { length: 128 }).notNull().unique(),
     email: varchar("email", { length: 128 }).notNull().unique(),
     firstName: varchar("first_name", { length: 64 }).notNull(),
     lastName: varchar("last_name", { length: 64 }).notNull(),
+    bio: varchar("bio", { length: 256 }),
+    dateOfBirth: date("date_of_birth"),
     gender: varchar("gender", { length: 32 }).notNull(),
+    role: varchar("role", {
+      length: 32,
+      enum: ["host", "participant"],
+    })
+      .notNull()
+      .default("participant"),
   },
   (user) => ({
-    usernameIndex: index("username_idx").on(user.username),
+    akaIndex: index("aka_idx").on(user.aka),
     emailIndex: index("email_idx").on(user.email),
+  }),
+);
+
+export const hostUser = mysqlTable("host_user", {
+  userID: varchar("user_id", {
+    length: 64,
+  }).primaryKey(),
+});
+
+export const hostRelation = relations(hostUser, ({ one }) => ({
+  onUser: one(user, {
+    fields: [hostUser.userID],
+    references: [user.id],
+  }),
+}));
+
+export const participantUser = mysqlTable("participant_user", {
+  userID: varchar("user_id", {
+    length: 64,
+  }).primaryKey(),
+});
+
+export const participantRelation = relations(participantUser, ({ one }) => ({
+  onUser: one(user, {
+    fields: [participantUser.userID],
+    references: [user.id],
+  }),
+}));
+
+export const hostInterest = mysqlTable(
+  "host_interest",
+  {
+    userID: varchar("user_id", { length: 64 }),
+    interest: varchar("interest", { length: 64 }),
+  },
+  (interest) => ({
+    pk: primaryKey({
+      columns: [interest.userID, interest.interest],
+    }),
   }),
 );
 
