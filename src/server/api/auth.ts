@@ -12,12 +12,11 @@ export const auth = lucia({
   },
 
   getUserAttributes: (userDatabase) => ({
-    userName: userDatabase.username,
+    userName: userDatabase.aka,
     email: userDatabase.email,
     firstName: userDatabase.first_name,
     lastName: userDatabase.last_name,
     gender: userDatabase.gender,
   }),
 });
-
 export type Auth = typeof auth;

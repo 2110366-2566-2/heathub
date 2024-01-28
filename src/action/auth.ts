@@ -6,14 +6,14 @@ import { cookies } from "next/headers";
 
 export async function signIn(formData: FormData) {
   try {
-    const username = formData.get("username") as string | null;
+    const email = formData.get("email") as string | null;
     const password = formData.get("password") as string | null;
 
-    if (!username || !password) {
-      throw new Error("Missing username or password");
+    if (!email || !password) {
+      throw new Error("Missing email or password");
     }
 
-    const key = await auth.useKey("username", username.toLowerCase(), password);
+    const key = await auth.useKey("email", email.toLowerCase(), password);
 
     const session = await auth.createSession({
       userId: key.userId,
@@ -25,7 +25,7 @@ export async function signIn(formData: FormData) {
     return "";
   } catch (error) {
     console.error(error);
-    return "Invalid username or password";
+    return "Invalid email or password";
   }
 }
 

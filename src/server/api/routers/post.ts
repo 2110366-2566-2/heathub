@@ -5,18 +5,17 @@ import {
   publicProcedure,
   userProcedure,
 } from "@/server/api/trpc";
+import type { DB } from "@/server/db";
 import { posts } from "@/server/db/schema";
 
-import { type db } from "@/server/db";
-
-async function getLatestPosts(database: typeof db) {
+async function getLatestPosts(database: DB) {
   return await database.query.posts.findMany({
     orderBy: (posts, { desc }) => [desc(posts.createdAt)],
     limit: 10,
     with: {
       postedBy: {
         columns: {
-          username: true,
+          aka: true,
         },
       },
     },
@@ -38,7 +37,7 @@ export const postRouter = createTRPCRouter({
           with: {
             postedBy: {
               columns: {
-                username: true,
+                aka: true,
               },
             },
           },

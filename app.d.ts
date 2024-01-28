@@ -5,8 +5,9 @@ declare namespace Lucia {
     email: string;
     first_name: string;
     last_name: string;
+    aka: string;
+    role: "host" | "participant";
     gender: string;
-    username: string;
   };
   type DatabaseSessionAttributes = {};
 }

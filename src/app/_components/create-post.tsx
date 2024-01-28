@@ -45,7 +45,7 @@ export function CrudShowcase() {
         posts.map((post) => (
           <div key={post.id} className="flex flex-col gap-2">
             <h3 className="text-2xl font-bold">{post.name}</h3>
-            <p className="text-lg">{post.postedBy.username}</p>
+            <p className="text-lg">{post.postedBy.aka}</p>
           </div>
         ))
       ) : (
