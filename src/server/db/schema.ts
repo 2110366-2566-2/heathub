@@ -133,3 +133,71 @@ export const session = mysqlTable("user_session", {
     mode: "number",
   }).notNull(),
 });
+
+export const chatRoom = mysqlTable("chat_room", {
+  id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const chatMember = mysqlTable(
+  "chat_member",
+  {
+    userId: varchar("user_id", {
+      length: 64,
+    }),
+    roomId: bigint("room_id", {
+      mode: "number",
+    }),
+  },
+  (chatMember) => ({
+    pk: primaryKey({
+      columns: [chatMember.userId, chatMember.roomId],
+    }),
+  }),
+);
+
+export const chatMemberRelation = relations(chatMember, ({ one, many }) => ({
+  user: one(user, {
+    fields: [chatMember.userId],
+    references: [user.id],
+  }),
+  room: one(chatRoom, {
+    fields: [chatMember.roomId],
+    references: [chatRoom.id],
+  }),
+}));
+
+export const chatMessage = mysqlTable(
+  "chat_message",
+  {
+    id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
+    userId: varchar("user_id", {
+      length: 64,
+    }),
+    roomId: bigint("room_id", {
+      mode: "number",
+    }),
+    content: varchar("content", {
+      length: 512,
+    }),
+    contentType: varchar("content_type", {
+      length: 32,
+      enum: ["text", "image"],
+    }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (chatMessage) => ({
+    roomIdIndex: index("room_id_idx").on(chatMessage.roomId),
+  }),
+);
+
+export const chatMessageRelation = relations(chatMessage, ({ one, many }) => ({
+  user: one(user, {
+    fields: [chatMessage.userId],
+    references: [user.id],
+  }),
+  room: one(chatRoom, {
+    fields: [chatMessage.roomId],
+    references: [chatRoom.id],
+  }),
+}));
