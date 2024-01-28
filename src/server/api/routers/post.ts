@@ -5,11 +5,10 @@ import {
   publicProcedure,
   userProcedure,
 } from "@/server/api/trpc";
+import type { DB } from "@/server/db";
 import { posts } from "@/server/db/schema";
 
-import { db } from "@/server/db";
-
-async function getLatestPosts(database: typeof db) {
+async function getLatestPosts(database: DB) {
   return await database.query.posts.findMany({
     orderBy: (posts, { desc }) => [desc(posts.createdAt)],
     limit: 10,
