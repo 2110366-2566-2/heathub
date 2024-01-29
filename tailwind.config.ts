@@ -1,8 +1,15 @@
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
-export default {
-  content: ["./src/**/*.tsx"],
+const config = {
+  darkMode: ["class"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
+  prefix: "",
   theme: {
     extend: {
       fontFamily: {
@@ -13,6 +20,11 @@ export default {
         lg: "1024px",
       },
       colors: {
+        high: "#122f6e",
+        medium: "#64748b",
+        placeholder: "#94a3b8",
+        invert: "#ffffff",
+        disable: "#cbd5e1",
         bgColor: "#f0e9ff",
         primary: {
           50: "#f2ecff",
@@ -43,14 +55,17 @@ export default {
           a700: "#c9005c",
         },
       },
-      textColor: {
-        high: "#122f6e",
-        medium: "#64748b",
-        placeholder: "#94a3b8",
-        invert: "#ffffff",
-        disable: "#cbd5e1",
+      borderRadius: {
+        sm: "4px",
+        DEFAULT: "8px",
+        md: "12px",
+        lg: "16px",
+        xl: "20px",
+        "2xl": "24px",
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 } satisfies Config;
+
+export default config;
