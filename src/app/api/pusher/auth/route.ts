@@ -13,12 +13,14 @@ export async function POST(req: NextRequest) {
   const authRequest = auth.handleRequest(req.method, context);
   const session = await authRequest.validate();
   if (!session) {
-    return {
-      status: 401,
-      body: {
+    return NextResponse.json(
+      {
         message: "Unauthorized",
       },
-    };
+      {
+        status: 401,
+      },
+    );
   }
   const userID = session.user.userId;
 
