@@ -3,8 +3,10 @@ import {
   hostInterest,
   hostUser,
   participantUser,
+  passwordResetRequest,
   user,
 } from "@/server/db/schema";
+import { sendResetPasswordEmail } from "@/server/resend/resend";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -136,5 +138,118 @@ export const authRouter = createTRPCRouter({
       );
 
       return res;
+    }),
+
+  resetPasswordByEmail: publicProcedure
+    .input(
+      z.object({
+        email: z.string().email(),
+        url: z.string().url(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userID = await ctx.db.query.user.findFirst({
+        where: eq(user.email, input.email),
+        columns: {
+          id: true,
+        },
+      });
+
+      if (!userID) {
+        console.warn(`User with email ${input.email} not found`);
+        return;
+      }
+
+      const uuid = crypto.randomUUID();
+
+      await ctx.db.insert(passwordResetRequest).values({
+        id: uuid,
+        userID: userID.id,
+      });
+
+      await sendResetPasswordEmail(input.email, uuid, input.url);
+    }),
+
+  validatingEmailToken: publicProcedure
+    .input(z.object({ emailToken: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const data = await ctx.db.query.passwordResetRequest.findFirst({
+        where: eq(passwordResetRequest.id, input.emailToken),
+        columns: {
+          userID: true,
+          expires: true,
+        },
+
+        with: {
+          user: {
+            columns: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+              aka: true,
+              profileImageURL: true,
+            },
+          },
+        },
+      });
+
+      if (!data) {
+        return { status: "not_found" } as const;
+      }
+
+      if (data.expires < new Date()) {
+        await ctx.db
+          .delete(passwordResetRequest)
+          .where(eq(passwordResetRequest.id, input.emailToken));
+        return { status: "expired" } as const;
+      }
+
+      return { status: "valid" as const, user: data.user };
+    }),
+
+  changePasswordByEmailToken: publicProcedure
+    .input(
+      z.object({
+        emailToken: z.string(),
+        newPassword: z.string().min(8),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const data = await ctx.db.query.passwordResetRequest.findFirst({
+        where: eq(passwordResetRequest.id, input.emailToken),
+        columns: {
+          userID: true,
+          expires: true,
+        },
+        with: {
+          user: {
+            columns: {
+              email: true,
+            },
+          },
+        },
+      });
+
+      if (!data) {
+        throw new Error("Invalid email token");
+      }
+
+      if (data.expires < new Date()) {
+        await ctx.db
+          .delete(passwordResetRequest)
+          .where(eq(passwordResetRequest.id, input.emailToken));
+        throw new Error("Email token expired");
+      }
+
+      await ctx.auth.updateKeyPassword(
+        "email",
+        data.user.email,
+        input.newPassword,
+      );
+
+      await ctx.db
+        .delete(passwordResetRequest)
+        .where(eq(passwordResetRequest.id, input.emailToken));
     }),
 });

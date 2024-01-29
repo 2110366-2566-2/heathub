@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   date,
@@ -183,3 +183,27 @@ export const chatMessageRelation = relations(chatMessage, ({ one }) => ({
     references: [user.id],
   }),
 }));
+
+export const passwordResetRequest = mysqlTable("password_reset_request", {
+  id: varchar("id", { length: 191 })
+    .primaryKey()
+    .notNull()
+    .default(sql`(uuid())`),
+  userID: varchar("user_id", {
+    length: 64,
+  }).notNull(),
+  createAt: timestamp("created_at").defaultNow().notNull(),
+  expires: timestamp("expires")
+    .notNull()
+    .default(sql`(now() + interval 1 hour)`),
+});
+
+export const passwordResetRequestRelation = relations(
+  passwordResetRequest,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [passwordResetRequest.userID],
+      references: [user.id],
+    }),
+  }),
+);
