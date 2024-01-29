@@ -18,7 +18,12 @@ export default async function Home() {
           </p>
         </div>
         {users.map(
-          (user) => user && <Link href={`/chat/${user.id}`}>{user.aka}</Link>,
+          (user) =>
+            user && (
+              <Link href={`/chat/${user.id}`} key={user.id}>
+                {user.aka}
+              </Link>
+            ),
         )}
         <a href="/signout">
           <button className="rounded-2xl bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20">
