@@ -17,26 +17,25 @@ export default function ResetPassword({
     },
   });
 
-  const { data, isLoading: isDataLoading } =
-    api.auth.validatingEmailToken.useQuery(
-      {
-        emailToken: params.token,
+  const { isLoading: isDataLoading } = api.auth.validatingEmailToken.useQuery(
+    {
+      emailToken: params.token,
+    },
+    {
+      onSuccess(data) {
+        switch (data.status) {
+          case "valid":
+            break;
+          case "not_found":
+            setCriticalError("Your token is invalid");
+            break;
+          case "expired":
+            setCriticalError("Your token is expired");
+            break;
+        }
       },
-      {
-        onSuccess(data) {
-          switch (data.status) {
-            case "valid":
-              break;
-            case "not_found":
-              setCriticalError("Your token is invalid");
-              break;
-            case "expired":
-              setCriticalError("Your token is expired");
-              break;
-          }
-        },
-      },
-    );
+    },
+  );
 
   const mutate = api.auth.changePasswordByEmailToken.useMutation({});
 
@@ -53,8 +52,12 @@ export default function ResetPassword({
         emailToken: params.token,
         newPassword: password,
       });
-    } catch (e) {
-      setError(`${e}`);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(`Error: ${e.message}`);
+      } else {
+        setError("Unknown error");
+      }
     }
     redirect("/signin");
   };

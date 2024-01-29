@@ -1,9 +1,9 @@
 "use client";
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 
-export default function SignIn() {
+export default function ForgetPassword() {
   const { data: user } = api.auth.me.useQuery();
   const [status, setStatus] = useState<"idle" | "loading" | "done">("loading");
 
@@ -28,8 +28,11 @@ export default function SignIn() {
       setStatus("idle");
       return;
     }
-    const email = e.currentTarget.email.value;
-    console.log(email);
+    let email = (e.currentTarget.email?.value as string) ?? "";
+    if (!email) {
+      setStatus("idle");
+      return;
+    }
     try {
       await mutate.mutateAsync({
         email: email,
@@ -41,7 +44,7 @@ export default function SignIn() {
     }
   };
 
-  return status === "done"  ? (
+  return status === "done" ? (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
         <h1 className="font-bold">Check your email</h1>

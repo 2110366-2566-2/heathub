@@ -39,6 +39,7 @@ const config = {
       },
     ],
     "prefer-const": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
   },
 };
 
