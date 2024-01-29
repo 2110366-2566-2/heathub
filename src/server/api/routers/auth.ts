@@ -18,6 +18,29 @@ export const authRouter = createTRPCRouter({
     return users;
   }),
 
+  getUserPublicData: publicProcedure
+    .input(
+      z.object({
+        userID: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const res = await ctx.db.query.user.findFirst({
+        where: eq(user.id, input.userID),
+        columns: {
+          aka: true,
+          bio: true,
+          email: true,
+          firstName: true,
+          gender: true,
+          role: true,
+          lastName: true,
+          profileImageURL: true,
+        },
+      });
+      return res;
+    }),
+
   signupPaticipate: publicProcedure
     .input(
       z.object({

@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { relations, sql } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   bigint,
   date,
@@ -18,29 +18,6 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-
-export const posts = mysqlTable(
-  "post",
-  {
-    id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-    name: varchar("name", { length: 256 }),
-    authorID: varchar("author_id", { length: 64 }).notNull(),
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
-  },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  }),
-);
-
-export const postsRelation = relations(posts, ({ one }) => ({
-  postedBy: one(user, {
-    fields: [posts.authorID],
-    references: [user.id],
-  }),
-}));
 
 export const user = mysqlTable(
   "user",
@@ -61,6 +38,7 @@ export const user = mysqlTable(
     })
       .notNull()
       .default("participant"),
+    profileImageURL: varchar("profile_image_url", { length: 256 }).default(""),
   },
   (user) => ({
     akaIndex: index("aka_idx").on(user.aka),
@@ -133,3 +111,75 @@ export const session = mysqlTable("user_session", {
     mode: "number",
   }).notNull(),
 });
+
+export const chatInbox = mysqlTable(
+  "chat_inbix",
+  {
+    userID1: varchar("user_id_1", {
+      length: 64,
+    }).notNull(),
+
+    userID2: varchar("user_id_2", {
+      length: 64,
+    }).notNull(),
+  },
+  (chatInbox) => ({
+    pk: primaryKey({
+      columns: [chatInbox.userID1, chatInbox.userID2],
+    }),
+    userID1Index: index("user_id_1_idx").on(chatInbox.userID1),
+    userID2Index: index("user_id_2_idx").on(chatInbox.userID2),
+  }),
+);
+
+export const chatInboxRelation = relations(chatInbox, ({ one }) => ({
+  participant1: one(user, {
+    fields: [chatInbox.userID1],
+    references: [user.id],
+  }),
+  participant2: one(user, {
+    fields: [chatInbox.userID2],
+    references: [user.id],
+  }),
+}));
+
+export const chatMessage = mysqlTable(
+  "chat_message",
+  {
+    id: bigint("id", {
+      mode: "number",
+    })
+      .primaryKey()
+      .autoincrement(),
+
+    senderUserID: varchar("sender_id", { length: 64 }).notNull(),
+    receiverUserID: varchar("receiver_id", { length: 64 }).notNull(),
+    contentType: varchar("content_type", {
+      length: 32,
+      enum: ["text", "imageURL"],
+    }).notNull(),
+    content: varchar("content", { length: 256 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (chatMessage) => ({
+    senderUserIDIndex: index("sender_id_idx").on(chatMessage.senderUserID),
+    receiverUserIDIndex: index("receiver_id_idx").on(
+      chatMessage.receiverUserID,
+    ),
+    userPairIndex: index("user_pair_idx").on(
+      chatMessage.senderUserID,
+      chatMessage.receiverUserID,
+    ),
+  }),
+);
+
+export const chatMessageRelation = relations(chatMessage, ({ one }) => ({
+  sender: one(user, {
+    fields: [chatMessage.senderUserID],
+    references: [user.id],
+  }),
+  receiver: one(user, {
+    fields: [chatMessage.receiverUserID],
+    references: [user.id],
+  }),
+}));
