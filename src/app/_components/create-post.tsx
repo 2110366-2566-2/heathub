@@ -19,7 +19,6 @@ export function CrudShowcase({ withUser }: { withUser: string }) {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
       chatChannel.bind(CHAT_MESSAGE_EVENT, (data: ChatMessage) => {
-        console.log(data);
         if (data.sender.id !== withUser && data.receiver.id !== withUser)
           return;
         setPosts((prev) => {
