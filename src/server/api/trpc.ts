@@ -99,3 +99,37 @@ export const userProcedure = t.procedure.use(async (opt) => {
     },
   });
 });
+
+export const participantProcedure = userProcedure.use(async (opt) => {
+  // check if user is authenticated
+  const session = opt.ctx.session;
+  if (session.user.role !== "participant") {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You must be a participant to perform this action.",
+    });
+  }
+
+  return opt.next({
+    ctx: {
+      session: session,
+    },
+  });
+});
+
+export const hostProcedure = userProcedure.use(async (opt) => {
+  // check if user is authenticated
+  const session = opt.ctx.session;
+  if (session.user.role !== "host") {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You must be a host to perform this action.",
+    });
+  }
+
+  return opt.next({
+    ctx: {
+      session: session,
+    },
+  });
+});
