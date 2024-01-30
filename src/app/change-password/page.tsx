@@ -9,7 +9,6 @@ export default function ChangePassword({
 }: {
   params: { token: string };
 }) {
-  const { data, isSuccess } = api.auth.me.useQuery();
   const router = useRouter();
 
   const mutate = api.auth.changePassword.useMutation({});
