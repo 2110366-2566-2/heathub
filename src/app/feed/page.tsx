@@ -1,10 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { Typography } from "@/components/ui/typography";
-import Card from "@/app/_components/feed/card";
 import { NavBar, NavBarMobile } from "../_components/navbar";
 import { faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProfilePreview } from "../_components/feed/profile-preview";
+import { ProfilePreview } from "./_components/profile-preview";
 
 export default function FeedPage() {
   return (
@@ -58,18 +57,76 @@ function SearchBar() {
     </div>
   );
 }
+
+const mockData = [
+  {
+    name: "Rosy",
+    age: 23,
+    image: "/images/feed/mock-profile/mock-1.jpg",
+    rating: 4.5,
+    reviews: 10,
+    interests: ["Hiking", "Camping", "Road Trips"],
+    about:
+      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
+  },
+  {
+    name: "JaySaeliew",
+    age: 21,
+    image: "/images/feed/mock-profile/mock-2.png",
+    rating: 5.0,
+    reviews: 10,
+    interests: ["Hiking", "Camping", "Road Trips"],
+    about:
+      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
+  },
+  {
+    name: "Winnie",
+    age: 21,
+    image: "/images/feed/mock-profile/mock-3.png",
+    rating: 4.9,
+    reviews: 10,
+    interests: ["Hiking", "Camping", "Road Trips"],
+    about:
+      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
+  },
+  {
+    name: "Rosy",
+    age: 23,
+    image: "/images/feed/mock-profile/mock-1.jpg",
+    rating: 4.5,
+    reviews: 10,
+    interests: ["Hiking", "Camping", "Road Trips"],
+    about:
+      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
+  },
+  {
+    name: "JaySaeliew",
+    age: 21,
+    image: "/images/feed/mock-profile/mock-2.png",
+    rating: 5.0,
+    reviews: 10,
+    interests: ["Hiking", "Camping", "Road Trips"],
+    about:
+      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
+  },
+  {
+    name: "Winnie",
+    age: 21,
+    image: "/images/feed/mock-profile/mock-3.png",
+    rating: 4.9,
+    reviews: 10,
+    interests: ["Hiking", "Camping", "Road Trips"],
+    about:
+      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
+  },
+];
+
 function CardContainer() {
   return (
     <div className="grid w-full min-w-[280px] grid-cols-1 justify-center gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-9">
-      <ProfilePreview />
-      <ProfilePreview />
-      <ProfilePreview />
-      <ProfilePreview />
-      <ProfilePreview />
+      {mockData.map((profile, index) => (
+        <ProfilePreview {...profile} key={index} />
+      ))}
     </div>
   );
 }
-
-// <div className="fixed bottom-4 z-50 w-full justify-center ">
-//         <NavBarMobile />
-//       </div>
