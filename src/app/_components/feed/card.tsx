@@ -23,7 +23,7 @@ function MockTag() {
 
 export default function Card() {
   return (
-    <div className="relative flex h-[464px] w-[320px] flex-col gap-0 rounded-2xl shadow-md">
+    <div className="relative flex h-[464px] w-full flex-col gap-0 rounded-2xl shadow-md ">
       <div className="relative h-[388px]">
         <Image
           src="/images/feed/mock-profile/mock-1.jpg"
@@ -32,13 +32,12 @@ export default function Card() {
           layout="fill"
           className="rounded-t-2xl"
         />
-        <div className="absolute bottom-4 left-4 flex flex-col gap-2">
+        <div className="absolute bottom-0 flex flex-col gap-2 p-4">
           <div className="flex flex-row gap-1">
             <Typography variant="p" className="text-3xl font-bold text-white">
               Rosy,
             </Typography>
             <Typography variant="p" className="text-3xl text-white">
-              {" "}
               23
             </Typography>
           </div>
@@ -54,7 +53,7 @@ export default function Card() {
 
       <div className="absolute bottom-0 flex h-[76px] w-full items-center justify-center rounded-b-2xl bg-white">
         <div
-          className="bg-secondary-400 hover:bg-secondary-500 flex h-14 w-14 items-center justify-center rounded-full transition hover:cursor-pointer"
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary-400 transition hover:cursor-pointer hover:bg-secondary-500"
           style={{ boxShadow: "0px 15px 15px rgba(233, 64, 87, 0.20)" }}
         >
           <FontAwesomeIcon
