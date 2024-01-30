@@ -17,6 +17,7 @@ export const auth = lucia({
     firstName: userDatabase.first_name,
     lastName: userDatabase.last_name,
     gender: userDatabase.gender,
+    role: userDatabase.role,
   }),
 });
 export type Auth = typeof auth;
