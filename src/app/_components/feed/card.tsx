@@ -7,12 +7,7 @@ function MockTag() {
   return (
     <div className="flex flex-row flex-wrap gap-2">
       <div className="flex h-[30px] w-[80px] flex-row items-center justify-center gap-1 rounded-lg bg-white bg-opacity-50 px-3">
-        <FontAwesomeIcon
-          icon={faMusic}
-          className="text-white"
-          width={12}
-          height={12}
-        />
+        <FontAwesomeIcon icon={faMusic} className="h-3 w-3 text-white" />
         <Typography variant="body6" className="text-white">
           Music
         </Typography>
@@ -56,12 +51,7 @@ export default function Card() {
           className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary-400 transition hover:cursor-pointer hover:bg-secondary-500"
           style={{ boxShadow: "0px 15px 15px rgba(233, 64, 87, 0.20)" }}
         >
-          <FontAwesomeIcon
-            icon={faComment}
-            className="text-white"
-            width={24}
-            height={24}
-          />
+          <FontAwesomeIcon icon={faComment} className="h-8 w-8 text-white" />
         </div>
       </div>
     </div>
