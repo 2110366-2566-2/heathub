@@ -11,8 +11,8 @@ import { usePusher } from "../_context/PusherContext";
 export function CrudShowcase({ withUser }: { withUser: string }) {
   "use client";
   const [posts, setPosts] = useState<ChatMessage[]>([]);
-  const [_cursor, setCursor] = useState<number | null>(null);
-  const [queryCursor, _setQueryCursor] = useState<number | null>(null);
+  const [cursor, setCursor] = useState<number | null>(null);
+  const [queryCursor, setQueryCursor] = useState<number | null>(null);
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
@@ -30,7 +30,6 @@ export function CrudShowcase({ withUser }: { withUser: string }) {
       });
     },
     refetchOnWindowFocus: false,
-    refetchOnMount: false,
   });
 
   let chatChannel: Channel | null = null;
@@ -62,12 +61,25 @@ export function CrudShowcase({ withUser }: { withUser: string }) {
   return (
     <div className="w-full max-w-xs">
       {posts ? (
-        posts.map((message) => (
-          <div key={message.id} className="flex flex-col gap-2">
-            <h3 className="text-2xl font-bold">{message.content}</h3>
-            <p className="text-lg">{message.sender.aka}</p>
-          </div>
-        ))
+        <>
+          {posts.map((message) => (
+            <div key={message.id} className="flex flex-col gap-2">
+              <h3 className="text-2xl font-bold">{message.content}</h3>
+              <p className="text-lg">{message.sender.aka}</p>
+            </div>
+          ))}
+          <button
+            className="mx-auto rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20 disabled:cursor-not-allowed disabled:bg-white/20"
+            disabled={cursor === null}
+            onClick={() => {
+              if (cursor) {
+                setQueryCursor(cursor);
+              }
+            }}
+          >
+            Load More
+          </button>
+        </>
       ) : (
         <p>You have no posts yet.</p>
       )}

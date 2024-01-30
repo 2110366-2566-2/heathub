@@ -27,7 +27,7 @@ export default function SignUp() {
 
     const formData = new FormData(formRef.current);
 
-    signUpUser.mutate({
+    await signUpUser.mutateAsync({
       email: formData.get("email") as string,
       password: formData.get("password") as string,
       aka: formData.get("username") as string,
@@ -37,6 +37,8 @@ export default function SignUp() {
       bio: formData.get("bio") as string,
       dateOfBirth: new Date(formData.get("dateOfBirth") as string),
     });
+
+    redirect("/signin");
   };
 
   return (
