@@ -28,7 +28,3 @@ export async function signIn(formData: FormData) {
     return "Invalid email or password";
   }
 }
-
-export async function plus(a: number, b: number) {
-  return a + b;
-}

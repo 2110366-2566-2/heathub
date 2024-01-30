@@ -113,7 +113,7 @@ export const session = mysqlTable("user_session", {
 });
 
 export const chatInbox = mysqlTable(
-  "chat_inbix",
+  "chat_inbox",
   {
     userID1: varchar("user_id_1", {
       length: 64,
