@@ -4,6 +4,7 @@ import Card from "@/app/_components/feed/card";
 import { NavBar, NavBarMobile } from "../_components/navbar";
 import { faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ProfilePreview } from "../_components/feed/profile-preview";
 
 export default function FeedPage() {
   return (
@@ -57,14 +58,14 @@ function SearchBar() {
     </div>
   );
 }
-
 function CardContainer() {
   return (
     <div className="grid w-full min-w-[280px] grid-cols-1 justify-center gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-9">
-      <Card />
-      <Card />
-      <Card />
-      <Card />
+      <ProfilePreview />
+      <ProfilePreview />
+      <ProfilePreview />
+      <ProfilePreview />
+      <ProfilePreview />
     </div>
   );
 }
