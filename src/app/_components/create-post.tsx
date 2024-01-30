@@ -11,8 +11,8 @@ import { usePusher } from "../_context/PusherContext";
 export function CrudShowcase({ withUser }: { withUser: string }) {
   "use client";
   const [posts, setPosts] = useState<ChatMessage[]>([]);
-  const [cursor, setCursor] = useState<number | null>(null);
-  const [queryCursor, setQueryCursor] = useState<number | null>(null);
+  const [_cursor, setCursor] = useState<number | null>(null);
+  const [queryCursor, _setQueryCursor] = useState<number | null>(null);
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
