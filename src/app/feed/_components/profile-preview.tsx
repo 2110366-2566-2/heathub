@@ -64,11 +64,14 @@ function DialogProfile(props: ProfilePreviewProps) {
           className="rounded-l-3xl"
         />
       </div>
-      <div className="flex flex-col gap-2 rounded-r-3xl py-6 pr-6">
+      <div className="relative flex flex-col gap-2 rounded-r-3xl py-6 pr-6">
         <NameReview {...props} />
         <div className="flex flex-col gap-[10px] py-[10px]">
           <About {...props} />
           <Interests {...props} />
+        </div>
+        <div className="absolute bottom-6 flex w-full justify-center">
+          <Chat />
         </div>
       </div>
     </DialogContent>
