@@ -16,7 +16,7 @@ const config = {
         sans: ["Lato", ...fontFamily.sans],
       },
       screens: {
-        sm: "430px",
+        md: "821px",
         lg: "1024px",
       },
       colors: {
@@ -57,11 +57,11 @@ const config = {
       },
       borderRadius: {
         sm: "4px",
-        DEFAULT: "8px",
-        md: "12px",
-        lg: "16px",
-        xl: "20px",
-        "2xl": "24px",
+        md: "8px",
+        lg: "12px",
+        xl: "16px",
+        "2xl": "20px",
+        "3xl": "24px",
       },
     },
   },
