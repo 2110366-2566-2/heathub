@@ -2,7 +2,6 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic, faStar } from "@fortawesome/free-solid-svg-icons";
-import { Typography } from "@/components/ui/typography";
 import Image from "next/image";
 import Card from "./card";
 import { useMediaQuery } from "react-responsive";
@@ -25,7 +24,7 @@ export type ProfilePreviewProps = {
 };
 
 export function ProfilePreview(props: ProfilePreviewProps) {
-  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const isMobile = useMediaQuery({ maxWidth: 1024 });
 
   if (isMobile) {
     return (
@@ -34,7 +33,7 @@ export function ProfilePreview(props: ProfilePreviewProps) {
           <Card {...props} />
         </DrawerTrigger>
         <DrawerOverlay
-          className="bg-cover bg-center bg-no-repeat"
+          className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${props.image})` }}
         />
         <DrawerProfile {...props} />
@@ -97,22 +96,18 @@ function NameReview(props: ProfilePreviewProps) {
   const { name, age, rating, reviews } = props;
   return (
     <div className="flex flex-row justify-between py-[10px]">
-      <Typography variant="h3" className="text-3xl font-bold text-black">
+      <div className="h3-bold">
         {name}, {age}
-      </Typography>
+      </div>
       <div className="flex flex-col gap-1">
         <div className="flex flex-row items-center justify-end gap-[10px]">
           <FontAwesomeIcon
             icon={faStar}
             className="h-[26px] w-[26px] text-secondary-400"
           />
-          <Typography variant="h3" className="self-end text-black">
-            {rating.toFixed(1)}
-          </Typography>
+          <div className="h3-bold self-end">{rating.toFixed(1)}</div>
         </div>
-        <Typography variant="h6" className="text-medium">
-          ({reviews} reviews)
-        </Typography>
+        <div className="h6 text-medium">({reviews} reviews)</div>
       </div>
     </div>
   );
@@ -122,10 +117,8 @@ function About(props: ProfilePreviewProps) {
   const { about } = props;
   return (
     <div className="flex flex-col gap-[10px]">
-      <Typography variant="h4" className="text-medium">
-        About
-      </Typography>
-      <Typography variant="h4">{about}</Typography>
+      <div className="h4 text-medium">About</div>
+      <div className="h4">{about}</div>
     </div>
   );
 }
@@ -134,9 +127,7 @@ function Interests(props: ProfilePreviewProps) {
   const { interests } = props;
   return (
     <div className="flex flex-col gap-[10px]">
-      <Typography variant="h4" className="text-medium">
-        Interests
-      </Typography>
+      <div className="h4 text-medium">Interests</div>
       <div className="flex flex-row flex-wrap items-center justify-center gap-[10px] self-stretch">
         <MockTag />
         <MockTag />
@@ -152,9 +143,7 @@ function MockTag() {
     <div className="flex flex-row flex-wrap gap-2">
       <div className="flex h-[30px] w-[80px] flex-row items-center justify-center gap-1 rounded-3xl border border-solid border-primary-500 bg-white bg-opacity-50 px-3">
         <FontAwesomeIcon icon={faMusic} className="h-3 w-3 text-primary-500" />
-        <Typography variant="body6" className="text-primary-500">
-          Music
-        </Typography>
+        <div className="body6 text-primary-500">Music</div>
       </div>
     </div>
   );
