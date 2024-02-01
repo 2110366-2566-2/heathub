@@ -1,3 +1,57 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .h1 {
+    @apply font-sans text-5xl font-normal;
+  }
+  .h1-bold {
+    @apply font-sans text-5xl font-bold;
+  }
+  .h2 {
+    @apply font-sans text-3xl font-normal;
+  }
+  .h2-bold {
+    @apply font-sans text-3xl font-bold;
+  }
+  .h3 {
+    @apply font-sans text-2xl font-normal;
+  }
+  .h3-bold {
+    @apply font-sans text-2xl font-bold;
+  }
+  .h4 {
+    @apply font-sans text-xl font-semibold;
+  }
+  .h4-bold {
+    @apply font-sans text-xl font-bold;
+  }
+  .h5 {
+    @apply font-sans text-base font-semibold;
+  }
+  .h5-bold {
+    @apply font-sans text-base font-bold;
+  }
+  .h6 {
+    @apply font-sans text-sm font-semibold;
+  }
+  .body5 {
+    @apply font-sans text-base font-normal;
+  }
+  .body6 {
+    @apply font-sans text-sm font-normal;
+  }
+  .small {
+    @apply font-sans text-xs font-normal;
+  }
+  .p {
+    @apply font-sans text-base font-normal;
+  }
+  .blockquote {
+    @apply font-sans text-base font-normal italic;
+  }
+  .subtle {
+    @apply font-sans text-sm font-normal text-[#64748B];
+  }
+}
