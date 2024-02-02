@@ -22,13 +22,13 @@
     @apply font-sans text-2xl font-bold;
   }
   .h4 {
-    @apply font-sans text-xl font-semibold;
+    @apply font-sans text-xl font-normal;
   }
   .h4-bold {
     @apply font-sans text-xl font-bold;
   }
   .h5 {
-    @apply font-sans text-base font-semibold;
+    @apply font-sans text-base font-normal;
   }
   .h5-bold {
     @apply font-sans text-base font-bold;
