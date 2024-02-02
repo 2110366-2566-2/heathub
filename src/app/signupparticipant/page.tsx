@@ -41,8 +41,6 @@ export default function SignUp() { // Participant
       bio: formData.get("bio") as string,
       dateOfBirth: new Date(formData.get("dateOfBirth") as string),
     });
-
-    redirect("/signin");
   };
 
   return (
