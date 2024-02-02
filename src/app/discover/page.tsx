@@ -4,7 +4,7 @@ import { faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfilePreview } from "./_components/profile-preview";
 
-export default function FeedPage() {
+export default function discoverPage() {
   return (
     <div className="flex h-auto flex-row bg-bgColor">
       <NavBar />
@@ -56,7 +56,7 @@ const mockData = [
   {
     name: "Rosy",
     age: 23,
-    image: "/images/feed/mock-profile/mock-1.jpg",
+    image: "/images/discover/mock-profile/mock-1.jpg",
     rating: 4.5,
     reviews: 10,
     interests: ["Hiking", "Camping", "Road Trips"],
@@ -66,7 +66,7 @@ const mockData = [
   {
     name: "JaySaeliew",
     age: 21,
-    image: "/images/feed/mock-profile/mock-2.png",
+    image: "/images/discover/mock-profile/mock-2.png",
     rating: 5.0,
     reviews: 10,
     interests: ["Hiking", "Camping", "Road Trips"],
@@ -76,7 +76,7 @@ const mockData = [
   {
     name: "Winnie",
     age: 21,
-    image: "/images/feed/mock-profile/mock-3.png",
+    image: "/images/discover/mock-profile/mock-3.png",
     rating: 4.9,
     reviews: 10,
     interests: ["Hiking", "Camping", "Road Trips"],
@@ -86,7 +86,7 @@ const mockData = [
   {
     name: "Rosy",
     age: 23,
-    image: "/images/feed/mock-profile/mock-1.jpg",
+    image: "/images/discover/mock-profile/mock-1.jpg",
     rating: 4.5,
     reviews: 10,
     interests: ["Hiking", "Camping", "Road Trips"],
@@ -96,7 +96,7 @@ const mockData = [
   {
     name: "JaySaeliew",
     age: 21,
-    image: "/images/feed/mock-profile/mock-2.png",
+    image: "/images/discover/mock-profile/mock-2.png",
     rating: 5.0,
     reviews: 10,
     interests: ["Hiking", "Camping", "Road Trips"],
@@ -106,7 +106,7 @@ const mockData = [
   {
     name: "Winnie",
     age: 21,
-    image: "/images/feed/mock-profile/mock-3.png",
+    image: "/images/discover/mock-profile/mock-3.png",
     rating: 4.9,
     reviews: 10,
     interests: ["Hiking", "Camping", "Road Trips"],

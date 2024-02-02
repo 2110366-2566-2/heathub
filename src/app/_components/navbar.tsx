@@ -17,7 +17,7 @@ export function NavBar() {
         <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
           <FontAwesomeIcon icon={faCompass} className="h-8 w-8 text-medium" />
           <div
-            className={`${pathname === "/feed" ? "block" : "hidden"} absolute left-[62px] h-10 w-1 rounded-sm bg-primary-500 group-hover:block`}
+            className={`${pathname === "/discover" ? "block" : "hidden"} absolute left-[62px] h-10 w-1 rounded-sm bg-primary-500 group-hover:block`}
           />
         </div>
         <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
@@ -39,7 +39,7 @@ export function NavBar() {
       <div className="items-center justify-center self-center">
         <div className="relative flex h-10 w-10">
           <Image
-            src="/images/feed/mock-profile/mock-1.jpg"
+            src="/images/discover/mock-profile/mock-1.jpg"
             fill
             alt="logo"
             className="self-center rounded-full"
@@ -69,7 +69,7 @@ export function NavBarMobile() {
       <div className="items-center justify-center self-center">
         <div className="relative flex h-10 w-10">
           <Image
-            src="/images/feed/mock-profile/mock-1.jpg"
+            src="/images/discover/mock-profile/mock-1.jpg"
             fill
             alt="logo"
             className="self-center rounded-full"
