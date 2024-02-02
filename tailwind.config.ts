@@ -97,3 +97,5 @@ const config = withUt({
 export default config;
 
 export default config;
+
+export default config
