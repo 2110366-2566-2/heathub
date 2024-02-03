@@ -7,11 +7,8 @@ import { type ChatMessage } from "@/types/pusher";
 import { type Channel } from "pusher-js";
 import { usePusher } from "../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "../chat/components/ChatMessage";
-import { getTimeStamp } from "../chat/utils/timediff";
-import { Content } from "next/font/google";
-import { timeStamp } from "console";
 
-export function CrudShowcase({ withUser }: { withUser: string }) {
+export function ChatShowcase({ withUser }: { withUser: string }) {
   "use client";
   const [posts, setPosts] = useState<ChatMessage[]>([]);
   const [cursor, setCursor] = useState<number | null>(null);
@@ -73,12 +70,12 @@ export function CrudShowcase({ withUser }: { withUser: string }) {
             }
             if (
               i === posts.length - 1 ||
-              reversePost[i + 1]?.sender.id !== message.sender.id
+              reversePost[i + 1]?.sender?.id !== message.sender.id
             )
               isShowBot = true;
             if (
               !isMine &&
-              (i === 0 || reversePost[i - 1]?.sender.id !== message.sender.id)
+              (i === 0 || reversePost[i - 1]?.sender?.id !== message.sender.id)
             )
               isShowTop = true;
             return (
@@ -90,7 +87,7 @@ export function CrudShowcase({ withUser }: { withUser: string }) {
                 isShowTop={isShowTop}
                 message={message.content}
                 createdAt={message.createdAt.toString()}
-                imageUrl={"https://picsum.photos/id/237/200/300"}
+                imageUrl={message.sender.profileImageURL}
               />
             );
           })}
