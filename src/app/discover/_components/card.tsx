@@ -24,7 +24,7 @@ export default function Card(props: ProfilePreviewProps) {
         <Image
           src={image}
           alt="card"
-          layout="fill"
+          fill
           className="rounded-t-3xl object-cover"
         />
         <div className="absolute bottom-0 flex flex-col gap-2 p-4">

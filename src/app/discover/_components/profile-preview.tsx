@@ -59,7 +59,7 @@ function DialogProfile(props: ProfilePreviewProps) {
         <Image
           src={image}
           alt="card"
-          layout="fill"
+          fill
           className="rounded-l-3xl object-cover"
         />
       </div>
