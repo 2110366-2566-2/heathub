@@ -1,14 +1,17 @@
 import { auth } from "@/server/api/auth";
 import { db } from "@/server/db";
-import { user } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
+import { unconfirmedUserProfileImage } from "@/server/db/schema";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UploadThingError, UTApi } from "uploadthing/server";
+import { UTApi, UploadThingError } from "uploadthing/server";
 
 export const utapi = new UTApi();
 const f = createUploadthing();
 
 const UPLOADTHING_DOMAIN_PREFIX = "https://utfs.io/f/";
+
+export function removeUploadthingURLPrefix(url: string) {
+  return url.replace(UPLOADTHING_DOMAIN_PREFIX, "");
+}
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const uploadthingRouter = {
@@ -34,21 +37,10 @@ export const uploadthingRouter = {
 
       console.log("file url", file.url);
 
-      const userData = await db.query.user.findFirst({
-        where: eq(user.id, metadata.userId),
-        columns: { id: true, profileImageURL: true },
+      await db.insert(unconfirmedUserProfileImage).values({
+        userID: metadata.userId,
+        imageURL: file.url,
       });
-
-      if (userData?.profileImageURL && userData.profileImageURL !== "") {
-        await utapi.deleteFiles(
-          userData.profileImageURL.replace(UPLOADTHING_DOMAIN_PREFIX, ""),
-        );
-      }
-
-      await db
-        .update(user)
-        .set({ profileImageURL: file.url })
-        .where(eq(user.id, metadata.userId));
 
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
@@ -59,7 +51,7 @@ export const uploadthingRouter = {
     .middleware(async ({}) => {
       return {};
     })
-    .onUploadComplete(async ({ metadata, file }) => {
+    .onUploadComplete(async ({}) => {
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return {};
     }),
