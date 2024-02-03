@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 
 import { CHAT_MESSAGE_EVENT } from "@/constants/pusher-events";
@@ -7,12 +6,19 @@ import { api } from "@/trpc/react";
 import { type ChatMessage } from "@/types/pusher";
 import { type Channel } from "pusher-js";
 import { usePusher } from "../_context/PusherContext";
+import { ChatMessage as ChatMessageComponent } from "../chat/components/ChatMessage";
+import { getTimeStamp } from "../chat/utils/timediff";
+import { Content } from "next/font/google";
+import { timeStamp } from "console";
 
 export function CrudShowcase({ withUser }: { withUser: string }) {
   "use client";
   const [posts, setPosts] = useState<ChatMessage[]>([]);
   const [cursor, setCursor] = useState<number | null>(null);
   const [queryCursor, setQueryCursor] = useState<number | null>(null);
+
+  const pusher = usePusher();
+  let chatChannel: Channel | null = null;
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
@@ -32,8 +38,6 @@ export function CrudShowcase({ withUser }: { withUser: string }) {
     refetchOnWindowFocus: false,
   });
 
-  let chatChannel: Channel | null = null;
-
   api.chat.infiniteChat.useQuery(
     {
       pairUserID: withUser,
@@ -49,25 +53,47 @@ export function CrudShowcase({ withUser }: { withUser: string }) {
       refetchOnWindowFocus: false,
     },
   );
-
-  const pusher = usePusher();
-
   useEffect(() => {
     return () => {
       chatChannel?.unbind(CHAT_MESSAGE_EVENT);
     };
   }, [chatChannel]);
 
+  const reversePost = [...posts].reverse();
   return (
     <div className="w-full max-w-xs">
       {posts ? (
         <>
-          {posts.map((message) => (
-            <div key={message.id} className="flex flex-col gap-2">
-              <h3 className="text-2xl font-bold">{message.content}</h3>
-              <p className="text-lg">{message.sender.aka}</p>
-            </div>
-          ))}
+          {reversePost.map((message, i) => {
+            let isMine = false;
+            let isShowTop = false;
+            let isShowBot = false;
+            if (message.sender.id === user?.userId) {
+              isMine = true;
+            }
+            if (
+              i === posts.length - 1 ||
+              reversePost[i + 1]?.sender.id !== message.sender.id
+            )
+              isShowBot = true;
+            if (
+              !isMine &&
+              (i === 0 || reversePost[i - 1]?.sender.id !== message.sender.id)
+            )
+              isShowTop = true;
+            return (
+              <ChatMessageComponent
+                key={message.id}
+                senderName={message.sender.firstName}
+                isShowBot={isShowBot}
+                isMine={isMine}
+                isShowTop={isShowTop}
+                message={message.content}
+                createdAt={message.createdAt.toString()}
+                imageUrl={"https://picsum.photos/id/237/200/300"}
+              />
+            );
+          })}
           <button
             className="mx-auto rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20 disabled:cursor-not-allowed disabled:bg-white/20"
             disabled={cursor === null}
