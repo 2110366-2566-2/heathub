@@ -1,6 +1,7 @@
+'use client'
+
 import * as React from "react"
 
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -11,21 +12,31 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+
+const checkConfirm = function() {
+  const password = document.getElementById('Password') as HTMLInputElement;
+  const confirmPassword = document.getElementById('Confirm Password') as HTMLInputElement;
+  if (!!password && !!confirmPassword) {
+    if (password.value == confirmPassword.value) {
+      (document.getElementById('message') as HTMLInputElement).style.color = 'green';
+      (document.getElementById('message') as HTMLInputElement).innerHTML = 'matching';
+    } else {
+      (document.getElementById('message') as HTMLInputElement).style.color = 'red';
+      (document.getElementById('message') as HTMLInputElement).innerHTML = 'not matching';
+    }
+  }
+}
 
 export default function EmailPasswordBox() {
+  const [isPasswordValid, setPasswordValid] = React.useState(false);
+
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
+
+    <Card className="w-[633px] h-[388px] px-[106.5px] pt-[20px]">
+      {/* <CardHeader>
         <CardTitle>Create project</CardTitle>
         <CardDescription>Deploy your new project in one-click.</CardDescription>
-      </CardHeader>
+      </CardHeader> */}
       <CardContent>
         <form>
           <div className="grid w-full items-center gap-4">
@@ -35,7 +46,8 @@ export default function EmailPasswordBox() {
               <Label htmlFor="Password">Password</Label>
               <Input id="Password" placeholder="Enter your password" />
               <Label htmlFor="Confirm Password">Confirm Password</Label>
-              <Input id="Confirm Password" placeholder="Enter your password" />
+              <Input id="Confirm Password" placeholder="Enter your password" onKeyUp={()=>checkConfirm()}/>
+              <span id='message'></span>
             </div>
             {/* <div className="flex flex-col space-y-1.5">
               <Label htmlFor="Password">Password</Label>
