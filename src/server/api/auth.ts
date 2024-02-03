@@ -7,6 +7,7 @@ export const auth = lucia({
   adapter: luciaAdapter,
   env: env.NODE_ENV == "production" ? "PROD" : "DEV",
   middleware: nextjs_future(),
+
   sessionCookie: {
     expires: false,
   },

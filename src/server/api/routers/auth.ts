@@ -1,4 +1,8 @@
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  userProcedure,
+} from "@/server/api/trpc";
 import {
   hostInterest,
   hostUser,
@@ -138,6 +142,23 @@ export const authRouter = createTRPCRouter({
       );
 
       return res;
+    }),
+
+  changePassword: userProcedure
+    .input(
+      z.object({
+        oldPassword: z.string().min(8),
+        newPassword: z.string().min(8),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userEmail = ctx.session.user.email;
+      await ctx.auth.useKey(
+        "email",
+        userEmail.toLowerCase(),
+        input.oldPassword,
+      );
+      await ctx.auth.updateKeyPassword("email", userEmail, input.newPassword);
     }),
 
   resetPasswordByEmail: publicProcedure
