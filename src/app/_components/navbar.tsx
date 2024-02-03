@@ -89,27 +89,29 @@ export function NavBar() {
 
 export function NavBarMobile() {
   return (
-    <nav className=" z-50 mx-auto flex h-14 w-[80%] justify-between rounded-3xl bg-white px-9 lg:hidden">
-      <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
-        <FontAwesomeIcon icon={faCompass} className="h-8 w-8 text-medium" />
-      </div>
-      <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
-        <FontAwesomeIcon
-          icon={faCalendarCheck}
-          className="h-8 w-8 text-medium"
-        />
-      </div>
-      <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
-        <FontAwesomeIcon icon={faComment} className="h-8 w-8 text-medium" />
-      </div>
-      <div className="items-center justify-center self-center">
-        <div className="relative flex h-10 w-10">
-          <Image
-            src="/images/discover/mock-profile/mock-1.jpg"
-            fill
-            alt="logo"
-            className="self-center rounded-full object-cover"
+    <nav className="fixed bottom-4 z-50 w-full justify-center ">
+      <div className=" z-50 mx-auto flex h-14 w-[80%] justify-between rounded-3xl bg-white px-9 lg:hidden">
+        <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
+          <FontAwesomeIcon icon={faCompass} className="h-8 w-8 text-medium" />
+        </div>
+        <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
+          <FontAwesomeIcon
+            icon={faCalendarCheck}
+            className="h-8 w-8 text-medium"
           />
+        </div>
+        <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
+          <FontAwesomeIcon icon={faComment} className="h-8 w-8 text-medium" />
+        </div>
+        <div className="items-center justify-center self-center">
+          <div className="relative flex h-10 w-10">
+            <Image
+              src="/images/discover/mock-profile/mock-1.jpg"
+              fill
+              alt="logo"
+              className="self-center rounded-full object-cover"
+            />
+          </div>
         </div>
       </div>
     </nav>

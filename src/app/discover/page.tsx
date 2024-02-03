@@ -8,9 +8,7 @@ export default function discoverPage() {
   return (
     <div className="flex h-auto flex-row bg-bgColor">
       <NavBar />
-      <div className="fixed bottom-4 z-50 w-full justify-center ">
-        <NavBarMobile />
-      </div>
+      <NavBarMobile />
       <div className="flex w-full flex-col gap-4 p-6 lg:p-9">
         <div className="flex flex-col gap-4 self-stretch">
           <Header />
