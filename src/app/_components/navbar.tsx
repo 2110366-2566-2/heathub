@@ -15,7 +15,7 @@ export function NavBar() {
   const isEvent = pathname === "/event" ? "block" : "hidden";
   const isChat = pathname === "/chat" ? "block" : "hidden";
   return (
-    <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[100px] flex-col gap-3 bg-white px-6 py-9 shadow-sm lg:flex">
+    <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[100px] flex-col justify-between gap-3 bg-white px-6 py-9 shadow-sm lg:flex">
       <div className="flex h-[762px] flex-col gap-9">
         <Image src="/svgs/logo-default.svg" width={62} height={46} alt="logo" />
         <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">

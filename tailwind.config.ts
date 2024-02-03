@@ -18,6 +18,9 @@ const config = {
       screens: {
         md: "821px",
         lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+        "3xl": "1920px",
       },
       colors: {
         high: "#122f6e",
