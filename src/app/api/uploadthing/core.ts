@@ -45,15 +45,23 @@ export const uploadthingRouter = {
         );
       }
 
-      const res = await db
+      await db
         .update(user)
         .set({ profileImageURL: file.url })
         .where(eq(user.id, metadata.userId));
 
-      console.log("res", res);
-
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
+    }),
+
+  signupProfileUploader: f({ image: { maxFileSize: "4MB" } })
+    // Set permissions and file types for this FileRoute
+    .middleware(async ({}) => {
+      return {};
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+      return {};
     }),
 } satisfies FileRouter;
 
