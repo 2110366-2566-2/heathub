@@ -6,17 +6,20 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 export default function ComponentsGround() {
+    const [isPasswordMatch, setPasswordMatch] = useState<boolean>(false);
     const [isPasswordValid, setPasswordValid] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log(isPasswordValid? "password match": "password don't match");
-      }, [isPasswordValid]);
+        console.log(isPasswordMatch? "password match": "password don't match");
+      }, [isPasswordMatch]);
 
     const router = useRouter();
     const handleButtonClick = () => {
-        if (!isPasswordValid) {
-            console.log("invalid password");
+        if (!isPasswordMatch) {
+            console.log("password don't match");
             return;
+        } else if (!isPasswordValid) {
+            console.log("invalid password");
         } else if (false) {
             console.log("invalid email");
         } else if (false) {
@@ -31,7 +34,7 @@ export default function ComponentsGround() {
     return (
         <div className="flex flex-col items-center">
             <h1>Create your account</h1>
-            <EmailPasswordBox setValid={setPasswordValid}/>
+            <EmailPasswordBox setPasswordMatch={setPasswordMatch} setPasswordValid={setPasswordValid}/>
             <Button variant="outline" onClick={()=>{handleButtonClick()}}>Next</Button>
         </div>
     )

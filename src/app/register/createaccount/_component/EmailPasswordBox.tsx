@@ -10,7 +10,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 interface EmailPasswordBoxProps {
-  setValid: (isValid: boolean) => void
+  setPasswordMatch: (isValid: boolean) => void,
+  setPasswordValid: (isValid: boolean) => void
 }
 
 const checkConfirmPassword = function(props: EmailPasswordBoxProps) {
@@ -20,11 +21,24 @@ const checkConfirmPassword = function(props: EmailPasswordBoxProps) {
     if (password.value == confirmPassword.value) {
       (document.getElementById('message') as HTMLInputElement).style.color = 'green';
       (document.getElementById('message') as HTMLInputElement).innerHTML = 'matching';
-      props.setValid(true);
+      props.setPasswordMatch(true);
     } else {
       (document.getElementById('message') as HTMLInputElement).style.color = 'red';
       (document.getElementById('message') as HTMLInputElement).innerHTML = 'not matching';
-      props.setValid(false);
+      props.setPasswordMatch(false);
+    }
+  }
+}
+
+const checkValidPassword = function(props: EmailPasswordBoxProps) {
+  const password = document.getElementById('Password') as HTMLInputElement;
+  if (!!password) {
+    if (password.value.length >= 8) {
+      props.setPasswordValid(true);
+    } else {
+      (document.getElementById('message') as HTMLInputElement).style.color = 'red';
+      (document.getElementById('message') as HTMLInputElement).innerHTML = 'password invalid';
+      props.setPasswordValid(false);
     }
   }
 }
@@ -43,6 +57,9 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               <Input id="Email" placeholder="Enter your Email" />
               <Label htmlFor="Password">Password</Label>
               <Input id="Password" placeholder="Enter your password" />
+              <div className="text-sm">
+                The password must be at least 8 characters
+              </div>
               <Label htmlFor="Confirm Password">Confirm Password</Label>
               <Input id="Confirm Password" placeholder="Enter your password"
               onKeyUp={()=>checkConfirmPassword(props)}/>
