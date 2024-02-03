@@ -1,5 +1,5 @@
 "use client";
-import { ChatMessageProps } from "./type";
+import { type ChatMessageProps } from "./type";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { getClockTime } from "../utils/timediff";
 import { cn } from "@/utils/tailwind-merge";

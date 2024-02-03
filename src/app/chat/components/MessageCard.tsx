@@ -1,5 +1,5 @@
 "use client";
-import { MessageCardProps } from "./type";
+import { type MessageCardProps } from "./type";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";

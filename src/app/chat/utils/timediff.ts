@@ -47,6 +47,6 @@ export const getClockTime = (date: string) => {
   const hours: number = dateObject.getUTCHours();
   const minutes: number = dateObject.getUTCMinutes();
 
-  const clockTime: string = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+  const clockTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
   return clockTime;
 };
