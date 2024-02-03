@@ -1,5 +1,8 @@
 import { serverapi } from "@/trpc/server";
 import Link from "next/link";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
 
 export default async function Home() {
   const user = await serverapi.auth.me.query();
