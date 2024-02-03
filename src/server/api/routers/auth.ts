@@ -46,7 +46,63 @@ export const authRouter = createTRPCRouter({
       });
       return res;
     }),
-
+  getAllParticipant: publicProcedure.query(async({ctx})=>{
+    const participants = await ctx.db.query.user.findMany({
+      where : eq(user.role,"participant"),
+      columns:{
+        aka: true,
+        bio: true,
+        email: true,
+        firstName: true,
+        gender: true,
+        role: true,
+        lastName: true,
+        profileImageURL: true,
+      }
+    });
+    return participants
+  })
+  ,
+  isExistEmail: publicProcedure
+    .input(
+      z.object({
+        email: z.string().email()
+      })
+    )
+    .mutation(async({ctx,input})=>{
+      const userId = await ctx.db.query.user.findFirst({
+        where: eq(user.email,input.email),
+        columns: {
+          id: true,
+        },
+      })
+      
+      if(!userId){
+        return false
+      }
+      return true
+    })
+    
+  ,isExistAKA: publicProcedure
+    .input(
+      z.object({
+        aka: z.string().min(1)
+      })
+    )
+    .mutation(async({ctx,input})=>{
+      const userId = await ctx.db.query.user.findFirst({
+        where: eq(user.aka,input.aka),
+        columns: {
+          id: true,
+        },
+      })
+      if(!userId){
+        return false
+      }
+      return true
+  })
+  
+,
   signupPaticipate: publicProcedure
     .input(
       z.object({

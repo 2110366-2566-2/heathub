@@ -1,12 +1,12 @@
 "use client";
 
-import { signUp } from "@/action/auth";
+import { detailCheck } from "@/action/auth";
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useRef } from "react";
 
 export default function SignUp() { // Participant
-  const signUpUser = api.auth.signupPaticipate.useMutation();
+  const signUpPaticipate = api.auth.signupPaticipate.useMutation();
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
 
   const { data: userData } = api.auth.me.useQuery();
@@ -27,11 +27,11 @@ export default function SignUp() { // Participant
     }
 
     const formData = new FormData(formRef.current);
-    const err = await signUp(formData);
+    const err = await detailCheck(formData);
     if (!err) {
       redirect("/");
     }
-    signUpUser.mutate({
+    await signUpPaticipate.mutateAsync({
       email: formData.get("email") as string,
       password: formData.get("password") as string,
       aka: formData.get("username") as string,
