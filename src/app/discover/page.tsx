@@ -27,7 +27,7 @@ export default function discoverPage() {
 function Header() {
   return (
     <div className="flex flex-col justify-center gap-2">
-      <div className="relative flex items-center gap-[10px]">
+      <div className="relative flex items-center gap-3">
         <FontAwesomeIcon
           icon={faCompass}
           className="h-10 w-10 text-secondary-400"

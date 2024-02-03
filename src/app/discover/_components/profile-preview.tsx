@@ -64,12 +64,11 @@ function DialogProfile(props: ProfilePreviewProps) {
           className="rounded-l-3xl"
         />
       </div>
-      <div className="relative flex flex-col gap-2 rounded-r-3xl py-6 pr-6">
+      <div className="relative flex flex-col gap-3 rounded-r-3xl py-6 pr-6">
         <NameReview {...props} />
-        <div className="flex flex-col gap-[10px] py-[10px]">
-          <About {...props} />
-          <Interests {...props} />
-        </div>
+        <About {...props} />
+        <Interests />
+
         <div className="absolute bottom-6 flex w-full justify-center">
           <Chat />
         </div>
@@ -85,7 +84,7 @@ function DrawerProfile(props: ProfilePreviewProps) {
         <NameReview {...props} />
         <div className="flex flex-col gap-2 py-2">
           <About {...props} />
-          <Interests {...props} />
+          <Interests />
         </div>
       </div>
       <div className=" flex w-full justify-center pt-2">
@@ -98,12 +97,12 @@ function DrawerProfile(props: ProfilePreviewProps) {
 function NameReview(props: ProfilePreviewProps) {
   const { name, age, rating, reviews } = props;
   return (
-    <div className="flex flex-row justify-between py-[10px]">
-      <div className="h3-bold">
+    <div className="flex flex-row justify-between py-3">
+      <div className="h2-bold">
         {name}, {age}
       </div>
       <div className="flex flex-col gap-1">
-        <div className="flex flex-row items-center justify-end gap-[10px]">
+        <div className="flex flex-row items-center justify-end gap-3">
           <FontAwesomeIcon
             icon={faStar}
             className="h-[26px] w-[26px] text-secondary-400"
@@ -119,19 +118,18 @@ function NameReview(props: ProfilePreviewProps) {
 function About(props: ProfilePreviewProps) {
   const { about } = props;
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-3">
       <div className="h4 text-medium">About</div>
-      <div className="h4">{about}</div>
+      <div className="h4 text-high">{about}</div>
     </div>
   );
 }
 
-function Interests(props: ProfilePreviewProps) {
-  const { interests } = props;
+function Interests() {
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-3">
       <div className="h4 text-medium">Interests</div>
-      <div className="flex flex-row flex-wrap items-center justify-center gap-[10px] self-stretch">
+      <div className="flex flex-row flex-wrap items-center justify-center gap-2 self-stretch">
         <MockTag />
         <MockTag />
         <MockTag />

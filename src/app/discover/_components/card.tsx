@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
-import { ProfilePreviewProps } from "./profile-preview";
+import { type ProfilePreviewProps } from "./profile-preview";
 import Chat from "./chat";
 
 function MockTag() {
@@ -17,7 +17,7 @@ function MockTag() {
 }
 
 export default function Card(props: ProfilePreviewProps) {
-  const { name, age, interests, image } = props;
+  const { name, age, image } = props;
   return (
     <div className="relative flex h-[464px] w-full flex-col gap-0 rounded-3xl shadow-md ">
       <div className="relative h-[388px]">
