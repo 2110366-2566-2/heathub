@@ -3,14 +3,15 @@
 import { detailCheck } from "@/action/auth";
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 
 export default function SignUp() { // Participant
-  const signUpUser = api.auth.signupPaticipate.useMutation();
+  // const router = useRouter()
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
-
+  const [error,setError] = useState<string|null>(null)
   const { data: userData } = api.auth.me.useQuery();
-
+  const checkAKA = api.auth.isExistAKA.useMutation();
   useEffect(() => {
     if (userData) {
       redirect("/");
@@ -27,28 +28,25 @@ export default function SignUp() { // Participant
     }
 
     const formData = new FormData(formRef.current);
-    const err = await detailCheck(formData);
+    let err = await detailCheck(formData);
     if (!err) {
-      redirect("/");
+      const AKA = formData.get("username") as string
+      const isAKAExist = await checkAKA.mutateAsync({ aka: AKA });
+      if (!isAKAExist){
+        // router.push("/signin")
+        redirect("/signin")//cant redirect
+      }else{
+        err = "Already Exist AKA"
+      }
     }
-    signUpUser.mutate({
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      aka: formData.get("username") as string,
-      firstName: formData.get("firstname") as string,
-      lastName: formData.get("lastname") as string,
-      gender: formData.get("gender") as string,
-      bio: formData.get("bio") as string,
-      dateOfBirth: new Date(formData.get("dateOfBirth") as string),
-    });
-
-    redirect("/signin");
+    console.log(err)
+    setError(err)
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1>Sign up</h1>
+        <h1>Personal Detail</h1>
 
         {isSuccess ? (
           data.map((user) => <p key={user.id}>{user.aka}</p>)
@@ -69,26 +67,14 @@ export default function SignUp() { // Participant
           />
           <input
             className="rounded-md p-2"
-            type="password"
-            name="password"
-            placeholder="password"
-          />
-          <input
-            className="rounded-md p-2"
             type="text"
-            name="email"
-            placeholder="email"
-          />
-          <input
-            className="rounded-md p-2"
-            type="text"
-            name="firstname"
+            name="firstName"
             placeholder="first name"
           />
           <input
             className="rounded-md p-2"
             type="text"
-            name="lastname"
+            name="lastName"
             placeholder="last name"
           />
           <input
