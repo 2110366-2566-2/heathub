@@ -79,8 +79,7 @@ export function NavBar() {
             src="/images/discover/mock-profile/mock-1.jpg"
             fill
             alt="logo"
-            className="self-center rounded-full"
-            objectFit="cover"
+            className="self-center rounded-full object-cover"
           />
         </div>
       </div>
@@ -109,8 +108,7 @@ export function NavBarMobile() {
             src="/images/discover/mock-profile/mock-1.jpg"
             fill
             alt="logo"
-            className="self-center rounded-full"
-            objectFit="cover"
+            className="self-center rounded-full object-cover"
           />
         </div>
       </div>

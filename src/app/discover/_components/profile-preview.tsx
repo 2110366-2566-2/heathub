@@ -59,9 +59,8 @@ function DialogProfile(props: ProfilePreviewProps) {
         <Image
           src={image}
           alt="card"
-          objectFit="cover"
           layout="fill"
-          className="rounded-l-3xl"
+          className="rounded-l-3xl object-cover"
         />
       </div>
       <div className="relative flex flex-col gap-3 rounded-r-3xl py-6 pr-6">
