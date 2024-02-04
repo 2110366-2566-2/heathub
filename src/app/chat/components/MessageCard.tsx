@@ -9,23 +9,23 @@ export function MessageCard(props: MessageCardProps) {
   const duration = getTimeDiff(props.createdAt);
 
   const onClick = () => {
-    router.push(`/chat/${props.anotherUserID}`);
+    router.push(`/chat/${props.pairUserId}`);
   };
 
   return (
     <Button
       variant="outline"
-      className="h-fit w-[380px] whitespace-normal rounded-lg border-2 border-primary-300 p-0 "
+      className="delay-50 h-fit w-[380px] whitespace-normal rounded-lg border-2 border-primary-300 bg-white p-0 transition ease-in-out hover:z-10 hover:-translate-y-0.5 hover:scale-105"
       onClick={onClick}
     >
       <div className="flex h-full w-full flex-1 flex-row content-center items-center justify-between gap-2 p-2">
         <div className="flex w-fit  flex-row gap-2">
           <Avatar className="h-[52px] w-[52px]">
-            <AvatarImage src={props.imageUrl} />
-            <AvatarFallback>{props.senderName}</AvatarFallback>
+            {props.imageUrl && <AvatarImage src={props.imageUrl} />}
+            <AvatarFallback>{props.pairUserName}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col justify-start">
-            <div className="h5 w-fit">{props.senderName}</div>
+            <div className="h5 w-fit">{props.pairUserName}</div>
             <div className="small line-clamp-1 w-fit text-start  text-medium">
               {props.lastestMessage}
             </div>

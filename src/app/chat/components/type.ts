@@ -1,10 +1,10 @@
 export interface MessageCardProps {
-  anotherUserID: string;
-  senderName: string;
+  pairUserId: string;
+  pairUserName: string;
   lastestMessage: string;
   messageCount: number;
   createdAt: string;
-  imageUrl?: string;
+  imageUrl: string | null;
 }
 export interface ChatMessageProps {
   senderName: string;
@@ -13,6 +13,6 @@ export interface ChatMessageProps {
   isShowBot: boolean;
   isMine: boolean;
   createdAt: string;
-  imageUrl?: string | null;
+  imageUrl: string | null;
 }
 export type MessageType = string;

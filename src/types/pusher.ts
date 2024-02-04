@@ -25,3 +25,12 @@ export type ChatMessage = {
     id: string;
   };
 };
+export type RecentMessage = {
+  id: number;
+  discourserId: string;
+  discourserAka: string;
+  discourserImageURL: string | null;
+  contentType: "text" | "imageURL";
+  lastestContent: string;
+  createdAt: Date;
+};
