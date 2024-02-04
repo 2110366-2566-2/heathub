@@ -9,7 +9,7 @@ export function MessageCard(props: MessageCardProps) {
   const duration = getTimeDiff(props.createdAt);
 
   const onClick = () => {
-    router.push(`/chat/${props.pairUserId}`);
+    router.push(`/chat/${props.discourserId}`);
   };
 
   return (
@@ -22,10 +22,10 @@ export function MessageCard(props: MessageCardProps) {
         <div className="flex w-fit  flex-row gap-2">
           <Avatar className="h-[52px] w-[52px]">
             {props.imageUrl && <AvatarImage src={props.imageUrl} />}
-            <AvatarFallback>{props.pairUserName}</AvatarFallback>
+            <AvatarFallback>{props.discourserAka}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col justify-start">
-            <div className="h5 w-fit">{props.pairUserName}</div>
+            <div className="h5 w-fit">{props.discourserAka}</div>
             <div className="small line-clamp-1 w-fit text-start  text-medium">
               {props.lastestMessage}
             </div>

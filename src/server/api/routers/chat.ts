@@ -85,6 +85,11 @@ export const chatRouter = createTRPCRouter({
             receiver: {
               columns: {
                 id: true,
+                firstName: true,
+                lastName: true,
+                profileImageURL: true,
+                role: true,
+                aka: true,
               },
             },
           },
@@ -153,6 +158,11 @@ export const chatRouter = createTRPCRouter({
           receiver: {
             columns: {
               id: true,
+              firstName: true,
+              lastName: true,
+              profileImageURL: true,
+              role: true,
+              aka: true,
             },
           },
         },
@@ -201,6 +211,11 @@ export const chatRouter = createTRPCRouter({
           receiver: {
             columns: {
               id: true,
+              firstName: true,
+              lastName: true,
+              profileImageURL: true,
+              role: true,
+              aka: true,
             },
           },
         },
@@ -278,7 +293,6 @@ export const chatRouter = createTRPCRouter({
             lastestContent: e.chat_message.content,
           };
         });
-      console.log(messages.slice(0, 10));
-      return { messages: messages };
+      return { messages: messages.slice(0, 10) };
     }),
 });
