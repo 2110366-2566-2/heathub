@@ -11,7 +11,8 @@ export default function ComponentsGround() {
 
     useEffect(() => {
         console.log(isPasswordMatch? "password match": "password don't match");
-      }, [isPasswordMatch]);
+        checkValidPassword();
+    }, [isPasswordMatch]);
 
     const checkValidPassword = function() {
         const password = document.getElementById('Password') as HTMLInputElement;
@@ -20,8 +21,6 @@ export default function ComponentsGround() {
                 setPasswordValid(true);
                 console.log(`password: ${password.value}`)
             } else {
-                (document.getElementById('message') as HTMLInputElement).style.color = 'red';
-                (document.getElementById('message') as HTMLInputElement).innerHTML = 'password invalid';
                 setPasswordValid(false);
             }
         }
@@ -29,15 +28,20 @@ export default function ComponentsGround() {
 
     const router = useRouter();
     const handleButtonClick = () => {
-        checkValidPassword();
         if (!isPasswordMatch) {
             console.log("password don't match");
             return;
         } else if (!isPasswordValid) {
+            (document.getElementById('message') as HTMLInputElement).style.color = 'red';
+            (document.getElementById('message') as HTMLInputElement).innerHTML = 'password invalid';
             console.log("invalid password");
         } else if (false) {
+            (document.getElementById('message') as HTMLInputElement).style.color = 'red';
+            (document.getElementById('message') as HTMLInputElement).innerHTML = 'Email invalid';
             console.log("invalid email");
         } else if (false) {
+            (document.getElementById('message') as HTMLInputElement).style.color = 'red';
+            (document.getElementById('message') as HTMLInputElement).innerHTML = 'this email is already have an account';
             console.log("this email is already have an account");
         } else {
             console.log("-> tell us about yourself");

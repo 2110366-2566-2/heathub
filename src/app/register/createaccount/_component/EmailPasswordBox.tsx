@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from "react"
-
 import {
   Card,
   CardContent
@@ -10,8 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 interface EmailPasswordBoxProps {
-  setPasswordMatch: (isValid: boolean) => void,
-  setPasswordValid: (isValid: boolean) => void
+  setPasswordMatch: (isValid: boolean) => void
 }
 
 const checkConfirmPassword = function(props: EmailPasswordBoxProps) {
@@ -30,11 +28,9 @@ const checkConfirmPassword = function(props: EmailPasswordBoxProps) {
   }
 }
 
-
 export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
 
   return (
-
     <Card className="w-[633px] h-[388px] px-[106.5px] pt-[20px]">
       <CardContent>
         <form>
