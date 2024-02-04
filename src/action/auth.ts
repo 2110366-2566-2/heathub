@@ -53,11 +53,8 @@ export async function detailCheck(formData:FormData){
     const aka = formData.get("username") as string | null;
     const firstName = formData.get("firstName") as string | null;
     const lastName = formData.get("lastName") as string | null;
-    const bio = formData.get("bio") as string | null;
     const dateOfBirth = formData.get("dateOfBirth") as string | null;
     const gender = formData.get("gender") as string | null;
-    const role = formData.get("role") as string | null;
-    const profileImageURL = formData.get("profileImageURL") as string | null
     
     if(!aka){
       throw new Error("Missing AKA")

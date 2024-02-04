@@ -1,8 +1,8 @@
 "use client";
 import { signUpEmailCheck } from "@/action/auth";
 import { api } from "@/trpc/react";
-import { redirect, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { redirect } from "next/navigation";
+import { useEffect, useRef} from "react";
 
 export default function SignUpEmail(){
     // const router = useRouter()
