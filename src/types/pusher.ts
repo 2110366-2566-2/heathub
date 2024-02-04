@@ -23,6 +23,11 @@ export type ChatMessage = {
   };
   receiver: {
     id: string;
+    firstName: string;
+    lastName: string;
+    role: "host" | "participant";
+    profileImageURL: string | null;
+    aka: string;
   };
 };
 export type RecentMessage = {

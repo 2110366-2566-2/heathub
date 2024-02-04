@@ -1,6 +1,6 @@
 export interface MessageCardProps {
-  pairUserId: string;
-  pairUserName: string;
+  discourserId: string;
+  discourserAka: string;
   lastestMessage: string;
   messageCount: number;
   createdAt: string;
