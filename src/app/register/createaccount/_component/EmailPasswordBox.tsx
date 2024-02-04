@@ -32,7 +32,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
       }
     }
   }
-  
+
   const checkValidPassword = (props: EmailPasswordBoxProps) => {
     const password = document.getElementById('Password') as HTMLInputElement;
     if (!!password) {
@@ -48,7 +48,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
     const email = document.getElementById('Email') as HTMLInputElement;
     if (!!email) {
         const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-        if (email.value.match(validRegex)) { // add condition here
+        if (email.value.match(validRegex)) {
             props.setEmailValid(true);
         } else {
             props.setEmailValid(false);

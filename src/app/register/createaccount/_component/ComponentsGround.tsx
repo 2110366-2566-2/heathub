@@ -15,7 +15,6 @@ export default function ComponentsGround() {
     const handleButtonClick = () => {
         if (!isPasswordMatch) {
             console.log("password don't match");
-            return;
         } else if (!isPasswordValid) {
             (document.getElementById('message') as HTMLInputElement).style.color = 'red';
             (document.getElementById('message') as HTMLInputElement).innerHTML = 'password invalid';
@@ -33,7 +32,6 @@ export default function ComponentsGround() {
             const email = document.getElementById('Email') as HTMLInputElement;
             console.log(`Email: ${email.value} \n Password: ${password.value}`)
             router.push("/register/tellUsAboutYourself/host");
-            return;
         }
     }
 

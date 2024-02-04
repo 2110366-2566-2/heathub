@@ -1,5 +1,3 @@
-'use client'
-
 import GoBackArrow from "../../_components/goBackArrow"
 
 export default function HostTellUsAboutYourself() {
