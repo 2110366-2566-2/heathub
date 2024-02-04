@@ -18,6 +18,7 @@ export default function ComponentsGround() {
         if (!!password) {
             if (password.value.length >= 8) {
                 setPasswordValid(true);
+                console.log(`password: ${password.value}`)
             } else {
                 (document.getElementById('message') as HTMLInputElement).style.color = 'red';
                 (document.getElementById('message') as HTMLInputElement).innerHTML = 'password invalid';
