@@ -1,6 +1,6 @@
 'use client'
 
-export default function HostTellUsAboutYourself() {
+export default function goBackArrow() {
     const goBack = () => {
         window.history.back();
     }
