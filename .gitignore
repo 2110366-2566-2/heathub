@@ -42,3 +42,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 /volumes
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
