@@ -13,16 +13,16 @@ export default function ComponentsGround() {
 
     const router = useRouter();
     const handleButtonClick = () => {
-        if (!isPasswordMatch) {
+        if (!isEmailValid) {
+            (document.getElementById('message') as HTMLInputElement).style.color = 'red';
+            (document.getElementById('message') as HTMLInputElement).innerHTML = 'Email invalid';
+            console.log("invalid email");
+        } else if (!isPasswordMatch) {
             console.log("password don't match");
         } else if (!isPasswordValid) {
             (document.getElementById('message') as HTMLInputElement).style.color = 'red';
             (document.getElementById('message') as HTMLInputElement).innerHTML = 'password invalid';
             console.log("invalid password");
-        } else if (!isEmailValid) {
-            (document.getElementById('message') as HTMLInputElement).style.color = 'red';
-            (document.getElementById('message') as HTMLInputElement).innerHTML = 'Email invalid';
-            console.log("invalid email");
         } else if (!isEmailAlreadyReg) {
             (document.getElementById('message') as HTMLInputElement).style.color = 'red';
             (document.getElementById('message') as HTMLInputElement).innerHTML = 'this email is already have an account';

@@ -21,15 +21,15 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
     const password = document.getElementById('Password') as HTMLInputElement;
     const confirmPassword = document.getElementById('Confirm Password') as HTMLInputElement;
     if (!!confirmPassword && !!password && confirmPassword.value != "") {
-      if (password.value == confirmPassword.value) {
-        (document.getElementById('message') as HTMLInputElement).style.color = 'green';
-        (document.getElementById('message') as HTMLInputElement).innerHTML = 'matching';
-        props.setPasswordMatch(true);
-      } else {
-        (document.getElementById('message') as HTMLInputElement).style.color = 'red';
-        (document.getElementById('message') as HTMLInputElement).innerHTML = 'not matching';
-        props.setPasswordMatch(false);
-      }
+        if (password.value == confirmPassword.value) {
+          (document.getElementById('message') as HTMLInputElement).style.color = 'green';
+          (document.getElementById('message') as HTMLInputElement).innerHTML = 'matching';
+          props.setPasswordMatch(true);
+        } else {
+          (document.getElementById('message') as HTMLInputElement).style.color = 'red';
+          (document.getElementById('message') as HTMLInputElement).innerHTML = 'not matching';
+          props.setPasswordMatch(false);
+        }
     }
   }
 
@@ -39,7 +39,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
         if (password.value.length >= 8) { // add additional condition here
             props.setPasswordValid(true);
         } else {
-          props.setPasswordValid(false);
+            props.setPasswordValid(false);
         }
     }
   }
@@ -48,6 +48,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
     const email = document.getElementById('Email') as HTMLInputElement;
     if (!!email) {
         const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        console.log(`check email: ${email.value} \n valid = `, email.value.match(validRegex)); //DEBUGGING
         if (email.value.match(validRegex)) {
             props.setEmailValid(true);
         } else {
