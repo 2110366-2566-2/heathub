@@ -3,13 +3,12 @@
 import { detailCheck } from "@/action/auth";
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
 export default function SignUp() { // Participant
   // const router = useRouter()
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
-  const [error,setError] = useState<string|null>(null)
+  const [_,setError] = useState<string|null>(null)
   const { data: userData } = api.auth.me.useQuery();
   const checkAKA = api.auth.isExistAKA.useMutation();
   useEffect(() => {
@@ -39,7 +38,6 @@ export default function SignUp() { // Participant
         err = "Already Exist AKA"
       }
     }
-    console.log(err)
     setError(err)
   };
 
