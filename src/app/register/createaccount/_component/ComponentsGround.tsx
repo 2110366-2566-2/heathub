@@ -13,8 +13,22 @@ export default function ComponentsGround() {
         console.log(isPasswordMatch? "password match": "password don't match");
       }, [isPasswordMatch]);
 
+    const checkValidPassword = function() {
+        const password = document.getElementById('Password') as HTMLInputElement;
+        if (!!password) {
+            if (password.value.length >= 8) {
+                setPasswordValid(true);
+            } else {
+                (document.getElementById('message') as HTMLInputElement).style.color = 'red';
+                (document.getElementById('message') as HTMLInputElement).innerHTML = 'password invalid';
+                setPasswordValid(false);
+            }
+        }
+    }
+
     const router = useRouter();
     const handleButtonClick = () => {
+        checkValidPassword();
         if (!isPasswordMatch) {
             console.log("password don't match");
             return;
@@ -34,7 +48,7 @@ export default function ComponentsGround() {
     return (
         <div className="flex flex-col items-center">
             <h1>Create your account</h1>
-            <EmailPasswordBox setPasswordMatch={setPasswordMatch} setPasswordValid={setPasswordValid}/>
+            <EmailPasswordBox setPasswordMatch={setPasswordMatch}/>
             <Button variant="outline" onClick={()=>{handleButtonClick()}}>Next</Button>
         </div>
     )

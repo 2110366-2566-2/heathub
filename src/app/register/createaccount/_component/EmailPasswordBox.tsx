@@ -10,8 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 interface EmailPasswordBoxProps {
-  setPasswordMatch: (isValid: boolean) => void,
-  setPasswordValid: (isValid: boolean) => void
+  setPasswordMatch: (isValid: boolean) => void
 }
 
 const checkConfirmPassword = function(props: EmailPasswordBoxProps) {
@@ -26,19 +25,6 @@ const checkConfirmPassword = function(props: EmailPasswordBoxProps) {
       (document.getElementById('message') as HTMLInputElement).style.color = 'red';
       (document.getElementById('message') as HTMLInputElement).innerHTML = 'not matching';
       props.setPasswordMatch(false);
-    }
-  }
-}
-
-const checkValidPassword = function(props: EmailPasswordBoxProps) {
-  const password = document.getElementById('Password') as HTMLInputElement;
-  if (!!password) {
-    if (password.value.length >= 8) {
-      props.setPasswordValid(true);
-    } else {
-      (document.getElementById('message') as HTMLInputElement).style.color = 'red';
-      (document.getElementById('message') as HTMLInputElement).innerHTML = 'password invalid';
-      props.setPasswordValid(false);
     }
   }
 }
