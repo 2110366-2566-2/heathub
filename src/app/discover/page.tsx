@@ -4,7 +4,7 @@ import { faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfilePreview } from "./_components/profile-preview";
 
-export default function discoverPage() {
+export default function DiscoverPage() {
   return (
     <div className="flex h-auto flex-row bg-bgColor">
       <NavBar />
