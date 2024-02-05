@@ -15,54 +15,31 @@ export function MainMessageComponent({ className }: { className?: string }) {
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
   const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
+  const [topMessage, setTopMessage] = useState<ChatMessage>();
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
       if (!data) return;
-      chatChannel = pusher.subscribe(`private-user-${data.userId}`);
-      chatChannel.bind(CHAT_MESSAGE_EVENT, (message: ChatMessage) => {
+      chatChannel = pusher.subscribe(`2-private-user-${data.userId}`);
+      chatChannel.bind(CHAT_MESSAGE_EVENT, (message: RecentMessage) => {
         if (
-          message.sender.id !== data.userId &&
-          message.receiver.id !== data.userId
+          message.myId !== data.userId &&
+          message.discourserId !== data.userId
         )
           return;
         setRecentMessages((prev) => {
-          if (prev.some((x) => x.id === message.id)) {
-            return prev;
-          }
-          let newChannel: RecentMessage[] = prev.filter(
-            (e) =>
-              e.discourserId !== message.senderUserID &&
-              e.discourserId !== message.receiverUserID,
-          );
-          const newMessage: RecentMessage = {
-            id: message.id,
-            discourserId:
-              message.senderUserID === data.userId
-                ? message.receiverUserID
-                : message.senderUserID,
-            discourserAka:
-              message.senderUserID === data.userId
-                ? message.receiver.aka
-                : message.sender.aka,
-            discourserImageURL:
-              message.senderUserID === data.userId
-                ? message.receiver.profileImageURL
-                : message.sender.profileImageURL,
-            contentType: message.contentType,
-            lastestContent: message.content,
-            createdAt: message.createdAt,
-          };
-
-          return [newMessage, ...newChannel];
+          const newRecentMessages = prev.filter((e) => {
+            e.discourserId !== message.discourserId;
+          });
+          return [message, ...newRecentMessages];
         });
       });
     },
     refetchOnWindowFocus: false,
   });
 
-  api.chat.testRecentChat.useQuery(
-    { limit: 20 },
+  api.chat.recentChats.useQuery(
+    { limit: 10 },
     {
       onSuccess: (data) => {
         setRecentMessages((prev) => [...prev, ...data.messages]);
@@ -79,14 +56,14 @@ export function MainMessageComponent({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex h-screen min-w-[452px] flex-col justify-center  bg-purple-100 p-6",
+        "flex h-screen flex-col justify-center bg-purple-100  p-6 md:min-w-[452px]",
         className,
       )}
     >
-      <div className="mb-4 flex flex-row gap-2.5">
+      <div className="mb-2 flex flex-row items-center gap-2.5 pl-4">
         <FontAwesomeIcon
           icon={faComment}
-          className={"h-10 w-10 text-secondary-400"}
+          className={"h-8 w-7 text-secondary-400"}
         />
         <span className="h2-bold  text-primary-900">Message</span>
       </div>
@@ -102,7 +79,7 @@ export function MainMessageComponent({ className }: { className?: string }) {
                 discourserId={data.discourserId}
                 discourserAka={data.discourserAka}
                 lastestMessage={data.lastestContent}
-                messageCount={2}
+                messageCount={data.unreadCount}
                 createdAt={data.createdAt.toString()}
                 imageUrl={data.discourserImageURL}
               />
