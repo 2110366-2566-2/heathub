@@ -15,7 +15,7 @@ export function MessageCard(props: MessageCardProps) {
   return (
     <Button
       variant="outline"
-      className="delay-50 h-fit w-[380px] whitespace-normal rounded-lg border-2 border-primary-300 bg-white p-0 transition ease-in-out hover:z-10 hover:-translate-y-0.5 hover:scale-105"
+      className="delay-50 h-fit w-full whitespace-normal rounded-lg border-2 border-primary-300 bg-white p-0 transition ease-in-out hover:z-10 hover:-translate-y-0.5 hover:scale-105 lg:w-[380px]"
       onClick={onClick}
     >
       <div className="flex h-full w-full flex-1 flex-row content-center items-center justify-between gap-2 p-2">
@@ -31,11 +31,13 @@ export function MessageCard(props: MessageCardProps) {
             </div>
           </div>
         </div>
-        <div className="flex flex-none flex-col gap-2 text-primary-600">
+        <div className="flex flex-none flex-col justify-around gap-2 self-start text-primary-600">
           <div className="small text-primary-600">{duration}</div>
-          <div className="m-0 h-5 w-5 self-end rounded-full bg-primary-900 p-0 text-white">
-            {props.messageCount}
-          </div>
+          {props.messageCount !== 0 && (
+            <div className="m-0 h-5 w-5 self-end rounded-full bg-primary-900 p-0 text-white">
+              {props.messageCount}
+            </div>
+          )}
         </div>
       </div>
     </Button>

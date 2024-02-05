@@ -32,10 +32,12 @@ export type ChatMessage = {
 };
 export type RecentMessage = {
   id: number;
+  myId: string;
   discourserId: string;
   discourserAka: string;
   discourserImageURL: string | null;
   contentType: "text" | "imageURL";
   lastestContent: string;
   createdAt: Date;
+  unreadCount: number;
 };

@@ -4,6 +4,7 @@
 import { relations, sql } from "drizzle-orm";
 import {
   bigint,
+  boolean,
   date,
   index,
   mysqlTable,
@@ -160,6 +161,7 @@ export const chatMessage = mysqlTable(
     }).notNull(),
     content: varchar("content", { length: 256 }).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
+    isUnRead: boolean("isUnRead").default(true),
   },
   (chatMessage) => ({
     senderUserIDIndex: index("sender_id_idx").on(chatMessage.senderUserID),

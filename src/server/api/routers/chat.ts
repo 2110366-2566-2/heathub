@@ -115,6 +115,91 @@ export const chatRouter = createTRPCRouter({
         ),
       ]);
     }),
+  sendMessage2: userProcedure
+    .input(
+      z.object({
+        toUserID: z.string().min(1),
+        content: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const result = await ctx.db.transaction(async (tx) => {
+        await createInbox(tx, ctx.session.user.userId, input.toUserID);
+
+        await tx.insert(chatMessage).values({
+          senderUserID: ctx.session.user.userId,
+          receiverUserID: input.toUserID,
+          content: input.content,
+          contentType: "text",
+        });
+
+        const sq = ctx.db
+          .select({
+            max_created_at: sql<number>`max(${chatMessage.id})`.as(
+              "max_created_at",
+            ),
+            unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as(
+              "unreadCount",
+            ),
+          })
+          .from(chatMessage)
+          .where(
+            and(
+              eq(chatMessage.receiverUserID, input.toUserID),
+              eq(chatMessage.senderUserID, ctx.session.user.userId),
+            ),
+          )
+          .groupBy(chatMessage.senderUserID, chatMessage.receiverUserID)
+          .orderBy(desc(sql`max_created_at`))
+          .limit(1)
+          .as("sq");
+        const result = await ctx.db
+          .select()
+          .from(chatMessage)
+          .innerJoin(sq, eq(chatMessage.id, sq.max_created_at))
+          .innerJoin(user, eq(chatMessage.receiverUserID, user.id));
+
+        if (!result || result.length !== 1 || !result[0]) {
+          throw new Error("Failed to send message");
+        }
+        return result[0];
+      });
+      const messageForSender: RecentMessage = {
+        id: result.chat_message.id,
+        myId: ctx.session.user.userId,
+        discourserId: result.user.id,
+        discourserAka: result.user.aka,
+        discourserImageURL: result.user.profileImageURL,
+        contentType: result.chat_message.contentType,
+        lastestContent: result.chat_message.content,
+        createdAt: result.chat_message.createdAt,
+        unreadCount: 0,
+      };
+      const messageForReciever: RecentMessage = {
+        id: result.chat_message.id,
+        myId: result.user.id,
+        discourserId: ctx.session.user.userId,
+        discourserAka: ctx.session.user.userName,
+        discourserImageURL: result.user.profileImageURL,
+        contentType: result.chat_message.contentType,
+        lastestContent: result.chat_message.content,
+        createdAt: result.chat_message.createdAt,
+        unreadCount: result.sq.unreadCount,
+      };
+
+      await Promise.all([
+        ctx.pusher.trigger(
+          `2-private-user-${ctx.session.user.userId}`,
+          CHAT_MESSAGE_EVENT,
+          messageForSender,
+        ),
+        ctx.pusher.trigger(
+          `2-private-user-${input.toUserID}`,
+          CHAT_MESSAGE_EVENT,
+          messageForReciever,
+        ),
+      ]);
+    }),
 
   infiniteChat: userProcedure
     .input(
@@ -178,59 +263,8 @@ export const chatRouter = createTRPCRouter({
         nextCursor,
       };
     }),
-  recentChat: userProcedure
-    .input(
-      z.object({
-        limit: z.number().int().min(1).max(100).nullish(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      let { limit } = input;
-      limit ??= 10;
-
-      const messages: ChatMessage[] = await ctx.db.query.chatMessage.findMany({
-        limit: limit,
-        orderBy: (posts, { desc }) => [desc(posts.createdAt)],
-        where: and(
-          or(
-            eq(chatMessage.senderUserID, ctx.session.user.userId),
-            eq(chatMessage.receiverUserID, ctx.session.user.userId),
-          ),
-        ),
-        with: {
-          sender: {
-            columns: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              profileImageURL: true,
-              role: true,
-              aka: true,
-            },
-          },
-          receiver: {
-            columns: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              profileImageURL: true,
-              role: true,
-              aka: true,
-            },
-          },
-        },
-      });
-
-      return {
-        messages,
-      };
-    }),
-  testRecentChat: userProcedure
-    .input(
-      z.object({
-        limit: z.number().int().min(1).max(100).nullish(),
-      }),
-    )
+  recentChats: userProcedure
+    .input(z.object({ limit: z.number().int().min(1).max(100).nullish() }))
     .query(async ({ ctx, input }) => {
       let { limit } = input;
       limit ??= 10;
@@ -240,12 +274,93 @@ export const chatRouter = createTRPCRouter({
           max_created_at: sql<number>`max(${chatMessage.id})`.as(
             "max_created_at",
           ),
+          unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as(
+            "unreadCount",
+          ),
         })
         .from(chatMessage)
         .where(
           or(
             eq(chatMessage.receiverUserID, ctx.session.user.userId),
             eq(chatMessage.senderUserID, ctx.session.user.userId),
+          ),
+        )
+        .groupBy(chatMessage.senderUserID, chatMessage.receiverUserID)
+        .orderBy(desc(sql`max_created_at`))
+        .limit(limit)
+        .as("sq");
+      const result = await ctx.db
+        .select()
+        .from(chatMessage)
+        .innerJoin(sq, eq(chatMessage.id, sq.max_created_at))
+        .innerJoin(
+          user,
+          or(
+            and(
+              eq(chatMessage.receiverUserID, ctx.session.user.userId),
+              eq(chatMessage.senderUserID, user.id),
+            ),
+            and(
+              eq(chatMessage.senderUserID, ctx.session.user.userId),
+              eq(chatMessage.receiverUserID, user.id),
+            ),
+          ),
+        );
+
+      const setMatched = new Set<string>();
+      const messages: RecentMessage[] = result
+        .filter((e) => {
+          if (e.chat_message.senderUserID === ctx.session.user.userId) {
+            const isMatched = setMatched.has(e.chat_message.receiverUserID);
+            if (!isMatched) {
+              e.sq.unreadCount = 0;
+              setMatched.add(e.chat_message.receiverUserID);
+            }
+            return !isMatched;
+          }
+          const isMatched = setMatched.has(e.chat_message.senderUserID);
+          if (!isMatched) setMatched.add(e.chat_message.senderUserID);
+          return !isMatched;
+        })
+        .map((e) => {
+          return {
+            id: e.chat_message.id,
+            myId: ctx.session.user.userId,
+            discourserId: e.user.id,
+            discourserAka: e.user.aka,
+            discourserImageURL: e.user.profileImageURL,
+            createdAt: e.chat_message.createdAt,
+            contentType: e.chat_message.contentType,
+            lastestContent: e.chat_message.content,
+            unreadCount: e.sq.unreadCount,
+          };
+        });
+      console.log(messages);
+      return { messages: messages.slice(0, 10) };
+    }),
+
+  recentChat: userProcedure
+    .input(
+      z.object({
+        discourserId: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = 2;
+      const sq = ctx.db
+        .select({
+          max_created_at: sql<number>`max(${chatMessage.id})`.as(
+            "max_created_at",
+          ),
+          unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as(
+            "unreadCount",
+          ),
+        })
+        .from(chatMessage)
+        .where(
+          and(
+            eq(chatMessage.receiverUserID, ctx.session.user.userId),
+            eq(chatMessage.senderUserID, input.discourserId),
           ),
         )
         .groupBy(chatMessage.senderUserID, chatMessage.receiverUserID)
@@ -285,14 +400,16 @@ export const chatRouter = createTRPCRouter({
         .map((e) => {
           return {
             id: e.chat_message.id,
+            myId: ctx.session.user.userId,
             discourserId: e.user.id,
             discourserAka: e.user.aka,
             discourserImageURL: e.user.profileImageURL,
             createdAt: e.chat_message.createdAt,
             contentType: e.chat_message.contentType,
             lastestContent: e.chat_message.content,
+            unreadCount: e.sq.unreadCount,
           };
         });
-      return { messages: messages.slice(0, 10) };
+      return { messages: messages.slice(0, 1) };
     }),
 });
