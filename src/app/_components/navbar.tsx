@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/tailwind-merge";
 import {
   faCalendarCheck,
   faComment,
