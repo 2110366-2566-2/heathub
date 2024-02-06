@@ -1,4 +1,4 @@
-import { CrudShowcase } from "@/app/_components/create-post";
+import { ChatShowcase } from "@/app/_components/create-post";
 import { serverapi } from "@/trpc/server";
 
 export default async function Chat({ params }: { params: { userID: string } }) {
@@ -20,7 +20,7 @@ export default async function Chat({ params }: { params: { userID: string } }) {
           </p>
           <p className="text-2xl text-white">{pairUser?.aka}</p>
         </div>
-        <CrudShowcase withUser={params.userID} />
+        <ChatShowcase withUser={params.userID} />
         <a href="/signout">
           <button className="rounded-2xl bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20">
             Sign Out

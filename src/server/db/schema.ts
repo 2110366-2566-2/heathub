@@ -207,3 +207,31 @@ export const passwordResetRequestRelation = relations(
     }),
   }),
 );
+
+export const unconfirmedUserProfileImage = mysqlTable(
+  "unconfirmed_user_profile_image",
+  {
+    id: bigint("id", {
+      mode: "number",
+    })
+      .primaryKey()
+      .autoincrement(),
+    userID: varchar("user_id", {
+      length: 64,
+    }).notNull(),
+    imageURL: varchar("image_url", { length: 256 }).notNull(),
+  },
+  (unconfirmedUserProfileImage) => ({
+    userIDIndex: index("user_id_idx").on(unconfirmedUserProfileImage.userID),
+  }),
+);
+
+export const unconfirmedUserProfileImageRelation = relations(
+  unconfirmedUserProfileImage,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [unconfirmedUserProfileImage.userID],
+      references: [user.id],
+    }),
+  }),
+);

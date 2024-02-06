@@ -4,11 +4,7 @@ import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function ChangePassword({
-  params,
-}: {
-  params: { token: string };
-}) {
+export default function ChangePassword() {
   const router = useRouter();
 
   const mutate = api.auth.changePassword.useMutation({});
@@ -37,7 +33,7 @@ export default function ChangePassword({
   };
 
   const [error, setError] = useState<string | null>(null);
-  const [criticalError, setCriticalError] = useState<string | null>(null);
+  const [criticalError, _setCriticalError] = useState<string | null>(null);
   return criticalError ? (
     <h1 className="text-xl font-bold text-red-600">{criticalError}</h1>
   ) : (
