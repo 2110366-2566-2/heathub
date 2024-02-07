@@ -12,15 +12,16 @@ export default function RegisterFormBox() {
   
 
   return (
-    <Card className="w-[845px] h-[496px] p-[24px]">
+    <Card className="w-[845px] h-[496px] p-[24px] bg-white border-solid border-primary-200 rounded-3xl justify-center">
       <CardContent>
         <form>
             <div className="flex flex-row">
-                <div className="grid w-full items-center">
-                    picture
+              <div className="flex flex-row w-[494px] relative">
+                <div className="w-">
+                  picture
                 </div>
-                <div className="grid w-full items-center gap-4">
-                    <div className="flex flex-col space-y-1.5">
+                <div className="grid w-[309px] items-center gap-4 right-0 absolute">
+                  <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="Firstname">Firstname</Label>
                     <Input id="Firstname" placeholder="Enter your firstname" />
                     <Label htmlFor="Lastname">Lastname</Label>
@@ -31,8 +32,9 @@ export default function RegisterFormBox() {
                     <Input id="Bio" placeholder="Type your massage here" />
                     <Label htmlFor="Date of birth">Date of birth</Label>
                     <Input id="Date of birth" placeholder="Select date" />
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
         </form>
       </CardContent>

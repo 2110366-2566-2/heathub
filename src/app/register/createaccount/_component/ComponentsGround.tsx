@@ -38,10 +38,12 @@ export default function ComponentsGround() {
     return (
         <div className="flex flex-col items-center">
             <h1>Create your account</h1>
-            <EmailPasswordBox setPasswordMatch={setPasswordMatch}
-            setPasswordValid={setPasswordValid} setEmailValid={setEmailValid}
-            setEmailAlreadyReg={setEmailAlreadyReg}/>
-            <Button variant="outline" onClick={()=>{handleButtonClick();}}>Next</Button>
+            <div className="mt-[31px]">
+                <EmailPasswordBox setPasswordMatch={setPasswordMatch}
+                setPasswordValid={setPasswordValid} setEmailValid={setEmailValid}
+                setEmailAlreadyReg={setEmailAlreadyReg}/>
+            </div>
+            <Button className="mt-[24px]" variant="outline" onClick={()=>{handleButtonClick();}}>Next</Button>
         </div>
     )
 }

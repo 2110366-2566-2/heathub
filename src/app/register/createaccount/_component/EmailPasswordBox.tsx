@@ -64,11 +64,10 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   }
 
   return (
-    <Card className="bg-white w-[633px] h-[388px] p-[24px] border-solid border-primary-200 rounded-3xl"> 
+    <Card className="bg-white w-[633px] h-[388px] p-[24px] border-solid border-primary-200 rounded-3xl justify-center"> 
       <CardContent>
-        <form>
-          <div className="grid w-[420px] items-center gap-4 ">
-            <div className="flex flex-col space-y-1.5">
+        <form className="grid justify-center w-full gap-4 ">
+            <div className="flex flex-col space-y-1.5 w-[420px]">
               <Label htmlFor="Email">Email</Label>
               <Input id="Email" placeholder="Enter your Email" 
               onKeyUp={()=>{checkValidEmail(props)}}/>
@@ -85,7 +84,6 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
                             checkValidPassword(props)}}/>
               <span id='message'></span>
             </div>
-          </div>
         </form>
       </CardContent>
     </Card>
