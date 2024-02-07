@@ -64,10 +64,10 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   }
 
   return (
-    <Card className="w-[633px] h-[388px] px-[106.5px] pt-[20px]">
+    <Card className="bg-white w-[633px] h-[388px] p-[24px] border-solid border-primary-200 rounded-3xl"> 
       <CardContent>
         <form>
-          <div className="grid w-full items-center gap-4">
+          <div className="grid w-[420px] items-center gap-4 ">
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="Email">Email</Label>
               <Input id="Email" placeholder="Enter your Email" 
@@ -76,7 +76,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               <Input id="Password" placeholder="Enter your password" 
               onKeyUp={()=>{checkConfirmPassword(props)
                             checkValidPassword(props)}}/>
-              <div className="text-sm">
+              <div className="text-lg">
                 The password must be at least 8 characters
               </div>
               <Label htmlFor="Confirm Password">Confirm Password</Label>
