@@ -1686,6 +1686,7 @@ packages:
       "@types/react-dom": 18.2.18
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+      react-remove-scroll: 2.5.5(@types/react@18.2.48)(react@18.2.0)
     dev: false
 
   /@radix-ui/react-roving-focus@1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0):
@@ -1772,8 +1773,11 @@ packages:
     peerDependencies:
       "@types/react": "*"
       react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
     peerDependenciesMeta:
       "@types/react":
+        optional: true
+      "@types/react-dom":
         optional: true
     dependencies:
       "@babel/runtime": 7.23.8
