@@ -4,7 +4,7 @@ import * as React from "react"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/utils/tailwind-merge"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/popover"
 
 export function DatePicker() {
-  const [date, setDate] = React.useState<Date>(new Date())
+  const [date, setDate] = React.useState<Date | undefined>(new Date())
 
   return (
     <Popover>
