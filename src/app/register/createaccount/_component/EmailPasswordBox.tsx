@@ -64,7 +64,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   }
 
   return (
-    <Card className="bg-white w-[633px] h-[388px] p-[24px] border-solid border-primary-200 rounded-3xl justify-center"> 
+    <Card className="bg-white w-[633px] h-[388px] p-[24px] border-solid border-primary-500 rounded-3xl justify-center"> 
       <CardContent>
         <form className="grid justify-center w-full gap-4 ">
             <div className="flex flex-col space-y-1.5 w-[420px]">
