@@ -31,8 +31,7 @@ export default function SignUp() { // Participant
       const AKA = formData.get("username") as string
       const isAKAExist = await checkAKA.mutateAsync({ aka: AKA });
       if (!isAKAExist){
-        // router.push("/signin")
-        redirect("/signin")//cant redirect
+        redirect("/signin")
       }else{
         err = "Already Exist AKA"
       }
