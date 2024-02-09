@@ -37,13 +37,13 @@ export default function ComponentsGround() {
 
     return (
         <div className="flex flex-col items-center">
-            <h1>Create your account</h1>
+            <h1 className="text-primary-900">Create your account</h1>
             <div className="mt-[31px]">
                 <EmailPasswordBox setPasswordMatch={setPasswordMatch}
                 setPasswordValid={setPasswordValid} setEmailValid={setEmailValid}
                 setEmailAlreadyReg={setEmailAlreadyReg}/>
             </div>
-            <Button className="mt-[24px]" variant="outline" onClick={()=>{handleButtonClick();}}>Next</Button>
+            <Button className="mt-[24px] bg-primary-500 text-white" variant="outline" onClick={()=>{handleButtonClick();}}>Next</Button>
         </div>
     )
 }
