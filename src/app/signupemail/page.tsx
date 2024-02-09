@@ -5,10 +5,8 @@ import { redirect } from "next/navigation";
 import { useEffect, useRef} from "react";
 
 export default function SignUpEmail(){
-    // const router = useRouter()
     const { data, isSuccess } = api.auth.getAllUsers.useQuery();
     const { data: userData } = api.auth.me.useQuery();
-    // const [error, setError] = useState<string | null>(null);
     const checkEmail = api.auth.isExistEmail.useMutation();
 
     useEffect(() => {
