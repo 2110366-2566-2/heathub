@@ -105,7 +105,7 @@ export function ChatShowcase({ withUser }: { withUser: string }) {
 export function CreatePost(props: { toUserID: string }) {
   const { toUserID: userID } = props;
   const [name, setName] = useState("");
-  const createPost2 = api.chat.sendMessage.useMutation({
+  const createPost = api.chat.sendMessage.useMutation({
     onSuccess: () => {
       setName("");
     },
@@ -115,7 +115,7 @@ export function CreatePost(props: { toUserID: string }) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        createPost2.mutate({
+        createPost.mutate({
           content: name,
           toUserID: userID,
         });
@@ -132,9 +132,9 @@ export function CreatePost(props: { toUserID: string }) {
       <button
         type="submit"
         className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
-        disabled={createPost2.isLoading}
+        disabled={createPost.isLoading}
       >
-        {createPost2.isLoading ? "Submitting..." : "Submit"}
+        {createPost.isLoading ? "Submitting..." : "Submit"}
       </button>
     </form>
   );
