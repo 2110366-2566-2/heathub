@@ -2,7 +2,7 @@ import { env } from "@/env";
 import { connect, type Connection } from "@planetscale/database";
 import { drizzle as mysqlDrizzle } from "drizzle-orm/mysql2";
 import { drizzle } from "drizzle-orm/planetscale-serverless";
-import { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
+import { type PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
 
 import mysql from "mysql2/promise";
 
