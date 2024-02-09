@@ -28,9 +28,10 @@ export function MainMessageComponent({ className }: { className?: string }) {
           return;
         setRecentMessages((prev) => {
           const newRecentMessages = prev.filter((e) => {
-            e.discourserId !== message.discourserId;
+            return e.discourserId !== message.discourserId;
           });
-          return [message, ...newRecentMessages];
+          const newm = [message, ...newRecentMessages];
+          return newm;
         });
       });
     },
