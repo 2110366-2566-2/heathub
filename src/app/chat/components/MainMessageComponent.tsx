@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/utils/tailwind-merge";
 import { api } from "@/trpc/react";
 import { usePusher } from "../../_context/PusherContext";
-import { type RecentMessage, type ChatMessage } from "@/types/pusher";
+import { type RecentMessage } from "@/types/pusher";
 import { useState, useEffect } from "react";
 import { type Channel } from "pusher-js";
 import { CHAT_MESSAGE_EVENT } from "@/constants/pusher-events";
@@ -71,8 +71,7 @@ export function MainMessageComponent({ className }: { className?: string }) {
       p-4"
       >
         {user &&
-          recentMessages &&
-          recentMessages.map((data) => {
+          recentMessages?.map((data) => {
             return (
               <MessageCard
                 key={data.id}
@@ -80,7 +79,7 @@ export function MainMessageComponent({ className }: { className?: string }) {
                 discourserAka={data.discourserAka}
                 lastestMessage={data.lastestContent}
                 messageCount={data.unreadCount}
-                createdAt={data.createdAt.toString()}
+                createdAt={data.createdAt?.toString()} // Applying optional chaining here
                 imageUrl={data.discourserImageURL}
               />
             );
