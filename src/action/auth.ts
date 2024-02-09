@@ -1,5 +1,6 @@
 "use server";
 
+import { api } from "@/trpc/react";
 import { auth } from "../server/api/auth";
 
 import { cookies } from "next/headers";
@@ -72,6 +73,16 @@ export async function detailCheck(formData:FormData){
   }
   catch (error){
     return (error as Error).message
+  }
+}
+
+export async function GetAllParticipant(){
+  try{
+    const {data} = api.auth.getAllParticipant.useQuery()
+    return data
+
+  }catch(err){
+    return err
   }
 }
 
