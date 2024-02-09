@@ -15,12 +15,11 @@ export function MainMessageComponent({ className }: { className?: string }) {
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
   const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
-  const [topMessage, setTopMessage] = useState<ChatMessage>();
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
       if (!data) return;
-      chatChannel = pusher.subscribe(`2-private-user-${data.userId}`);
+      chatChannel = pusher.subscribe(`private-user-${data.userId}`);
       chatChannel.bind(CHAT_MESSAGE_EVENT, (message: RecentMessage) => {
         if (
           message.myId !== data.userId &&
@@ -71,7 +70,8 @@ export function MainMessageComponent({ className }: { className?: string }) {
         className="scrollbar-hide m-0 flex h-full flex-col items-center gap-4 overflow-y-auto  rounded-lg bg-none
       p-4"
       >
-        {recentMessages &&
+        {user &&
+          recentMessages &&
           recentMessages.map((data) => {
             return (
               <MessageCard

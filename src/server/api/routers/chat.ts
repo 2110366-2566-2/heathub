@@ -35,7 +35,6 @@ async function createInbox(
       },
     });
 }
-
 export const chatRouter = createTRPCRouter({
   createInbox: participantProcedure
     .input(
@@ -46,76 +45,7 @@ export const chatRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await createInbox(ctx.db, ctx.session.user.userId, input.hostUserID);
     }),
-
   sendMessage: userProcedure
-    .input(
-      z.object({
-        toUserID: z.string().min(1),
-        content: z.string().min(1),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const result: ChatMessage = await ctx.db.transaction(async (tx) => {
-        await createInbox(tx, ctx.session.user.userId, input.toUserID);
-
-        await tx.insert(chatMessage).values({
-          senderUserID: ctx.session.user.userId,
-          receiverUserID: input.toUserID,
-          content: input.content,
-          contentType: "text",
-        });
-
-        const result = await tx.query.chatMessage.findFirst({
-          orderBy: (posts, { desc }) => [desc(posts.createdAt)],
-          where: and(
-            eq(chatMessage.senderUserID, ctx.session.user.userId),
-            eq(chatMessage.receiverUserID, input.toUserID),
-          ),
-          with: {
-            sender: {
-              columns: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                profileImageURL: true,
-                role: true,
-                aka: true,
-              },
-            },
-            receiver: {
-              columns: {
-                id: true,
-                firstName: true,
-                lastName: true,
-                profileImageURL: true,
-                role: true,
-                aka: true,
-              },
-            },
-          },
-        });
-
-        if (!result) {
-          throw new Error("Failed to send message");
-        }
-
-        return result;
-      });
-
-      await Promise.all([
-        ctx.pusher.trigger(
-          `private-user-${ctx.session.user.userId}`,
-          CHAT_MESSAGE_EVENT,
-          result,
-        ),
-        ctx.pusher.trigger(
-          `private-user-${input.toUserID}`,
-          CHAT_MESSAGE_EVENT,
-          result,
-        ),
-      ]);
-    }),
-  sendMessage2: userProcedure
     .input(
       z.object({
         toUserID: z.string().min(1),
@@ -133,7 +63,7 @@ export const chatRouter = createTRPCRouter({
           contentType: "text",
         });
 
-        const sq = ctx.db
+        const sq = tx
           .select({
             max_created_at: sql<number>`max(${chatMessage.id})`.as(
               "max_created_at",
@@ -153,7 +83,7 @@ export const chatRouter = createTRPCRouter({
           .orderBy(desc(sql`max_created_at`))
           .limit(1)
           .as("sq");
-        const result = await ctx.db
+        const result = await tx
           .select()
           .from(chatMessage)
           .innerJoin(sq, eq(chatMessage.id, sq.max_created_at))
@@ -189,12 +119,12 @@ export const chatRouter = createTRPCRouter({
 
       await Promise.all([
         ctx.pusher.trigger(
-          `2-private-user-${ctx.session.user.userId}`,
+          `private-user-${ctx.session.user.userId}`,
           CHAT_MESSAGE_EVENT,
           messageForSender,
         ),
         ctx.pusher.trigger(
-          `2-private-user-${input.toUserID}`,
+          `private-user-${input.toUserID}`,
           CHAT_MESSAGE_EVENT,
           messageForReciever,
         ),
@@ -335,81 +265,6 @@ export const chatRouter = createTRPCRouter({
             unreadCount: e.sq.unreadCount,
           };
         });
-      console.log(messages);
       return { messages: messages.slice(0, 10) };
-    }),
-
-  recentChat: userProcedure
-    .input(
-      z.object({
-        discourserId: z.string().min(1),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      const limit = 2;
-      const sq = ctx.db
-        .select({
-          max_created_at: sql<number>`max(${chatMessage.id})`.as(
-            "max_created_at",
-          ),
-          unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as(
-            "unreadCount",
-          ),
-        })
-        .from(chatMessage)
-        .where(
-          and(
-            eq(chatMessage.receiverUserID, ctx.session.user.userId),
-            eq(chatMessage.senderUserID, input.discourserId),
-          ),
-        )
-        .groupBy(chatMessage.senderUserID, chatMessage.receiverUserID)
-        .orderBy(desc(sql`max_created_at`))
-        .limit(limit)
-        .as("sq");
-      const result = await ctx.db
-        .select()
-        .from(chatMessage)
-        .innerJoin(sq, eq(chatMessage.id, sq.max_created_at))
-        .innerJoin(
-          user,
-          or(
-            and(
-              eq(chatMessage.receiverUserID, ctx.session.user.userId),
-              eq(chatMessage.senderUserID, user.id),
-            ),
-            and(
-              eq(chatMessage.senderUserID, ctx.session.user.userId),
-              eq(chatMessage.receiverUserID, user.id),
-            ),
-          ),
-        );
-
-      const setMatched = new Set<string>();
-      const messages: RecentMessage[] = result
-        .filter((e) => {
-          if (e.chat_message.senderUserID === ctx.session.user.userId) {
-            const isMatched = setMatched.has(e.chat_message.receiverUserID);
-            if (!isMatched) setMatched.add(e.chat_message.receiverUserID);
-            return !isMatched;
-          }
-          const isMatched = setMatched.has(e.chat_message.senderUserID);
-          if (!isMatched) setMatched.add(e.chat_message.senderUserID);
-          return !isMatched;
-        })
-        .map((e) => {
-          return {
-            id: e.chat_message.id,
-            myId: ctx.session.user.userId,
-            discourserId: e.user.id,
-            discourserAka: e.user.aka,
-            discourserImageURL: e.user.profileImageURL,
-            createdAt: e.chat_message.createdAt,
-            contentType: e.chat_message.contentType,
-            lastestContent: e.chat_message.content,
-            unreadCount: e.sq.unreadCount,
-          };
-        });
-      return { messages: messages.slice(0, 1) };
     }),
 });
