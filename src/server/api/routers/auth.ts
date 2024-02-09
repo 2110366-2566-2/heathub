@@ -65,11 +65,24 @@ export const authRouter = createTRPCRouter({
   ,getParticipantByFilter: publicProcedure
     .input(
       z.object({
-        
+        filters : z.string()
       })
     )
     .query(async({ctx,input})=>{
-
+      const participants = await ctx.db.query.user.findMany({
+        where : eq(user.role,"participant"),
+        columns:{
+          aka: true,
+          bio: true,
+          email: true,
+          firstName: true,
+          gender: true,
+          role: true,
+          lastName: true,
+          profileImageURL: true,
+        }
+      });
+      return participants
     })
   ,
   isExistEmail: publicProcedure
