@@ -31,13 +31,11 @@ export default function SignUpEmail(){
             const input = formData.get("email") as string
             const isEmailExist = await checkEmail.mutateAsync({email:input})
             if (!isEmailExist){
-                // router.push("/signupdetail")
                 redirect("/signupdetail");//cant redirect
             }else{
                 err = "Already Exist Email"
             }
         }
-        // setError(err)
     };
     
       return (
