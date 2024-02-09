@@ -62,6 +62,15 @@ export const authRouter = createTRPCRouter({
     });
     return participants
   })
+  ,getParticipantByFilter: publicProcedure
+    .input(
+      z.object({
+        
+      })
+    )
+    .query(async({ctx,input})=>{
+
+    })
   ,
   isExistEmail: publicProcedure
     .input(
