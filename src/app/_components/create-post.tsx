@@ -20,17 +20,7 @@ export function ChatShowcase({ withUser }: { withUser: string }) {
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
       if (!data) return;
-      chatChannel = pusher.subscribe(`2-private-user-${data.userId}`);
-      // chatChannel.bind(CHAT_MESSAGE_EVENT, (data: ChatMessage) => {
-      //   if (data.sender.id !== withUser && data.receiver.id !== withUser)
-      //     return;
-      //   setPosts((prev) => {
-      //     if (prev.some((x) => x.id === data.id)) {
-      //       return prev;
-      //     }
-      //     return [data, ...prev];
-      //   });
-      // });
+      chatChannel = pusher.subscribe(`private-user-${data.userId}`);
     },
     refetchOnWindowFocus: false,
   });
@@ -115,7 +105,7 @@ export function ChatShowcase({ withUser }: { withUser: string }) {
 export function CreatePost(props: { toUserID: string }) {
   const { toUserID: userID } = props;
   const [name, setName] = useState("");
-  const createPost2 = api.chat.sendMessage2.useMutation({
+  const createPost2 = api.chat.sendMessage.useMutation({
     onSuccess: () => {
       setName("");
     },
