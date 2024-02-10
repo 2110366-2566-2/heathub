@@ -1,4 +1,4 @@
-import GoBackArrow from "./_components/GoBackArrow";
+import GoBackArrow from "../_components/GoBackArrow";
 
 export default function RegisterLayout({
   children,

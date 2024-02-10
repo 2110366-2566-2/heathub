@@ -15,13 +15,13 @@ export default function ComponentsGround() {
       <div className="sm:h1-bold h2-bold text-primary-900">Interests</div>
       <InterestPikerBox />
       <Button
-        className="absolute bottom-6 h-12 w-[108px] bg-primary-500 text-white sm:static"
+        className="absolute bottom-6 h-12 w-[167px] bg-primary-500 text-white sm:static"
         variant="outline"
         onClick={() => {
           handleButtonClick();
         }}
       >
-        Next
+        Create Account
       </Button>
     </div>
   );

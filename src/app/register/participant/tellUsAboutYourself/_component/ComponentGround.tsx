@@ -17,13 +17,13 @@ export default function ComponentsGround() {
       </div>
       <RegisterFormBox />
       <Button
-        className="h-12 w-[108px] bg-primary-500 text-white"
+        className="h-12 w-[167px] bg-primary-500 text-white"
         variant="outline"
         onClick={() => {
           handleButtonClick();
         }}
       >
-        Next
+        Create Account
       </Button>
     </div>
   );
