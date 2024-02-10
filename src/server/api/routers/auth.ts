@@ -69,7 +69,18 @@ export const authRouter = createTRPCRouter({
       })
     )
     .query(async({ctx,input})=>{
-      let participants: any[] | PromiseLike<any[]> = []
+      type Participant = { 
+        email: string,
+        firstName: string,
+        lastName: string,
+        gender: string,
+        role: "host" | "participant",
+        aka: string,
+        bio: string | null,
+        profileImageURL: string | null
+      }
+
+      let participants : Participant[] = []
       if(input.filters[0] == "gender"){
         participants = await ctx.db.query.user.findMany({
           where : and(eq(user.role,"participant"),eq(user.role,"participant")),
