@@ -4,7 +4,7 @@ import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-export default function ParticipantSignUp() { 
+export default function ParticipantSignUpDetail() { 
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
   const [_,setError] = useState<string|null>(null)
   const { data: userData } = api.auth.me.useQuery();

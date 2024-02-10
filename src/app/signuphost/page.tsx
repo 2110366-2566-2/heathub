@@ -4,7 +4,7 @@ import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-export default function SignUp() { // Host
+export default function HostSignUp() { // Host
   const signUpHost = api.auth.signupHost.useMutation();
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
 
