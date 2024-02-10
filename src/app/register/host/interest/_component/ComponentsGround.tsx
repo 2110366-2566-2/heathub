@@ -3,22 +3,19 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import RegisterFormBox from "./RegisterFormBox";
+import InterestPikerBox from "./InterestPickerBox";
 
 export default function ComponentsGround() {
-  const router = useRouter();
   const handleButtonClick = () => {
-    router.push("/register/host/interest");
+    return;
   };
 
   return (
-    <div className="flex flex-col items-center gap-y-6 p-6">
-      <div className="md:h1-bold h2-bold text-primary-900">
-        Tell us about yourself
-      </div>
-      <RegisterFormBox />
+    <div className="flex flex-col items-center gap-y-8">
+      <div className="sm:h1-bold h2-bold text-primary-900">Interests</div>
+      <InterestPikerBox />
       <Button
-        className="h-12 w-[108px] bg-primary-500 text-white"
+        className="absolute bottom-6 h-12 w-[108px] bg-primary-500 text-white sm:static"
         variant="outline"
         onClick={() => {
           handleButtonClick();
