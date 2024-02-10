@@ -11,7 +11,7 @@ import {
   user,
 } from "@/server/db/schema";
 import { sendResetPasswordEmail } from "@/server/resend/resend";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const authRouter = createTRPCRouter({
@@ -65,23 +65,26 @@ export const authRouter = createTRPCRouter({
   ,getParticipantsByFilter: publicProcedure
     .input(
       z.object({
-        filters : z.string()
+        filters : z.array(z.string())
       })
     )
     .query(async({ctx,input})=>{
-      const participants = await ctx.db.query.user.findMany({
-        where : eq(user.role,"participant"),
-        columns:{
-          aka: true,
-          bio: true,
-          email: true,
-          firstName: true,
-          gender: true,
-          role: true,
-          lastName: true,
-          profileImageURL: true,
-        }
-      });
+      let participants: any[] | PromiseLike<any[]> = []
+      if(input.filters[0] == "gender"){
+        participants = await ctx.db.query.user.findMany({
+          where : and(eq(user.role,"participant"),eq(user.role,"participant")),
+          columns:{
+            aka: true,
+            bio: true,
+            email: true,
+            firstName: true,
+            gender: true,
+            role: true,
+            lastName: true,
+            profileImageURL: true,
+          }
+        });
+      }
       return participants
     })
   ,

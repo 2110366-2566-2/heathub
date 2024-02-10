@@ -1,9 +1,8 @@
 "use server";
 
-import { api } from "@/trpc/react";
 import { auth } from "../server/api/auth";
-
 import { cookies } from "next/headers";
+import { serverapi } from "@/trpc/server";
 
 export async function signIn(formData: FormData) {
   try {
@@ -32,7 +31,7 @@ export async function signIn(formData: FormData) {
 
 export async function GetAllParticipant(){
   try{
-    const {data} = api.auth.getParticipants.useQuery()
+    const data = await serverapi.auth.getParticipants.query()
     return data
 
   }catch(err){
