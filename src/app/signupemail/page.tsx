@@ -1,5 +1,4 @@
 "use client";
-import { signUpEmailCheck } from "@/action/auth";
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useRef} from "react";
@@ -7,7 +6,7 @@ import { useEffect, useRef} from "react";
 export default function SignUpEmail(){
     const { data, isSuccess } = api.auth.getAllUsers.useQuery();
     const { data: userData } = api.auth.me.useQuery();
-    const checkEmail = api.auth.isExistEmail.useMutation();
+    const checkEmail = api.auth.isEmailAlreadyExist.useMutation();
 
     useEffect(() => {
         if (userData) {
@@ -25,7 +24,7 @@ export default function SignUpEmail(){
         }
 
         const formData = new FormData(formRef.current);
-        let err = await signUpEmailCheck(formData);
+        let err = await checkSignUpEmail(formData);
         if (!err) {
             
             const input = formData.get("email") as string
@@ -78,3 +77,21 @@ export default function SignUpEmail(){
       );
     }
     
+
+async function checkSignUpEmail(formData:FormData){
+  try{
+    const email = formData.get("email") as string | null;
+    const password = formData.get("password") as string | null;
+  
+    if(!email || !password){
+      throw new Error("Missing email or password")
+    }
+    if(password.length < 8){
+      throw new Error("Password must more than 8 characters")
+    }
+    return ""
+  }
+  catch (error){
+    return (error as Error ).message
+  }
+}

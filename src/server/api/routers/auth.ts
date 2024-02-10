@@ -46,7 +46,7 @@ export const authRouter = createTRPCRouter({
       });
       return res;
     }),
-  getAllParticipant: publicProcedure.query(async({ctx})=>{
+  getParticipants: publicProcedure.query(async({ctx})=>{
     const participants = await ctx.db.query.user.findMany({
       where : eq(user.role,"participant"),
       columns:{
@@ -62,7 +62,7 @@ export const authRouter = createTRPCRouter({
     });
     return participants
   })
-  ,getParticipantByFilter: publicProcedure
+  ,getParticipantsByFilter: publicProcedure
     .input(
       z.object({
         filters : z.string()
@@ -85,7 +85,7 @@ export const authRouter = createTRPCRouter({
       return participants
     })
   ,
-  isExistEmail: publicProcedure
+  isEmailAlreadyExist: publicProcedure
     .input(
       z.object({
         email: z.string().email()
@@ -105,7 +105,7 @@ export const authRouter = createTRPCRouter({
       return true
     })
     
-  ,isExistAKA: publicProcedure
+  ,isAKAAlreadyExist: publicProcedure
     .input(
       z.object({
         aka: z.string().min(1)
