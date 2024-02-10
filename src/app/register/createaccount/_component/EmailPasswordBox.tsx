@@ -72,38 +72,44 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   };
 
   return (
-    <Card className="h-[1023px] w-[66%] min-w-[382px] justify-center rounded-3xl border-solid border-primary-500 bg-white p-6 md:h-[388px]">
+    <Card className="h-[430px] w-full min-w-[382px] justify-center rounded-3xl border-solid border-primary-500 bg-white p-6 sm:h-[388px] sm:w-[633px]">
       <CardContent className="flex h-full w-full justify-center p-0">
         <form className="flex h-full w-[66.35%] min-w-[350px] flex-col gap-y-2">
-          <Label htmlFor="Email">Email</Label>
-          <Input
-            id="Email"
-            placeholder="Enter your Email"
-            onKeyUp={() => {
-              checkValidEmail(props);
-            }}
-          />
-          <Label htmlFor="Password">Password</Label>
-          <Input
-            id="Password"
-            placeholder="Enter your password"
-            onKeyUp={() => {
-              checkConfirmPassword(props);
-              checkValidPassword(props);
-            }}
-          />
+          <div className="flex w-full flex-col gap-y-1.5">
+            <Label htmlFor="Email">Email</Label>
+            <Input
+              id="Email"
+              placeholder="Enter your Email"
+              onKeyUp={() => {
+                checkValidEmail(props);
+              }}
+            />
+          </div>
+          <div className="flex w-full flex-col gap-y-1.5">
+            <Label htmlFor="Password">Password</Label>
+            <Input
+              id="Password"
+              placeholder="Enter your password"
+              onKeyUp={() => {
+                checkConfirmPassword(props);
+                checkValidPassword(props);
+              }}
+            />
+          </div>
           <div className="body5">
             The password must be at least 8 characters
           </div>
-          <Label htmlFor="Confirm Password">Confirm Password</Label>
-          <Input
-            id="Confirm Password"
-            placeholder="Enter your password"
-            onKeyUp={() => {
-              checkConfirmPassword(props);
-              checkValidPassword(props);
-            }}
-          />
+          <div className="flex w-full flex-col gap-y-1.5">
+            <Label htmlFor="Confirm Password">Confirm Password</Label>
+            <Input
+              id="Confirm Password"
+              placeholder="Enter your password"
+              onKeyUp={() => {
+                checkConfirmPassword(props);
+                checkValidPassword(props);
+              }}
+            />
+          </div>
           <span id="message"></span>
         </form>
       </CardContent>

@@ -11,13 +11,13 @@ export default function ComponentsGround() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-y-[24px]">
+    <div className="flex flex-col items-center gap-y-6 p-6">
       <div className="md:h1-bold h2-bold text-primary-900">
-        Host tell us about yourself
+        Tell us about yourself
       </div>
       <RegisterFormBox />
       <Button
-        className="bg-primary-500 text-white"
+        className="h-12 w-[108px] bg-primary-500 text-white"
         variant="outline"
         onClick={() => {
           handleButtonClick();

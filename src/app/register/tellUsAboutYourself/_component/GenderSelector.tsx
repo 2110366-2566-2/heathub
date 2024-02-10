@@ -17,9 +17,9 @@ export default function GenderSelector() {
   }, [gender]);
 
   return (
-    <div className="flex w-full flex-col gap-y-[10px]">
+    <div className="flex w-full flex-col gap-y-4">
       <div className="flex w-full flex-col gap-y-1">
-        <div className="lg:h3-bold h5-bold text-center">Select your Gender</div>
+        <div className="md:h3-bold h5-bold text-center">Select your Gender</div>
         <ToggleGroup
           className="grid aspect-square w-52 grid-cols-2 gap-4 self-center p-4 md:w-full"
           type="single"
@@ -63,7 +63,11 @@ export default function GenderSelector() {
           <Label className="body5" htmlFor="Custom gender">
             Custom gender
           </Label>
-          <Input id="Custom Gender" placeholder="Custom your gender" />
+          <Input
+            className="h-9"
+            id="Custom Gender"
+            placeholder="Custom your gender"
+          />
         </div>
       ) : (
         <></>

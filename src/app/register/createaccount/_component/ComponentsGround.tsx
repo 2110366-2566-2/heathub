@@ -43,7 +43,7 @@ export default function ComponentsGround() {
 
   return (
     <div className="flex flex-col items-center gap-y-6">
-      <div className="md:h1-bold h2-bold text-primary-900">
+      <div className="sm:h1-bold h2-bold text-primary-900">
         Create your account
       </div>
       <EmailPasswordBox
@@ -53,7 +53,7 @@ export default function ComponentsGround() {
         setEmailAlreadyReg={setEmailAlreadyReg}
       />
       <Button
-        className="bg-primary-500 text-white"
+        className="absolute bottom-6 h-12 w-[108px] bg-primary-500 text-white sm:static"
         variant="outline"
         onClick={() => {
           handleButtonClick();
