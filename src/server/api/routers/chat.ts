@@ -1,21 +1,13 @@
 import { z } from "zod";
 
 import { CHAT_MESSAGE_EVENT } from "@/constants/pusher-events";
-import {
-  createTRPCRouter,
-  participantProcedure,
-  userProcedure,
-} from "@/server/api/trpc";
+import { createTRPCRouter, participantProcedure, userProcedure } from "@/server/api/trpc";
 import type { DB } from "@/server/db";
 import { chatInbox, chatMessage, user } from "@/server/db/schema";
 import { type ChatMessage, type RecentMessage } from "@/types/pusher";
 import { and, eq, lte, or } from "drizzle-orm";
 import { sql, desc } from "drizzle-orm";
-async function createInbox(
-  db: DB,
-  userID1: string,
-  userID2: string,
-): Promise<void> {
+async function createInbox(db: DB, userID1: string, userID2: string): Promise<void> {
   if (userID2 < userID1) {
     const temp = userID1;
     userID1 = userID2;
@@ -65,12 +57,8 @@ export const chatRouter = createTRPCRouter({
 
         const sq = tx
           .select({
-            max_created_at: sql<number>`max(${chatMessage.id})`.as(
-              "max_created_at",
-            ),
-            unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as(
-              "unreadCount",
-            ),
+            max_created_at: sql<number>`max(${chatMessage.id})`.as("max_created_at"),
+            unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as("unreadCount"),
           })
           .from(chatMessage)
           .where(
@@ -194,19 +182,21 @@ export const chatRouter = createTRPCRouter({
       };
     }),
   recentChats: userProcedure
-    .input(z.object({ limit: z.number().int().min(1).max(100).nullish() }))
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).nullish(),
+        page: z.number().int().min(0).nullish(),
+      }),
+    )
     .query(async ({ ctx, input }) => {
-      let { limit } = input;
+      let { limit, page } = input;
       limit ??= 10;
+      page ??= 0;
       limit = limit * 2;
       const sq = ctx.db
         .select({
-          max_created_at: sql<number>`max(${chatMessage.id})`.as(
-            "max_created_at",
-          ),
-          unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as(
-            "unreadCount",
-          ),
+          max_created_at: sql<number>`max(${chatMessage.id})`.as("max_created_at"),
+          unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as("unreadCount"),
         })
         .from(chatMessage)
         .where(
@@ -218,6 +208,7 @@ export const chatRouter = createTRPCRouter({
         .groupBy(chatMessage.senderUserID, chatMessage.receiverUserID)
         .orderBy(desc(sql`max_created_at`))
         .limit(limit)
+        .offset(limit * page)
         .as("sq");
       const result = await ctx.db
         .select()
