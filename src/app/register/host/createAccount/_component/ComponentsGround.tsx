@@ -37,7 +37,7 @@ export default function ComponentsGround() {
       const password = document.getElementById("Password") as HTMLInputElement;
       const email = document.getElementById("Email") as HTMLInputElement;
       console.log(`Email: ${email.value} \n Password: ${password.value}`);
-      router.push("/register/tellUsAboutYourself/host");
+      router.push("/register/host/tellUsAboutYourself");
     }
   };
 

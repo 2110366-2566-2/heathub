@@ -4,11 +4,11 @@ import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import GenderSelector from "../../_component/GenderSelector";
+import GenderSelector from "./GenderSelector";
 
 export default function RegisterFormBox() {
   return (
-    <Card className="h-[963px] w-full min-w-[382px] max-w-[600px] justify-center rounded-3xl border-solid border-primary-500 bg-white md:h-[496px] md:w-[845px] md:max-w-[845px]">
+    <Card className="h-[845px] w-full min-w-[382px] max-w-[600px] justify-center rounded-3xl border-solid border-primary-500 bg-white md:h-[496px] md:w-[845px] md:max-w-[845px]">
       <CardContent className="h-full w-full p-0">
         <form className="flex h-full flex-col content-center gap-y-4 p-4 md:flex-row md:gap-x-[6.28%] md:gap-y-0 md:px-[2.84%] md:py-6">
           <div className="flex flex-col gap-x-[4.66%] md:w-[58.46%] md:flex-row">
@@ -35,14 +35,6 @@ export default function RegisterFormBox() {
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="AKA">AKA</Label>
                 <Input className="h-9" id="AKA" placeholder="Enter your aka" />
-              </div>
-              <div className="flex w-full flex-col gap-y-1.5">
-                <Label htmlFor="Bio">Bio</Label>
-                <Input
-                  className="h-20 md:h-9"
-                  id="Bio"
-                  placeholder="Type your massage here"
-                />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Date of birth">Date of birth</Label>
