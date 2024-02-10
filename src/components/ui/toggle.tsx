@@ -4,7 +4,7 @@ import * as React from "react"
 import * as TogglePrimitive from "@radix-ui/react-toggle"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/utils/tailwind-merge"
 
 const toggleVariants = cva(
   "inline-flex items-center justify-center rounded-2xl text-body6 text-white focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors hover:bg-primary-600 hover:text-invert disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-primary-700 data-[state=on]:text-invert",
