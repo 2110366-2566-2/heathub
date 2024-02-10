@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import EmailPasswordBox from "./EmailPasswordBox";
+import EmailPasswordBox from "../../../_components/EmailPasswordBox";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
