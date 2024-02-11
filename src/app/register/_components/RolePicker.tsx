@@ -6,12 +6,6 @@ import { useRouter } from "next/navigation";
 export default function RolePicker() {
   const router = useRouter();
 
-  const clickHost = () => {
-    router.push("host/createAccount");
-  };
-  const clickParticipant = () => {
-    router.push("participant/createAccount");
-  };
   return (
     <div className="flex h-[308px] w-full min-w-[227px] max-w-[361px] flex-col justify-center gap-y-[34px]">
       <div className="h1-bold w-full max-w-64 self-center text-center text-primary-900">
@@ -21,7 +15,7 @@ export default function RolePicker() {
         <Button
           className="h-12 w-full rounded-xl bg-primary-500 px-2 py-4"
           onClick={() => {
-            clickHost();
+            router.push("host/createAccount");
           }}
         >
           <div className="h4-regular text-primary-50">{"I'm a Host"}</div>
@@ -29,7 +23,7 @@ export default function RolePicker() {
         <Button
           className="h-12 w-full rounded-xl bg-secondary-200 px-2 py-4"
           onClick={() => {
-            clickParticipant();
+            router.push("participant/createAccount");
           }}
         >
           <div className="h4-regular text-primary-50">
@@ -41,7 +35,14 @@ export default function RolePicker() {
         <div className="h5-regular h-full text-primary-700">
           Already have an account
         </div>
-        <div className="h-full text-secondary-400">Login</div>
+        <div
+          className="h-full text-secondary-400 hover:cursor-pointer hover:underline"
+          onClick={() => {
+            router.push("/signin");
+          }}
+        >
+          Login
+        </div>
       </div>
     </div>
   );

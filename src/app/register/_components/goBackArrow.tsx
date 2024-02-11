@@ -7,6 +7,7 @@ export default function GoBackArrow() {
 
   return (
     <div
+      className="hover:cursor-pointer"
       onClick={() => {
         goBack();
       }}

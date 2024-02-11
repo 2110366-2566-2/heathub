@@ -16,12 +16,12 @@ export default function ComponentsGround() {
     const BioInput = document.getElementById("Bio");
     if (
       !firstnameInput ||
-      (firstnameInput as HTMLInputElement).value == "" ||
       !lastnameInput ||
-      (lastnameInput as HTMLInputElement).value == "" ||
       !AKAInput ||
-      (AKAInput as HTMLInputElement).value == "" ||
       !gender ||
+      (firstnameInput as HTMLInputElement).value == "" ||
+      (lastnameInput as HTMLInputElement).value == "" ||
+      (AKAInput as HTMLInputElement).value == "" ||
       gender == "custom" ||
       gender == ""
     ) {
@@ -29,6 +29,17 @@ export default function ComponentsGround() {
         "Please fill in your details.";
       return;
     }
+    (BioInput as HTMLInputElement).value = BioInput
+      ? (BioInput as HTMLInputElement).value
+      : "";
+    console.log(`
+    Type: host \n
+    Firstname: ${(firstnameInput as HTMLInputElement).value} \n
+    Lastname: ${(lastnameInput as HTMLInputElement).value} \n
+    AKA: ${(AKAInput as HTMLInputElement).value} \n
+    Bio: ${(BioInput as HTMLInputElement).value} \n
+    Gender: ${gender}
+    `);
     router.push("/register/host/interest");
   };
 
