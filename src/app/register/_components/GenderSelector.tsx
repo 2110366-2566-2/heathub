@@ -4,7 +4,11 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Label } from "@radix-ui/react-label";
 import { useEffect, useState } from "react";
 
-export default function GenderSelector() {
+interface GenderSelectorProps {
+  setGender: (gender: string) => void;
+}
+
+export default function GenderSelector(props: GenderSelectorProps) {
   const [currentGender, setCurrentGender] = useState<string>();
   const [isCustom, setCustom] = useState<boolean>(false);
 
@@ -20,7 +24,7 @@ export default function GenderSelector() {
     if (currentGender == gender) {
       return "h-full w-full gap-y-1 rounded-xl border border-solid border-primary-500 bg-primary-100 px-4 py-2";
     }
-    return "h-full w-full gap-y-1 rounded-xl bg-primary-50 px-4 py-2";
+    return "h-full w-full gap-y-1 rounded-xl border border-solid border-primary-50 bg-primary-50 px-4 py-2";
   };
 
   return (
@@ -33,6 +37,14 @@ export default function GenderSelector() {
           value={currentGender}
           onValueChange={(val) => {
             setCurrentGender(val);
+            if (val == "custom" && !!document.getElementById("Custom Gender")) {
+              const customInput = document.getElementById(
+                "Custom Gender",
+              ) as HTMLInputElement;
+              props.setGender(customInput.value);
+              return;
+            }
+            props.setGender(val);
           }}
         >
           <ToggleGroupItem
@@ -74,6 +86,12 @@ export default function GenderSelector() {
             className="h-9"
             id="Custom Gender"
             placeholder="Custom your gender"
+            onKeyUp={() => {
+              const customInput = document.getElementById(
+                "Custom Gender",
+              ) as HTMLInputElement;
+              props.setGender(customInput.value);
+            }}
           />
         </div>
       ) : (

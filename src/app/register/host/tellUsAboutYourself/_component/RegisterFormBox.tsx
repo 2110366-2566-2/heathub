@@ -5,8 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import GenderSelector from "../../../_components/GenderSelector";
+import { useState } from "react";
 
-export default function RegisterFormBox() {
+interface RegisterFormBoxProps {
+  setGender: (gender: string) => void;
+}
+
+export default function RegisterFormBox(props: RegisterFormBoxProps) {
   return (
     <Card className="h-[963px] w-full min-w-[255px] max-w-[600px] justify-center rounded-3xl border-solid border-primary-500 bg-white md:h-[496px] md:max-w-[845px]">
       <CardContent className="h-full w-full p-0">
@@ -56,7 +61,7 @@ export default function RegisterFormBox() {
           </div>
 
           <div className="md:w-[314px]">
-            <GenderSelector />
+            <GenderSelector setGender={props.setGender} />
           </div>
         </form>
       </CardContent>
