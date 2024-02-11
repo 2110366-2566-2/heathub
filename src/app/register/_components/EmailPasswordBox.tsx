@@ -72,9 +72,9 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   };
 
   return (
-    <Card className="h-[430px] w-full min-w-[382px] max-w-[633px] justify-center rounded-3xl border-solid border-primary-500 bg-white p-6 sm:h-[388px]">
+    <Card className="h-[430px] w-full min-w-[255px] max-w-[633px] justify-center rounded-3xl border-solid border-primary-500 bg-white p-6 sm:h-[388px]">
       <CardContent className="flex h-full w-full justify-center p-0">
-        <form className="flex h-full w-[66.35%] min-w-[350px] flex-col gap-y-2">
+        <form className="flex h-full w-full max-w-[420px] flex-col gap-y-2">
           <div className="flex w-full flex-col gap-y-1.5">
             <Label htmlFor="Email">Email</Label>
             <Input
