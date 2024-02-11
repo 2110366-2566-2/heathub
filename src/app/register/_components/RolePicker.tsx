@@ -2,8 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Host, Participant, createHost, createParticipant } from "../interfaces";}
 
-export default function RolePicker() {
+interface rolePickerProps {
+  setData: (data: object) => void;
+  setPage: (page: string) => void;
+}
+
+export default function RolePicker(props: rolePickerProps) {
   const router = useRouter();
 
   return (
@@ -11,11 +17,12 @@ export default function RolePicker() {
       <div className="h1-bold w-full max-w-64 self-center text-center text-primary-900">
         {"Choose \n Your Role"}
       </div>
-      <div className="gap-y-4">
+      <div className="flex flex-col gap-y-4">
         <Button
           className="h-12 w-full rounded-xl bg-primary-500 px-2 py-4"
           onClick={() => {
-            router.push("host/createAccount");
+            props.setPage("EmailPassword");
+            props.setData(createHost());
           }}
         >
           <div className="h4-regular text-primary-50">{"I'm a Host"}</div>
@@ -23,7 +30,8 @@ export default function RolePicker() {
         <Button
           className="h-12 w-full rounded-xl bg-secondary-200 px-2 py-4"
           onClick={() => {
-            router.push("participant/createAccount");
+            props.setPage("EmailPassword");
+            props.setData(createParticipant());
           }}
         >
           <div className="h4-regular text-primary-50">

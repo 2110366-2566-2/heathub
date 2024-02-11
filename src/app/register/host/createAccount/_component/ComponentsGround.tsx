@@ -4,8 +4,15 @@ import { useState } from "react";
 import EmailPasswordBox from "../../../_components/EmailPasswordBox";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Host, Participant, createHost, isHost } from "@/app/register/interfaces";}
 
-export default function ComponentsGround() {
+interface ComponentGroundProps {
+  setData: (data: object) => void;
+  setPage: (page: string) => void;
+  data: object;
+}
+
+export default function ComponentsGround(props: ComponentGroundProps) {
   const [isPasswordMatch, setPasswordMatch] = useState<boolean>(false);
   const [isPasswordValid, setPasswordValid] = useState<boolean>(false);
   const [isEmailValid, setEmailValid] = useState<boolean>(false);
@@ -37,7 +44,8 @@ export default function ComponentsGround() {
       const password = document.getElementById("Password") as HTMLInputElement;
       const email = document.getElementById("Email") as HTMLInputElement;
       console.log(`Email: ${email.value} \n Password: ${password.value}`);
-      router.push("/register/host/tellUsAboutYourself");
+
+      if (isHost(props.data))
     }
   };
 
