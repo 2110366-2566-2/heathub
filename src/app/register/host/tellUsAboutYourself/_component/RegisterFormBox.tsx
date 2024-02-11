@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import GenderSelector from "../../../_components/GenderSelector";
-
 interface RegisterFormBoxProps {
   setGender: (gender: string) => void;
 }
