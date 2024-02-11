@@ -26,7 +26,7 @@ export default function ParticipantSignUp() { // Participant
     }
 
     const formData = new FormData(formRef.current);
-    const err = await checkDetail(formData);
+    const err = checkDetail(formData);
     if (!err) {
       redirect("/");
     }
@@ -120,7 +120,7 @@ export default function ParticipantSignUp() { // Participant
 }
 
 
-async function checkDetail(formData:FormData){
+function checkDetail(formData:FormData){
   try{
     const aka = formData.get("username") as string | null;
     const firstName = formData.get("firstName") as string | null;

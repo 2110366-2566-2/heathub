@@ -79,7 +79,6 @@ export const authRouter = createTRPCRouter({
         bio: string | null,
         profileImageURL: string | null
       }
-
       let participants : Participant[] = []
       if(input.filters[0] == "gender"){
         participants = await ctx.db.query.user.findMany({
@@ -118,7 +117,6 @@ export const authRouter = createTRPCRouter({
       }
       return true
     })
-    
   ,isAKAAlreadyExist: publicProcedure
     .input(
       z.object({
@@ -137,9 +135,7 @@ export const authRouter = createTRPCRouter({
       }
       return true
   })
-  
-,
-  signupPaticipate: publicProcedure
+  ,signupPaticipate: publicProcedure
     .input(
       z.object({
         aka: z.string().min(1),
@@ -213,7 +209,6 @@ export const authRouter = createTRPCRouter({
           role: "host",
         },
       });
-
       await ctx.db
         .update(user)
         .set({
@@ -232,10 +227,8 @@ export const authRouter = createTRPCRouter({
           interest,
         })),
       );
-
       return res;
     }),
-
   changePassword: userProcedure
     .input(
       z.object({
@@ -252,7 +245,6 @@ export const authRouter = createTRPCRouter({
       );
       await ctx.auth.updateKeyPassword("email", userEmail, input.newPassword);
     }),
-
   resetPasswordByEmail: publicProcedure
     .input(
       z.object({
