@@ -1,4 +1,6 @@
 "use client";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function GoBackArrow() {
   const goBack = () => {
@@ -6,13 +8,12 @@ export default function GoBackArrow() {
   };
 
   return (
-    <div
-      className="hover:cursor-pointer"
+    <FontAwesomeIcon
+      className="h-6 hover:cursor-pointer"
       onClick={() => {
         goBack();
       }}
-    >
-      go back icon
-    </div>
+      icon={faAngleLeft}
+    ></FontAwesomeIcon>
   );
 }
