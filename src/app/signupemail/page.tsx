@@ -24,7 +24,7 @@ export default function SignUpEmail(){
         }
 
         const formData = new FormData(formRef.current);
-        let err = await checkSignUpEmail(formData);
+        let err = checkSignUpEmail(formData);
         if (!err) {
             
             const input = formData.get("email") as string
@@ -78,7 +78,7 @@ export default function SignUpEmail(){
     }
     
 
-async function checkSignUpEmail(formData:FormData){
+function checkSignUpEmail(formData:FormData){
   try{
     const email = formData.get("email") as string | null;
     const password = formData.get("password") as string | null;

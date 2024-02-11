@@ -25,7 +25,7 @@ export default function ParticipantSignUpDetail() {
     }
 
     const formData = new FormData(formRef.current);
-    let err = await checkDetail(formData);
+    let err = checkDetail(formData);
     if (!err) {
       const AKA = formData.get("username") as string
       const isAKAExist = await checkAKA.mutateAsync({ aka: AKA });
@@ -103,7 +103,7 @@ export default function ParticipantSignUpDetail() {
   );
 }
 
-async function checkDetail(formData:FormData){
+function checkDetail(formData:FormData){
   try{
     const aka = formData.get("username") as string | null;
     const firstName = formData.get("firstName") as string | null;
