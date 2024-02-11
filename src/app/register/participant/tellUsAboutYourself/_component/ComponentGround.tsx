@@ -6,8 +6,29 @@ import { useRouter } from "next/navigation";
 import RegisterFormBox from "./RegisterFormBox";
 
 export default function ComponentsGround() {
+  const [gender, setGender] = useState<string>();
+
+  const router = useRouter();
   const handleButtonClick = () => {
-    return;
+    const firstnameInput = document.getElementById("Firstname");
+    const lastnameInput = document.getElementById("Lastname");
+    const AKAInput = document.getElementById("AKA");
+    if (
+      !firstnameInput ||
+      (firstnameInput as HTMLInputElement).value == "" ||
+      !lastnameInput ||
+      (lastnameInput as HTMLInputElement).value == "" ||
+      !AKAInput ||
+      (AKAInput as HTMLInputElement).value == "" ||
+      !gender ||
+      gender == "custom" ||
+      gender == ""
+    ) {
+      (document.getElementById("Notice") as HTMLInputElement).innerHTML =
+        "Please fill in your details.";
+      return;
+    }
+    router.push("/register/success");
   };
 
   return (
@@ -15,7 +36,13 @@ export default function ComponentsGround() {
       <div className="md:h1-bold h2-bold text-primary-900">
         Tell us about yourself
       </div>
-      <RegisterFormBox />
+      <div className="flex h-[845px] w-full flex-col justify-center md:h-[496px]">
+        <RegisterFormBox setGender={setGender} />
+        <span
+          className="h5 ml-5 h-0 overflow-visible text-red-600"
+          id="Notice"
+        ></span>
+      </div>
       <Button
         className="h-12 w-[167px] bg-primary-500 text-white"
         variant="outline"

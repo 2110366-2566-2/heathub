@@ -16,8 +16,11 @@ export default function ComponentsGround() {
     const BioInput = document.getElementById("Bio");
     if (
       !firstnameInput ||
+      (firstnameInput as HTMLInputElement).value == "" ||
       !lastnameInput ||
+      (lastnameInput as HTMLInputElement).value == "" ||
       !AKAInput ||
+      (AKAInput as HTMLInputElement).value == "" ||
       !gender ||
       gender == "custom" ||
       gender == ""
@@ -34,10 +37,10 @@ export default function ComponentsGround() {
       <div className="md:h1-bold h2-bold text-primary-900">
         Tell us about yourself
       </div>
-      <div className="">
+      <div className="flex h-[963px] w-full flex-col justify-center md:h-[496px]">
         <RegisterFormBox setGender={setGender} />
         <span
-          className="h5 ml-5 overflow-visible text-red-600"
+          className="h5 ml-5 h-0 overflow-visible text-red-600"
           id="Notice"
         ></span>
       </div>
