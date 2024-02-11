@@ -25,7 +25,6 @@ export default function UploadProfileImage() {
         endpoint="profileUploader"
         onClientUploadComplete={(res) => {
           // Do something with the response
-          type tes = typeof res;
           console.log("Files: ", res);
           alert("Upload Completed");
           if (res.length > 0) {
