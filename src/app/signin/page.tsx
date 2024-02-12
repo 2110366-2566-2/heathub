@@ -44,11 +44,13 @@ export default function SignIn() {
             <form action={signInHandler} className="flex flex-col gap-4 ">
               <Input
                 type="email"
+                name="email"
                 placeholder="Email"
                 className="w-[284px] md:w-[361px] "
               />
               <Input
                 type="password"
+                name="password"
                 placeholder="Password"
                 className="w-[284px] md:w-[361px]"
               />
