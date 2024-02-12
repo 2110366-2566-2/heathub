@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { Dayjs } from "@/utils/dayjs";
-import dayjs from "dayjs";
 export function MessageCard(props: MessageCardProps) {
   const router = useRouter();
 

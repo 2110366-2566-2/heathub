@@ -17,7 +17,6 @@ export function MessageList({ className }: { className?: string }) {
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
   const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
-  const [hasNext, setHasNext] = useState(true);
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
@@ -37,9 +36,9 @@ export function MessageList({ className }: { className?: string }) {
     refetchOnWindowFocus: false,
   });
 
-  const { hasNextPage, fetchNextPage, isFetchingNextPage } = api.chat.recentChats.useInfiniteQuery(
+  const { hasNextPage, fetchNextPage } = api.chat.recentChats.useInfiniteQuery(
     {
-      limit: 14,
+      limit: 1,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -66,9 +65,18 @@ export function MessageList({ className }: { className?: string }) {
   }, [chatChannel]);
 
   useEffect(() => {
-    if (entry?.isIntersecting) fetchNextPage();
-  }, [entry]);
+    (async () => {
+      if (entry?.isIntersecting) {
+        await fetchNextPage();
+      }
+    })().catch((e) => console.log(e));
+  }, [entry, fetchNextPage]);
 
+  const elements = [];
+  for (let i = 0; i < 20; i++) {
+    // Push JSX elements into the array
+    elements.push(<div key={i}>Element {i}</div>);
+  }
   return (
     <div
       className={cn(
@@ -98,6 +106,7 @@ export function MessageList({ className }: { className?: string }) {
               />
             );
           })}
+        {elements.map((e) => e)}
         {hasNextPage && (
           <div ref={ref}>
             <LoadingSVG />
@@ -106,14 +115,4 @@ export function MessageList({ className }: { className?: string }) {
       </div>
     </div>
   );
-}
-
-{
-  /* <div ref={elementRef} className="text-center"> */
-}
-{
-  /*   <LoadingSVG /> */
-}
-{
-  /* </div> */
 }

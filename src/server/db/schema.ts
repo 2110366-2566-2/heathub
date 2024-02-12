@@ -4,14 +4,12 @@
 import { relations, sql } from "drizzle-orm";
 import {
   bigint,
-  boolean,
   date,
   index,
   mysqlTable,
   primaryKey,
   timestamp,
   varchar,
-  int,
 } from "drizzle-orm/mysql-core";
 
 /**
