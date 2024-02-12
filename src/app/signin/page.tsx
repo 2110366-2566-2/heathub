@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { signIn } from "../../action/auth";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-
+import Image from "next/image";
 
 export default function SignIn() {
   const { data: user } = api.auth.me.useQuery();
@@ -55,7 +55,7 @@ export default function SignIn() {
               </div>
             </form>
             <div className="flex items-center gap-0"> 
-              <div className="text-primary-700 h5">Don't have an account yet?</div>
+              <div className="text-primary-700 h5">Don&apos;t have an account yet?</div>
               <Button variant="link" className="text-secondary-400">Sign up now</Button>
             </div>
           </div>
@@ -68,12 +68,11 @@ export default function SignIn() {
 function Quote() {
   return(
     <div className="flex flex-col items-center justify-center md:h-screen min-h-0 mb-[-10px]">
-      <img src="/images/signin/group.png" className="w-100 h-50 object-fill ml-[-50px]"/>
+      <Image src="/images/signin/group.png" width={565} height={338} className="ml-[-50px]" alt="Picture"/>
       <div className="flex flex-col justify-center text-center">
         <div className="md:h1 md:font-bold h2 font-bold text-primary-900">Find Your Perfect</div>
         <div className="md:h1 md:font-bold h2 font-bold text-primary-900">Companion Today!</div>
       </div>
     </div>
-
   );
 }
