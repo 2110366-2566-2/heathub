@@ -6,6 +6,7 @@ import ChooseRole from "./allPages/ChooseRole";
 import EmailPassword from "./allPages/EmailPassword";
 import HostDetails from "./allPages/HostDetails";
 import ParticipantDetails from "./allPages/ParticipantDetails";
+import HostInterest from "./allPages/HostInterest";
 
 export default function Register() {
   const [data, setData] = useState<User>({});
@@ -47,7 +48,14 @@ export default function Register() {
           />
         );
       case "HostInterest":
-        return;
+        return (
+          <HostInterest
+            setData={setData}
+            setPage={setPage}
+            data={data}
+            page={page}
+          />
+        );
     }
   };
 
