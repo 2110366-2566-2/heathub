@@ -1,11 +1,10 @@
+
 import * as React from "react"
 import { cn } from "@/utils/tailwind-merge"
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   size?: "sm" | "md" | "lg";
 }
-
-
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, size = "md", ...props }, ref) => {
@@ -21,7 +20,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             'h-8': size === 'sm',
             'text-body6': size === 'sm',
           },
-
           className
         )}
         ref={ref}

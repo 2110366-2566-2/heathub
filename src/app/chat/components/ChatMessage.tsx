@@ -1,13 +1,12 @@
 "use client";
 import { type ChatMessageProps } from "./type";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { getClockTime } from "../utils/timediff";
 import { cn } from "@/utils/tailwind-merge";
+import { Dayjs } from "@/utils/dayjs";
 
 export function ChatMessage(props: ChatMessageProps) {
   const { isMine, isShowTop, isShowBot, imageUrl } = props;
 
-  const clockTime = getClockTime(props.createdAt);
   const messageBg = isMine ? "bg-red-400" : "bg-primary-400";
   const justifyPosition = isMine ? "justify-end" : "justify-start";
   const roundedSide = isMine
@@ -38,7 +37,7 @@ export function ChatMessage(props: ChatMessageProps) {
           {props.message}
         </div>
         <div className={cn("small  min-h-1 text-medium", textAlign)}>
-          {isShowBot ? `${clockTime}` : ""}
+          {isShowBot ? `${Dayjs(props.createdAt).format("HH:mm")}` : ""}
         </div>
       </div>{" "}
     </div>

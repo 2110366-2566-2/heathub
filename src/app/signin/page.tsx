@@ -6,7 +6,6 @@ import { signIn } from "../../action/auth";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-
 export default function SignIn() {
   const { data: user } = api.auth.me.useQuery();
   const [error, setError] = useState<string | null>(null);

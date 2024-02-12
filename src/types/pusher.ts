@@ -23,5 +23,20 @@ export type ChatMessage = {
   };
   receiver: {
     id: string;
+    firstName: string;
+    lastName: string;
+    role: "host" | "participant";
+    profileImageURL: string | null;
+    aka: string;
   };
+};
+export type RecentMessage = {
+  id: number;
+  myId: string;
+  discourserId: string;
+  discourserAka: string;
+  discourserImageURL: string | null;
+  contentType: "text" | "imageURL";
+  lastestContent: string;
+  createdAt: Date;
 };

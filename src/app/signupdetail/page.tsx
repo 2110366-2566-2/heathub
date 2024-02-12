@@ -1,16 +1,14 @@
 "use client";
 
-
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function SignUp() { // Participant
-  const signUpUser = api.auth.signupPaticipate.useMutation();
+export default function ParticipantSignUpDetail() { 
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
-
+  const [_,setError] = useState<string|null>(null)
   const { data: userData } = api.auth.me.useQuery();
-
+  const checkAKA = api.auth.isAKAAlreadyExist.useMutation();
   useEffect(() => {
     if (userData) {
       redirect("/");
@@ -27,28 +25,23 @@ export default function SignUp() { // Participant
     }
 
     const formData = new FormData(formRef.current);
-    const err = checkDetail(formData);
+    let err = checkDetail(formData);
     if (!err) {
-      redirect("/");
+      const AKA = formData.get("username") as string
+      const isAKAExist = await checkAKA.mutateAsync({ aka: AKA });
+      if (!isAKAExist){
+        redirect("/signin")
+      }else{
+        err = "Already Exist AKA"
+      }
     }
-    signUpUser.mutate({
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      aka: formData.get("username") as string,
-      firstName: formData.get("firstname") as string,
-      lastName: formData.get("lastname") as string,
-      gender: formData.get("gender") as string,
-      bio: formData.get("bio") as string,
-      dateOfBirth: new Date(formData.get("dateOfBirth") as string),
-    });
-
-    redirect("/signin");
+    setError(err)
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1>Sign up</h1>
+        <h1>Personal Detail</h1>
 
         {isSuccess ? (
           data.map((user) => <p key={user.id}>{user.aka}</p>)
@@ -69,26 +62,14 @@ export default function SignUp() { // Participant
           />
           <input
             className="rounded-md p-2"
-            type="password"
-            name="password"
-            placeholder="password"
-          />
-          <input
-            className="rounded-md p-2"
             type="text"
-            name="email"
-            placeholder="email"
-          />
-          <input
-            className="rounded-md p-2"
-            type="text"
-            name="firstname"
+            name="firstName"
             placeholder="first name"
           />
           <input
             className="rounded-md p-2"
             type="text"
-            name="lastname"
+            name="lastName"
             placeholder="last name"
           />
           <input

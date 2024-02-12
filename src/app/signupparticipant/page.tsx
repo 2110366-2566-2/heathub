@@ -1,12 +1,11 @@
 "use client";
 
-
 import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-export default function SignUp() { // Participant
-  const signUpUser = api.auth.signupPaticipate.useMutation();
+export default function ParticipantSignUp() { // Participant
+  const signUpPaticipate = api.auth.signupPaticipate.useMutation();
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
 
   const { data: userData } = api.auth.me.useQuery();
@@ -31,7 +30,7 @@ export default function SignUp() { // Participant
     if (!err) {
       redirect("/");
     }
-    signUpUser.mutate({
+    await signUpPaticipate.mutateAsync({
       email: formData.get("email") as string,
       password: formData.get("password") as string,
       aka: formData.get("username") as string,
@@ -41,8 +40,6 @@ export default function SignUp() { // Participant
       bio: formData.get("bio") as string,
       dateOfBirth: new Date(formData.get("dateOfBirth") as string),
     });
-
-    redirect("/signin");
   };
 
   return (
@@ -121,6 +118,7 @@ export default function SignUp() { // Participant
     </main>
   );
 }
+
 
 function checkDetail(formData:FormData){
   try{

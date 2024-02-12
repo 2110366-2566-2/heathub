@@ -21,16 +21,6 @@ export function ChatShowcase({ withUser }: { withUser: string }) {
     onSuccess: (data) => {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
-      chatChannel.bind(CHAT_MESSAGE_EVENT, (data: ChatMessage) => {
-        if (data.sender.id !== withUser && data.receiver.id !== withUser)
-          return;
-        setPosts((prev) => {
-          if (prev.some((x) => x.id === data.id)) {
-            return prev;
-          }
-          return [data, ...prev];
-        });
-      });
     },
     refetchOnWindowFocus: false,
   });
