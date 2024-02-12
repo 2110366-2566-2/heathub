@@ -39,5 +39,4 @@ export type RecentMessage = {
   contentType: "text" | "imageURL";
   lastestContent: string;
   createdAt: Date;
-  unreadCount: number;
 };

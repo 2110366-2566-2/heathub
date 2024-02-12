@@ -9,6 +9,7 @@ import { useState, useEffect, useRef } from "react";
 import { type Channel } from "pusher-js";
 import { CHAT_MESSAGE_EVENT } from "@/constants/pusher-events";
 import { MessageCard } from "./MessageCard";
+import { useIntersection } from "@mantine/hooks";
 import LoadingSVG from "./LoadingSVG";
 
 export function MessageList({ className }: { className?: string }) {
@@ -16,9 +17,7 @@ export function MessageList({ className }: { className?: string }) {
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
   const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
-  const [hasMore, setHasMore] = useState(true);
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
+  const [hasNext, setHasNext] = useState(true);
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
@@ -38,17 +37,27 @@ export function MessageList({ className }: { className?: string }) {
     refetchOnWindowFocus: false,
   });
 
-  api.chat.recentChats.useQuery(
-    { limit: limit, page: page },
+  const { hasNextPage, fetchNextPage, isFetchingNextPage } = api.chat.recentChats.useInfiniteQuery(
     {
+      limit: 1,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
       onSuccess: (data) => {
-        setRecentMessages((prev) => [...prev, ...data.messages]);
-        //TODO uncomment the bottom line when all web done
-        // if (data.messages.length < limit) setHasMore(false); 
+        const lastestPage = data.pages.at(-1)?.messages;
+        if (lastestPage) {
+          setRecentMessages((prev) => [...prev, ...lastestPage]);
+        }
       },
+
       refetchOnWindowFocus: false,
     },
   );
+  const lastPostRef = useRef<HTMLElement>(null);
+  const { ref, entry } = useIntersection({
+    root: lastPostRef.current,
+    threshold: 1,
+  });
 
   useEffect(() => {
     return () => {
@@ -56,24 +65,10 @@ export function MessageList({ className }: { className?: string }) {
     };
   }, [chatChannel]);
 
-  const elementRef = useRef(null);
-  function onIntersection(entries: IntersectionObserverEntry[]) {
-    const firstEntry = entries[0];
-    if (firstEntry?.isIntersecting && hasMore) {
-      console.log("fetch more ");
-      setPage((prev) => prev + 1);
-    }
-  }
-
   useEffect(() => {
-    const observer = new IntersectionObserver(onIntersection);
-    if (observer && elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-    return () => {
-      if (observer) observer.disconnect();
-    };
-  }, [chatChannel]);
+    if (entry?.isIntersecting) fetchNextPage();
+  }, [entry]);
+
   return (
     <div
       className={cn(
@@ -98,28 +93,27 @@ export function MessageList({ className }: { className?: string }) {
                 discourserId={data.discourserId}
                 discourserAka={data.discourserAka}
                 lastestMessage={data.lastestContent}
-                messageCount={data.unreadCount}
                 createdAt={data.createdAt?.toString()} // Applying optional chaining here
                 imageUrl={data.discourserImageURL}
               />
             );
           })}
-        {
-          // Using for loop in JSX
-          (() => {
-            const elements = [];
-            for (let i = 0; i < 20; i++) {
-              elements.push(<li key={i}>{i}</li>);
-            }
-            return elements;
-          })().map((e) => e)
-        }
-        {hasMore && (
-          <div ref={elementRef} className="text-center">
+        {hasNextPage && (
+          <div ref={ref}>
             <LoadingSVG />
           </div>
         )}
       </div>
     </div>
   );
+}
+
+{
+  /* <div ref={elementRef} className="text-center"> */
+}
+{
+  /*   <LoadingSVG /> */
+}
+{
+  /* </div> */
 }

@@ -3,10 +3,10 @@ import { type MessageCardProps } from "./type";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
-import { getTimeDiff } from "../utils/timediff";
+import { Dayjs } from "@/utils/dayjs";
+import dayjs from "dayjs";
 export function MessageCard(props: MessageCardProps) {
   const router = useRouter();
-  const duration = getTimeDiff(props.createdAt);
 
   const onClick = () => {
     router.push(`/chat/${props.discourserId}`);
@@ -32,12 +32,7 @@ export function MessageCard(props: MessageCardProps) {
           </div>
         </div>
         <div className="flex flex-none flex-col justify-around gap-2 self-start text-primary-600">
-          <div className="small text-primary-600">{duration}</div>
-          {props.messageCount !== 0 && (
-            <div className="m-0 h-5 w-5 self-end rounded-full bg-primary-900 p-0 text-white">
-              {props.messageCount}
-            </div>
-          )}
+          <div className="small text-primary-600">{Dayjs(props.createdAt).fromNow()}</div>
         </div>
       </div>
     </Button>

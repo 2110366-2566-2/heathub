@@ -2,7 +2,6 @@ export interface MessageCardProps {
   discourserId: string;
   discourserAka: string;
   lastestMessage: string;
-  messageCount: number;
   createdAt: string;
   imageUrl: string | null;
 }
