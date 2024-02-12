@@ -11,6 +11,7 @@ import {
   primaryKey,
   timestamp,
   varchar,
+  int,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -123,13 +124,16 @@ export const chatInbox = mysqlTable(
     userID2: varchar("user_id_2", {
       length: 64,
     }).notNull(),
+    lastestMessageId: bigint("lastest_id", {
+      mode: "number",
+    }),
   },
   (chatInbox) => ({
     pk: primaryKey({
       columns: [chatInbox.userID1, chatInbox.userID2],
     }),
-    userID1Index: index("user_id_1_idx").on(chatInbox.userID1),
-    userID2Index: index("user_id_2_idx").on(chatInbox.userID2),
+    userID1Index: index("user_id_1_id").on(chatInbox.userID1),
+    userID2Index: index("user_id_2_id").on(chatInbox.userID2),
   }),
 );
 
@@ -141,6 +145,10 @@ export const chatInboxRelation = relations(chatInbox, ({ one }) => ({
   participant2: one(user, {
     fields: [chatInbox.userID2],
     references: [user.id],
+  }),
+  lastestMessage: one(chatMessage, {
+    fields: [chatInbox.lastestMessageId],
+    references: [chatMessage.id],
   }),
 }));
 
@@ -161,17 +169,11 @@ export const chatMessage = mysqlTable(
     }).notNull(),
     content: varchar("content", { length: 256 }).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    isUnRead: boolean("isUnRead").default(true),
   },
   (chatMessage) => ({
     senderUserIDIndex: index("sender_id_idx").on(chatMessage.senderUserID),
-    receiverUserIDIndex: index("receiver_id_idx").on(
-      chatMessage.receiverUserID,
-    ),
-    userPairIndex: index("user_pair_idx").on(
-      chatMessage.senderUserID,
-      chatMessage.receiverUserID,
-    ),
+    receiverUserIDIndex: index("receiver_id_idx").on(chatMessage.receiverUserID),
+    userPairIndex: index("user_pair_idx").on(chatMessage.senderUserID, chatMessage.receiverUserID),
   }),
 );
 
@@ -200,15 +202,12 @@ export const passwordResetRequest = mysqlTable("password_reset_request", {
     .default(sql`(now() + interval 1 hour)`),
 });
 
-export const passwordResetRequestRelation = relations(
-  passwordResetRequest,
-  ({ one }) => ({
-    user: one(user, {
-      fields: [passwordResetRequest.userID],
-      references: [user.id],
-    }),
+export const passwordResetRequestRelation = relations(passwordResetRequest, ({ one }) => ({
+  user: one(user, {
+    fields: [passwordResetRequest.userID],
+    references: [user.id],
   }),
-);
+}));
 
 export const unconfirmedUserProfileImage = mysqlTable(
   "unconfirmed_user_profile_image",

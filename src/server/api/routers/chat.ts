@@ -19,11 +19,13 @@ async function createInbox(db: DB, userID1: string, userID2: string): Promise<vo
     .values({
       userID1: userID1,
       userID2: userID2,
+      lastestMessageId: null,
     })
     .onDuplicateKeyUpdate({
       set: {
         userID1: userID1,
         userID2: userID2,
+        lastestMessageId: null,
       },
     });
 }
@@ -54,55 +56,64 @@ export const chatRouter = createTRPCRouter({
           content: input.content,
           contentType: "text",
         });
-
-        const sq = tx
-          .select({
-            max_created_at: sql<number>`max(${chatMessage.id})`.as("max_created_at"),
-            unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as("unreadCount"),
-          })
-          .from(chatMessage)
-          .where(
+        const lastestMessage = await tx.query.chatMessage.findFirst({
+          where: or(
             and(
-              eq(chatMessage.receiverUserID, input.toUserID),
               eq(chatMessage.senderUserID, ctx.session.user.userId),
+              eq(chatMessage.receiverUserID, input.toUserID),
             ),
-          )
-          .groupBy(chatMessage.senderUserID, chatMessage.receiverUserID)
-          .orderBy(desc(sql`max_created_at`))
-          .limit(1)
-          .as("sq");
-        const result = await tx
-          .select()
-          .from(chatMessage)
-          .innerJoin(sq, eq(chatMessage.id, sq.max_created_at))
-          .innerJoin(user, eq(chatMessage.receiverUserID, user.id));
+            and(
+              eq(chatMessage.receiverUserID, ctx.session.user.userId),
+              eq(chatMessage.senderUserID, input.toUserID),
+            ),
+          ),
+          with: {
+            receiver: true,
+            sender: true,
+          },
+          orderBy: (chatMessage, { desc }) => [desc(chatMessage.createdAt)],
+        });
 
-        if (!result || result.length !== 1 || !result[0]) {
+        if (!lastestMessage) {
           throw new Error("Failed to send message");
         }
-        return result[0];
+        await tx
+          .update(chatInbox)
+          .set({ lastestMessageId: lastestMessage?.id })
+          .where(
+            or(
+              and(
+                eq(chatInbox.userID1, ctx.session.user.userId),
+                eq(chatInbox.userID2, input.toUserID),
+              ),
+              and(
+                eq(chatInbox.userID2, ctx.session.user.userId),
+                eq(chatInbox.userID1, input.toUserID),
+              ),
+            ),
+          );
+
+        return lastestMessage;
       });
       const messageForSender: RecentMessage = {
-        id: result.chat_message.id,
+        id: result.id,
         myId: ctx.session.user.userId,
-        discourserId: result.user.id,
-        discourserAka: result.user.aka,
-        discourserImageURL: result.user.profileImageURL,
-        contentType: result.chat_message.contentType,
-        lastestContent: result.chat_message.content,
-        createdAt: result.chat_message.createdAt,
-        unreadCount: 0,
+        discourserId: result.receiver.id,
+        discourserAka: result.receiver.aka,
+        discourserImageURL: result.receiver.profileImageURL,
+        contentType: result.contentType,
+        lastestContent: result.content,
+        createdAt: result.createdAt,
       };
       const messageForReciever: RecentMessage = {
-        id: result.chat_message.id,
-        myId: result.user.id,
+        id: result.id,
+        myId: result.receiver.id,
         discourserId: ctx.session.user.userId,
         discourserAka: ctx.session.user.userName,
-        discourserImageURL: result.user.profileImageURL,
-        contentType: result.chat_message.contentType,
-        lastestContent: result.chat_message.content,
-        createdAt: result.chat_message.createdAt,
-        unreadCount: result.sq.unreadCount,
+        discourserImageURL: result.sender.profileImageURL,
+        contentType: result.contentType,
+        lastestContent: result.content,
+        createdAt: result.createdAt,
       };
 
       await Promise.all([
@@ -185,35 +196,37 @@ export const chatRouter = createTRPCRouter({
     .input(
       z.object({
         limit: z.number().int().min(1).max(100).nullish(),
-        page: z.number().int().min(0).nullish(),
+        cursor: z.number().int().nullish(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      let { limit, page } = input;
+      let { limit, cursor } = input;
       limit ??= 10;
-      page ??= 0;
-      limit = limit * 2;
+      const doubleLimit = limit * 2;
       const sq = ctx.db
         .select({
-          max_created_at: sql<number>`max(${chatMessage.id})`.as("max_created_at"),
-          unreadCount: sql<number>`sum(${chatMessage.isUnRead} )`.as("unreadCount"),
+          lastest_message_id: sql<number>`max(${chatInbox.lastestMessageId})`.as(
+            "lastest_message_id",
+          ),
         })
-        .from(chatMessage)
+        .from(chatInbox)
         .where(
-          or(
-            eq(chatMessage.receiverUserID, ctx.session.user.userId),
-            eq(chatMessage.senderUserID, ctx.session.user.userId),
+          and(
+            or(
+              eq(chatInbox.userID1, ctx.session.user.userId),
+              eq(chatInbox.userID2, ctx.session.user.userId),
+            ),
+            lte(chatInbox.lastestMessageId, cursor ?? Number.MAX_SAFE_INTEGER),
           ),
         )
-        .groupBy(chatMessage.senderUserID, chatMessage.receiverUserID)
-        .orderBy(desc(sql`max_created_at`))
-        .limit(limit)
-        .offset(limit * page)
+        .groupBy(chatInbox.userID1, chatInbox.userID2)
+        .orderBy(desc(sql`lastest_message_id`))
+        .limit(doubleLimit)
         .as("sq");
       const result = await ctx.db
         .select()
         .from(chatMessage)
-        .innerJoin(sq, eq(chatMessage.id, sq.max_created_at))
+        .innerJoin(sq, eq(chatMessage.id, sq.lastest_message_id))
         .innerJoin(
           user,
           or(
@@ -234,7 +247,6 @@ export const chatRouter = createTRPCRouter({
           if (e.chat_message.senderUserID === ctx.session.user.userId) {
             const isMatched = setMatched.has(e.chat_message.receiverUserID);
             if (!isMatched) {
-              e.sq.unreadCount = 0;
               setMatched.add(e.chat_message.receiverUserID);
             }
             return !isMatched;
@@ -253,9 +265,13 @@ export const chatRouter = createTRPCRouter({
             createdAt: e.chat_message.createdAt,
             contentType: e.chat_message.contentType,
             lastestContent: e.chat_message.content,
-            unreadCount: e.sq.unreadCount,
           };
         });
-      return { messages: messages.slice(0, 10) };
+
+      let nextCursor: number | null = null;
+      if (messages.slice(0, limit + 1).length > limit) {
+        nextCursor = messages.slice(limit, limit + 1)[0]!.id;
+      }
+      return { messages: messages.slice(0, limit), nextCursor };
     }),
 });
