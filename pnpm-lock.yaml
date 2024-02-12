@@ -26,6 +26,9 @@ dependencies:
   '@lucia-auth/adapter-mysql':
     specifier: ^2.1.0
     version: 2.1.0(@planetscale/database@1.14.0)(lucia@2.7.6)(mysql2@3.7.1)
+  '@mantine/hooks':
+    specifier: ^7.5.2
+    version: 7.5.2(react@18.2.0)
   '@planetscale/database':
     specifier: ^1.13.0
     version: 1.14.0
@@ -83,6 +86,9 @@ dependencies:
   date-fns:
     specifier: ^3.3.1
     version: 3.3.1
+  dayjs:
+    specifier: ^1.11.10
+    version: 1.11.10
   drizzle-orm:
     specifier: ^0.29.3
     version: 0.29.3(@planetscale/database@1.14.0)(@types/react@18.2.48)(mysql2@3.7.1)(react@18.2.0)
@@ -826,6 +832,14 @@ packages:
       '@planetscale/database': 1.14.0
       lucia: 2.7.6
       mysql2: 3.7.1
+    dev: false
+
+  /@mantine/hooks@7.5.2(react@18.2.0):
+    resolution: {integrity: sha512-4POujH5Xx84VB/xfM6EttDq725dqqL2DntoeMjHz3Ua94aK5Y0VSc1IwlETxCuF7yNV5/w/Z8kgeVVa5cDgrPg==}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@next/env@14.1.0:
@@ -2384,6 +2398,10 @@ packages:
 
   /date-fns@3.3.1:
     resolution: {integrity: sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==}
+    dev: false
+
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
     dev: false
 
   /debug@3.2.7:
