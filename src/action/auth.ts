@@ -29,13 +29,12 @@ export async function signIn(formData: FormData) {
   }
 }
 
-export async function GetAllParticipant(){
-  try{
-    const data = await serverapi.auth.getParticipants.query()
-    return data
-
-  }catch(err){
+export async function GetAllParticipant() {
+  try {
+    const data = await serverapi.auth.getParticipants.query();
+    return data;
+  } catch (err) {
     console.error(err);
-    throw err
+    throw err;
   }
 }

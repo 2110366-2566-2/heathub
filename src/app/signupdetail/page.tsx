@@ -4,9 +4,9 @@ import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-export default function ParticipantSignUpDetail() { 
+export default function ParticipantSignUpDetail() {
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
-  const [_,setError] = useState<string|null>(null)
+  const [_, setError] = useState<string | null>(null);
   const { data: userData } = api.auth.me.useQuery();
   const checkAKA = api.auth.isAKAAlreadyExist.useMutation();
   useEffect(() => {
@@ -27,15 +27,15 @@ export default function ParticipantSignUpDetail() {
     const formData = new FormData(formRef.current);
     let err = checkDetail(formData);
     if (!err) {
-      const AKA = formData.get("username") as string
+      const AKA = formData.get("username") as string;
       const isAKAExist = await checkAKA.mutateAsync({ aka: AKA });
-      if (!isAKAExist){
-        redirect("/signin")
-      }else{
-        err = "Already Exist AKA"
+      if (!isAKAExist) {
+        redirect("/signin");
+      } else {
+        err = "Already Exist AKA";
       }
     }
-    setError(err)
+    setError(err);
   };
 
   return (
@@ -103,29 +103,28 @@ export default function ParticipantSignUpDetail() {
   );
 }
 
-function checkDetail(formData:FormData){
-  try{
+function checkDetail(formData: FormData) {
+  try {
     const aka = formData.get("username") as string | null;
     const firstName = formData.get("firstName") as string | null;
     const lastName = formData.get("lastName") as string | null;
     const dateOfBirth = formData.get("dateOfBirth") as string | null;
     const gender = formData.get("gender") as string | null;
-    
-    if(!aka){
-      throw new Error("Missing AKA")
+
+    if (!aka) {
+      throw new Error("Missing AKA");
     }
-    if(!firstName || !lastName){
-      throw new Error("Missing firstName or lastName")
+    if (!firstName || !lastName) {
+      throw new Error("Missing firstName or lastName");
     }
-    if(!gender){
-      throw new Error("Missing gender")
+    if (!gender) {
+      throw new Error("Missing gender");
     }
-    if(!dateOfBirth){
-      throw new Error("MissingBirthDate")
+    if (!dateOfBirth) {
+      throw new Error("MissingBirthDate");
     }
-    return null
-  }
-  catch (error){
-    return (error as Error).message
+    return null;
+  } catch (error) {
+    return (error as Error).message;
   }
 }
