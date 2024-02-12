@@ -1,7 +1,8 @@
 import RolePicker from "../_components/RolePicker";
+import { type User } from "../interfaces";
 
 interface chooseRoleProps {
-  setData: (data: object) => void;
+  setData: (data: User) => void;
   setPage: (page: string) => void;
 }
 

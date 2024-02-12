@@ -1,4 +1,9 @@
-export interface Host {
+export interface User {
+  Email: string;
+  Password: string;
+}
+
+export interface Host extends User {
   Firstname: string;
   Lastname: string;
   AKA: string;
@@ -7,7 +12,7 @@ export interface Host {
   Gender: string;
 }
 
-export interface Participant {
+export interface Participant extends User {
   Firstname: string;
   Lastname: string;
   AKA: string;
@@ -23,6 +28,8 @@ export const createHost = () => {
     Bio: "",
     DOB: "",
     Gender: "",
+    Email: "",
+    Password: "",
   };
   return user;
 };
@@ -34,11 +41,12 @@ export const createParticipant = () => {
     AKA: "",
     DOB: "",
     Gender: "",
+    Email: "",
+    Password: "",
   };
   return user;
 };
 
-export const isHost = (value: Host): value is Host => {
-  if (value.Bio) return true;
-  return false;
+export const isHost = (obj: User): obj is Host => {
+  return "Bio" in obj;
 };

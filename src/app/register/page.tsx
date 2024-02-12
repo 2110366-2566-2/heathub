@@ -1,22 +1,26 @@
 "use client";
 
+import { type User } from "./interfaces";
 import { useState } from "react";
 import ChooseRole from "./allPages/ChooseRole";
 import EmailPassword from "./allPages/EmailPassword";
 
 export default function Register() {
-  const [data, setData] = useState<object>();
+  const [data, setData] = useState<User>({});
 
   let [page, setPage] = useState("ChooseRole");
+
+  console.log(data);
+  console.log(`Page: ${page}`);
 
   const Page = (page: string) => {
     switch (page) {
       case "ChooseRole":
         return <ChooseRole setData={setData} setPage={setPage} />;
-      //   case "EmailPassword":
-      //     return (
-      //       <EmailPassword setData={setData} setPage={setPage} data={data} />
-      //     );
+      case "EmailPassword":
+        return (
+          <EmailPassword setData={setData} setPage={setPage} data={data} />
+        );
       case "HostDetails":
         return;
       case "ParticipantDetails":

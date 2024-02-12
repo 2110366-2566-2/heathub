@@ -1,15 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import EmailPasswordBox from "../../../_components/EmailPasswordBox";
+import EmailPasswordBox from "./EmailPasswordBox";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { Host, Participant, createHost, isHost } from "@/app/register/interfaces";}
+import {
+  Host,
+  Participant,
+  User,
+  createHost,
+  isHost,
+} from "@/app/register/interfaces";
 
 interface ComponentGroundProps {
-  setData: (data: object) => void;
+  setData: (data: User) => void;
   setPage: (page: string) => void;
-  data: object;
+  data: User;
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
@@ -18,7 +23,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const [isEmailValid, setEmailValid] = useState<boolean>(false);
   const [isEmailAlreadyReg, setEmailAlreadyReg] = useState<boolean>(false);
 
-  const router = useRouter();
   const handleButtonClick = () => {
     if (!isEmailValid) {
       (document.getElementById("message") as HTMLInputElement).style.color =
@@ -44,8 +48,32 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       const password = document.getElementById("Password") as HTMLInputElement;
       const email = document.getElementById("Email") as HTMLInputElement;
       console.log(`Email: ${email.value} \n Password: ${password.value}`);
-
-      // if (isHost(props.data))
+      if (isHost(props.data)) {
+        const host: Host = {
+          Firstname: "",
+          Lastname: "",
+          AKA: "",
+          Bio: "",
+          DOB: "",
+          Gender: "",
+          Email: email.value,
+          Password: password.value,
+        };
+        props.setData(host);
+        props.setPage("HostDetails");
+      } else {
+        const participant: Participant = {
+          Firstname: "",
+          Lastname: "",
+          AKA: "",
+          DOB: "",
+          Gender: "",
+          Email: email.value,
+          Password: password.value,
+        };
+        props.setData(participant);
+        props.setPage("ParticipantDetails");
+      }
     }
   };
 
