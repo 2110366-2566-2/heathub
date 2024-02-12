@@ -1875,7 +1875,6 @@ packages:
       "@types/react": "*"
       "@types/react-dom": "*"
       react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
     peerDependenciesMeta:
       "@types/react":
         optional: true
@@ -1893,7 +1892,6 @@ packages:
       "@types/react": 18.2.55
       "@types/react-dom": 18.2.19
       react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@radix-ui/react-toggle@1.0.3(@types/react-dom@18.2.19)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0):
@@ -1905,7 +1903,6 @@ packages:
       "@types/react": "*"
       "@types/react-dom": "*"
       react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
     peerDependenciesMeta:
       "@types/react":
         optional: true
@@ -1919,7 +1916,6 @@ packages:
       "@types/react": 18.2.55
       "@types/react-dom": 18.2.19
       react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@radix-ui/react-use-callback-ref@1.0.1(@types/react@18.2.55)(react@18.2.0):
