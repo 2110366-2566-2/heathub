@@ -130,8 +130,8 @@ export const chatInbox = mysqlTable(
     pk: primaryKey({
       columns: [chatInbox.userID1, chatInbox.userID2],
     }),
-    userID1Index: index("user_id_1_id").on(chatInbox.userID1),
-    userID2Index: index("user_id_2_id").on(chatInbox.userID2),
+    userID1Index: index("user_id_1_idx").on(chatInbox.userID1),
+    userID2Index: index("user_id_2_idx").on(chatInbox.userID2),
   }),
 );
 
@@ -170,13 +170,8 @@ export const chatMessage = mysqlTable(
   },
   (chatMessage) => ({
     senderUserIDIndex: index("sender_id_idx").on(chatMessage.senderUserID),
-    receiverUserIDIndex: index("receiver_id_idx").on(
-      chatMessage.receiverUserID,
-    ),
-    userPairIndex: index("user_pair_idx").on(
-      chatMessage.senderUserID,
-      chatMessage.receiverUserID,
-    ),
+    receiverUserIDIndex: index("receiver_id_idx").on(chatMessage.receiverUserID),
+    userPairIndex: index("user_pair_idx").on(chatMessage.senderUserID, chatMessage.receiverUserID),
   }),
 );
 
@@ -205,15 +200,12 @@ export const passwordResetRequest = mysqlTable("password_reset_request", {
     .default(sql`(now() + interval 1 hour)`),
 });
 
-export const passwordResetRequestRelation = relations(
-  passwordResetRequest,
-  ({ one }) => ({
-    user: one(user, {
-      fields: [passwordResetRequest.userID],
-      references: [user.id],
-    }),
+export const passwordResetRequestRelation = relations(passwordResetRequest, ({ one }) => ({
+  user: one(user, {
+    fields: [passwordResetRequest.userID],
+    references: [user.id],
   }),
-);
+}));
 
 export const unconfirmedUserProfileImage = mysqlTable(
   "unconfirmed_user_profile_image",
