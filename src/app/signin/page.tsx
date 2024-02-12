@@ -28,21 +28,52 @@ export default function SignIn() {
     setLoading(false);
   };
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-primary-300 to-secondary-200 text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <div className="h1-bold">Sign in</div>
 
-        <form action={signInHandler} className="flex flex-col gap-4 text-black">
-          <Input type="email" placeholder="Email" />
-          <Input type="password" placeholder="Password" />
-          {error && <p className="text-red-500">{error}</p>}
-          <Button variant="link">Forgot your password?</Button>
-          <Button type="submit" disabled={loading}>
-            Sign In
-          </Button>
-        </form>
+  return (
+    <div className="flex min-h-screen">
+      <div className="flex-[1_1_555px] bg-gradient-to-b from-primary-300 to-secondary-200 hidden md:block">
+        <Quote />
       </div>
-    </main>
+    
+      <div className="flex-[2_2_725px]  bg-gradient-to-b from-primary-300 to-secondary-200 md:bg-none md:bg-purple-100">
+        <main className="flex min-h-screen flex-col items-center justify-center">
+          <div className="md:hidden">
+            <Quote/>
+          </div>
+          <div className="container flex flex-col items-center justify-center gap-6 md:gap-9 px-4 md:py-16 py-6">
+            <div className="h1-bold text-primary-900">Login</div>
+
+            <form action={signInHandler} className="flex flex-col gap-4 ">
+              <Input type="email" placeholder="Email" className="w-[284px] md:w-[361px] "/>
+              <Input type="password" placeholder="Password" className="w-[284px] md:w-[361px]"/>
+              {error && <p className="text-red-500 h5">{error}</p>}
+              <div className="flex flex-col gap-6 md:gap-9">
+                <Button variant="link" className="px-0 h-2 justify-start">Forgot your password?</Button>
+                <Button type="submit" className="w-[108px] h-12 mx-20 md:mx-32" disabled={loading}>
+                  Login
+                </Button>
+              </div>
+            </form>
+            <div className="flex items-center gap-0"> 
+              <div className="text-primary-700 h5">Don't have an account yet?</div>
+              <Button variant="link" className="text-secondary-400">Sign up now</Button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+function Quote() {
+  return(
+    <div className="flex flex-col items-center justify-center md:h-screen min-h-0 mb-[-10px]">
+      <img src="/images/signin/group.png" className="w-100 h-50 object-fill ml-[-50px]"/>
+      <div className="flex flex-col justify-center text-center">
+        <div className="md:h1 md:font-bold h2 font-bold text-primary-900">Find Your Perfect</div>
+        <div className="md:h1 md:font-bold h2 font-bold text-primary-900">Companion Today!</div>
+      </div>
+    </div>
+
   );
 }
