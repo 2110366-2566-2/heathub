@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { MainMessageComponent} from "./components/MainMessageComponent";
+import { MainMessageComponent } from "./components/MainMessageComponent";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isChatMainPage =

@@ -3,9 +3,8 @@ import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { signIn } from "../../action/auth";
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function SignIn() {
   const { data: user } = api.auth.me.useQuery();
