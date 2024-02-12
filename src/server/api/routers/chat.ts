@@ -1,13 +1,21 @@
 import { z } from "zod";
 
 import { CHAT_MESSAGE_EVENT } from "@/constants/pusher-events";
-import { createTRPCRouter, participantProcedure, userProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  participantProcedure,
+  userProcedure,
+} from "@/server/api/trpc";
 import type { DB } from "@/server/db";
 import { chatInbox, chatMessage, user } from "@/server/db/schema";
 import { type ChatMessage, type RecentMessage } from "@/types/pusher";
 import { and, eq, lte, or } from "drizzle-orm";
 import { sql, desc } from "drizzle-orm";
-async function createInbox(db: DB, userID1: string, userID2: string): Promise<void> {
+async function createInbox(
+  db: DB,
+  userID1: string,
+  userID2: string,
+): Promise<void> {
   if (userID2 < userID1) {
     const temp = userID1;
     userID1 = userID2;
@@ -205,9 +213,10 @@ export const chatRouter = createTRPCRouter({
       const doubleLimit = limit * 2;
       const sq = ctx.db
         .select({
-          lastest_message_id: sql<number>`max(${chatInbox.lastestMessageId})`.as(
-            "lastest_message_id",
-          ),
+          lastest_message_id:
+            sql<number>`max(${chatInbox.lastestMessageId})`.as(
+              "lastest_message_id",
+            ),
         })
         .from(chatInbox)
         .where(
