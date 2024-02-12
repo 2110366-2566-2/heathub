@@ -4,40 +4,34 @@
 
 @layer base {
   .h1 {
-    @apply font-sans  text-3xl font-normal lg:text-5xl;
+    @apply text-3xl  lg:text-5xl;
   }
   .h2 {
-    @apply font-sans text-3xl font-normal;
+    @apply text-3xl;
   }
   .h3 {
-    @apply font-sans text-2xl font-normal;
+    @apply text-2xl;
   }
   .h4 {
-    @apply font-sans text-xl font-normal;
+    @apply text-xl;
   }
   .h5 {
-    @apply font-sans text-base font-normal;
+    @apply text-base;
   }
   .h6 {
-    @apply font-sans text-sm font-normal;
-  }
-  .body5 {
-    @apply font-sans text-base font-medium;
-  }
-  .body6 {
-    @apply font-sans text-sm font-medium;
+    @apply text-sm;
   }
   .small {
-    @apply font-sans text-xs font-normal;
+    @apply text-xs;
   }
   .p {
-    @apply font-sans text-base font-normal;
+    @apply text-base;
   }
   .blockquote {
-    @apply font-sans text-base font-normal italic;
+    @apply text-base  italic;
   }
   .subtle {
-    @apply font-sans text-sm font-normal text-[#64748B];
+    @apply text-sm  text-[#64748B];
   }
 }
 @layer utilities {
