@@ -2,7 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Host, Participant, createHost, createParticipant } from "../interfaces";}
+import {
+  Host,
+  Participant,
+  createHost,
+  createParticipant,
+} from "../interfaces";
 
 interface rolePickerProps {
   setData: (data: object) => void;

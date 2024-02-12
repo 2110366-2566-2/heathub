@@ -45,7 +45,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       const email = document.getElementById("Email") as HTMLInputElement;
       console.log(`Email: ${email.value} \n Password: ${password.value}`);
 
-      if (isHost(props.data))
+      // if (isHost(props.data))
     }
   };
 
