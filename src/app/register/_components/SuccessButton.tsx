@@ -27,7 +27,7 @@ export default function SuccessButton(props: SuccessButtonProps) {
           Create Account
         </Button>
       </DialogTrigger>
-      <DialogContent className=" h-fit max-w-[360px] rounded-md bg-white">
+      <DialogContent className="h-fit w-full max-w-[360px] rounded-md bg-white">
         <DialogHeader className="flex flex-col items-center justify-center gap-2">
           <FontAwesomeIcon
             icon={faCheckCircle}
