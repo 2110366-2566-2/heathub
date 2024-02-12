@@ -23,7 +23,11 @@ export function MessageList({ className }: { className?: string }) {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
       chatChannel.bind(CHAT_MESSAGE_EVENT, (message: RecentMessage) => {
-        if (message.myId !== data.userId && message.discourserId !== data.userId) return;
+        if (
+          message.myId !== data.userId &&
+          message.discourserId !== data.userId
+        )
+          return;
         setRecentMessages((prev) => {
           const newRecentMessages = prev.filter((e) => {
             return e.discourserId !== message.discourserId;
@@ -85,7 +89,10 @@ export function MessageList({ className }: { className?: string }) {
       )}
     >
       <div className="mb-2 flex flex-row items-center gap-2.5 pl-4">
-        <FontAwesomeIcon icon={faComment} className={"h-8 w-7 text-secondary-400"} />
+        <FontAwesomeIcon
+          icon={faComment}
+          className={"h-8 w-7 text-secondary-400"}
+        />
         <span className="h2-bold  text-primary-900">Message</span>
       </div>
       <div
