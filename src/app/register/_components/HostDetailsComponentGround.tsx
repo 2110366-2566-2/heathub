@@ -25,9 +25,11 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       !lastnameInput ||
       !AKAInput ||
       !gender ||
+      !DOBInput ||
       (firstnameInput as HTMLInputElement).value == "" ||
       (lastnameInput as HTMLInputElement).value == "" ||
       (AKAInput as HTMLInputElement).value == "" ||
+      (DOBInput as HTMLInputElement).value == "" ||
       gender == "custom" ||
       gender == ""
     ) {

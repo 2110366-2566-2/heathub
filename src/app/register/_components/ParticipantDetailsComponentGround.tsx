@@ -18,15 +18,17 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const firstnameInput = document.getElementById("Firstname");
     const lastnameInput = document.getElementById("Lastname");
     const AKAInput = document.getElementById("AKA");
-    const DOBInput = document.getElementById("Date of Birth");
+    const DOBInput = document.getElementById("Date of birth");
     if (
       !firstnameInput ||
       !lastnameInput ||
       !AKAInput ||
+      !DOBInput ||
       !gender ||
       (firstnameInput as HTMLInputElement).value == "" ||
       (lastnameInput as HTMLInputElement).value == "" ||
       (AKAInput as HTMLInputElement).value == "" ||
+      (DOBInput as HTMLInputElement).value == "" ||
       gender == "custom" ||
       gender == ""
     ) {
