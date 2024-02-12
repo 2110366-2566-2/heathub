@@ -7,7 +7,6 @@ import { Dayjs } from "@/utils/dayjs";
 export function ChatMessage(props: ChatMessageProps) {
   const { isMine, isShowTop, isShowBot, imageUrl } = props;
 
-  const clockTime = getClockTime(props.createdAt);
   const messageBg = isMine ? "bg-primary-500" : "bg-neutral-100";
   const messageColor = isMine ? "text-invert" : "text-high";
   const justifyPosition = isMine ? "justify-end" : "justify-start";

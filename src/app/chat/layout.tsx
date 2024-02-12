@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { MessageList } from "./components/MessageList";
-import { NavBar } from "./_components/NavBar";
+import { NavBar } from "../_components/navbar";
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isChatMainPage =
