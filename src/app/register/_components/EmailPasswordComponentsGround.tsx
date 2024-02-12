@@ -4,10 +4,9 @@ import { useState } from "react";
 import EmailPasswordBox from "./EmailPasswordBox";
 import { Button } from "@/components/ui/button";
 import {
-  Host,
-  Participant,
-  User,
-  createHost,
+  type Host,
+  type Participant,
+  type User,
   isHost,
 } from "@/app/register/interfaces";
 
