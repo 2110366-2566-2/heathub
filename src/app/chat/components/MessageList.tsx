@@ -39,7 +39,7 @@ export function MessageList({ className }: { className?: string }) {
 
   const { hasNextPage, fetchNextPage, isFetchingNextPage } = api.chat.recentChats.useInfiniteQuery(
     {
-      limit: 1,
+      limit: 14,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
