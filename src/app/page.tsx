@@ -7,7 +7,7 @@ config.autoAddCss = false;
 export default async function Home() {
   const user = await serverapi.auth.me.query();
 
-  const users = await serverapi.auth.getAllUsers.query();
+  const us = await serverapi.auth.getAllUsers.query();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -20,11 +20,12 @@ export default async function Home() {
             {user ? user.firstName : "Loading tRPC query..."}
           </p>
         </div>
-        {users.map(
-          (user) =>
-            user && (
-              <Link href={`/chat/${user.id}`} key={user.id}>
-                {user.aka}
+        {us.map(
+          (u) =>
+            user &&
+            u.id != user?.userId && (
+              <Link href={`/chat/${u.id}`} key={u.id}>
+                {u.aka}
               </Link>
             ),
         )}

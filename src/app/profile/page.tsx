@@ -5,7 +5,7 @@ export default async function SignIn() {
   const user = await serverapi.auth.me.query();
 
   if (!user) {
-    redirect("/");
+    redirect("/");   
   }
 
   return (

@@ -2,6 +2,7 @@ import { env } from "@/env";
 import { connect, type Connection } from "@planetscale/database";
 import { drizzle as mysqlDrizzle } from "drizzle-orm/mysql2";
 import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { type PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless";
 
 import mysql from "mysql2/promise";
 
@@ -36,8 +37,10 @@ export const luciaAdapter = env.USE_LOCAL_DB
       session: "user_session",
     });
 
-export const db = env.USE_LOCAL_DB
+export const db = (env.USE_LOCAL_DB
   ? mysqlDrizzle(mysqlConnection!, { schema, mode: "planetscale" })
-  : drizzle(planetscaleConnection!, { schema });
+  : drizzle(planetscaleConnection!, {
+      schema,
+    })) as unknown as PlanetScaleDatabase<typeof schema>;
 
 export type DB = typeof db;
