@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import RegisterFormBox from "./ParticipantRegisterFormBox";
 import { type User, type Participant } from "../interfaces";
+
+import { api } from "@/trpc/react";
+import { redirect } from "next/navigation";
+import SuccessButton from "./SuccessButton";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
@@ -13,6 +17,42 @@ interface ComponentGroundProps {
 
 export default function ComponentsGround(props: ComponentGroundProps) {
   const [gender, setGender] = useState<string>();
+
+  const signUpPaticipate = api.auth.signupPaticipate.useMutation();
+  const { data, isSuccess } = api.auth.getAllUsers.useQuery();
+
+  const { data: userData } = api.auth.me.useQuery();
+
+  useEffect(() => {
+    if (userData) {
+      redirect("/");
+    }
+  }, [userData]);
+
+  // const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async (participant: Participant) => {
+    // e.preventDefault();
+    // if (!formRef.current) {
+    //   return;
+    // }
+
+    // const formData = new FormData(formRef.current);
+    // const err = checkDetail(formData);
+    // if (!err) {
+    //   redirect("/");
+    // }
+    await signUpPaticipate.mutateAsync({
+      email: participant.Email,
+      password: participant.Password,
+      aka: participant.AKA,
+      firstName: participant.Firstname,
+      lastName: participant.Lastname,
+      gender: participant.Gender,
+      bio: "",
+      dateOfBirth: new Date(),
+    });
+  };
 
   const handleButtonClick = () => {
     const firstnameInput = document.getElementById("Firstname");
@@ -46,6 +86,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Password: props.data.Password,
     };
     props.setData(participant);
+    void handleSubmit(participant);
   };
 
   return (
@@ -60,15 +101,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           id="Notice"
         ></span>
       </div>
-      <Button
-        className="h-12 w-[167px] bg-primary-500 text-white"
-        variant="outline"
-        onClick={() => {
-          handleButtonClick();
-        }}
-      >
-        Create Account
-      </Button>
+      <SuccessButton handleClick={handleButtonClick} />
     </div>
   );
 }

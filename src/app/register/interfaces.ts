@@ -50,3 +50,7 @@ export const createParticipant = () => {
 export const isHost = (obj: User): obj is Host => {
   return "Bio" in obj;
 };
+
+export const isParticipant = (obj: User): obj is Participant => {
+  return !("Bio" in obj);
+};

@@ -5,6 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import GenderSelector from "./GenderSelector";
+import { Textarea } from "@/components/ui/textarea";
+import { DatePicker } from "@/app/_components/DatePicker";
 interface RegisterFormBoxProps {
   setGender: (gender: string) => void;
 }
@@ -41,8 +43,8 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Bio">Bio</Label>
-                <Input
-                  className="h-20 md:h-9"
+                <Textarea
+                  className="h-20 max-h-20 md:h-9"
                   id="Bio"
                   placeholder="Type your massage here"
                 />

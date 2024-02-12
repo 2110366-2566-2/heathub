@@ -46,11 +46,9 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               </div>
             </div>
           </div>
-
           <div className="flex justify-center md:h-full">
             <div className="h-[0.5px] w-full bg-primary-500 md:h-full md:w-[0.5px]"></div>
           </div>
-
           <div className="md:w-[314px]">
             <GenderSelector setGender={props.setGender} />
           </div>

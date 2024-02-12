@@ -11,11 +11,16 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-export default function SuccessButton() {
+interface SuccessButtonProps {
+  handleClick: () => void | Promise<void>;
+}
+export default function SuccessButton(props: SuccessButtonProps) {
   return (
     <Dialog>
       <DialogTrigger>
         <Button
+          type="submit"
+          onClick={props.handleClick}
           className="h-12 w-[167px] bg-primary-500 text-white"
           variant="outline"
         >
