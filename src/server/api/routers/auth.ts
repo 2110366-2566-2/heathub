@@ -46,10 +46,10 @@ export const authRouter = createTRPCRouter({
       });
       return res;
     }),
-  getParticipants: publicProcedure.query(async({ctx})=>{
+  getParticipants: publicProcedure.query(async ({ ctx }) => {
     const participants = await ctx.db.query.user.findMany({
-      where : eq(user.role,"participant"),
-      columns:{
+      where: eq(user.role, "participant"),
+      columns: {
         aka: true,
         bio: true,
         email: true,
@@ -58,32 +58,35 @@ export const authRouter = createTRPCRouter({
         role: true,
         lastName: true,
         profileImageURL: true,
-      }
+      },
     });
-    return participants
-  })
-  ,getParticipantsByFilter: publicProcedure
+    return participants;
+  }),
+  getParticipantsByFilter: publicProcedure
     .input(
       z.object({
-        filters : z.array(z.string())
-      })
+        filters: z.array(z.string()),
+      }),
     )
-    .query(async({ctx,input})=>{
-      type Participant = { 
-        email: string,
-        firstName: string,
-        lastName: string,
-        gender: string,
-        role: "host" | "participant",
-        aka: string,
-        bio: string | null,
-        profileImageURL: string | null
-      }
-      let participants : Participant[] = []
-      if(input.filters[0] == "gender"){
+    .query(async ({ ctx, input }) => {
+      type Participant = {
+        email: string;
+        firstName: string;
+        lastName: string;
+        gender: string;
+        role: "host" | "participant";
+        aka: string;
+        bio: string | null;
+        profileImageURL: string | null;
+      };
+      let participants: Participant[] = [];
+      if (input.filters[0] == "gender") {
         participants = await ctx.db.query.user.findMany({
-          where : and(eq(user.role,"participant"),eq(user.role,"participant")),
-          columns:{
+          where: and(
+            eq(user.role, "participant"),
+            eq(user.role, "participant"),
+          ),
+          columns: {
             aka: true,
             bio: true,
             email: true,
@@ -92,50 +95,49 @@ export const authRouter = createTRPCRouter({
             role: true,
             lastName: true,
             profileImageURL: true,
-          }
+          },
         });
       }
-      return participants
-    })
-  ,
+      return participants;
+    }),
   isEmailAlreadyExist: publicProcedure
     .input(
       z.object({
-        email: z.string().email()
-      })
+        email: z.string().email(),
+      }),
     )
-    .mutation(async({ctx,input})=>{
+    .mutation(async ({ ctx, input }) => {
       const userId = await ctx.db.query.user.findFirst({
-        where: eq(user.email,input.email),
+        where: eq(user.email, input.email),
         columns: {
           id: true,
         },
-      })
-      
-      if(!userId){
-        return false
+      });
+
+      if (!userId) {
+        return false;
       }
-      return true
-    })
-  ,isAKAAlreadyExist: publicProcedure
+      return true;
+    }),
+  isAKAAlreadyExist: publicProcedure
     .input(
       z.object({
-        aka: z.string().min(1)
-      })
+        aka: z.string().min(1),
+      }),
     )
-    .mutation(async({ctx,input})=>{
+    .mutation(async ({ ctx, input }) => {
       const userId = await ctx.db.query.user.findFirst({
-        where: eq(user.aka,input.aka),
+        where: eq(user.aka, input.aka),
         columns: {
           id: true,
         },
-      })
-      if(!userId){
-        return false
+      });
+      if (!userId) {
+        return false;
       }
-      return true
-  })
-  ,signupPaticipate: publicProcedure
+      return true;
+    }),
+  signupPaticipate: publicProcedure
     .input(
       z.object({
         aka: z.string().min(1),
