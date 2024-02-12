@@ -2,17 +2,23 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import RegisterFormBox from "./RegisterFormBox";
+import RegisterFormBox from "./ParticipantRegisterFormBox";
+import { type User, type Participant } from "../interfaces";
 
-export default function ComponentsGround() {
+interface ComponentGroundProps {
+  setData: (data: User) => void;
+  setPage: (page: string) => void;
+  data: User;
+}
+
+export default function ComponentsGround(props: ComponentGroundProps) {
   const [gender, setGender] = useState<string>();
 
-  const router = useRouter();
   const handleButtonClick = () => {
     const firstnameInput = document.getElementById("Firstname");
     const lastnameInput = document.getElementById("Lastname");
     const AKAInput = document.getElementById("AKA");
+    const DOBInput = document.getElementById("Date of Birth");
     if (
       !firstnameInput ||
       !lastnameInput ||
@@ -28,14 +34,16 @@ export default function ComponentsGround() {
         "Please fill in your details.";
       return;
     }
-    console.log(`
-    Type: participant \n
-    Firstname: ${(firstnameInput as HTMLInputElement).value} \n
-    Lastname: ${(lastnameInput as HTMLInputElement).value} \n
-    AKA: ${(AKAInput as HTMLInputElement).value} \n
-    Gender: ${gender}
-    `);
-    router.push("/register/success");
+    const participant: Participant = {
+      Firstname: (firstnameInput as HTMLInputElement).value,
+      Lastname: (lastnameInput as HTMLInputElement).value,
+      AKA: (AKAInput as HTMLInputElement).value,
+      DOB: (DOBInput as HTMLInputElement).value,
+      Gender: gender,
+      Email: props.data.Email,
+      Password: props.data.Password,
+    };
+    props.setData(participant);
   };
 
   return (
