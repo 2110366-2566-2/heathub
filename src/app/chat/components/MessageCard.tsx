@@ -25,15 +25,17 @@ export function MessageCard(props: MessageCardProps) {
           </Avatar>
           <div className="flex flex-col justify-start">
             <div className="h5 w-fit">{props.discourserAka}</div>
-            <div className="small line-clamp-1 w-fit text-start  text-medium">
+            <div
+              className="small  line-clamp-1 w-full
+              break-all
+              text-start  text-medium"
+            >
               {props.lastestMessage}
             </div>
           </div>
         </div>
         <div className="flex flex-none flex-col justify-around gap-2 self-start text-primary-600">
-          <div className="small text-primary-600">
-            {Dayjs(props.createdAt).fromNow()}
-          </div>
+          <div className="small text-primary-600">{Dayjs(props.createdAt).fromNow()}</div>
         </div>
       </div>
     </Button>
