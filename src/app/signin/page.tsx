@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export default function SignIn() {
   const { data: user } = api.auth.me.useQuery();
+
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -19,6 +20,7 @@ export default function SignIn() {
 
   const signInHandler = async (e: FormData) => {
     setLoading(true);
+
     const err = await signIn(e);
     if (!err) {
       redirect("/");
@@ -33,13 +35,13 @@ export default function SignIn() {
         <div className="h1-bold">Sign in</div>
 
         <form action={signInHandler} className="flex flex-col gap-4 text-black">
-          <Input type="email" placeholder="Email" />
-          <Input type="password" placeholder="Password" />
+          <Input type="email" placeholder="email" name="Email" />
+          <Input type="password" placeholder="password" name="Password" />
           {error && <p className="text-red-500">{error}</p>}
           <Button variant="link">Forgot your password?</Button>
           <Button type="submit" disabled={loading}>
             Sign In
-          </Button>
+          </Button>{" "}
         </form>
       </div>
     </main>
