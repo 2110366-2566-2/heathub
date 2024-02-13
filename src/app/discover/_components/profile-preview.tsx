@@ -1,7 +1,7 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMusic, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import Card from "./card";
 import { useMediaQuery } from "react-responsive";
@@ -12,6 +12,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import Chat from "./chat";
+import { tagList, type TagList } from "../../../utils/icon-mapping";
+import { Toggle } from "@/components/ui/toggle";
 
 export type ProfilePreviewProps = {
   name: string;
@@ -20,7 +22,7 @@ export type ProfilePreviewProps = {
   rating: number;
   reviews: number;
   about: string;
-  interests: string[];
+  interests: TagList;
 };
 
 export function ProfilePreview(props: ProfilePreviewProps) {
@@ -66,7 +68,7 @@ function DialogProfile(props: ProfilePreviewProps) {
       <div className="relative flex flex-col gap-3 rounded-r-3xl py-6 pr-6">
         <NameReview {...props} />
         <About {...props} />
-        <Interests />
+        <Interests {...props} />
 
         <div className="absolute bottom-6 flex w-full justify-center">
           <Chat />
@@ -83,7 +85,7 @@ function DrawerProfile(props: ProfilePreviewProps) {
         <NameReview {...props} />
         <div className="flex flex-col gap-2 py-2">
           <About {...props} />
-          <Interests />
+          <Interests {...props} />
         </div>
       </div>
       <div className=" flex w-full justify-center pt-2">
@@ -97,7 +99,7 @@ function NameReview(props: ProfilePreviewProps) {
   const { name, age, rating, reviews } = props;
   return (
     <div className="flex flex-row justify-between py-3">
-      <div className="h2-bold">
+      <div className="h2 font-bold">
         {name}, {age}
       </div>
       <div className="flex flex-col gap-1">
@@ -106,7 +108,7 @@ function NameReview(props: ProfilePreviewProps) {
             icon={faStar}
             className="h-[26px] w-[26px] text-secondary-400"
           />
-          <div className="h3-bold self-end">{rating.toFixed(1)}</div>
+          <div className="h3 self-end font-bold">{rating.toFixed(1)}</div>
         </div>
         <div className="h6 text-medium">({reviews} reviews)</div>
       </div>
@@ -124,26 +126,19 @@ function About(props: ProfilePreviewProps) {
   );
 }
 
-function Interests() {
+function Interests(props: ProfilePreviewProps) {
+  const { interests } = props;
   return (
     <div className="flex flex-col gap-3">
       <div className="h4 text-medium">Interests</div>
       <div className="flex flex-row flex-wrap items-center justify-center gap-2 self-stretch">
-        <MockTag />
-        <MockTag />
-        <MockTag />
-        <MockTag />
-        <MockTag />
-      </div>
-    </div>
-  );
-}
-function MockTag() {
-  return (
-    <div className="flex flex-row flex-wrap gap-2">
-      <div className="flex h-[30px] w-[80px] flex-row items-center justify-center gap-1 rounded-3xl border border-solid border-primary-500 bg-white bg-opacity-50 px-3">
-        <FontAwesomeIcon icon={faMusic} className="h-3 w-3 text-primary-500" />
-        <div className="body6 text-primary-500">Music</div>
+        {interests.map((tag, index) => {
+          return (
+            <Toggle key={index} variant="outline" icon={tagList[tag]} disabled>
+              {tag}
+            </Toggle>
+          );
+        })}
       </div>
     </div>
   );

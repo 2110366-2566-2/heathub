@@ -1,3 +1,4 @@
+"use client";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -9,7 +10,7 @@ export default function Chat() {
     >
       <FontAwesomeIcon
         icon={faComment}
-        className="h-8 w-8 text-white"
+        className="h-6 w-6 text-white"
         onClick={(e) => {
           e.stopPropagation();
           console.log("clicked");

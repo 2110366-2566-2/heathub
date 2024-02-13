@@ -1,10 +1,12 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { NavBar, NavBarMobile } from "../_components/navbar";
 import { faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfilePreview } from "./_components/profile-preview";
+import type { TagList } from "../../utils/icon-mapping";
 
-export default function DiscoverPage() {
+export default function discoverPage() {
   return (
     <div className="flex h-auto flex-row bg-bgColor">
       <NavBar />
@@ -30,7 +32,7 @@ function Header() {
           icon={faCompass}
           className="h-10 w-10 text-secondary-400"
         />
-        <div className="h2-bold text-primary-900">Discover</div>
+        <div className="h2 font-bold text-primary-900">Discover</div>
         <div className="absolute right-0 h-12 w-14 items-center rounded-lg bg-primary-500 p-2 lg:hidden"></div>
       </div>
       <div className="h5 lg:h4 text-primary-700">
@@ -50,14 +52,40 @@ function SearchBar() {
   );
 }
 
-const mockData = [
+type userProps = {
+  name: string;
+  age: number;
+  image: string;
+  rating: number;
+  reviews: number;
+  interests: TagList;
+  about: string;
+};
+
+const mockData: userProps[] = [
   {
-    name: "Rosy",
+    name: "BowyStar",
     age: 23,
     image: "/images/discover/mock-profile/mock-1.jpg",
     rating: 4.5,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: [
+      "Football",
+      "Music",
+      "K-pop",
+      "Movie",
+      "Anime",
+      "Book",
+      "Fashion",
+      "Animal",
+      "Gym",
+      "Photography",
+      "Gaming",
+      "Coffee",
+      "Arts",
+      "Camping",
+      "Basketball",
+    ],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
@@ -67,7 +95,7 @@ const mockData = [
     image: "/images/discover/mock-profile/mock-2.png",
     rating: 5.0,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
@@ -77,17 +105,17 @@ const mockData = [
     image: "/images/discover/mock-profile/mock-3.png",
     rating: 4.9,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
   {
-    name: "Rosy",
+    name: "BowyStar",
     age: 23,
     image: "/images/discover/mock-profile/mock-1.jpg",
     rating: 4.5,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
@@ -97,7 +125,7 @@ const mockData = [
     image: "/images/discover/mock-profile/mock-2.png",
     rating: 5.0,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
@@ -107,7 +135,7 @@ const mockData = [
     image: "/images/discover/mock-profile/mock-3.png",
     rating: 4.9,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
