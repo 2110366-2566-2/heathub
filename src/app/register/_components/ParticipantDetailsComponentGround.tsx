@@ -5,7 +5,7 @@ import RegisterFormBox from "./ParticipantRegisterFormBox";
 import { type User, type Participant } from "../interfaces";
 
 import { api } from "@/trpc/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import SuccessButton from "./SuccessButton";
 
 interface ComponentGroundProps {
@@ -15,6 +15,7 @@ interface ComponentGroundProps {
 
 export default function ComponentsGround(props: ComponentGroundProps) {
   const { setData, data } = props;
+  const router = useRouter();
   const [isModalPop, setModalPop] = useState(false);
   const [gender, setGender] = useState<string>();
 
@@ -94,6 +95,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         ></span>
       </div>
       <SuccessButton
+        router={router}
         setModalPop={setModalPop}
         isModalPop={isModalPop}
         handleClick={handleButtonClick}

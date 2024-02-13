@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
 import InterestPikerBox from "./InterestPickerBox";
@@ -15,6 +15,7 @@ interface ComponentGroundProps {
 
 export default function ComponentsGround(props: ComponentGroundProps) {
   const { data, allInterestList } = props;
+  const router = useRouter();
   const [selectedInterestList, setSelectedInterestList] = useState<string[]>(
     [],
   );
@@ -58,6 +59,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       />
       <div className="absolute bottom-6 sm:static">
         <SuccessButton
+          router={router}
           setModalPop={(pop: boolean) => {
             return;
           }}

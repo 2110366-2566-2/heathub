@@ -12,15 +12,17 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 interface SuccessButtonProps {
   handleClick: () => void | Promise<void>;
   isModalPop: boolean;
   setModalPop: (pop: boolean) => void;
+  router: AppRouterInstance;
 }
 export default function SuccessButton(props: SuccessButtonProps) {
-  const { handleClick, isModalPop, setModalPop } = props;
+  const { handleClick, isModalPop, setModalPop, router } = props;
   const handleStartButton = () => {
-    return;
+    router.push("/discover");
   };
 
   useEffect(() => {
