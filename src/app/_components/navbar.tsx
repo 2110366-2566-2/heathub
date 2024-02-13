@@ -90,7 +90,7 @@ export function NavBar() {
 export function NavBarMobile() {
   return (
     <nav className="fixed bottom-4 z-50 w-full justify-center ">
-      <div className=" z-50 mx-auto flex h-14 w-[80%] justify-between rounded-3xl bg-white px-9 lg:hidden">
+      <div className=" z-50 mx-auto flex h-16 w-[80%] justify-between rounded-3xl bg-white px-9 lg:hidden">
         <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
           <FontAwesomeIcon icon={faCompass} className="h-8 w-8 text-medium" />
         </div>

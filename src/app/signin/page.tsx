@@ -35,13 +35,13 @@ export default function SignIn() {
         <Quote />
       </div>
 
-      <div className="flex-[2_2_725px]  bg-gradient-to-b from-primary-300 to-secondary-200 md:bg-purple-100 md:bg-none">
+      <div className="flex-[2_2_725px]  bg-gradient-to-b from-primary-300 to-secondary-200 md:bg-bgColor md:bg-none">
         <main className="flex min-h-screen flex-col items-center justify-center">
           <div className="md:hidden">
             <Quote />
           </div>
           <div className="container flex flex-col items-center justify-center gap-6 px-4 py-6 md:gap-9 md:py-16">
-            <div className="h1 text-bold text-primary-900">Login</div>
+            <div className="h1 font-bold text-primary-900">Login</div>
             <form action={signInHandler} className="flex flex-col gap-4 ">
               <Input
                 type="email"

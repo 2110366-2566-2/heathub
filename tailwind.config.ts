@@ -14,7 +14,7 @@ const config = withUt({
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Lato", ...fontFamily.sans],
+        sans: ["var(--font-lato)", ...fontFamily.sans],
       },
       screens: {
         md: "821px",
@@ -29,7 +29,7 @@ const config = withUt({
         placeholder: "#94a3b8",
         invert: "#ffffff",
         disable: "#cbd5e1",
-        bgColor: "#f0e9ff",
+        bgColor: "#f8fafc",
         primary: {
           50: "#f2ecff",
           100: "#c3d7ff",
