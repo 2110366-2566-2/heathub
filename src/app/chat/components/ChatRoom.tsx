@@ -13,7 +13,7 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 export function ChatRoom({ withUser }: { withUser: string }) {
   "use client";
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [queryCursor, setQueryCursor] = useState<number | null>(null);
+  const queryCursor = null;
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   
@@ -42,7 +42,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     {
       pairUserID: withUser,
       cursor: queryCursor,
-      limit: 17,
+      limit: 30,
     },
     {
       onSuccess: (data) => {
@@ -53,23 +53,23 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     },
   );
 
-  const scrollToBottom = () => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
-  };
-
   useEffect(() => {
-    scrollToBottom()
     return () => {
       chatChannel?.unbind(CHAT_MESSAGE_EVENT);
     };
   }, [chatChannel]);
 
+  useEffect(() => {
+    if (messages.length)
+    chatContainerRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+
   const reversePost = [...messages].reverse();
   return (
     <>
-      <div className="w-full px-14 relative overflow-scroll h-[calc(100vh-128px)]" ref={chatContainerRef}>
+      <div className="w-full px-14 max-md:px-6 relative overflow-scroll h-[calc(100vh-128px)]">
         {messages ? (
           <>
             {reversePost.map((message, i) => {
@@ -106,6 +106,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
         ) : (
           <p>You have no posts yet.</p>
         )}
+        <div ref={chatContainerRef} />
       </div>
       {user && <ChatMessageBox toUserID={withUser} />}
     </>
@@ -142,10 +143,10 @@ export function ChatMessageBox(props: { toUserID: string }) {
       {message !== "" &&
         <button
         type="submit"
-        className="rounded-full bg-white/10 font-semibold transition hover:bg-white/20"
+        className="rounded-full bg-primary-500 font-semibold transition w-10 h-10 flex items-center justify-center text-white hover:bg-primary-600"
         disabled={createPost.isLoading}
         >
-        <FontAwesomeIcon icon={faPaperPlane} />
+        <FontAwesomeIcon icon={faPaperPlane} className="w-4 h-4"/>
       </button>
       }
     </form>
