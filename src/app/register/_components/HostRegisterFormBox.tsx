@@ -55,7 +55,7 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Bio">Bio</Label>
                 <Textarea
-                  className="h-20 max-h-20 border border-solid border-primary-300 md:h-9"
+                  className="h-20 max-h-20 resize-none border border-solid border-primary-300 md:h-9"
                   name="Bio"
                   placeholder="Type your massage here"
                 />

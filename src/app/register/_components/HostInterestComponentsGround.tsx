@@ -43,7 +43,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       lastName: host.Lastname,
       gender: host.Gender,
       bio: host.Bio,
-      dateOfBirth: new Date(),
+      dateOfBirth: host.DOB,
       interests: selectedInterestList,
     });
   };

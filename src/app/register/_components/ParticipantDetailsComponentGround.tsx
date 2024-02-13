@@ -40,7 +40,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       lastName: participant.Lastname,
       gender: participant.Gender,
       bio: "",
-      dateOfBirth: new Date(),
+      dateOfBirth: participant.DOB,
     });
   };
 
@@ -57,6 +57,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const lastnameInput = formData.get("Lastname") as string | null;
     const AKAInput = formData.get("AKA") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
+
     if (
       !gender ||
       !firstnameInput ||
