@@ -1,13 +1,21 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { type Dispatch, type SetStateAction, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import RegisterFormBox from "./HostRegisterFormBox";
 import { type Host, type User } from "@/app/register/interfaces";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
-  setPage: (page: string) => void;
+  setPage: Dispatch<
+    SetStateAction<
+      | "ChooseRole"
+      | "EmailPassword"
+      | "HostDetails"
+      | "ParticipantDetails"
+      | "HostInterest"
+    >
+  >;
   data: User;
 }
 

@@ -1,10 +1,19 @@
 import GoBackArrow from "../_components/BackArrow";
 import { type User } from "../interfaces";
 import ComponentsGround from "../_components/ParticipantDetailsComponentGround";
+import { type Dispatch, type SetStateAction } from "react";
 
 interface ParticipantDetailsProps {
   setData: (data: User) => void;
-  setPage: (page: string) => void;
+  setPage: Dispatch<
+    SetStateAction<
+      | "ChooseRole"
+      | "EmailPassword"
+      | "HostDetails"
+      | "ParticipantDetails"
+      | "HostInterest"
+    >
+  >;
   page: string;
   data: User;
 }

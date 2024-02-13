@@ -11,7 +11,13 @@ import HostInterest from "./allPages/HostInterest";
 export default function Register() {
   const [data, setData] = useState<User>(createHost());
 
-  let [page, setPage] = useState("ChooseRole");
+  let [page, setPage] = useState<
+    | "ChooseRole"
+    | "EmailPassword"
+    | "HostDetails"
+    | "ParticipantDetails"
+    | "HostInterest"
+  >("ChooseRole");
 
   console.log(data);
   console.log(`Page: ${page}`);

@@ -1,9 +1,18 @@
+import { type Dispatch, type SetStateAction } from "react";
 import RolePicker from "../_components/RolePicker";
 import { type User } from "../interfaces";
 
 interface chooseRoleProps {
   setData: (data: User) => void;
-  setPage: (page: string) => void;
+  setPage: Dispatch<
+    SetStateAction<
+      | "ChooseRole"
+      | "EmailPassword"
+      | "HostDetails"
+      | "ParticipantDetails"
+      | "HostInterest"
+    >
+  >;
 }
 
 export default function ChooseRole(props: chooseRoleProps) {

@@ -1,9 +1,18 @@
 "use client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { type Dispatch, type SetStateAction } from "react";
 
 interface GobackArrowProps {
-  setPage: (page: string) => void;
+  setPage: Dispatch<
+    SetStateAction<
+      | "ChooseRole"
+      | "EmailPassword"
+      | "HostDetails"
+      | "ParticipantDetails"
+      | "HostInterest"
+    >
+  >;
   Page: string;
 }
 
@@ -29,7 +38,7 @@ export default function GoBackArrow(props: GobackArrowProps) {
 
   return (
     <FontAwesomeIcon
-      className="h-6 hover:cursor-pointer"
+      className="h-6 text-primary-900 hover:cursor-pointer hover:text-black"
       onClick={() => {
         goBack();
       }}

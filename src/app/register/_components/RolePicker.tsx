@@ -3,10 +3,19 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { type User, createHost, createParticipant } from "../interfaces";
+import { type Dispatch, type SetStateAction } from "react";
 
 interface rolePickerProps {
   setData: (data: User) => void;
-  setPage: (page: string) => void;
+  setPage: Dispatch<
+    SetStateAction<
+      | "ChooseRole"
+      | "EmailPassword"
+      | "HostDetails"
+      | "ParticipantDetails"
+      | "HostInterest"
+    >
+  >;
 }
 
 export default function RolePicker(props: rolePickerProps) {

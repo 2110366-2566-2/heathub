@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import EmailPasswordBox from "./EmailPasswordBox";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +12,15 @@ import {
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
-  setPage: (page: string) => void;
+  setPage: Dispatch<
+    SetStateAction<
+      | "ChooseRole"
+      | "EmailPassword"
+      | "HostDetails"
+      | "ParticipantDetails"
+      | "HostInterest"
+    >
+  >;
   data: User;
 }
 

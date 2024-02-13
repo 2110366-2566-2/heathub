@@ -1,9 +1,18 @@
+import { type Dispatch, type SetStateAction } from "react";
 import GoBackArrow from "../_components/BackArrow";
 import ComponentsGround from "../_components/HostInterestComponentsGround";
 import { type User } from "../interfaces";
 
 interface HostInterestProps {
-  setPage: (page: string) => void;
+  setPage: Dispatch<
+    SetStateAction<
+      | "ChooseRole"
+      | "EmailPassword"
+      | "HostDetails"
+      | "ParticipantDetails"
+      | "HostInterest"
+    >
+  >;
   page: string;
   data: User;
 }
