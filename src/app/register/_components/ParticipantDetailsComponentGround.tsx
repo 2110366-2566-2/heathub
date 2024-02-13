@@ -32,16 +32,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   // const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (participant: Participant) => {
-    // e.preventDefault();
-    // if (!formRef.current) {
-    //   return;
-    // }
-
-    // const formData = new FormData(formRef.current);
-    // const err = checkDetail(formData);
-    // if (!err) {
-    //   redirect("/");
-    // }
     await signUpPaticipate.mutateAsync({
       email: participant.Email,
       password: participant.Password,
@@ -54,22 +44,26 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     });
   };
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   const handleButtonClick = () => {
-    const firstnameInput = document.getElementById("Firstname");
-    const lastnameInput = document.getElementById("Lastname");
-    const AKAInput = document.getElementById("AKA");
-    const DOBInput = document.getElementById("Date of birth");
+    if (!formRef.current) {
+      return;
+    }
+
+    const formData = new FormData(formRef.current);
+
+    const firstnameInput = formData.get("Firstname") as string | null;
+    const lastnameInput = formData.get("Lastname") as string | null;
+    const AKAInput = formData.get("AKA") as string | null;
+    const DOBInput = formData.get("Date of birth") as string | null;
     if (
+      !gender ||
       !firstnameInput ||
       !lastnameInput ||
       !AKAInput ||
       !DOBInput ||
-      !gender ||
-      (firstnameInput as HTMLInputElement).value == "" ||
-      (lastnameInput as HTMLInputElement).value == "" ||
-      (AKAInput as HTMLInputElement).value == "" ||
-      (DOBInput as HTMLInputElement).value == "" ||
-      gender == "custom" ||
+      gender == "Custom" ||
       gender == ""
     ) {
       (document.getElementById("Notice") as HTMLInputElement).innerHTML =
@@ -77,10 +71,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       return;
     }
     const participant: Participant = {
-      Firstname: (firstnameInput as HTMLInputElement).value,
-      Lastname: (lastnameInput as HTMLInputElement).value,
-      AKA: (AKAInput as HTMLInputElement).value,
-      DOB: (DOBInput as HTMLInputElement).value,
+      Firstname: firstnameInput,
+      Lastname: lastnameInput,
+      AKA: AKAInput,
+      DOB: new Date(DOBInput),
       Gender: gender,
       Email: props.data.Email,
       Password: props.data.Password,
@@ -93,7 +87,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     <div className="flex flex-col items-center gap-y-6 p-6">
       <div className="h1 text-primary-900">Tell us about yourself</div>
       <div className="flex h-[845px] w-full flex-col justify-center md:h-[496px]">
-        <RegisterFormBox setGender={setGender} />
+        <RegisterFormBox formRef={formRef} setGender={setGender} />
         <span
           className="h5 ml-5 h-0 overflow-visible text-red-600"
           id="Notice"

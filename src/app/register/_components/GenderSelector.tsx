@@ -32,7 +32,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
   return (
     <div className="flex w-full flex-col gap-y-4">
       <div className="flex w-full flex-col gap-y-1">
-        <div className="md:h3-bold h5-bold text-center">Select your Gender</div>
+        <div className="h5 text-center">Select your Gender</div>
         <ToggleGroup
           className="grid aspect-square w-52 grid-cols-2 gap-4 self-center p-4 md:w-full"
           type="single"

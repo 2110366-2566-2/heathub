@@ -23,16 +23,16 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
     const formData = new FormData(formRef.current);
 
-    const firstnameInput = formData.get("Firstname") as string;
-    const lastnameInput = formData.get("Lastname") as string;
-    const AKAInput = formData.get("AKA") as string;
-    const BioInput = formData.get("Bio") as string;
+    const firstnameInput = formData.get("Firstname") as string | null;
+    const lastnameInput = formData.get("Lastname") as string | null;
+    const AKAInput = formData.get("AKA") as string | null;
+    const BioInput = formData.get("Bio") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
     if (
       !gender ||
-      firstnameInput == "" ||
-      lastnameInput == "" ||
-      AKAInput == "" ||
+      !firstnameInput ||
+      !lastnameInput ||
+      !AKAInput ||
       !DOBInput ||
       gender == "Custom" ||
       gender == ""
