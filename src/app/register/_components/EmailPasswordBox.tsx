@@ -87,6 +87,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
           <div className="flex w-full flex-col gap-y-1.5">
             <Label htmlFor="Password">Password</Label>
             <Input
+              type="password"
               id="Password"
               placeholder="Enter your password"
               onKeyUp={() => {
@@ -101,6 +102,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
           <div className="flex w-full flex-col gap-y-1.5">
             <Label htmlFor="Confirm Password">Confirm Password</Label>
             <Input
+              type="password"
               id="Confirm Password"
               placeholder="Enter your password"
               onKeyUp={() => {

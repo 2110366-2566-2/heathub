@@ -32,7 +32,7 @@ export default function InterestPikerBox(props: InterestPickerBoxProps) {
     } else {
       handledList.push(handleItem);
     }
-    console.log(handledList);
+    // console.log(handledList);
     props.setSelectedInterestList(handledList);
   };
 
