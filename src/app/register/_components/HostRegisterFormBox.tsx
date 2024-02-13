@@ -7,12 +7,17 @@ import { Label } from "@/components/ui/label";
 import GenderSelector from "./GenderSelector";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/app/_components/DatePicker";
+import { useState } from "react";
 interface RegisterFormBoxProps {
   setGender: (gender: string) => void;
   formRef: React.RefObject<HTMLFormElement>;
 }
 
 export default function RegisterFormBox(props: RegisterFormBoxProps) {
+  const [firsttext, setFirstText] = useState("");
+  const [lasttext, setLastText] = useState("");
+  const [AKAtext, setAKAText] = useState("");
+
   return (
     <Card className="h-[963px] w-full min-w-[255px] max-w-[600px] justify-center self-center rounded-3xl border-solid border-primary-500 bg-white md:h-[496px] md:max-w-[845px]">
       <CardContent className="h-full w-full p-0">
@@ -28,28 +33,49 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Firstname">Firstname</Label>
                 <Input
+                  value={firsttext}
                   type="text"
                   className="h-9"
                   name="Firstname"
                   placeholder="Enter your firstname"
+                  onChange={(e) => {
+                    setFirstText(
+                      e.target.value.charAt(0).toUpperCase() +
+                        e.target.value.slice(1),
+                    );
+                  }}
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Lastname">Lastname</Label>
                 <Input
+                  value={lasttext}
                   type="text"
                   className="h-9"
                   name="Lastname"
                   placeholder="Enter your Lastname"
+                  onChange={(e) => {
+                    setLastText(
+                      e.target.value.charAt(0).toUpperCase() +
+                        e.target.value.slice(1),
+                    );
+                  }}
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="AKA">AKA</Label>
                 <Input
+                  value={AKAtext}
                   type="text"
                   className="h-9"
                   name="AKA"
                   placeholder="Enter your aka"
+                  onChange={(e) => {
+                    setAKAText(
+                      e.target.value.charAt(0).toUpperCase() +
+                        e.target.value.slice(1),
+                    );
+                  }}
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
