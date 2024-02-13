@@ -17,6 +17,10 @@ interface ComponentGroundProps {
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
+  const [selectedInterestList, setSelectedInterestList] = useState<string[]>(
+    [],
+  );
+
   const signUpHost = api.auth.signupHost.useMutation();
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
 
@@ -31,17 +35,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   // const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (host: Host) => {
-    // e.preventDefault();
-
-    // if (!formRef.current) {
-    //   return;
-    // }
-
-    // const formData = new FormData(formRef.current);
-    // const err = checkDetail(formData);
-    // if (!err) {
-    //   redirect("/");
-    // };
     await signUpHost.mutateAsync({
       email: host.Email,
       password: host.Password,
@@ -51,7 +44,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       gender: host.Gender,
       bio: host.Bio,
       dateOfBirth: new Date(),
-      interests: [],
+      interests: selectedInterestList,
     });
   };
 
@@ -63,7 +56,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   return (
     <div className="flex flex-col items-center gap-y-8">
       <div className="h1 text-primary-900">Interests</div>
-      <InterestPikerBox />
+      <InterestPikerBox
+        selectedInterestList={selectedInterestList}
+        setSelectedInterestList={setSelectedInterestList}
+      />
       <div className="absolute bottom-6 sm:static">
         <SuccessButton handleClick={handleButtonClick} />
       </div>
