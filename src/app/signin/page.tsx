@@ -41,7 +41,7 @@ export default function SignIn() {
           <Button variant="link">Forgot your password?</Button>
           <Button type="submit" disabled={loading}>
             Sign In
-          </Button>{" "}
+          </Button>
         </form>
       </div>
     </main>
