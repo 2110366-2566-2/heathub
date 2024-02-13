@@ -70,6 +70,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     ) {
       (document.getElementById("Notice") as HTMLInputElement).innerHTML =
         "Please fill in your details.";
+      setModalPop(false);
       return;
     }
     const participant: Participant = {
@@ -81,6 +82,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Email: props.data.Email,
       Password: props.data.Password,
     };
+    setModalPop(true);
     props.setData(participant);
     void handleSubmit(participant);
   };
@@ -97,7 +99,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       </div>
       <SuccessButton
         setModalPop={setModalPop}
-        isModalPop={true}
+        isModalPop={isModalPop}
         handleClick={handleButtonClick}
       />
     </div>
