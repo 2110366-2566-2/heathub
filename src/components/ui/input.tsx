@@ -20,7 +20,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "h-8": size === "sm",
             "text-body6": size === "sm",
           },
-
           className,
         )}
         ref={ref}
