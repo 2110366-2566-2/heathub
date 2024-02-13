@@ -4,18 +4,20 @@ import { type ProfilePreviewProps } from "./profile-preview";
 import Chat from "./chat";
 import { Toggle } from "@/components/ui/toggle";
 import { tagList } from "../../../utils/icon-mapping";
+import { useMediaQuery } from "react-responsive";
 
 export default function Card(props: ProfilePreviewProps) {
   const { name, age, image, interests } = props;
 
-  const maxInterestsToDisplay = 6;
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
+  const maxInterestsToDisplay = isMobile ? 3 : 5;
 
   const visibleInterests = interests.slice(0, maxInterestsToDisplay);
   const hiddenInterestsCount = interests.length - maxInterestsToDisplay;
 
   return (
-    <div className="relative flex h-[464px] w-full flex-col gap-0 rounded-3xl shadow-md ">
-      <div className="relative h-[388px]">
+    <div className="relative mx-auto flex aspect-[7/10] max-w-[464px] flex-col gap-0 rounded-3xl shadow-md">
+      <div className="relative h-full">
         <Image
           src={image}
           alt="card"
@@ -30,12 +32,18 @@ export default function Card(props: ProfilePreviewProps) {
           </div>
           <div className="flex flex-row flex-wrap gap-2">
             {visibleInterests.map((tag, index) => (
-              <Toggle key={index} variant="ghost" icon={tagList[tag]} disabled>
+              <Toggle
+                key={index}
+                variant="ghost"
+                icon={tagList[tag]}
+                size="md"
+                disabled
+              >
                 {tag}
               </Toggle>
             ))}
             {hiddenInterestsCount > 0 && (
-              <Toggle key="hidden-interests" variant="ghost" disabled>
+              <Toggle key="hidden-interests" variant="ghost" size="md" disabled>
                 +{hiddenInterestsCount} more
               </Toggle>
             )}
@@ -43,7 +51,7 @@ export default function Card(props: ProfilePreviewProps) {
         </div>
       </div>
 
-      <div className="absolute bottom-0 flex h-[76px] w-full items-center justify-center rounded-b-3xl bg-white">
+      <div className="my-auto flex aspect-[4.316] w-full items-center justify-center">
         <Chat />
       </div>
     </div>

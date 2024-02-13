@@ -26,7 +26,7 @@ export type ProfilePreviewProps = {
 };
 
 export function ProfilePreview(props: ProfilePreviewProps) {
-  const isMobile = useMediaQuery({ maxWidth: 1024 });
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   if (isMobile) {
     return (
@@ -134,7 +134,13 @@ function Interests(props: ProfilePreviewProps) {
       <div className="flex flex-row flex-wrap items-center justify-center gap-2 self-stretch">
         {interests.map((tag, index) => {
           return (
-            <Toggle key={index} variant="outline" icon={tagList[tag]} disabled>
+            <Toggle
+              key={index}
+              variant="outline"
+              icon={tagList[tag]}
+              size="md"
+              disabled
+            >
               {tag}
             </Toggle>
           );

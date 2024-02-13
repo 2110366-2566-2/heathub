@@ -10,16 +10,23 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export function NavBar() {
-  const pathname = usePathname();
-  const isDiscover = pathname === "/discover" ? "block" : "hidden";
-  const isEvent = pathname === "/event" ? "block" : "hidden";
-  const isChat = pathname === "/chat" ? "block" : "hidden";
+  const pathName = usePathname();
+  const isDiscover = pathName.startsWith("/discover") ? "block" : "hidden";
+  const isEvent = pathName.startsWith("/event") ? "block" : "hidden";
+  const isChat = pathName.startsWith("/chat") ? "block" : "hidden";
+
   return (
     <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[100px] flex-col justify-between gap-3 bg-white px-6 py-9 shadow-sm lg:flex">
       <div className="flex h-[762px] flex-col gap-9">
         <Image src="/svgs/logo-default.svg" width={62} height={46} alt="logo" />
         <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
-          <FontAwesomeIcon icon={faCompass} className="h-8 w-8 text-medium" />
+          <FontAwesomeIcon
+            icon={faCompass}
+            className={cn(
+              "h-8 w-8",
+              isDiscover == "block" ? "text-primary-500" : "text-medium",
+            )}
+          />
           <div
             className={cn(
               {
@@ -38,7 +45,10 @@ export function NavBar() {
         <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
           <FontAwesomeIcon
             icon={faCalendarCheck}
-            className="h-8 w-8 text-medium"
+            className={cn(
+              "h-8 w-8",
+              isEvent == "block" ? "text-primary-500" : "text-medium",
+            )}
           />
           <div
             className={cn(
@@ -56,7 +66,13 @@ export function NavBar() {
           />
         </div>
         <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
-          <FontAwesomeIcon icon={faComment} className="h-8 w-8 text-medium" />
+          <FontAwesomeIcon
+            icon={faComment}
+            className={cn(
+              "h-8 w-8",
+              isChat == "block" ? "text-primary-500" : "text-medium",
+            )}
+          />
           <div
             className={cn(
               {

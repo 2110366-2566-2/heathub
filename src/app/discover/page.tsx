@@ -1,24 +1,19 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { NavBar, NavBarMobile } from "../_components/navbar";
 import { faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfilePreview } from "./_components/profile-preview";
 import type { TagList } from "../../utils/icon-mapping";
 
-export default function discoverPage() {
+export default function DiscoverPage() {
   return (
-    <div className="flex h-auto flex-row bg-bgColor">
-      <NavBar />
-      <NavBarMobile />
-      <div className="flex w-full flex-col gap-4 p-6 lg:p-9">
-        <div className="flex flex-col gap-4 self-stretch">
-          <Header />
-          <SearchBar />
-        </div>
-        <div className="flex justify-center rounded-xl border border-solid border-primary-300 bg-white p-6 lg:p-9 ">
-          <CardContainer />
-        </div>
+    <div className="flex w-full flex-col gap-4 p-6 lg:p-9">
+      <div className="flex flex-col gap-4 self-stretch">
+        <Header />
+        <SearchBar />
+      </div>
+      <div className="flex justify-center rounded-xl border border-solid border-primary-300 bg-white p-6 lg:p-9 ">
+        <CardContainer />
       </div>
     </div>
   );
@@ -143,7 +138,7 @@ const mockData: userProps[] = [
 
 function CardContainer() {
   return (
-    <div className="grid w-full grid-cols-1 justify-center gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
+    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
       {mockData.map((profile, index) => (
         <ProfilePreview {...profile} key={index} />
       ))}
