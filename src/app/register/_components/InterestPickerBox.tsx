@@ -19,18 +19,7 @@ export default function InterestPikerBox(props: InterestPickerBoxProps) {
     "56",
     "abcd",
     "efghijk",
-    "ab",
-    "def",
-    "1234",
-    "56",
-    "abcd",
-    "efghijk",
-    "ab",
-    "def",
-    "1234",
-    "56",
-    "abcd",
-    "efghijk",
+    "fghi",
   ];
 
   const handleSelectedInterestList = (handleItem: string) => {
@@ -58,27 +47,9 @@ export default function InterestPikerBox(props: InterestPickerBoxProps) {
           <Toggle>abc</Toggle>
           <Toggle>defgh</Toggle>
           <Toggle>ijkl</Toggle>
-          <Toggle>abc</Toggle>
-          <Toggle>defgh</Toggle>
-          <Toggle>ijkl</Toggle>
-          <Toggle>abc</Toggle>
-          <Toggle>defgh</Toggle>
-          <Toggle>ijkl</Toggle>
-          <Toggle>abc</Toggle>
-          <Toggle>defgh</Toggle>
-          <Toggle>ijkl</Toggle>
-          <Toggle>abc</Toggle>
-          <Toggle>defgh</Toggle>
-          <Toggle>ijkl</Toggle>
-          <Toggle>abc</Toggle>
-          <Toggle>defgh</Toggle>
-          <Toggle>ijkl</Toggle>
-          <Toggle>abc</Toggle>
-          <Toggle>defgh</Toggle>
-          <Toggle>ijkl</Toggle>
-          <Toggle>abc</Toggle>
-          <Toggle>defgh</Toggle>
-          <Toggle>ijkl</Toggle>
+          <Toggle>123</Toggle>
+          <Toggle>12345</Toggle>
+          <Toggle>1234</Toggle>
         </ToggleGroup>
       </CardContent>
     </Card>
