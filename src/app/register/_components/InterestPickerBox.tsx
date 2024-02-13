@@ -10,31 +10,10 @@ import { chownSync } from "fs";
 interface InterestPickerBoxProps {
   selectedInterestList: string[];
   setSelectedInterestList: (list: string[]) => void;
+  allInterestList: string[];
 }
 
 export default function InterestPikerBox(props: InterestPickerBoxProps) {
-  const allInterestList = [
-    "Music",
-    "Drums",
-    "Instruments",
-    "Anime",
-    "Manga",
-    "Japan",
-    "Soccer",
-    "Tennis",
-    "The ETC Band",
-    "The Parkinson",
-    "MEAN Band",
-    "Tattoo color",
-    "Yoasobi",
-    "Higedan Dism",
-    "Apple",
-    "Dessert",
-    "Cafe",
-    "Books",
-    "Stamp collecting",
-  ];
-
   const handleSelectedInterestList = (handleItem: string) => {
     // add if don't have, remove is have
     const handledList = props.selectedInterestList;
@@ -55,7 +34,7 @@ export default function InterestPikerBox(props: InterestPickerBoxProps) {
           className="gap flex w-full flex-wrap gap-2"
           type="multiple"
         >
-          {allInterestList.map((val) => {
+          {props.allInterestList.map((val) => {
             return (
               <Toggle
                 onClick={() => {

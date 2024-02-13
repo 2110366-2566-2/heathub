@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import RegisterFormBox from "./ParticipantRegisterFormBox";
 import { type User, type Participant } from "../interfaces";
 
@@ -20,7 +19,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const [gender, setGender] = useState<string>();
 
   const signUpPaticipate = api.auth.signupPaticipate.useMutation();
-  const { data, isSuccess } = api.auth.getAllUsers.useQuery();
 
   const { data: userData } = api.auth.me.useQuery();
 
