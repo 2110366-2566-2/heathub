@@ -9,14 +9,19 @@ import { usePusher } from "../../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { useIntersection } from "@mantine/hooks";
 
 export function ChatRoom({ withUser }: { withUser: string }) {
   "use client";
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const queryCursor = null;
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  
+  const topChatRef = useRef<HTMLDivElement>(null);
+  const { ref, entry } = useIntersection({
+    root: topChatRef.current,
+    threshold: 1,
+  });
+
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
 
@@ -38,15 +43,41 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     refetchOnWindowFocus: false,
   });
 
-  api.chat.infiniteChat.useQuery(
+  const { hasNextPage, fetchNextPage } = api.chat.infiniteChat.useInfiniteQuery(
     {
       pairUserID: withUser,
-      cursor: queryCursor,
-      limit: 30,
+      limit: 10,
     },
     {
-      onSuccess: (data) => {
-        setMessages((prev) => [...prev, ...data.messages]);
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      onSuccess: (data)  => {
+        const latestPage = data.pages.at(-1)?.messages;
+        if (latestPage) {
+        const lastMessage: ChatMessage = {
+          id: -1,
+          createdAt: new Date(),
+          senderUserID: "",
+          receiverUserID: "",
+          contentType: "text",
+          content: "",
+          sender: {
+            id: "",
+            firstName: "",
+            lastName: "",
+            role: "host",
+            profileImageURL: null,
+            aka: ""
+          },
+          receiver: {
+            id: "",
+            firstName: "",
+            lastName: "",
+            role: "host",
+            profileImageURL: null,
+            aka: ""
+          }
+        }
+          setMessages((prev: ChatMessage[]) => [...prev.filter((message) => message.id !== -1), lastMessage, ...latestPage]);}
       },
 
       refetchOnWindowFocus: false,
@@ -58,6 +89,15 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       chatChannel?.unbind(CHAT_MESSAGE_EVENT);
     };
   }, [chatChannel]);
+
+  useEffect(() => {
+    (async () => {
+      if (entry?.isIntersecting && hasNextPage) {
+        console.log("here");
+        await fetchNextPage();
+      }
+    })().catch((e) => console.log(e));
+  }, [entry, fetchNextPage, hasNextPage])
 
   useEffect(() => {
     if (messages.length)
@@ -76,6 +116,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
               let isMine = false;
               let isShowTop = false;
               let isShowBot = false;
+              if (message.id === -1) return <div ref={ref} />
               if (message.sender.id === user?.userId) {
                 isMine = true;
               }
