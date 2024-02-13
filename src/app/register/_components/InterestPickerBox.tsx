@@ -14,13 +14,25 @@ interface InterestPickerBoxProps {
 
 export default function InterestPikerBox(props: InterestPickerBoxProps) {
   const allInterestList = [
-    "ab",
-    "def",
-    "1234",
-    "56",
-    "abcd",
-    "efghijk",
-    "fghi",
+    "Music",
+    "Drums",
+    "Instruments",
+    "Anime",
+    "Manga",
+    "Japan",
+    "Soccer",
+    "Tennis",
+    "The ETC Band",
+    "The Parkinson",
+    "MEAN Band",
+    "Tattoo color",
+    "Yoasobi",
+    "Higedan Dism",
+    "Apple",
+    "Dessert",
+    "Cafe",
+    "Books",
+    "Stamp collecting",
   ];
 
   const handleSelectedInterestList = (handleItem: string) => {
@@ -37,9 +49,12 @@ export default function InterestPikerBox(props: InterestPickerBoxProps) {
   };
 
   return (
-    <Card className="h-[430px] w-full min-w-[255px] max-w-[848px] justify-center rounded-3xl border-solid border-primary-500 bg-white sm:h-[500px]">
-      <CardContent className="flex w-full justify-center gap-x-4 gap-y-2 p-4 sm:px-0">
-        <ToggleGroup className="flex w-full flex-wrap" type="multiple">
+    <Card className="h-[430px] w-full min-w-[255px] max-w-[848px] justify-center overflow-y-auto rounded-3xl border-solid border-primary-500 bg-white sm:h-[500px]">
+      <CardContent className="flex w-full justify-center gap-x-4 gap-y-2 p-4 sm:px-2">
+        <ToggleGroup
+          className="gap flex w-full flex-wrap gap-2"
+          type="multiple"
+        >
           {allInterestList.map((val) => {
             return (
               <Toggle

@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Label } from "@radix-ui/react-label";
 import { useEffect, useState } from "react";
-import { faFemale } from "@fortawesome/free-solid-svg-icons";
+import { faFemale, faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface GenderSelectorProps {
@@ -54,16 +54,16 @@ export default function GenderSelector(props: GenderSelectorProps) {
             value="Male"
             aria-label="Toggle Male"
           >
-            <FontAwesomeIcon className="" icon={faFemale} />
-            <div className="body6 max-h-4 text-primary-500">Male</div>
+            <FontAwesomeIcon className="" icon={faMars} />
+            <div className="body6 max-h-4">Male</div>
           </ToggleGroupItem>
           <ToggleGroupItem
             className={checkToggle("Female")}
             value="Female"
             aria-label="Toggle Female"
           >
-            <FontAwesomeIcon className="" icon={faFemale} />
-            <div className="body6 max-h-4 text-primary-500">Female</div>
+            <FontAwesomeIcon className="" icon={faVenus} />
+            <div className="body6 max-h-4">Female</div>
           </ToggleGroupItem>
           <ToggleGroupItem
             className={checkToggle("Custom")}
@@ -71,7 +71,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
             aria-label="Toggle Custom"
           >
             <FontAwesomeIcon className="" icon={faFemale} />
-            <div className="body6 max-h-4 text-primary-500">Custom</div>
+            <div className="body6 max-h-4">Custom</div>
           </ToggleGroupItem>
           <ToggleGroupItem
             className={checkToggle("NotToSay")}
@@ -79,7 +79,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
             aria-label="Toggle NotToSay"
           >
             <FontAwesomeIcon className="" icon={faFemale} />
-            <div className="body6 max-h-4 overflow-x-visible text-primary-500">
+            <div className="body6 max-h-4 overflow-x-visible">
               Prefer Not {"\n"} To Say
             </div>
           </ToggleGroupItem>

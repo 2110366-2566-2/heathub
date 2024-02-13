@@ -35,6 +35,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   // const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (host: Host) => {
+    selectedInterestList.sort();
     await signUpHost.mutateAsync({
       email: host.Email,
       password: host.Password,
@@ -60,7 +61,13 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         setSelectedInterestList={setSelectedInterestList}
       />
       <div className="absolute bottom-6 sm:static">
-        <SuccessButton handleClick={handleButtonClick} />
+        <SuccessButton
+          setModalPop={(pop: boolean) => {
+            return;
+          }}
+          isModalPop={true}
+          handleClick={handleButtonClick}
+        />
       </div>
     </div>
   );

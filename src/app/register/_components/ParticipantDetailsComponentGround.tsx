@@ -16,6 +16,7 @@ interface ComponentGroundProps {
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
+  const [isModalPop, setModalPop] = useState(false);
   const [gender, setGender] = useState<string>();
 
   const signUpPaticipate = api.auth.signupPaticipate.useMutation();
@@ -94,7 +95,11 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           id="Notice"
         ></span>
       </div>
-      <SuccessButton handleClick={handleButtonClick} />
+      <SuccessButton
+        setModalPop={setModalPop}
+        isModalPop={true}
+        handleClick={handleButtonClick}
+      />
     </div>
   );
 }
