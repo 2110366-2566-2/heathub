@@ -46,11 +46,12 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Firstname: firstnameInput,
       Lastname: lastnameInput,
       AKA: AKAInput,
-      Bio: BioInput,
+      Bio: BioInput ? BioInput : "",
       DOB: new Date(DOBInput),
       Gender: gender,
       Email: props.data.Email,
       Password: props.data.Password,
+      Interest: [],
     };
     props.setData(host);
     props.setPage("HostInterest");

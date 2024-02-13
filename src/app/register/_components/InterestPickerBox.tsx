@@ -43,7 +43,12 @@ export default function InterestPikerBox(props: InterestPickerBoxProps) {
   return (
     <Card className="h-[430px] w-full min-w-[255px] max-w-[848px] justify-center rounded-3xl border-solid border-primary-500 bg-white sm:h-[500px]">
       <CardContent className="flex w-full flex-wrap justify-center gap-x-4 gap-y-2 p-4 sm:px-0">
-        <ToggleGroup type="multiple" onValueChange={(val) => {}}>
+        <ToggleGroup
+          type="multiple"
+          onValueChange={(val) => {
+            return;
+          }}
+        >
           <Toggle>abc</Toggle>
           <Toggle>defgh</Toggle>
           <Toggle>ijkl</Toggle>

@@ -49,8 +49,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   };
 
   const handleButtonClick = () => {
-    const host: Host = props.data;
-    void handleSubmit(host);
+    void handleSubmit(props.data as Host);
   };
 
   return (
