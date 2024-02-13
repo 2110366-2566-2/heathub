@@ -21,6 +21,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     [],
   );
 
+  console.log(selectedInterestList);
+
   const signUpHost = api.auth.signupHost.useMutation();
   const { data, isSuccess } = api.auth.getAllUsers.useQuery();
 

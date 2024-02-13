@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup } from "@/components/ui/toggle-group";
 import { useState } from "react";
+import { chownSync } from "fs";
 
 interface InterestPickerBoxProps {
   selectedInterestList: string[];
@@ -27,34 +28,31 @@ export default function InterestPikerBox(props: InterestPickerBoxProps) {
     const handledList = props.selectedInterestList;
     const index = handledList.indexOf(handleItem);
     if (index !== -1) {
-      handledList.splice(index, -1);
+      handledList.splice(index, 1);
     } else {
       handledList.push(handleItem);
     }
+    console.log(handledList);
     props.setSelectedInterestList(handledList);
-  };
-
-  const showTag = () => {
-    return allInterestList.map((val) => {
-      <Toggle>{val}</Toggle>;
-    });
   };
 
   return (
     <Card className="h-[430px] w-full min-w-[255px] max-w-[848px] justify-center rounded-3xl border-solid border-primary-500 bg-white sm:h-[500px]">
-      <CardContent className="flex w-full flex-wrap justify-center gap-x-4 gap-y-2 p-4 sm:px-0">
-        <ToggleGroup
-          type="multiple"
-          onValueChange={(val) => {
-            return;
-          }}
-        >
-          <Toggle>abc</Toggle>
-          <Toggle>defgh</Toggle>
-          <Toggle>ijkl</Toggle>
-          <Toggle>123</Toggle>
-          <Toggle>12345</Toggle>
-          <Toggle>1234</Toggle>
+      <CardContent className="flex w-full justify-center gap-x-4 gap-y-2 p-4 sm:px-0">
+        <ToggleGroup className="flex w-full flex-wrap" type="multiple">
+          {allInterestList.map((val) => {
+            return (
+              <Toggle
+                onClick={() => {
+                  handleSelectedInterestList(val);
+                }}
+                value={val}
+                key={val}
+              >
+                {val}
+              </Toggle>
+            );
+          })}
         </ToggleGroup>
       </CardContent>
     </Card>
