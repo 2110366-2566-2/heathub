@@ -46,7 +46,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const { hasNextPage, fetchNextPage } = api.chat.infiniteChat.useInfiniteQuery(
     {
       pairUserID: withUser,
-      limit: 10,
+      limit: 15,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -93,7 +93,6 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   useEffect(() => {
     (async () => {
       if (entry?.isIntersecting && hasNextPage) {
-        console.log("here");
         await fetchNextPage();
       }
     })().catch((e) => console.log(e));
