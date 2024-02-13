@@ -2,15 +2,16 @@
 import Image from "next/image";
 import { type ProfilePreviewProps } from "./profile-preview";
 import Chat from "./chat";
-import { Toggle } from "@/components/ui/toggle";
 import { tagList } from "../../../utils/icon-mapping";
 import { useMediaQuery } from "react-responsive";
+import { Tag } from "../../_components/tag";
 
 export default function Card(props: ProfilePreviewProps) {
   const { name, age, image, interests } = props;
 
   const isMobile = useMediaQuery({ maxWidth: 1023 });
-  const maxInterestsToDisplay = isMobile ? 3 : 5;
+  const isLaptop = useMediaQuery({ maxWidth: 1279 });
+  const maxInterestsToDisplay = isMobile ? 3 : isLaptop ? 4 : 5;
 
   const visibleInterests = interests.slice(0, maxInterestsToDisplay);
   const hiddenInterestsCount = interests.length - maxInterestsToDisplay;
@@ -31,21 +32,17 @@ export default function Card(props: ProfilePreviewProps) {
             </div>
           </div>
           <div className="flex flex-row flex-wrap gap-2">
-            {visibleInterests.map((tag, index) => (
-              <Toggle
-                key={index}
-                variant="ghost"
-                icon={tagList[tag]}
-                size="md"
-                disabled
-              >
+            {visibleInterests.map((tag) => (
+              <Tag key={tag} variant="ghost" icon={tagList[tag]} size="md">
                 {tag}
-              </Toggle>
+              </Tag>
             ))}
-            {hiddenInterestsCount > 0 && (
-              <Toggle key="hidden-interests" variant="ghost" size="md" disabled>
+            {hiddenInterestsCount > 0 ? (
+              <Tag key="hidden-interests" variant="ghost" size="md">
                 +{hiddenInterestsCount} more
-              </Toggle>
+              </Tag>
+            ) : (
+              ""
             )}
           </div>
         </div>

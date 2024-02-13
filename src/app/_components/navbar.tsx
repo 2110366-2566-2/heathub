@@ -8,6 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export function NavBar() {
   const pathName = usePathname();
@@ -19,7 +20,10 @@ export function NavBar() {
     <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[100px] flex-col justify-between gap-3 bg-white px-6 py-9 shadow-sm lg:flex">
       <div className="flex h-[762px] flex-col gap-9">
         <Image src="/svgs/logo-default.svg" width={62} height={46} alt="logo" />
-        <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
+        <Link
+          className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
+          href="/discover"
+        >
           <FontAwesomeIcon
             icon={faCompass}
             className={cn(
@@ -29,20 +33,15 @@ export function NavBar() {
           />
           <div
             className={cn(
-              {
-                absolute: true,
-                "left-[62px]": true,
-                "h-10": true,
-                "w-1": true,
-                "rounded-sm": true,
-                "bg-primary-500": true,
-                "group-hover:block": true,
-              },
+              "absolute left-[62px] h-10 w-1 rounded-sm bg-primary-500 group-hover:block",
               isDiscover,
             )}
           />
-        </div>
-        <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
+        </Link>
+        <Link
+          className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
+          href="/event"
+        >
           <FontAwesomeIcon
             icon={faCalendarCheck}
             className={cn(
@@ -52,20 +51,15 @@ export function NavBar() {
           />
           <div
             className={cn(
-              {
-                absolute: true,
-                "left-[62px]": true,
-                "h-10": true,
-                "w-1": true,
-                "rounded-sm": true,
-                "bg-primary-500": true,
-                "group-hover:block": true,
-              },
+              "absolute left-[62px] h-10 w-1 rounded-sm bg-primary-500 group-hover:block",
               isEvent,
             )}
           />
-        </div>
-        <div className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
+        </Link>
+        <Link
+          className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
+          href="/chat"
+        >
           <FontAwesomeIcon
             icon={faComment}
             className={cn(
@@ -75,19 +69,11 @@ export function NavBar() {
           />
           <div
             className={cn(
-              {
-                absolute: true,
-                "left-[62px]": true,
-                "h-10": true,
-                "w-1": true,
-                "rounded-sm": true,
-                "bg-primary-500": true,
-                "group-hover:block": true,
-              },
+              "absolute left-[62px] h-10 w-1 rounded-sm bg-primary-500 group-hover:block",
               isChat,
             )}
           />
-        </div>
+        </Link>
       </div>
       <div className="items-center justify-center self-center">
         <div className="relative flex h-10 w-10">
@@ -106,7 +92,7 @@ export function NavBar() {
 export function NavBarMobile() {
   return (
     <nav className="fixed bottom-4 z-50 w-full justify-center ">
-      <div className=" z-50 mx-auto flex h-16 w-[80%] justify-between rounded-3xl bg-white px-9 lg:hidden">
+      <div className=" z-50 mx-auto flex h-16 w-[80%] max-w-[448px] justify-between rounded-3xl bg-white px-9 lg:hidden">
         <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
           <FontAwesomeIcon icon={faCompass} className="h-8 w-8 text-medium" />
         </div>
