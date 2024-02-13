@@ -130,8 +130,8 @@ export const chatInbox = mysqlTable(
     pk: primaryKey({
       columns: [chatInbox.userID1, chatInbox.userID2],
     }),
-    userID1Index: index("user_id_1_id").on(chatInbox.userID1),
-    userID2Index: index("user_id_2_id").on(chatInbox.userID2),
+    userID1Index: index("user_id_1_idx").on(chatInbox.userID1),
+    userID2Index: index("user_id_2_idx").on(chatInbox.userID2),
   }),
 );
 
