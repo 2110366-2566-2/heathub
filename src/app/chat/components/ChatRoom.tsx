@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { CHAT_MESSAGE_EVENT } from "@/constants/pusher-events";
 import { api } from "@/trpc/react";
@@ -7,12 +7,16 @@ import { type ChatMessage } from "@/types/pusher";
 import { type Channel } from "pusher-js";
 import { usePusher } from "../../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 export function ChatRoom({ withUser }: { withUser: string }) {
   "use client";
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [queryCursor, setQueryCursor] = useState<number | null>(null);
 
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+  
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
 
@@ -20,9 +24,15 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     onSuccess: (data) => {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
-      chatChannel.bind(CHAT_MESSAGE_EVENT, (message: ChatMessage) => {
-        console.log(message)
-        setQueryCursor(null); // Reset cursor to fetch latest messages
+      chatChannel.bind(CHAT_MESSAGE_EVENT, (data: ChatMessage) => {
+        if (data.sender.id !== withUser && data.receiver.id !== withUser)
+          return;
+        setMessages((prev) => {
+          if (prev.some((x) => x.id === data.id)) {
+            return prev;
+          }
+          return [data, ...prev];
+        });
       });
     },
     refetchOnWindowFocus: false,
@@ -32,7 +42,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     {
       pairUserID: withUser,
       cursor: queryCursor,
-      limit: 20,
+      limit: 17,
     },
     {
       onSuccess: (data) => {
@@ -43,7 +53,14 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     },
   );
 
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+
   useEffect(() => {
+    scrollToBottom()
     return () => {
       chatChannel?.unbind(CHAT_MESSAGE_EVENT);
     };
@@ -52,7 +69,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const reversePost = [...messages].reverse();
   return (
     <>
-      <div className="w-full px-14 relative overflow-scroll h-[calc(100vh-128px)] ">
+      <div className="w-full px-14 relative overflow-scroll h-[calc(100vh-128px)]" ref={chatContainerRef}>
         {messages ? (
           <>
             {reversePost.map((message, i) => {
@@ -97,10 +114,10 @@ export function ChatRoom({ withUser }: { withUser: string }) {
 
 export function ChatMessageBox(props: { toUserID: string }) {
   const { toUserID: userID } = props;
-  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
   const createPost = api.chat.sendMessage.useMutation({
     onSuccess: () => {
-      setName("");
+      setMessage("");
     },
   });
 
@@ -109,7 +126,7 @@ export function ChatMessageBox(props: { toUserID: string }) {
       onSubmit={(e) => {
         e.preventDefault();
         createPost.mutate({
-          content: name,
+          content: message,
           toUserID: userID,
         })
       }}
@@ -118,17 +135,19 @@ export function ChatMessageBox(props: { toUserID: string }) {
       <input
         type="text"
         placeholder="Write your message"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
         className="w-full rounded-lg px-4 py-2 text-black bg-neutral-50"
       />
-      <button
+      {message !== "" &&
+        <button
         type="submit"
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold transition hover:bg-white/20"
+        className="rounded-full bg-white/10 font-semibold transition hover:bg-white/20"
         disabled={createPost.isLoading}
-      >
-        {createPost.isLoading ? "Submitting..." : "Submit"}
+        >
+        <FontAwesomeIcon icon={faPaperPlane} />
       </button>
+      }
     </form>
   );
 }

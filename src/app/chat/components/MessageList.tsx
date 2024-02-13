@@ -7,7 +7,7 @@ import { usePusher } from "../../_context/PusherContext";
 import { type RecentMessage } from "@/types/pusher";
 import { useState, useEffect, useRef } from "react";
 import { type Channel } from "pusher-js";
-import { CHAT_MESSAGE_EVENT } from "@/constants/pusher-events";
+import { RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
 import { MessageCard } from "./MessageCard";
 import { useIntersection } from "@mantine/hooks";
 import LoadingSVG from "./LoadingSVG";
@@ -22,7 +22,7 @@ export function MessageList({ className }: { className?: string }) {
     onSuccess: (data) => {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
-      chatChannel.bind(CHAT_MESSAGE_EVENT, (message: RecentMessage) => {
+      chatChannel.bind(RECENT_MESSAGE_EVENT, (message: RecentMessage) => {
         if (
           message.myId !== data.userId &&
           message.discourserId !== data.userId
@@ -64,7 +64,7 @@ export function MessageList({ className }: { className?: string }) {
 
   useEffect(() => {
     return () => {
-      chatChannel?.unbind(CHAT_MESSAGE_EVENT);
+      chatChannel?.unbind(RECENT_MESSAGE_EVENT);
     };
   }, [chatChannel]);
 
