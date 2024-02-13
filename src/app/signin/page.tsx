@@ -6,7 +6,7 @@ import { signIn } from "../../action/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function SignIn() {
   const { data: user } = api.auth.me.useQuery();
@@ -29,7 +29,6 @@ export default function SignIn() {
     setLoading(false);
   };
 
-
   return (
     <div className="flex min-h-screen">
       <div className="hidden flex-[1_1_555px] bg-gradient-to-b from-primary-300 to-secondary-200 md:block">
@@ -43,35 +42,34 @@ export default function SignIn() {
           </div>
           <div className="container flex flex-col items-center justify-center gap-6 px-4 py-6 md:gap-9 md:py-16">
             <div className="h1 text-bold text-primary-900">Login</div>
-              <form action={signInHandler} className="flex flex-col gap-4 ">
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  className="w-[284px] md:w-[361px] "
-                />
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  className="w-[284px] md:w-[361px]"
-                />
-                {error && <p className="h5 text-red-500">{error}</p>}
-                <div className="flex flex-col gap-6 md:gap-9">
-                  <Button variant="link" className="h-2 justify-start px-0" >
-                    <Link href="/reset-password">Forgot your password?</Link>
-                  </Button>
+            <form action={signInHandler} className="flex flex-col gap-4 ">
+              <Input
+                type="email"
+                name="email"
+                placeholder="Email"
+                className="w-[284px] md:w-[361px] "
+              />
+              <Input
+                type="password"
+                name="password"
+                placeholder="Password"
+                className="w-[284px] md:w-[361px]"
+              />
+              {error && <p className="h5 text-red-500">{error}</p>}
+              <div className="flex flex-col gap-6 md:gap-9">
+                <Button variant="link" className="h-2 justify-start px-0">
+                  <Link href="/reset-password">Forgot your password?</Link>
+                </Button>
 
-                  <Button
-                    type="submit"
-                    className="mx-20 h-12 w-[108px] md:mx-32"
-                    disabled={loading}
-                  >
-                    Login
-                  </Button>
-                </div>
-              </form>
-            
+                <Button
+                  type="submit"
+                  className="mx-20 h-12 w-[108px] md:mx-32"
+                  disabled={loading}
+                >
+                  Login
+                </Button>
+              </div>
+            </form>
 
             <div className="flex items-center gap-0">
               <div className="h5 text-primary-700">
