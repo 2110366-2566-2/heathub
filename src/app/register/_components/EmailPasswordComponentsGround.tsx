@@ -78,9 +78,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   return (
     <div className="flex flex-col items-center gap-y-6">
-      <div className="sm:h1-bold h2-bold text-primary-900">
-        Create your account
-      </div>
+      <div className="h1 text-primary-900">Create your account</div>
       <EmailPasswordBox
         setPasswordMatch={setPasswordMatch}
         setPasswordValid={setPasswordValid}

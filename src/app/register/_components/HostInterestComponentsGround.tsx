@@ -62,7 +62,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   return (
     <div className="flex flex-col items-center gap-y-8">
-      <div className="sm:h1-bold h2-bold text-primary-900">Interests</div>
+      <div className="h1 text-primary-900">Interests</div>
       <InterestPikerBox />
       <div className="absolute bottom-6 sm:static">
         <SuccessButton handleClick={handleButtonClick} />

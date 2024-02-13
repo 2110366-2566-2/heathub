@@ -14,7 +14,7 @@ export default function RolePicker(props: rolePickerProps) {
 
   return (
     <div className="flex h-[308px] w-full min-w-[227px] max-w-[361px] flex-col justify-center gap-y-[34px]">
-      <div className="h1-bold w-full max-w-64 self-center text-center text-primary-900">
+      <div className="h1 w-full max-w-64 self-center text-center text-primary-900">
         {"Choose \n Your Role"}
       </div>
       <div className="flex flex-col gap-y-4">

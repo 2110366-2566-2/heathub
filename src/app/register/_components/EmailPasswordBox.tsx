@@ -22,8 +22,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
       if (password.value == confirmPassword.value) {
         (document.getElementById("message") as HTMLInputElement).style.color =
           "green";
-        (document.getElementById("message") as HTMLInputElement).innerHTML =
-          "matching";
+        (document.getElementById("message") as HTMLInputElement).innerHTML = "";
         props.setPasswordMatch(true);
       } else {
         (document.getElementById("message") as HTMLInputElement).style.color =
