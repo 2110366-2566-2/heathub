@@ -69,7 +69,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const reversePost = [...messages].reverse();
   return (
     <>
-      <div className="w-full px-14 max-md:px-6 relative overflow-scroll h-[calc(100vh-128px)]">
+      <div className="w-full px-14 max-lg:px-6 relative overflow-scroll h-full">
         {messages ? (
           <>
             {reversePost.map((message, i) => {
@@ -131,14 +131,14 @@ export function ChatMessageBox(props: { toUserID: string }) {
           toUserID: userID,
         })
       }}
-      className="flex flex-row gap-2 bottom-0 w-full bg-white z-10 p-4 items-center"
+      className="flex flex-row gap-2 bottom-0 w-full bg-white z-10 px-14 max-lg:px-6 items-center justify-center mt-6 mb-14 max-lg:mb-6"
     >
       <input
         type="text"
         placeholder="Write your message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        className="w-full rounded-lg px-4 py-2 text-black bg-neutral-50"
+        className="w-full rounded-xl px-4 py-2 text-black bg-neutral-50 flex-1"
       />
       {message !== "" &&
         <button
