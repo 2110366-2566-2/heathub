@@ -11,8 +11,8 @@ export default async function Chat({ params }: { params: { userID: string } }) {
   });
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-white w-full">
-        <div className="flex flex-col items-start gap-2 sticky top-0 bg-white z-10 px-14 max-md:px-6 mt-6 w-full">
+    <div className="flex h-screen flex-col items-center bg-white w-full">
+        <div className="flex flex-col items-start gap-2 sticky top-0 bg-white z-10 px-14 max-lg:px-6 mt-14 max-lg:mt-6 w-full">
           <div className="flex flex-row w-full items-center gap-[10px]">
             <Link href="/chat">
               <button className="w-6 h-6 flex flex-row items-center justify-center">
@@ -23,6 +23,6 @@ export default async function Chat({ params }: { params: { userID: string } }) {
           </div>
         </div>
         <ChatRoom withUser={params.userID} />
-    </main>
+    </div>
   );
 }
