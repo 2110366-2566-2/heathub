@@ -1,6 +1,6 @@
 "use client";
 
-import { type User } from "./interfaces";
+import { createHost, type User } from "./interfaces";
 import { useState } from "react";
 import ChooseRole from "./allPages/ChooseRole";
 import EmailPassword from "./allPages/EmailPassword";
@@ -9,7 +9,7 @@ import ParticipantDetails from "./allPages/ParticipantDetails";
 import HostInterest from "./allPages/HostInterest";
 
 export default function Register() {
-  const [data, setData] = useState<User>({});
+  const [data, setData] = useState<User>(createHost());
 
   let [page, setPage] = useState("ChooseRole");
 

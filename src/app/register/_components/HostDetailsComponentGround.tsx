@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import RegisterFormBox from "./HostRegisterFormBox";
 import { type Host, type User } from "@/app/register/interfaces";
@@ -14,22 +14,26 @@ interface ComponentGroundProps {
 export default function ComponentsGround(props: ComponentGroundProps) {
   const [gender, setGender] = useState<string>();
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   const handleButtonClick = () => {
-    const firstnameInput = document.getElementById("Firstname");
-    const lastnameInput = document.getElementById("Lastname");
-    const AKAInput = document.getElementById("AKA");
-    const BioInput = document.getElementById("Bio");
-    const DOBInput = document.getElementById("Date of birth");
+    if (!formRef.current) {
+      return;
+    }
+
+    const formData = new FormData(formRef.current);
+
+    const firstnameInput = formData.get("Firstname") as string;
+    const lastnameInput = formData.get("Lastname") as string;
+    const AKAInput = formData.get("AKA") as string;
+    const BioInput = formData.get("Bio") as string;
+    const DOBInput = formData.get("Date of birth") as string | null;
     if (
-      !firstnameInput ||
-      !lastnameInput ||
-      !AKAInput ||
       !gender ||
+      firstnameInput == "" ||
+      lastnameInput == "" ||
+      AKAInput == "" ||
       !DOBInput ||
-      (firstnameInput as HTMLInputElement).value == "" ||
-      (lastnameInput as HTMLInputElement).value == "" ||
-      (AKAInput as HTMLInputElement).value == "" ||
-      (DOBInput as HTMLInputElement).value == "" ||
       gender == "Custom" ||
       gender == ""
     ) {
@@ -37,15 +41,13 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         "Please fill in your details.";
       return;
     }
-    (BioInput as HTMLInputElement).value = BioInput
-      ? (BioInput as HTMLInputElement).value
-      : "";
+
     const host: Host = {
-      Firstname: (firstnameInput as HTMLInputElement).value,
-      Lastname: (lastnameInput as HTMLInputElement).value,
-      AKA: (AKAInput as HTMLInputElement).value,
-      Bio: (BioInput as HTMLInputElement).value,
-      DOB: (DOBInput as HTMLInputElement).value,
+      Firstname: firstnameInput,
+      Lastname: lastnameInput,
+      AKA: AKAInput,
+      Bio: BioInput,
+      DOB: new Date(DOBInput),
       Gender: gender,
       Email: props.data.Email,
       Password: props.data.Password,
@@ -58,7 +60,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     <div className="flex flex-col items-center gap-y-6 p-6">
       <div className="h1 text-primary-900">Tell us about yourself</div>
       <div className="flex h-[963px] w-full flex-col justify-center md:h-[496px]">
-        <RegisterFormBox setGender={setGender} />
+        <RegisterFormBox setGender={setGender} formRef={formRef} />
         <span
           className="h5 ml-5 h-0 overflow-visible text-red-600"
           id="Notice"

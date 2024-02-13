@@ -8,7 +8,7 @@ export interface Host extends User {
   Lastname: string;
   AKA: string;
   Bio: string;
-  DOB: string;
+  DOB?: Date;
   Gender: string;
 }
 
@@ -16,7 +16,7 @@ export interface Participant extends User {
   Firstname: string;
   Lastname: string;
   AKA: string;
-  DOB: string;
+  DOB?: Date;
   Gender: string;
 }
 
@@ -26,7 +26,6 @@ export const createHost = () => {
     Lastname: "",
     AKA: "",
     Bio: "",
-    DOB: "",
     Gender: "",
     Email: "",
     Password: "",
@@ -39,7 +38,6 @@ export const createParticipant = () => {
     Firstname: "",
     Lastname: "",
     AKA: "",
-    DOB: "",
     Gender: "",
     Email: "",
     Password: "",
