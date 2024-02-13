@@ -1,6 +1,6 @@
 "use client";
 
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useState, useRef } from "react";
 import EmailPasswordBox from "./EmailPasswordBox";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,6 +27,8 @@ interface ComponentGroundProps {
 export default function ComponentsGround(props: ComponentGroundProps) {
   const { setData, setPage, data } = props;
 
+  const formRef = useRef<HTMLFormElement>(null);
+
   const [isPasswordMatch, setPasswordMatch] = useState<boolean>(false);
   const [isPasswordValid, setPasswordValid] = useState<boolean>(false);
   const [isEmailValid, setEmailValid] = useState<boolean>(false);
@@ -34,29 +36,40 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const handleButtonClick = () => {
     if (!isEmailValid) {
-      (document.getElementById("message") as HTMLInputElement).style.color =
-        "red";
-      (document.getElementById("message") as HTMLInputElement).innerHTML =
-        "Email invalid";
+      (
+        document.getElementById("Notice Message") as HTMLInputElement
+      ).style.color = "red";
+      (
+        document.getElementById("Notice Message") as HTMLInputElement
+      ).innerHTML = "Email invalid";
       console.log("invalid email");
     } else if (!isPasswordMatch) {
       console.log("password don't match");
     } else if (!isPasswordValid) {
-      (document.getElementById("message") as HTMLInputElement).style.color =
-        "red";
-      (document.getElementById("message") as HTMLInputElement).innerHTML =
-        "password invalid";
+      (
+        document.getElementById("Notice Message") as HTMLInputElement
+      ).style.color = "red";
+      (
+        document.getElementById("Notice Message") as HTMLInputElement
+      ).innerHTML = "password invalid";
       console.log("invalid password");
     } else if (!isEmailAlreadyReg) {
-      (document.getElementById("message") as HTMLInputElement).style.color =
-        "red";
-      (document.getElementById("message") as HTMLInputElement).innerHTML =
-        "this email is already have an account";
+      (
+        document.getElementById("Notice Message") as HTMLInputElement
+      ).style.color = "red";
+      (
+        document.getElementById("Notice Message") as HTMLInputElement
+      ).innerHTML = "this email is already have an account";
       console.log("this email is already have an account");
     } else {
-      const password = document.getElementById("Password") as HTMLInputElement;
-      const email = document.getElementById("Email") as HTMLInputElement;
-      console.log(`Email: ${email.value} \n Password: ${password.value}`);
+      if (!formRef.current) {
+        return;
+      }
+
+      const formData = new FormData(formRef.current);
+      const password = formData.get("Password") as string | null;
+      const email = formData.get("Email") as string | null;
+      console.log(`Email: ${email} \n Password: ${password}`);
       if (isHost(data)) {
         const host: Host = {
           Firstname: "",
@@ -65,8 +78,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           Bio: "",
           DOB: new Date(),
           Gender: "",
-          Email: email.value,
-          Password: password.value,
+          Email: email ? email : "",
+          Password: password ? password : "",
           Interest: [],
         };
         setData(host);
@@ -78,8 +91,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           AKA: "",
           DOB: new Date(),
           Gender: "",
-          Email: email.value,
-          Password: password.value,
+          Email: email ? email : "",
+          Password: password ? password : "",
         };
         setData(participant);
         setPage("ParticipantDetails");
@@ -95,6 +108,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         setPasswordValid={setPasswordValid}
         setEmailValid={setEmailValid}
         setEmailAlreadyReg={setEmailAlreadyReg}
+        formRef={formRef}
       />
       <Button
         className="absolute bottom-6 h-12 w-[108px] bg-primary-500 text-white sm:static"

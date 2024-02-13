@@ -10,6 +10,7 @@ interface EmailPasswordBoxProps {
   setPasswordValid: (isValid: boolean) => void;
   setEmailValid: (isValid: boolean) => void;
   setEmailAlreadyReg: (isValid: boolean) => void;
+  formRef: React.RefObject<HTMLFormElement>;
 }
 
 export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
@@ -18,33 +19,47 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
     setPasswordValid,
     setEmailValid,
     setEmailAlreadyReg,
+    formRef,
   } = props;
 
   const checkConfirmPassword = () => {
-    const password = document.getElementById("Password") as HTMLInputElement;
-    const confirmPassword = document.getElementById(
-      "Confirm Password",
-    ) as HTMLInputElement;
-    if (!!confirmPassword && !!password && confirmPassword.value != "") {
-      if (password.value == confirmPassword.value) {
-        (document.getElementById("message") as HTMLInputElement).style.color =
-          "green";
-        (document.getElementById("message") as HTMLInputElement).innerHTML = "";
+    if (!formRef.current) {
+      return;
+    }
+
+    const formData = new FormData(formRef.current);
+    const password = formData.get("Password") as string | null;
+    const confirmPassword = formData.get("Confirm Password") as string | null;
+    if (!!confirmPassword && !!password && confirmPassword != "") {
+      if (password == confirmPassword) {
+        (
+          document.getElementById("Notice Message") as HTMLInputElement
+        ).style.color = "green";
+        (
+          document.getElementById("Notice Message") as HTMLInputElement
+        ).innerHTML = "";
         setPasswordMatch(true);
       } else {
-        (document.getElementById("message") as HTMLInputElement).style.color =
-          "red";
-        (document.getElementById("message") as HTMLInputElement).innerHTML =
-          "not matching";
+        (
+          document.getElementById("Notice Message") as HTMLInputElement
+        ).style.color = "red";
+        (
+          document.getElementById("Notice Message") as HTMLInputElement
+        ).innerHTML = "not matching";
         setPasswordMatch(false);
       }
     }
   };
 
   const checkValidPassword = () => {
-    const password = document.getElementById("Password") as HTMLInputElement;
+    if (!formRef.current) {
+      return;
+    }
+
+    const formData = new FormData(formRef.current);
+    const password = formData.get("Password") as string | null;
     if (!!password) {
-      if (password.value.length >= 8) {
+      if (password.length >= 8) {
         // add additional condition here
         setPasswordValid(true);
       } else {
@@ -54,15 +69,17 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   };
 
   const checkValidEmail = () => {
-    const email = document.getElementById("Email") as HTMLInputElement;
+    if (!formRef.current) {
+      return;
+    }
+
+    const formData = new FormData(formRef.current);
+    const email = formData.get("Email") as string | null;
     if (!!email) {
       const validRegex =
         /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-      console.log(
-        `check email: ${email.value} \n valid = `,
-        email.value.match(validRegex),
-      );
-      if (email.value.match(validRegex)) {
+      console.log(`check email: ${email} \n valid = `, email.match(validRegex));
+      if (email.match(validRegex)) {
         setEmailValid(true);
       } else {
         setEmailValid(false);
@@ -80,11 +97,15 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   return (
     <Card className="h-[432px] w-full min-w-[256px] max-w-[632px] justify-center rounded-3xl border-solid border-primary-500 bg-white p-6 sm:h-[388px]">
       <CardContent className="flex h-full w-full justify-center p-0">
-        <form className="flex h-full w-full max-w-[420px] flex-col gap-y-2">
+        <form
+          className="flex h-full w-full max-w-[420px] flex-col gap-y-2"
+          ref={formRef}
+        >
           <div className="flex w-full flex-col gap-y-1.5">
             <Label htmlFor="Email">Email</Label>
             <Input
-              id="Email"
+              type="text"
+              name="Email"
               placeholder="Enter your Email"
               onKeyUp={() => {
                 checkValidEmail();
@@ -95,7 +116,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
             <Label htmlFor="Password">Password</Label>
             <Input
               type="password"
-              id="Password"
+              name="Password"
               placeholder="Enter your password"
               onKeyUp={() => {
                 checkConfirmPassword();
@@ -110,7 +131,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
             <Label htmlFor="Confirm Password">Confirm Password</Label>
             <Input
               type="password"
-              id="Confirm Password"
+              name="Confirm Password"
               placeholder="Enter your password"
               onKeyUp={() => {
                 checkConfirmPassword();
@@ -118,7 +139,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               }}
             />
           </div>
-          <span id="message"></span>
+          <span id="Notice Message"></span>
         </form>
       </CardContent>
     </Card>
