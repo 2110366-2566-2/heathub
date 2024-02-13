@@ -6,23 +6,7 @@ import { signIn } from "../../action/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Toggle } from "@/components/ui/toggle"
-import {
-  faFutbol,
-  faMusic,
-  faFilm,
-  faBook,
-  faShirt,
-  faPaw,
-  faDumbbell,
-  faCamera,
-  faGamepad,
-  faMugHot,
-  faPalette,
-  faTents,
-  faBasketball,
-  type IconDefinition,
-} from "@fortawesome/free-solid-svg-icons";
+import Link from 'next/link';
 
 export default function SignIn() {
   const { data: user } = api.auth.me.useQuery();
@@ -74,9 +58,10 @@ export default function SignIn() {
                 />
                 {error && <p className="h5 text-red-500">{error}</p>}
                 <div className="flex flex-col gap-6 md:gap-9">
-                  <Button variant="link" onClick={() => redirect("/reset-password")} className="h-2 justify-start px-0">
-                    Forgot your password?
+                  <Button variant="link" className="h-2 justify-start px-0" >
+                    <Link href="/reset-password">Forgot your password?</Link>
                   </Button>
+
                   <Button
                     type="submit"
                     className="mx-20 h-12 w-[108px] md:mx-32"
@@ -92,8 +77,8 @@ export default function SignIn() {
               <div className="h5 text-primary-700">
                 Don&apos;t have an account yet?
               </div>
-              <Button variant="link" onClick={() => redirect("/signup")} className="text-secondary-400">
-                Sign up now
+              <Button variant="link" className="text-secondary-400">
+                <Link href="/signup">Sign up now</Link>
               </Button>
             </div>
           </div>
