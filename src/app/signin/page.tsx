@@ -35,8 +35,8 @@ export default function SignIn() {
         <div className="h1-bold">Sign in</div>
 
         <form action={signInHandler} className="flex flex-col gap-4 text-black">
-          <Input type="email" placeholder="email" name="Email" />
-          <Input type="password" placeholder="password" name="Password" />
+          <Input type="email" placeholder="Email" name="email" />
+          <Input type="password" placeholder="Password" name="password" />
           {error && <p className="text-red-500">{error}</p>}
           <Button variant="link">Forgot your password?</Button>
           <Button type="submit" disabled={loading}>

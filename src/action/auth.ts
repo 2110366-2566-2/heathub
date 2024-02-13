@@ -6,8 +6,8 @@ import { serverapi } from "@/trpc/server";
 
 export async function signIn(formData: FormData) {
   try {
-    const email = formData.get("Email") as string | null;
-    const password = formData.get("Password") as string | null;
+    const email = formData.get("email") as string | null;
+    const password = formData.get("password") as string | null;
 
     if (!email || !password) {
       throw new Error("Missing email or password");
