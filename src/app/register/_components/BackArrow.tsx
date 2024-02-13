@@ -1,6 +1,6 @@
 "use client";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 interface GobackArrowProps {
   setPage: (page: string) => void;
@@ -8,19 +8,21 @@ interface GobackArrowProps {
 }
 
 export default function GoBackArrow(props: GobackArrowProps) {
-  const goBack = (props: GobackArrowProps) => {
-    switch (props.Page) {
+  const { setPage, Page } = props;
+
+  const goBack = () => {
+    switch (Page) {
       case "HostInterest":
-        props.setPage("HostDetails");
+        setPage("HostDetails");
         return;
       case "HostDetails":
-        props.setPage("EmailPassword");
+        setPage("EmailPassword");
         return;
       case "ParticipantDetails":
-        props.setPage("EmailPassword");
+        setPage("EmailPassword");
         return;
       case "EmailPassword":
-        props.setPage("ChooseRole");
+        setPage("ChooseRole");
         return;
     }
   };
@@ -29,7 +31,7 @@ export default function GoBackArrow(props: GobackArrowProps) {
     <FontAwesomeIcon
       className="h-6 hover:cursor-pointer"
       onClick={() => {
-        goBack(props);
+        goBack();
       }}
       icon={faAngleLeft}
     ></FontAwesomeIcon>

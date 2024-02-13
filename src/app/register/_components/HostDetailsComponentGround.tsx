@@ -12,6 +12,8 @@ interface ComponentGroundProps {
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
+  const { setData, setPage, data } = props;
+
   const [gender, setGender] = useState<string>();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -49,12 +51,12 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Bio: BioInput ? BioInput : "",
       DOB: new Date(DOBInput),
       Gender: gender,
-      Email: props.data.Email,
-      Password: props.data.Password,
+      Email: data.Email,
+      Password: data.Password,
       Interest: [],
     };
-    props.setData(host);
-    props.setPage("HostInterest");
+    setData(host);
+    setPage("HostInterest");
   };
 
   return (

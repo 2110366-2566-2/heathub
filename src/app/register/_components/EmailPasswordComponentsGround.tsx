@@ -17,6 +17,8 @@ interface ComponentGroundProps {
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
+  const { setData, setPage, data } = props;
+
   const [isPasswordMatch, setPasswordMatch] = useState<boolean>(false);
   const [isPasswordValid, setPasswordValid] = useState<boolean>(false);
   const [isEmailValid, setEmailValid] = useState<boolean>(false);
@@ -47,31 +49,32 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       const password = document.getElementById("Password") as HTMLInputElement;
       const email = document.getElementById("Email") as HTMLInputElement;
       console.log(`Email: ${email.value} \n Password: ${password.value}`);
-      if (isHost(props.data)) {
+      if (isHost(data)) {
         const host: Host = {
           Firstname: "",
           Lastname: "",
           AKA: "",
           Bio: "",
-          DOB: "",
+          DOB: new Date(),
           Gender: "",
           Email: email.value,
           Password: password.value,
+          Interest: [],
         };
-        props.setData(host);
-        props.setPage("HostDetails");
+        setData(host);
+        setPage("HostDetails");
       } else {
         const participant: Participant = {
           Firstname: "",
           Lastname: "",
           AKA: "",
-          DOB: "",
+          DOB: new Date(),
           Gender: "",
           Email: email.value,
           Password: password.value,
         };
-        props.setData(participant);
-        props.setPage("ParticipantDetails");
+        setData(participant);
+        setPage("ParticipantDetails");
       }
     }
   };

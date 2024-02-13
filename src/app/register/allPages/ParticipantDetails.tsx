@@ -1,4 +1,4 @@
-import GoBackArrow from "../_components/GoBackArrow";
+import GoBackArrow from "../_components/BackArrow";
 import { type User } from "../interfaces";
 import ComponentsGround from "../_components/ParticipantDetailsComponentGround";
 
@@ -10,15 +10,12 @@ interface ParticipantDetailsProps {
 }
 
 export default function ParticipantDetails(props: ParticipantDetailsProps) {
+  const { setData, setPage, page, data } = props;
   return (
-    <div className="h-[100%] min-h-[100vh] w-[100%] min-w-[100vw] overflow-hidden bg-primary-50 p-6 md:p-9">
+    <div className="min-w-screen h-full min-h-screen w-full overflow-hidden bg-primary-50 p-6 md:p-9">
       <div>
-        <GoBackArrow Page={props.page} setPage={props.setPage} />
-        <ComponentsGround
-          data={props.data}
-          setData={props.setData}
-          setPage={props.setPage}
-        />
+        <GoBackArrow Page={page} setPage={setPage} />
+        <ComponentsGround data={data} setData={setData} />
       </div>
     </div>
   );

@@ -10,10 +10,11 @@ interface rolePickerProps {
 }
 
 export default function RolePicker(props: rolePickerProps) {
+  const { setData, setPage } = props;
   const router = useRouter();
 
   return (
-    <div className="flex h-[308px] w-full min-w-[227px] max-w-[361px] flex-col justify-center gap-y-[34px]">
+    <div className="flex h-[308px] w-full min-w-[228px] max-w-[360px] flex-col justify-center gap-y-9">
       <div className="h1 w-full max-w-64 self-center text-center text-primary-900">
         {"Choose \n Your Role"}
       </div>
@@ -21,8 +22,8 @@ export default function RolePicker(props: rolePickerProps) {
         <Button
           className="h-12 w-full rounded-xl px-2 py-4"
           onClick={() => {
-            props.setPage("EmailPassword");
-            props.setData(createHost());
+            setPage("EmailPassword");
+            setData(createHost());
           }}
         >
           <div className="h4-regular text-primary-50">{"I'm a Host"}</div>
@@ -30,8 +31,8 @@ export default function RolePicker(props: rolePickerProps) {
         <Button
           className="h-12 w-full rounded-xl bg-secondary-200 px-2 py-4 hover:bg-secondary-300"
           onClick={() => {
-            props.setPage("EmailPassword");
-            props.setData(createParticipant());
+            setPage("EmailPassword");
+            setData(createParticipant());
           }}
         >
           <div className="h4-regular text-primary-50">

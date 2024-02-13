@@ -11,6 +11,7 @@ interface GenderSelectorProps {
 }
 
 export default function GenderSelector(props: GenderSelectorProps) {
+  const { setGender } = props;
   const [currentGender, setCurrentGender] = useState<string>();
   const [isCustom, setCustom] = useState<boolean>(false);
 
@@ -43,10 +44,10 @@ export default function GenderSelector(props: GenderSelectorProps) {
               const customInput = document.getElementById(
                 "Custom Gender",
               ) as HTMLInputElement;
-              props.setGender(customInput.value);
+              setGender(customInput.value);
               return;
             }
-            props.setGender(val);
+            setGender(val);
           }}
         >
           <ToggleGroupItem
@@ -98,7 +99,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
               const customInput = document.getElementById(
                 "Custom Gender",
               ) as HTMLInputElement;
-              props.setGender(customInput.value);
+              setGender(customInput.value);
             }}
           />
         </div>

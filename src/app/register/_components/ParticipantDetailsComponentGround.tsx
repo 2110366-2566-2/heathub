@@ -10,11 +10,11 @@ import SuccessButton from "./SuccessButton";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
-  setPage: (page: string) => void;
   data: User;
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
+  const { setData, data } = props;
   const [isModalPop, setModalPop] = useState(false);
   const [gender, setGender] = useState<string>();
 
@@ -27,8 +27,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       redirect("/");
     }
   }, [userData]);
-
-  // const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (participant: Participant) => {
     await signUpPaticipate.mutateAsync({
@@ -77,18 +75,18 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       AKA: AKAInput,
       DOB: new Date(DOBInput),
       Gender: gender,
-      Email: props.data.Email,
-      Password: props.data.Password,
+      Email: data.Email,
+      Password: data.Password,
     };
     setModalPop(true);
-    props.setData(participant);
+    setData(participant);
     void handleSubmit(participant);
   };
 
   return (
     <div className="flex flex-col items-center gap-y-6 p-6">
       <div className="h1 text-primary-900">Tell us about yourself</div>
-      <div className="flex h-[845px] w-full flex-col justify-center md:h-[496px]">
+      <div className="flex h-[844px] w-full flex-col justify-center md:h-[496px]">
         <RegisterFormBox formRef={formRef} setGender={setGender} />
         <span
           className="h5 ml-5 h-0 overflow-visible text-red-600"

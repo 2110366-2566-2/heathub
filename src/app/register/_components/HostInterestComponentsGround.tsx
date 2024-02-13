@@ -9,13 +9,12 @@ import SuccessButton from "@/app/register/_components/SuccessButton";
 import { type Host, type User } from "../interfaces";
 
 interface ComponentGroundProps {
-  setData: (data: User) => void;
-  setPage: (page: string) => void;
   data: User;
   allInterestList: string[];
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
+  const { data, allInterestList } = props;
   const [selectedInterestList, setSelectedInterestList] = useState<string[]>(
     [],
   );
@@ -29,8 +28,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       redirect("/");
     }
   }, [userData]);
-
-  // const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (host: Host) => {
     selectedInterestList.sort();
@@ -48,14 +45,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   };
 
   const handleButtonClick = () => {
-    void handleSubmit(props.data as Host);
+    void handleSubmit(data as Host);
   };
 
   return (
     <div className="flex flex-col items-center gap-y-8">
       <div className="h1 text-primary-900">Interests</div>
       <InterestPikerBox
-        allInterestList={props.allInterestList}
+        allInterestList={allInterestList}
         selectedInterestList={selectedInterestList}
         setSelectedInterestList={setSelectedInterestList}
       />

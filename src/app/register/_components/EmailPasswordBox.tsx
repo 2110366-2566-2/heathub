@@ -13,7 +13,14 @@ interface EmailPasswordBoxProps {
 }
 
 export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
-  const checkConfirmPassword = (props: EmailPasswordBoxProps) => {
+  const {
+    setPasswordMatch,
+    setPasswordValid,
+    setEmailValid,
+    setEmailAlreadyReg,
+  } = props;
+
+  const checkConfirmPassword = () => {
     const password = document.getElementById("Password") as HTMLInputElement;
     const confirmPassword = document.getElementById(
       "Confirm Password",
@@ -23,30 +30,30 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
         (document.getElementById("message") as HTMLInputElement).style.color =
           "green";
         (document.getElementById("message") as HTMLInputElement).innerHTML = "";
-        props.setPasswordMatch(true);
+        setPasswordMatch(true);
       } else {
         (document.getElementById("message") as HTMLInputElement).style.color =
           "red";
         (document.getElementById("message") as HTMLInputElement).innerHTML =
           "not matching";
-        props.setPasswordMatch(false);
+        setPasswordMatch(false);
       }
     }
   };
 
-  const checkValidPassword = (props: EmailPasswordBoxProps) => {
+  const checkValidPassword = () => {
     const password = document.getElementById("Password") as HTMLInputElement;
     if (!!password) {
       if (password.value.length >= 8) {
         // add additional condition here
-        props.setPasswordValid(true);
+        setPasswordValid(true);
       } else {
-        props.setPasswordValid(false);
+        setPasswordValid(false);
       }
     }
   };
 
-  const checkValidEmail = (props: EmailPasswordBoxProps) => {
+  const checkValidEmail = () => {
     const email = document.getElementById("Email") as HTMLInputElement;
     if (!!email) {
       const validRegex =
@@ -54,24 +61,24 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
       console.log(
         `check email: ${email.value} \n valid = `,
         email.value.match(validRegex),
-      ); //DEBUGGING
+      );
       if (email.value.match(validRegex)) {
-        props.setEmailValid(true);
+        setEmailValid(true);
       } else {
-        props.setEmailValid(false);
+        setEmailValid(false);
       }
 
       if (true) {
         // add condition here
-        props.setEmailAlreadyReg(true);
+        setEmailAlreadyReg(true);
       } else {
-        props.setEmailAlreadyReg(false);
+        setEmailAlreadyReg(false);
       }
     }
   };
 
   return (
-    <Card className="h-[430px] w-full min-w-[255px] max-w-[633px] justify-center rounded-3xl border-solid border-primary-500 bg-white p-6 sm:h-[388px]">
+    <Card className="h-[432px] w-full min-w-[256px] max-w-[632px] justify-center rounded-3xl border-solid border-primary-500 bg-white p-6 sm:h-[388px]">
       <CardContent className="flex h-full w-full justify-center p-0">
         <form className="flex h-full w-full max-w-[420px] flex-col gap-y-2">
           <div className="flex w-full flex-col gap-y-1.5">
@@ -80,7 +87,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               id="Email"
               placeholder="Enter your Email"
               onKeyUp={() => {
-                checkValidEmail(props);
+                checkValidEmail();
               }}
             />
           </div>
@@ -91,8 +98,8 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               id="Password"
               placeholder="Enter your password"
               onKeyUp={() => {
-                checkConfirmPassword(props);
-                checkValidPassword(props);
+                checkConfirmPassword();
+                checkValidPassword();
               }}
             />
           </div>
@@ -106,8 +113,8 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               id="Confirm Password"
               placeholder="Enter your password"
               onKeyUp={() => {
-                checkConfirmPassword(props);
-                checkValidPassword(props);
+                checkConfirmPassword();
+                checkValidPassword();
               }}
             />
           </div>

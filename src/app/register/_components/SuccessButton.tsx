@@ -11,7 +11,6 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 interface SuccessButtonProps {
   handleClick: () => void | Promise<void>;
@@ -19,28 +18,28 @@ interface SuccessButtonProps {
   setModalPop: (pop: boolean) => void;
 }
 export default function SuccessButton(props: SuccessButtonProps) {
-  // const router = useRouter();
+  const { handleClick, isModalPop, setModalPop } = props;
   const handleStartButton = () => {
     return;
   };
 
   useEffect(() => {
-    props.setModalPop(props.isModalPop);
-  }, [props]);
+    setModalPop(isModalPop);
+  }, [isModalPop, setModalPop]);
 
   return (
     <Dialog>
       <DialogTrigger>
         <Button
           type="submit"
-          onClick={props.handleClick}
-          className="h-12 w-[167px] bg-primary-500 text-white"
+          onClick={handleClick}
+          className="h-12 w-[168px] bg-primary-500 text-white"
           variant="outline"
         >
           Create Account
         </Button>
       </DialogTrigger>
-      {props.isModalPop ? (
+      {isModalPop ? (
         <DialogContent className="h-fit w-full max-w-[360px] rounded-md bg-white">
           <DialogHeader className="flex flex-col items-center justify-center gap-2">
             <FontAwesomeIcon
