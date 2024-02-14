@@ -3,10 +3,10 @@
 import { api } from "@/trpc/react";
 import { redirect, useRouter } from "next/navigation";
 
+import SuccessButton from "@/app/signup/_components/SuccessButton";
 import { useEffect, useState } from "react";
-import InterestPikerBox from "./InterestPickerBox";
-import SuccessButton from "@/app/register/_components/SuccessButton";
 import { type Host, type User } from "../interfaces";
+import InterestPickerBox from "./InterestPickerBox";
 
 interface ComponentGroundProps {
   data: User;
@@ -15,6 +15,8 @@ interface ComponentGroundProps {
 
 export default function ComponentsGround(props: ComponentGroundProps) {
   const { data, allInterestList } = props;
+  const [isModalPop, setModalPop] = useState<boolean>(false);
+  const [notice, setNotice] = useState<string>("");
   const router = useRouter();
   const [selectedInterestList, setSelectedInterestList] = useState<string[]>(
     [],
@@ -32,27 +34,38 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const handleSubmit = async (host: Host) => {
     selectedInterestList.sort();
-    await signUpHost.mutateAsync({
-      email: host.Email,
-      password: host.Password,
-      username: host.AKA,
-      firstName: host.Firstname,
-      lastName: host.Lastname,
-      gender: host.Gender,
-      bio: host.Bio,
-      dateOfBirth: host.DOB,
-      interests: selectedInterestList,
-    });
+    try {
+      await signUpHost.mutateAsync({
+        email: host.Email,
+        password: host.Password,
+        username: host.AKA,
+        firstName: host.Firstname,
+        lastName: host.Lastname,
+        gender: host.Gender,
+        bio: host.Bio,
+        dateOfBirth: host.DOB,
+        interests: selectedInterestList,
+      });
+      setModalPop(true);
+    } catch (error) {
+      if (error instanceof Error) {
+        setNotice(error.message);
+        console.error("An error occurred", error.message);
+      } else {
+        setNotice("An error occurred");
+        console.error("An error occurred", error);
+      }
+    }
   };
 
-  const handleButtonClick = () => {
-    void handleSubmit(data as Host);
+  const handleButtonClick = async () => {
+    await handleSubmit(data as Host);
   };
 
   return (
     <div className="flex flex-col items-center gap-y-8">
       <div className="h1 text-primary-900">Interests</div>
-      <InterestPikerBox
+      <InterestPickerBox
         allInterestList={allInterestList}
         selectedInterestList={selectedInterestList}
         setSelectedInterestList={setSelectedInterestList}
@@ -60,13 +73,12 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       <div className="absolute bottom-6 sm:static">
         <SuccessButton
           router={router}
-          setModalPop={(pop: boolean) => {
-            return;
-          }}
-          isModalPop={true}
+          isModalPop={isModalPop}
+          setModalPop={setModalPop}
           handleClick={handleButtonClick}
         />
       </div>
+      <div className="text-red-500">{notice}</div>
     </div>
   );
 }

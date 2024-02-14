@@ -1,9 +1,9 @@
 import { type Dispatch, type SetStateAction } from "react";
-import GoBackArrow from "../_components/BackArrow";
-import ComponentsGround from "../_components/HostDetailsComponentGround";
-import { type User } from "../interfaces";
+import { type User } from "../../interfaces";
+import GoBackArrow from "../BackArrow";
+import ComponentsGround from "../EmailPasswordComponentsGround";
 
-interface HostDetailsProps {
+interface EmailPasswordProps {
   setData: (data: User) => void;
   setPage: Dispatch<
     SetStateAction<
@@ -18,7 +18,7 @@ interface HostDetailsProps {
   data: User;
 }
 
-export default function HostDetails(props: HostDetailsProps) {
+export default function EmailPassword(props: EmailPasswordProps) {
   const { setData, setPage, page, data } = props;
   return (
     <div className="min-w-screen h-full min-h-screen w-full overflow-hidden bg-primary-50 p-6 md:p-9">

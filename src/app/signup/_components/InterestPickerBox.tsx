@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup } from "@/components/ui/toggle-group";
@@ -11,7 +10,7 @@ interface InterestPickerBoxProps {
   allInterestList: string[];
 }
 
-export default function InterestPikerBox(props: InterestPickerBoxProps) {
+export default function InterestPickerBox(props: InterestPickerBoxProps) {
   const { selectedInterestList, setSelectedInterestList, allInterestList } =
     props;
   const handleSelectedInterestList = (handleItem: string) => {
@@ -27,8 +26,8 @@ export default function InterestPikerBox(props: InterestPickerBoxProps) {
   };
 
   return (
-    <Card className="h-[432px] w-full min-w-[256px] max-w-[848px] justify-center overflow-y-auto rounded-3xl border-solid border-primary-500 bg-white sm:h-[500px]">
-      <CardContent className="flex w-full justify-center gap-x-4 gap-y-2 p-4 sm:px-2">
+    <Card className="w-full min-w-[256px] max-w-[848px] justify-center overflow-y-auto rounded-3xl border-solid border-primary-500 bg-white p-8">
+      <CardContent className="flex w-full justify-center gap-x-4 gap-y-2">
         <ToggleGroup
           className="gap flex w-full flex-wrap gap-2"
           type="multiple"

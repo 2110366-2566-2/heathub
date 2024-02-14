@@ -1,20 +1,20 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
-import Image from "next/image";
-import Card from "./card";
-import { useMediaQuery } from "react-responsive";
 import {
   Drawer,
   DrawerContent,
   DrawerOverlay,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import Chat, { ChatDialog } from "./chat";
-import { tagList, type TagList } from "../../../utils/icon-mapping";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/utils/tailwind-merge";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
+import { useMediaQuery } from "react-responsive";
+import { tagIcon, type TagList } from "../../../utils/icon-mapping";
+import Card from "./card";
+import { ChatDialog } from "./chat";
 
 export type ProfilePreviewProps = {
   name: string;
@@ -153,7 +153,7 @@ function Interests({
             <Toggle
               key={index}
               variant="outline"
-              icon={tagList[tag]}
+              icon={tagIcon[tag]}
               size="md"
               disabled
             >

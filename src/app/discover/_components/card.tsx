@@ -1,10 +1,10 @@
 "use client";
+import { tagIcon } from "@/utils/icon-mapping";
 import Image from "next/image";
-import { type ProfilePreviewProps } from "./profile-preview";
-import Chat from "./chat";
-import { tagList } from "../../../utils/icon-mapping";
 import { useMediaQuery } from "react-responsive";
 import { Tag } from "../../_components/tag";
+import Chat from "./chat";
+import { type ProfilePreviewProps } from "./profile-preview";
 
 export default function Card(props: ProfilePreviewProps) {
   const { name, age, image, interests } = props;
@@ -33,11 +33,11 @@ export default function Card(props: ProfilePreviewProps) {
           </div>
           <div className="flex flex-row flex-wrap gap-2">
             {visibleInterests.map((tag) => (
-              <Tag key={tag} variant="ghost" icon={tagList[tag]} size="md">
+              <Tag key={tag} variant="ghost" icon={tagIcon[tag]} size="md">
                 {tag}
               </Tag>
             ))}
-            {hiddenInterestsCount && (
+            {hiddenInterestsCount >= 0 && (
               <Tag key="hidden-interests" variant="ghost" size="md">
                 +{hiddenInterestsCount} more
               </Tag>

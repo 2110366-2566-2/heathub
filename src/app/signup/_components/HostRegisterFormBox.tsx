@@ -1,10 +1,12 @@
 "use client";
 
-import * as React from "react";
+import GenderSelector from "@/app/signup/_components/GenderSelector";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import GenderSelector from "@/app/register/_components/GenderSelector";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as React from "react";
 import { useState } from "react";
 
 interface RegisterFormBoxProps {
@@ -16,20 +18,21 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
   const { setGender, formRef } = props;
   const [firsttext, setFirstText] = useState("");
   const [lasttext, setLastText] = useState("");
-  const [AKAtext, setAKAText] = useState("");
 
   return (
-    <Card className="h-[844px] w-full min-w-[256px] max-w-[600px] justify-center self-center rounded-3xl border-solid border-primary-500 bg-white md:h-[496px] md:max-w-[844px]">
-      <CardContent className="h-full w-full p-0">
+    <Card className=" w-full min-w-[256px] max-w-[600px] justify-center self-center rounded-3xl border-solid border-primary-500 bg-white md:max-w-[844px]">
+      <CardContent className="flex h-full w-full p-0">
         <form
-          className="flex h-full flex-col content-center gap-y-4 p-4 md:flex-row md:gap-x-[6.28%] md:gap-y-0 md:px-[2.84%] md:py-6"
+          className="flex h-full w-full flex-col content-center items-stretch gap-y-4 p-8 md:flex-row md:gap-x-8 md:gap-y-0 md:px-4 md:py-6 lg:w-auto"
           ref={formRef}
         >
-          <div className="flex flex-col justify-between md:w-[496px] md:flex-row">
-            <div className="flex aspect-square w-[32.86%] min-w-[116px] items-center justify-center self-center md:h-full md:w-[32.79%] md:items-start">
-              <div className="h-12 w-12 bg-black"></div>
+          <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:items-start">
+            <div className="relative h-32 w-32 rounded-full bg-slate-200">
+              <div className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
+                <FontAwesomeIcon icon={faCamera} />
+              </div>
             </div>
-            <div className="flex flex-col space-y-4 md:w-[62.55%]">
+            <div className="flex w-full flex-col space-y-4 md:w-64 lg:w-80">
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Firstname">Firstname</Label>
                 <Input
@@ -65,17 +68,19 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="AKA">AKA</Label>
                 <Input
-                  value={AKAtext}
                   type="text"
                   className="h-9"
                   name="AKA"
                   placeholder="Enter your aka"
-                  onChange={(e) => {
-                    setAKAText(
-                      e.target.value.charAt(0).toUpperCase() +
-                        e.target.value.slice(1),
-                    );
-                  }}
+                />
+              </div>
+              <div className="flex w-full flex-col gap-y-1.5">
+                <Label htmlFor="Bio">Bio</Label>
+                <Input
+                  type="text"
+                  className="h-9"
+                  name="Bio"
+                  placeholder="Enter your bio"
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
@@ -88,10 +93,8 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               </div>
             </div>
           </div>
-          <div className="flex justify-center md:h-full">
-            <div className="h-[0.5px] w-full bg-primary-500 md:h-full md:w-[0.5px]"></div>
-          </div>
-          <div className="md:w-[314px]">
+          <div className="h-[0.5px] bg-primary-500 md:h-auto md:w-[0.5px]"></div>
+          <div className="h-full">
             <GenderSelector setGender={setGender} />
           </div>
         </form>

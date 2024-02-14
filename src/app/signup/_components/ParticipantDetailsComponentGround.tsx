@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { type Participant, type User } from "../interfaces";
 import RegisterFormBox from "./ParticipantRegisterFormBox";
-import { type User, type Participant } from "../interfaces";
 
 import { api } from "@/trpc/react";
 import { redirect, useRouter } from "next/navigation";
@@ -18,6 +18,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const router = useRouter();
   const [isModalPop, setModalPop] = useState(false);
   const [gender, setGender] = useState<string>();
+  const [notice, setNotice] = useState<string>("");
 
   const signUpPaticipate = api.auth.signupPaticipate.useMutation();
 
@@ -44,7 +45,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (!formRef.current) {
       return;
     }
@@ -65,8 +66,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       gender == "Custom" ||
       gender == ""
     ) {
-      (document.getElementById("Notice") as HTMLInputElement).innerHTML =
-        "Please fill in your details.";
+      setNotice("Please fill in your details.");
       setModalPop(false);
       return;
     }
@@ -79,27 +79,34 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Email: data.Email,
       Password: data.Password,
     };
-    setModalPop(true);
     setData(participant);
-    void handleSubmit(participant);
+    try {
+      await handleSubmit(participant);
+      setModalPop(true);
+    } catch (error) {
+      if (error instanceof Error) {
+        setNotice(error.message);
+      } else {
+        setNotice("Something went wrong. Please try again.");
+      }
+      setModalPop(false);
+    }
   };
 
   return (
     <div className="flex flex-col items-center gap-y-6 p-6">
       <div className="h1 text-primary-900">Tell us about yourself</div>
-      <div className="flex h-[844px] w-full flex-col justify-center md:h-[496px]">
-        <RegisterFormBox formRef={formRef} setGender={setGender} />
-        <span
-          className="h5 ml-5 h-0 overflow-visible text-red-600"
-          id="Notice"
-        ></span>
-      </div>
+
+      <RegisterFormBox formRef={formRef} setGender={setGender} />
       <SuccessButton
         router={router}
         setModalPop={setModalPop}
         isModalPop={isModalPop}
         handleClick={handleButtonClick}
       />
+      <span className="h5 h-0 overflow-visible text-red-600" id="Notice">
+        {notice}
+      </span>
     </div>
   );
 }

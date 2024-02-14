@@ -1,9 +1,9 @@
 "use client";
 
-import { type Dispatch, type SetStateAction, useRef, useState } from "react";
+import { type Host, type User } from "@/app/signup/interfaces";
 import { Button } from "@/components/ui/button";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import RegisterFormBox from "./HostRegisterFormBox";
-import { type Host, type User } from "@/app/register/interfaces";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
@@ -23,6 +23,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const { setData, setPage, data } = props;
 
   const [gender, setGender] = useState<string>();
+  const [notice, setNotice] = useState<string>("");
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -47,8 +48,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       gender == "Custom" ||
       gender == ""
     ) {
-      (document.getElementById("Notice") as HTMLInputElement).innerHTML =
-        "Please fill in your details.";
+      setNotice("Please fill in your details.");
       return;
     }
 
@@ -69,16 +69,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   return (
     <div className="flex flex-col items-center gap-y-6 p-6">
-      <div className="h1 font-bold text-primary-900">
-        Tell us about yourself
-      </div>
-      <div className="flex h-[964px] w-full flex-col justify-center md:h-[496px]">
-        <RegisterFormBox setGender={setGender} formRef={formRef} />
-        <span
-          className="h5 ml-5 h-0 w-full min-w-[256px] max-w-[600px] self-center overflow-visible text-red-600 md:max-w-[844px]"
-          id="Notice"
-        ></span>
-      </div>
+      <div className="h1 text-primary-900">Tell us about yourself</div>
+
+      <RegisterFormBox formRef={formRef} setGender={setGender} />
       <Button
         className="h-12 w-[108px] bg-primary-500 text-white"
         variant="outline"
@@ -88,6 +81,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       >
         Next
       </Button>
+      <span className="h5 h-0 overflow-visible text-red-600" id="Notice">
+        {notice}
+      </span>
     </div>
   );
 }

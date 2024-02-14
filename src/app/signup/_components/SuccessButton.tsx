@@ -1,22 +1,22 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogTitle,
-  DialogHeader,
-  DialogTrigger,
   DialogFooter,
-  DialogClose,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useEffect } from "react";
 interface SuccessButtonProps {
   handleClick: () => void | Promise<void>;
   isModalPop: boolean;
-  setModalPop: (pop: boolean) => void;
+  setModalPop?: (pop: boolean) => void;
   router: AppRouterInstance;
 }
 export default function SuccessButton(props: SuccessButtonProps) {
@@ -26,7 +26,9 @@ export default function SuccessButton(props: SuccessButtonProps) {
   };
 
   useEffect(() => {
-    setModalPop(isModalPop);
+    if (setModalPop) {
+      setModalPop(isModalPop);
+    }
   }, [isModalPop, setModalPop]);
 
   return (

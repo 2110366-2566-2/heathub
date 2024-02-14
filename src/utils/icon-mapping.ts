@@ -14,7 +14,7 @@ import {
   faTents,
 } from "@fortawesome/free-solid-svg-icons";
 
-export const tagList = {
+export const tagIcon = {
   Football: faFutbol,
   Music: faMusic,
   "K-pop": faMusic,
@@ -32,5 +32,7 @@ export const tagList = {
   Basketball: faBasketball,
 } as const;
 
-export type Tag = keyof typeof tagList;
+export const tagList = Object.keys(tagIcon) as TagList;
+
+export type Tag = keyof typeof tagIcon;
 export type TagList = Tag[];

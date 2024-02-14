@@ -12,13 +12,6 @@ const config = withUt({
   ],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
       fontFamily: {
         sans: ["var(--font-lato)", ...fontFamily.sans],
@@ -38,6 +31,7 @@ const config = withUt({
         invert: "#ffffff",
         disable: "#cbd5e1",
         bgColor: "#f8fafc",
+        subtle: "#64748B",
         primary: {
           50: "#f2ecff",
           100: "#c3d7ff",
@@ -95,7 +89,3 @@ const config = withUt({
 }) satisfies Config;
 
 export default config;
-
-export default config;
-
-export default config
