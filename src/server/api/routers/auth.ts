@@ -93,26 +93,6 @@ export const authRouter = createTRPCRouter({
       const maxDate = new Date();
       maxDate.setFullYear(maxDate.getFullYear() - (input.ageRange[0] ?? 0)); // min age = 0 = current = maxdate
       minDate.setFullYear(minDate.getFullYear() - (input.ageRange[1] ?? 99)); // max age = 99 = current-99 = mindate
-
-      // const hosts = await ctx.db.query.user.findMany({
-      //   where: and(
-      //     eq(user.role, "host"),
-      //     gte(user.dateOfBirth, minDate),
-      //     lte(user.dateOfBirth, maxDate),
-      //   ),
-      //   columns: {
-      //     aka: true,
-      //     bio: true,
-      //     email: true,
-      //     firstName: true,
-      //     gender: true,
-      //     role: true,
-      //     lastName: true,
-      //     dateOfBirth: true,
-      //     profileImageURL: true,
-      //   },
-      // });
-
       const hosts = await ctx.db
         .select({
           aka: user.aka,
@@ -132,41 +112,6 @@ export const authRouter = createTRPCRouter({
         )
         .innerJoin(hostInterest, eq(user.id, hostInterest.userID))
         .groupBy(user.id);
-
-      // const hosts = await ctx.db.query.hostUser.findMany({
-      //   with: {
-      //     onUser: {
-      //       where: and(
-      //         eq(user.role, "host"),
-      //         gte(user.dateOfBirth, minDate),
-      //         lte(user.dateOfBirth, maxDate),
-      //       ),
-      //       columns: {
-      //         aka: true,
-      //         bio: true,
-      //         email: true,
-      //         firstName: true,
-      //         gender: true,
-      //         role: true,
-      //         lastName: true,
-      //         dateOfBirth: true,
-      //         profileImageURL: true,
-      //       },
-      //     },
-      //     interests: true,
-      //   },
-      // });
-      // const simplifiedHosts = hosts.map((host) => ({
-      //   aka: host.onUser.aka,
-      //   bio: host.onUser.bio,
-      //   email: host.onUser.email,
-      //   firstName: host.onUser.firstName,
-      //   gender: host.onUser.gender,
-      //   role: host.onUser.role,
-      //   lastName: host.onUser.lastName,
-      //   profileImageURL: host.onUser.profileImageURL,
-      //   interests: host.interests.map((interest) => interest.interest),
-      // }));
       return hosts;
     }),
   getHostsByRating: publicProcedure
@@ -203,7 +148,9 @@ export const authRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      console.log(input.interests);
+      if (input.interests.length == 0){
+        throw new Error("Interests array is empty.");
+      }
       const hosts = await ctx.db
         .select({
           aka: user.aka,
