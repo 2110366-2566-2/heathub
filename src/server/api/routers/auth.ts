@@ -122,10 +122,10 @@ export const authRouter = createTRPCRouter({
           gender: user.gender,
           role: user.role,
           lastName: user.lastName,
-          dateOfBirth : user.dateOfBirth,
+          dateOfBirth: user.dateOfBirth,
           profileImageURL: user.profileImageURL,
-          interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
-        })
+          interests: sql`CONCAT('[',GROUP_CONCAT(${hostInterest.interest}),']') AS interests`,
+        }) //use JSON.parse(interests) to interests for turn it to array
         .from(user)
         .where(
           and(gte(user.dateOfBirth, minDate), lte(user.dateOfBirth, maxDate)),
@@ -214,7 +214,7 @@ export const authRouter = createTRPCRouter({
           role: user.role,
           lastName: user.lastName,
           profileImageURL: user.profileImageURL,
-          interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
+          interests: sql`CONCAT('[',GROUP_CONCAT(${hostInterest.interest}),']') AS interests`,
         })
         .from(user)
         .where(
