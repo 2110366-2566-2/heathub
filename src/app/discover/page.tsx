@@ -1,22 +1,19 @@
+"use client";
 import { Input } from "@/components/ui/input";
-import { NavBar, NavBarMobile } from "../_components/navbar";
-import { faCompass } from "@fortawesome/free-solid-svg-icons";
+import { faCompass, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfilePreview } from "./_components/profile-preview";
+import type { TagList } from "../../utils/icon-mapping";
 
 export default function DiscoverPage() {
   return (
-    <div className="flex h-auto flex-row bg-bgColor">
-      <NavBar />
-      <NavBarMobile />
-      <div className="flex w-full flex-col gap-4 p-6 lg:p-9">
-        <div className="flex flex-col gap-4 self-stretch">
-          <Header />
-          <SearchBar />
-        </div>
-        <div className="flex justify-center rounded-xl border border-solid border-primary-300 bg-white p-6 lg:p-9 ">
-          <CardContainer />
-        </div>
+    <div className="flex w-full flex-col gap-4 p-6 lg:p-9">
+      <div className="flex flex-col gap-4 self-stretch">
+        <Header />
+        <SearchBar />
+      </div>
+      <div className="flex justify-center rounded-xl border border-solid border-primary-300 bg-white px-4 py-6 lg:p-9">
+        <CardContainer />
       </div>
     </div>
   );
@@ -30,8 +27,10 @@ function Header() {
           icon={faCompass}
           className="h-10 w-10 text-secondary-400"
         />
-        <div className="h2-bold text-primary-900">Discover</div>
-        <div className="absolute right-0 h-12 w-14 items-center rounded-lg bg-primary-500 p-2 lg:hidden"></div>
+        <div className="h2 font-bold text-primary-900">Discover</div>
+        <div className="absolute right-0 flex h-12 w-14 items-center justify-center rounded-lg bg-primary-500 p-2 lg:hidden">
+          <FontAwesomeIcon icon={faFilter} className="h-5 w-5 text-white" />
+        </div>
       </div>
       <div className="h5 lg:h4 text-primary-700">
         Unlock a World of Possibilities: Find Friends for Every Adventure on
@@ -45,19 +44,46 @@ function SearchBar() {
   return (
     <div className="hidden flex-row items-center gap-4 self-stretch lg:flex">
       <Input className="h-full p-3" placeholder="Search for friends" />
-      <div className="h-12 w-14 rounded-lg bg-primary-500 p-2"></div>
+      <div className="flex h-12 w-14 items-center justify-center rounded-lg bg-primary-500 p-2">
+        <FontAwesomeIcon icon={faFilter} className="h-5 w-5 text-white" />
+      </div>
     </div>
   );
 }
 
-const mockData = [
+type userProps = {
+  name: string;
+  age: number;
+  image: string;
+  rating: number;
+  reviews: number;
+  interests: TagList;
+  about: string;
+};
+
+const mockData: userProps[] = [
   {
-    name: "Rosy",
+    name: "BowyStar",
     age: 23,
     image: "/images/discover/mock-profile/mock-1.jpg",
     rating: 4.5,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: [
+      "Football",
+      "Music",
+      "K-pop",
+      "Movie",
+      "Anime",
+      "Book",
+      "Fashion",
+      "Animal",
+      "Gym",
+      "Photography",
+      "Gaming",
+      "Coffee",
+      "Arts",
+      "Camping",
+    ],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
@@ -67,7 +93,7 @@ const mockData = [
     image: "/images/discover/mock-profile/mock-2.png",
     rating: 5.0,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
@@ -77,37 +103,37 @@ const mockData = [
     image: "/images/discover/mock-profile/mock-3.png",
     rating: 4.9,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
   {
-    name: "Rosy",
+    name: "BowyStar2",
     age: 23,
     image: "/images/discover/mock-profile/mock-1.jpg",
     rating: 4.5,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
   {
-    name: "JaySaeliew",
+    name: "JaySaeliew2",
     age: 21,
     image: "/images/discover/mock-profile/mock-2.png",
     rating: 5.0,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
   {
-    name: "Winnie",
+    name: "Winnie2",
     age: 21,
     image: "/images/discover/mock-profile/mock-3.png",
     rating: 4.9,
     reviews: 10,
-    interests: ["Hiking", "Camping", "Road Trips"],
+    interests: ["Arts", "Camping", "Basketball"],
     about:
       "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
   },
@@ -115,9 +141,9 @@ const mockData = [
 
 function CardContainer() {
   return (
-    <div className="grid w-full grid-cols-1 justify-center gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
-      {mockData.map((profile, index) => (
-        <ProfilePreview {...profile} key={index} />
+    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
+      {mockData.map((profile) => (
+        <ProfilePreview {...profile} key={profile.name} />
       ))}
     </div>
   );

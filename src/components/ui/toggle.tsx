@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 const toggleVariants = cva(
-  "inline-flex items-center justify-center rounded-2xl text-body6 text-white focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors hover:bg-primary-600 hover:text-invert disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-primary-700 data-[state=on]:text-invert",
+  "inline-flex items-center rounded-full justify-center text-body6 text-white focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors hover:bg-primary-600 hover:text-invert disabled:pointer-events-none data-[state=on]:bg-primary-700 data-[state=on]:text-invert",
   {
     variants: {
       variant: {
@@ -16,13 +16,14 @@ const toggleVariants = cva(
         outline:
           "border border-primary-500 text-primary-500 bg-transparent hover:bg-primary-300 hover:text-invert data-[state=on]:bg-primary-400 data-[state=on]:text-invert",
         solid: "bg-primary-500",
+        ghost:
+          "bg-white bg-opacity-50 text-white hover:bg-primary-300 hover:text-invert",
       },
       size: {
-        md: "h-7 px-3",
-        sm: "h-5 px-2.5",
-        lg: "h-10 px-5",
+        md: "h-7 px-3 py-1",
+        sm: "h-5 px-3 py-1",
+        lg: "h-10 px-3 py-1",
       },
-      icon: {},
     },
     defaultVariants: {
       variant: "default",
@@ -34,16 +35,14 @@ const toggleVariants = cva(
 const Toggle = React.forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
-    VariantProps<typeof toggleVariants> & { icons?: IconDefinition }
->(({ className, variant, size, icons, children, ...props }, ref) => (
+    VariantProps<typeof toggleVariants> & { icon?: IconDefinition }
+>(({ className, variant, size, icon, children, ...props }, ref) => (
   <TogglePrimitive.Root
     ref={ref}
     className={cn(toggleVariants({ variant, size, className }))}
     {...props}
   >
-    {icons && (
-      <FontAwesomeIcon icon={icons} className="mr-2 h-4 w-4 text-primary-50" />
-    )}
+    {icon && <FontAwesomeIcon icon={icon} className="mr-2 h-3 w-3" />}
     {children}
   </TogglePrimitive.Root>
 ));

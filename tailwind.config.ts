@@ -17,7 +17,8 @@ const config = withUt({
         sans: ["var(--font-lato)", ...fontFamily.sans],
       },
       screens: {
-        md: "821px",
+        sm: "376px",
+        md: "782px",
         lg: "1024px",
         xl: "1280px",
         "2xl": "1536px",
