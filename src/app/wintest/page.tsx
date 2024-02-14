@@ -1,18 +1,17 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { redirect } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 export default function TestWin() {
   //   const { data: userData } = api.auth.me.useQuery();
-    const { data, isSuccess } = api.auth.getHostsByAge.useQuery({
-      ageRange: [0, 99],
-    });
-    // const { data, isSuccess } = api.auth.getHostsByRating.useQuery({ rating: 0 });
-//   const { data, isSuccess } = api.auth.getHostsByInterest.useQuery({
-//     interests: ["swim"],
-//   });
+  const { data, isSuccess } = api.auth.getHostsByAge.useQuery({
+    ageRange: [0, 99],
+  });
+  // const { data, isSuccess } = api.auth.getHostsByRating.useQuery({ rating: 0 });
+  //   const { data, isSuccess } = api.auth.getHostsByInterest.useQuery({
+  //     interests: ["swim"],
+  //   });
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async () => {
@@ -25,7 +24,7 @@ export default function TestWin() {
         <h1>Test</h1>
 
         {isSuccess ? (
-          data.map((user) => <p>{JSON.stringify(user)}</p>)
+          data.map((user) => <p key={user.aka}>{JSON.stringify(user)}</p>)
         ) : (
           <p>loading</p>
         )}
