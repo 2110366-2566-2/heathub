@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-import { CHAT_MESSAGE_EVENT,RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
+import {
+  CHAT_MESSAGE_EVENT,
+  RECENT_MESSAGE_EVENT,
+} from "@/constants/pusher-events";
 import {
   createTRPCRouter,
   participantProcedure,
@@ -124,7 +127,7 @@ export const chatRouter = createTRPCRouter({
         createdAt: result.createdAt,
       };
 
-      const messages: ChatMessage = result 
+      const messages: ChatMessage = result;
 
       await Promise.all([
         ctx.pusher.trigger(

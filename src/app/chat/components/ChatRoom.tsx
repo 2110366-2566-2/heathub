@@ -50,10 +50,11 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
-      onSuccess: (data)  => {
+      onSuccess: (data) => {
         const latestPage = data.pages.at(-1)?.messages;
         if (latestPage) {
-          setMessages((prev: ChatMessage[]) => [...prev, ...latestPage]);}
+          setMessages((prev: ChatMessage[]) => [...prev, ...latestPage]);
+        }
       },
 
       refetchOnWindowFocus: false,
@@ -72,8 +73,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
         await fetchNextPage();
       }
     })().catch((e) => console.log(e));
-  }, [entry, fetchNextPage, hasNextPage])
-  
+  }, [entry, fetchNextPage, hasNextPage]);
 
   useEffect(() => {
     if (messages.length) {
@@ -90,7 +90,10 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const reversePost = [...messages].reverse();
   return (
     <>
-      <div className="w-full px-14 max-lg:px-6 relative overflow-scroll h-full" ref={containerRef}>
+      <div
+        className="relative h-full w-full overflow-scroll px-14 max-lg:px-6"
+        ref={containerRef}
+      >
         {messages ? (
           <>
             {reversePost.map((message, i) => {
@@ -107,23 +110,26 @@ export function ChatRoom({ withUser }: { withUser: string }) {
                 isShowBot = true;
               if (
                 !isMine &&
-                (i === 0 || reversePost[i - 1]?.sender?.id !== message.sender.id)
+                (i === 0 ||
+                  reversePost[i - 1]?.sender?.id !== message.sender.id)
               )
                 isShowTop = true;
-              if (i === 5) return (
-                <>
-                <div ref={ref} key={message.id} />
-                <ChatMessageComponent
-                  key={message.id}
-                  senderName={message.sender.firstName}
-                  isShowBot={isShowBot}
-                  isMine={isMine}
-                  isShowTop={isShowTop}
-                  message={message.content}
-                  createdAt={message.createdAt.toString()}
-                  imageUrl={message.sender.profileImageURL} />
-                </>
-              )
+              if (i === 5)
+                return (
+                  <>
+                    <div ref={ref} key={message.id} />
+                    <ChatMessageComponent
+                      key={message.id}
+                      senderName={message.sender.firstName}
+                      isShowBot={isShowBot}
+                      isMine={isMine}
+                      isShowTop={isShowTop}
+                      message={message.content}
+                      createdAt={message.createdAt.toString()}
+                      imageUrl={message.sender.profileImageURL}
+                    />
+                  </>
+                );
               return (
                 <ChatMessageComponent
                   key={message.id}
@@ -164,26 +170,30 @@ export function ChatMessageBox(props: { toUserID: string }) {
         sendMessage.mutate({
           content: message,
           toUserID: userID,
-        })
+        });
       }}
-      className="flex flex-row gap-2 bottom-0 w-full bg-white z-10 px-14 max-lg:px-6 items-center justify-center mt-6 mb-14 max-lg:mb-6"
+      className="bottom-0 z-10 mb-14 mt-6 flex w-full flex-row items-center justify-center gap-2 bg-white px-14 max-lg:mb-6 max-lg:px-6"
     >
       <input
         type="text"
         placeholder="Write your message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        className="w-full rounded-xl px-4 py-2 text-black bg-neutral-50 flex-1"
+        className="w-full flex-1 rounded-xl bg-neutral-50 px-4 py-2 text-black"
       />
-      {message !== "" &&
+      {message !== "" && (
         <button
-        type="submit"
-        className="rounded-full bg-primary-500 font-semibold transition w-10 h-10 flex items-center justify-center text-white hover:bg-primary-600"
-        disabled={sendMessage.isLoading}
+          type="submit"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 font-semibold text-white transition hover:bg-primary-600"
+          disabled={sendMessage.isLoading}
         >
-        {!sendMessage.isLoading ? <FontAwesomeIcon icon={faPaperPlane} className="w-4 h-4"/> : <LoadingSVG />}
-      </button>
-      }
+          {!sendMessage.isLoading ? (
+            <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4" />
+          ) : (
+            <LoadingSVG />
+          )}
+        </button>
+      )}
     </form>
   );
 }
