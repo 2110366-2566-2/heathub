@@ -4,8 +4,8 @@ export default function LoadingSVG() {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       style={{ margin: "auto", background: "none", display: "block" }}
-      width="50px"
-      height="50px"
+      width="40px"
+      height="40px"
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid"
     >
