@@ -25,9 +25,9 @@ export default function GenderSelector(props: GenderSelectorProps) {
 
   const checkToggle = (gender: string): string => {
     if (currentGender == gender) {
-      return "flex h-full w-full flex-col gap-y-1 rounded-xl border border-solid border-primary-500 bg-primary-100 py-2 px-0 sm:px-1";
+      return "flex h-20 w-20 md:h-full md:w-full aspect-square flex-col gap-y-1 rounded-xl border border-solid border-primary-500 bg-primary-100 py-2 px-0 md:px-4";
     }
-    return "flex h-full w-full flex-col gap-y-1 rounded-xl border border-solid border-primary-50 bg-primary-50 py-2 px-0 sm:px-1";
+    return "flex h-20 w-20 md:h-full md:w-full aspect-square flex-col gap-y-1 rounded-xl border border-solid border-primary-50 bg-primary-50 py-2 px-0 md:px-4";
   };
 
   return (
@@ -55,33 +55,33 @@ export default function GenderSelector(props: GenderSelectorProps) {
             value="Male"
             aria-label="Toggle Male"
           >
-            <FontAwesomeIcon className="" icon={faMars} />
-            <div className="body6 max-h-4">Male</div>
+            <FontAwesomeIcon className="h-6 w-6" icon={faMars} />
+            <div className="h6 max-h-4">Male</div>
           </ToggleGroupItem>
           <ToggleGroupItem
             className={checkToggle("Female")}
             value="Female"
             aria-label="Toggle Female"
           >
-            <FontAwesomeIcon className="" icon={faVenus} />
-            <div className="body6 max-h-4">Female</div>
+            <FontAwesomeIcon className="h-6 w-6" icon={faVenus} />
+            <div className="h6 max-h-4">Female</div>
           </ToggleGroupItem>
           <ToggleGroupItem
             className={checkToggle("Custom")}
             value="Custom"
             aria-label="Toggle Custom"
           >
-            <FontAwesomeIcon className="" icon={faFemale} />
-            <div className="body6 max-h-4">Custom</div>
+            <FontAwesomeIcon className="h-6 w-6" icon={faFemale} />
+            <div className="h6 max-h-4">Custom</div>
           </ToggleGroupItem>
           <ToggleGroupItem
             className={checkToggle("NotToSay")}
             value="NotToSay"
             aria-label="Toggle NotToSay"
           >
-            <FontAwesomeIcon className="" icon={faFemale} />
-            <div className="body6 max-h-4 overflow-x-visible">
-              Prefer Not {"\n"} To Say
+            <FontAwesomeIcon className="h-6 w-6" icon={faFemale} />
+            <div className="h6 max-h-4 overflow-x-visible leading-4">
+              Prefer Not To Say
             </div>
           </ToggleGroupItem>
         </ToggleGroup>
