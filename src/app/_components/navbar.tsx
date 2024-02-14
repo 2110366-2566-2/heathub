@@ -90,23 +90,44 @@ export function NavBar() {
 }
 
 export function NavBarMobile({ className }: { className?: string }) {
+  const isDiscover = usePathname().startsWith("/discover")
+    ? "text-primary-500"
+    : "text-medium";
+  const isEvent = usePathname().startsWith("/event")
+    ? "text-primary-500"
+    : "text-medium";
+  const isChat = usePathname().startsWith("/chat")
+    ? "text-primary-500"
+    : "text-medium";
   return (
     <nav
       className={cn("fixed bottom-4 z-50 w-full justify-center ", className)}
     >
       <div className=" z-50 mx-auto flex h-16 w-[80%] max-w-[448px] justify-between rounded-3xl bg-white px-9 lg:hidden">
-        <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
-          <FontAwesomeIcon icon={faCompass} className="h-8 w-8 text-medium" />
-        </div>
-        <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
+        <Link
+          href="/discover"
+          className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
+        >
+          <FontAwesomeIcon
+            icon={faCompass}
+            className={cn("h-8 w-8", isDiscover)}
+          />
+        </Link>
+        <Link
+          href="/event"
+          className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
+        >
           <FontAwesomeIcon
             icon={faCalendarCheck}
-            className="h-8 w-8 text-medium"
+            className={cn("h-8 w-8", isEvent)}
           />
-        </div>
-        <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
-          <FontAwesomeIcon icon={faComment} className="h-8 w-8 text-medium" />
-        </div>
+        </Link>
+        <Link
+          href="/chat"
+          className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
+        >
+          <FontAwesomeIcon icon={faComment} className={cn("h-8 w-8", isChat)} />
+        </Link>
         <div className="items-center justify-center self-center">
           <div className="relative flex h-10 w-10">
             <Image
