@@ -70,7 +70,7 @@ export default function UploadProfileImage() {
             },
           });
         }}
-        disabled={!newUrl || !isSubmitting}
+        disabled={!newUrl || isSubmitting}
         className="rounded-lg bg-slate-800 p-4 text-white disabled:cursor-not-allowed disabled:bg-slate-300 "
       >
         {isSubmitting ? "Loading..." : "Confirm"}
