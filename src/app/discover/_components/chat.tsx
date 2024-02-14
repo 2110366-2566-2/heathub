@@ -15,7 +15,6 @@ export default function Chat() {
         className="h-2/5 max-w-6 text-white"
         onClick={(e) => {
           e.stopPropagation();
-          console.log("clicked");
         }}
       />
     </Link>
@@ -34,7 +33,6 @@ export function ChatDialog() {
         className="h-6 w-6 self-center text-white"
         onClick={(e) => {
           e.stopPropagation();
-          console.log("clicked");
         }}
       />
     </Link>

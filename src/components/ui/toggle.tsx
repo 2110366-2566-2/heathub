@@ -42,7 +42,7 @@ const Toggle = React.forwardRef<
     className={cn(toggleVariants({ variant, size, className }))}
     {...props}
   >
-    {icon ? <FontAwesomeIcon icon={icon} className="mr-2 h-3 w-3" /> : ""}
+    {icon && <FontAwesomeIcon icon={icon} className="mr-2 h-3 w-3" />}
     {children}
   </TogglePrimitive.Root>
 ));

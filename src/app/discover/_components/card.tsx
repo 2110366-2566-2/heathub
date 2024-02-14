@@ -37,12 +37,10 @@ export default function Card(props: ProfilePreviewProps) {
                 {tag}
               </Tag>
             ))}
-            {hiddenInterestsCount > 0 ? (
+            {hiddenInterestsCount && (
               <Tag key="hidden-interests" variant="ghost" size="md">
                 +{hiddenInterestsCount} more
               </Tag>
-            ) : (
-              ""
             )}
           </div>
         </div>
