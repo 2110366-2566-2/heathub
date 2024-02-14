@@ -34,7 +34,14 @@ export function ChatMessage(props: ChatMessageProps) {
         >
           {props.senderName}
         </div>
-        <div className={cn("bg-primary-400 p-2 max-w-[240px] break-words", messageBg, messageColor, roundedSide)}>
+        <div
+          className={cn(
+            "max-w-[240px] break-words bg-primary-400 p-2",
+            messageBg,
+            messageColor,
+            roundedSide,
+          )}
+        >
           {props.message}
         </div>
         <div className={cn("small  min-h-1 text-medium", textAlign)}>
