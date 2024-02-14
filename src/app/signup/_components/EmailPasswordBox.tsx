@@ -92,7 +92,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               onKeyUp={formCheck}
             />
             <div
-              className={cn("text-subtle text-sm ", {
+              className={cn("text-sm text-subtle ", {
                 "text-red-500": passwordNotice,
               })}
             >
