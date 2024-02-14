@@ -6,8 +6,10 @@ import {
   bigint,
   date,
   index,
+  int,
   mysqlTable,
   primaryKey,
+  text,
   timestamp,
   varchar,
 } from "drizzle-orm/mysql-core";
@@ -50,14 +52,44 @@ export const hostUser = mysqlTable("host_user", {
   userID: varchar("user_id", {
     length: 64,
   }).primaryKey(),
+  avgRating: int("rating").default(0),
 });
 
-export const hostRelation = relations(hostUser, ({ one }) => ({
+export const hostRelation = relations(hostUser, ({ one, many }) => ({
   onUser: one(user, {
     fields: [hostUser.userID],
     references: [user.id],
   }),
+  interests: many(hostInterest),
+  reviews: many(ratingAndReview),
 }));
+
+export const ratingAndReview = mysqlTable("rating_review", {
+  reviewID: varchar("review_id", {
+    length: 64,
+  }).primaryKey(),
+  appointmentID: varchar("appointment_id", {
+    length: 64,
+  }),
+  participantID: varchar("appointment_id", {
+    length: 64,
+  }),
+  hostID: varchar("appointment_id", {
+    length: 64,
+  }),
+  ratingScore: int("rating_score").default(0),
+  reviewDesc: text("review_description"),
+});
+
+export const ratingAndReviewRelation = relations(
+  ratingAndReview,
+  ({ one }) => ({
+    host: one(hostUser, {
+      fields: [ratingAndReview.hostID],
+      references: [hostUser.userID],
+    }),
+  }),
+);
 
 export const participantUser = mysqlTable("participant_user", {
   userID: varchar("user_id", {
@@ -84,6 +116,13 @@ export const hostInterest = mysqlTable(
     }),
   }),
 );
+
+export const hostInterestRelation = relations(hostInterest, ({ one }) => ({
+  host: one(hostUser, {
+    fields: [hostInterest.userID],
+    references: [hostUser.userID],
+  }),
+}));
 
 export const key = mysqlTable("user_key", {
   id: varchar("id", {
