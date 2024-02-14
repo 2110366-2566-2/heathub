@@ -30,7 +30,8 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
       chatChannel.bind(CHAT_MESSAGE_EVENT, (data: ChatMessage) => {
-        if (data.sender.id !== withUser && data.receiver.id !== withUser) return;
+        if (data.sender.id !== withUser && data.receiver.id !== withUser)
+          return;
         setMessages((prev) => {
           if (prev.some((x) => x.id === data.id)) {
             return prev;
@@ -102,9 +103,16 @@ export function ChatRoom({ withUser }: { withUser: string }) {
               if (message.sender.id === user?.userId) {
                 isMine = true;
               }
-              if (i === messages.length - 1 || reversePost[i + 1]?.sender?.id !== message.sender.id)
+              if (
+                i === messages.length - 1 ||
+                reversePost[i + 1]?.sender?.id !== message.sender.id
+              )
                 isShowBot = true;
-              if (!isMine && (i === 0 || reversePost[i - 1]?.sender?.id !== message.sender.id))
+              if (
+                !isMine &&
+                (i === 0 ||
+                  reversePost[i - 1]?.sender?.id !== message.sender.id)
+              )
                 isShowTop = true;
               if (i === 5)
                 return (
