@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { type User, createHost, createParticipant } from "../interfaces";
 import { type Dispatch, type SetStateAction } from "react";
+import { createHost, createParticipant, type User } from "../interfaces";
 
 interface rolePickerProps {
   setData: (data: User) => void;
@@ -24,7 +24,7 @@ export default function RolePicker(props: rolePickerProps) {
 
   return (
     <div className="flex h-[308px] w-full min-w-[228px] max-w-[360px] flex-col justify-center gap-y-9">
-      <div className="h1 w-full max-w-64 self-center text-center text-primary-900">
+      <div className="h1 w-full max-w-64 self-center text-center font-bold text-primary-900">
         {"Choose \n Your Role"}
       </div>
       <div className="flex flex-col gap-y-4">

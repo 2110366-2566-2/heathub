@@ -90,7 +90,7 @@ function Quote() {
   return (
     <div className="mb-[-10px] flex min-h-0 flex-col items-center justify-center md:h-screen">
       <Image
-        src="/images/signin/group.png"
+        src="/images/signin/Group.png"
         width={565}
         height={338}
         className="ml-[-50px]"
