@@ -1,10 +1,6 @@
 "use client";
 import { cn } from "@/utils/tailwind-merge";
-import {
-  faCalendarCheck,
-  faComment,
-  faCompass,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCalendarCheck, faComment, faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -26,10 +22,7 @@ export function NavBar() {
         >
           <FontAwesomeIcon
             icon={faCompass}
-            className={cn(
-              "h-8 w-8",
-              isDiscover == "block" ? "text-primary-500" : "text-medium",
-            )}
+            className={cn("h-8 w-8", isDiscover == "block" ? "text-primary-500" : "text-medium")}
           />
           <div
             className={cn(
@@ -44,10 +37,7 @@ export function NavBar() {
         >
           <FontAwesomeIcon
             icon={faCalendarCheck}
-            className={cn(
-              "h-8 w-8",
-              isEvent == "block" ? "text-primary-500" : "text-medium",
-            )}
+            className={cn("h-8 w-8", isEvent == "block" ? "text-primary-500" : "text-medium")}
           />
           <div
             className={cn(
@@ -62,10 +52,7 @@ export function NavBar() {
         >
           <FontAwesomeIcon
             icon={faComment}
-            className={cn(
-              "h-8 w-8",
-              isChat == "block" ? "text-primary-500" : "text-medium",
-            )}
+            className={cn("h-8 w-8", isChat == "block" ? "text-primary-500" : "text-medium")}
           />
           <div
             className={cn(
@@ -89,18 +76,15 @@ export function NavBar() {
   );
 }
 
-export function NavBarMobile() {
+export function NavBarMobile({ className }: { className?: string }) {
   return (
-    <nav className="fixed bottom-4 z-50 w-full justify-center ">
+    <nav className={cn("fixed bottom-4 z-50 w-full justify-center ", className)}>
       <div className=" z-50 mx-auto flex h-16 w-[80%] max-w-[448px] justify-between rounded-3xl bg-white px-9 lg:hidden">
         <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
           <FontAwesomeIcon icon={faCompass} className="h-8 w-8 text-medium" />
         </div>
         <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
-          <FontAwesomeIcon
-            icon={faCalendarCheck}
-            className="h-8 w-8 text-medium"
-          />
+          <FontAwesomeIcon icon={faCalendarCheck} className="h-8 w-8 text-medium" />
         </div>
         <div className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer">
           <FontAwesomeIcon icon={faComment} className="h-8 w-8 text-medium" />

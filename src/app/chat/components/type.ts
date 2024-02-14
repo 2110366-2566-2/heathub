@@ -1,4 +1,7 @@
+import { extend } from "dayjs";
+
 export interface MessageCardProps {
+  className?: string;
   discourserId: string;
   discourserAka: string;
   lastestMessage: string;
@@ -6,6 +9,7 @@ export interface MessageCardProps {
   imageUrl: string | null;
 }
 export interface ChatMessageProps {
+  className?: string;
   senderName: string;
   message: MessageType;
   isShowTop: boolean;
