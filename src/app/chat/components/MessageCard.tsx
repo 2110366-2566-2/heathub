@@ -39,7 +39,9 @@ export function MessageCard(props: MessageCardProps) {
           </div>
         </div>
         <div className="flex flex-none flex-col justify-around gap-2 self-start text-primary-600">
-          <div className="small text-primary-600">{Dayjs(props.createdAt).format("HH:mm")}</div>
+          <div className="small text-primary-600">
+            {Dayjs(props.createdAt).format("HH:mm")}
+          </div>
         </div>
       </div>
     </Button>
