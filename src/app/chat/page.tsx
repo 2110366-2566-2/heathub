@@ -5,7 +5,9 @@ export default async function Page() {
     <div className="hidden grow flex-col items-center justify-center gap-2 lg:flex xl:flex">
       <div className="h-fit w-fit">
         <Image priority src={noChat} alt="No chat" />
-        <div className="h2-bold flex  items-center justify-center text-medium">No Message</div>
+        <div className="h2-bold flex  items-center justify-center text-medium">
+          No Message
+        </div>
       </div>
     </div>
   );
