@@ -1,12 +1,12 @@
 "use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
+import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { signIn } from "../../action/auth";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import Link from "next/link";
 
 export default function SignIn() {
   const { data: user } = api.auth.me.useQuery();
@@ -15,7 +15,7 @@ export default function SignIn() {
 
   useEffect(() => {
     if (user) {
-      redirect("/");
+      redirect("/discover");
     }
   }, [user]);
 
@@ -23,7 +23,7 @@ export default function SignIn() {
     setLoading(true);
     const err = await signIn(e);
     if (!err) {
-      redirect("/");
+      redirect("/discover");
     }
     setError(err);
     setLoading(false);
