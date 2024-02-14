@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import GenderSelector from "./GenderSelector";
 import { Textarea } from "@/components/ui/textarea";
-import { DatePicker } from "@/app/_components/DatePicker";
 import { useState } from "react";
 interface RegisterFormBoxProps {
   setGender: (gender: string) => void;

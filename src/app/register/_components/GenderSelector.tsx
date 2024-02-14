@@ -25,9 +25,9 @@ export default function GenderSelector(props: GenderSelectorProps) {
 
   const checkToggle = (gender: string): string => {
     if (currentGender == gender) {
-      return "flex h-full w-full flex-col gap-y-1 rounded-xl border border-solid border-primary-500 bg-primary-100 py-2 md:px-4 px-0";
+      return "flex h-full w-full flex-col gap-y-1 rounded-xl border border-solid border-primary-500 bg-primary-100 py-2 px-0 sm:px-1";
     }
-    return "flex h-full w-full flex-col gap-y-1 rounded-xl border border-solid border-primary-50 bg-primary-50 py-2 md:px-4 px-0";
+    return "flex h-full w-full flex-col gap-y-1 rounded-xl border border-solid border-primary-50 bg-primary-50 py-2 px-0 sm:px-1";
   };
 
   return (
@@ -88,7 +88,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
       </div>
       {isCustom ? (
         <div className="flex w-full flex-col space-y-1.5">
-          <Label className="body5" htmlFor="Custom gender">
+          <Label className="body5" htmlFor="Custom Gender">
             Custom Gender
           </Label>
           <Input

@@ -4,8 +4,6 @@ import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup } from "@/components/ui/toggle-group";
-import { useState } from "react";
-import { chownSync } from "fs";
 
 interface InterestPickerBoxProps {
   selectedInterestList: string[];

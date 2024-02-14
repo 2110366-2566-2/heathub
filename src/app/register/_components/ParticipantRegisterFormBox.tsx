@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import GenderSelector from "@/app/register/_components/GenderSelector";
-import { DatePicker } from "@/app/_components/DatePicker";
 import { useState } from "react";
 
 interface RegisterFormBoxProps {

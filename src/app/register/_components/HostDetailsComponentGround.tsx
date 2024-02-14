@@ -70,10 +70,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   return (
     <div className="flex flex-col items-center gap-y-6 p-6">
       <div className="h1 text-primary-900">Tell us about yourself</div>
-      <div className="flex h-[963px] w-full flex-col justify-center md:h-[496px]">
+      <div className="flex h-[964px] w-full flex-col justify-center md:h-[496px]">
         <RegisterFormBox setGender={setGender} formRef={formRef} />
         <span
-          className="h5 ml-5 h-0 overflow-visible text-red-600"
+          className="h5 ml-5 h-0 w-full min-w-[256px] max-w-[600px] self-center overflow-visible text-red-600 md:max-w-[844px]"
           id="Notice"
         ></span>
       </div>
