@@ -27,13 +27,14 @@ const config = withUt({
       colors: {
         high: "#122f6e",
         medium: "#64748b",
+        subtle: "#F8FAFC",
         placeholder: "#94a3b8",
         invert: "#ffffff",
         disable: "#cbd5e1",
         bgColor: "#f8fafc",
         subtle: "#64748B",
         primary: {
-          50: "#f2ecff",
+          50: "#e4edff",
           100: "#c3d7ff",
           200: "#adbaff",
           300: "#8e9ff0",

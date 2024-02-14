@@ -12,7 +12,13 @@ import { MessageCard } from "./MessageCard";
 import { useIntersection } from "@mantine/hooks";
 import LoadingSVG from "./LoadingSVG";
 
-export function MessageList({ className }: { className?: string }) {
+export function MessageList({
+  className,
+  pagePathName,
+}: {
+  className?: string;
+  pagePathName: string;
+}) {
   "use client";
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
@@ -23,11 +29,7 @@ export function MessageList({ className }: { className?: string }) {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
       chatChannel.bind(RECENT_MESSAGE_EVENT, (message: RecentMessage) => {
-        if (
-          message.myId !== data.userId &&
-          message.discourserId !== data.userId
-        )
-          return;
+        if (message.myId !== data.userId && message.discourserId !== data.userId) return;
         setRecentMessages((prev) => {
           const newRecentMessages = prev.filter((e) => {
             return e.discourserId !== message.discourserId;
@@ -42,7 +44,7 @@ export function MessageList({ className }: { className?: string }) {
 
   const { hasNextPage, fetchNextPage } = api.chat.recentChats.useInfiniteQuery(
     {
-      limit: 1,
+      limit: 10,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -76,34 +78,29 @@ export function MessageList({ className }: { className?: string }) {
     })().catch((e) => console.log(e));
   }, [entry, fetchNextPage]);
 
-  const elements = [];
-  for (let i = 0; i < 20; i++) {
-    // Push JSX elements into the array
-    elements.push(<div key={i}>Element {i}</div>);
-  }
   return (
     <div
       className={cn(
-        "flex h-screen flex-col justify-center bg-purple-100  p-6 md:min-w-[452px]",
+        "flex h-screen flex-col justify-center bg-subtle p-9 md:min-w-[452px]",
         className,
       )}
     >
-      <div className="mb-2 flex flex-row items-center gap-2.5 pl-4">
-        <FontAwesomeIcon
-          icon={faComment}
-          className={"h-8 w-7 text-secondary-400"}
-        />
-        <span className="h2-bold  text-primary-900">Message</span>
+      <div className="mb-5  flex flex-row items-center gap-2.5 pl-4">
+        <FontAwesomeIcon icon={faComment} className={"h-8 w-7 text-secondary-400"} />
+        <span className="h2 font-bold  text-primary-900">Message</span>
       </div>
       <div
         id="scroll"
-        className="scrollbar-hide m-0 flex h-full flex-col items-center gap-4 overflow-y-auto  rounded-lg bg-none
-      p-4"
+        className="scrollbar-hide m-0 flex h-full flex-col items-center gap-4 overflow-y-auto  rounded-lg bg-none"
       >
         {user &&
           recentMessages?.map((data) => {
+            const buttonBg = pagePathName.includes(data.discourserId)
+              ? "bg-primary-50 hover:bg-primary-50 hover:cursor-default "
+              : "bg-white hover:bg-white hover:drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]";
             return (
               <MessageCard
+                className={buttonBg}
                 key={data.id}
                 discourserId={data.discourserId}
                 discourserAka={data.discourserAka}
@@ -113,10 +110,9 @@ export function MessageList({ className }: { className?: string }) {
               />
             );
           })}
-        {elements.map((e) => e)}
         {hasNextPage && (
           <div ref={ref}>
-            <LoadingSVG />
+            <LoadingSVG color="#F55B8E" />
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-export default function LoadingSVG() {
+export default function LoadingSVG({ color }: { color?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +13,7 @@ export default function LoadingSVG() {
         cx="50"
         cy="50"
         fill="none"
-        stroke="#e15b64"
+        stroke={color ?? "white"}
         strokeWidth="10"
         r="35"
         strokeDasharray="164.93361431346415 56.97787143782138"

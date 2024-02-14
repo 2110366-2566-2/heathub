@@ -1,13 +1,12 @@
-import { faComment } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import noChat from "@/../public/svgs/no-chat.svg";
+import Image from "next/image";
 export default async function Page() {
   return (
-    <div className="hidden grow items-center justify-center gap-2 md:flex">
-      <FontAwesomeIcon
-        icon={faComment}
-        className={"h-10 w-10 text-secondary-400"}
-      />
-      <span className="h2-bold text-primary-900">Message</span>
+    <div className="hidden grow flex-col items-center justify-center gap-2 lg:flex xl:flex">
+      <div className="h-fit w-fit">
+        <Image priority src={noChat} alt="No chat" />
+        <div className="h2-bold flex  items-center justify-center text-medium">No Message</div>
+      </div>
     </div>
   );
 }
