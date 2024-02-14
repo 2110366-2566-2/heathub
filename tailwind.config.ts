@@ -31,6 +31,7 @@ const config = withUt({
         invert: "#ffffff",
         disable: "#cbd5e1",
         bgColor: "#f8fafc",
+        subtle: "#64748B",
         primary: {
           50: "#f2ecff",
           100: "#c3d7ff",

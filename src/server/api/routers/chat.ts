@@ -12,8 +12,7 @@ import {
 import type { DB } from "@/server/db";
 import { chatInbox, chatMessage, user } from "@/server/db/schema";
 import { type ChatMessage, type RecentMessage } from "@/types/pusher";
-import { and, eq, lte, or } from "drizzle-orm";
-import { sql, desc } from "drizzle-orm";
+import { and, desc, eq, lte, or, sql } from "drizzle-orm";
 async function createInbox(
   db: DB,
   userID1: string,
@@ -206,8 +205,11 @@ export const chatRouter = createTRPCRouter({
       });
 
       let nextCursor: number | null = null;
-      if (messages.length > limit) {
-        nextCursor = messages.pop()!.id;
+      if (messages.length > limit && limit > 0) {
+        const message = messages.pop();
+        if (message) {
+          nextCursor = message.id;
+        }
       }
 
       return {
@@ -294,7 +296,10 @@ export const chatRouter = createTRPCRouter({
 
       let nextCursor: number | null = null;
       if (messages.slice(0, limit + 1).length > limit) {
-        nextCursor = messages.slice(limit, limit + 1)[0]!.id;
+        const message = messages.slice(limit, limit + 1)[0];
+        if (message) {
+          nextCursor = message.id;
+        }
       }
       return { messages: messages.slice(0, limit), nextCursor };
     }),

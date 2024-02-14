@@ -30,9 +30,6 @@
   .blockquote {
     @apply text-base  italic;
   }
-  .subtle {
-    @apply text-sm  text-[#64748B];
-  }
 }
 @layer utilities {
   .scrollbar-hide::-webkit-scrollbar {
