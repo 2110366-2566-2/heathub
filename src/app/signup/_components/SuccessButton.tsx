@@ -22,7 +22,7 @@ interface SuccessButtonProps {
 export default function SuccessButton(props: SuccessButtonProps) {
   const { handleClick, isModalPop, setModalPop, router } = props;
   const handleStartButton = () => {
-    router.push("/discover");
+    router.push("/signin");
   };
 
   useEffect(() => {
