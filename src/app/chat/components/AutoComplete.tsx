@@ -9,10 +9,12 @@ import usePlacesAutocomplete, {
 import {
   Combobox,
   ComboboxInput,
-  ComboboxPopover,
   ComboboxList,
   ComboboxOption,
+  ComboboxPopover,
 } from "@reach/combobox";
+
+import { Popover, PopoverContent } from "@/components/ui/popover";
 
 function Map() {
   const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
@@ -52,6 +54,7 @@ export const PlacesAutocomplete = ({
   } = usePlacesAutocomplete();
 
   const handleSelect = async (address: string) => {
+    console.log(address);
     setValue(address, false);
     clearSuggestions();
 
@@ -66,19 +69,19 @@ export const PlacesAutocomplete = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
-        className="combobox-input w-full rounded-xl border border-primary-200  p-2 text-primary-500 placeholder-primary-400"
+        className="combobox-input border-primary-200 text-primary-500 placeholder-primary-400 w-full rounded-xl border p-2"
         placeholder="location"
       />
-      <ComboboxPopover className=" z-40">
+      <ComboboxPopover className="z-50" portal={false}>
         <ComboboxList
-          className={`overflow-hidden rounded-md border border-neutral-200 bg-white`}
+          className={`rounded-md border border-neutral-200 bg-white`}
         >
           {status === "OK" &&
             data.map(({ place_id, description }) => (
               <ComboboxOption
                 key={place_id}
                 value={description}
-                className={`p-2 text-primary-500 hover:cursor-pointer hover:bg-primary-50`}
+                className={`text-primary-500 hover:bg-primary-50 z-[9999] cursor-pointer p-2`}
               />
             ))}
         </ComboboxList>

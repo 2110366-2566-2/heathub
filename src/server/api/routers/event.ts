@@ -98,9 +98,11 @@ export const eventRouter = createTRPCRouter({
 
         senderId: lastestEvent.hostID,
         content: {
+          eventId: lastestEvent.id,
           description: lastestEvent.description ?? "",
           location: lastestEvent.location,
           price: lastestEvent.price,
+          status: lastestEvent.status,
           startTime: lastestEvent.startTime,
           endTime: lastestEvent.endTime,
         },
@@ -115,9 +117,11 @@ export const eventRouter = createTRPCRouter({
         discourserImageURL: lastestMessage.sender.profileImageURL,
         contentType: "event",
         content: {
+          eventId: lastestEvent.id,
           description: lastestEvent.description ?? "",
           location: lastestEvent.location,
           price: lastestEvent.price,
+          status: lastestEvent.status,
           startTime: lastestEvent.startTime,
           endTime: lastestEvent.endTime,
         },
@@ -227,7 +231,7 @@ export const eventRouter = createTRPCRouter({
       await ctx.db
         .update(event)
         .set({
-          status: "canceled",
+          status: "cancelled",
         })
         .where(eq(event.id, input.eventID));
     }),
@@ -251,7 +255,7 @@ export const eventRouter = createTRPCRouter({
         throw new Error("Unauthorized");
       }
 
-      if (eventRow.status !== "payment-await") {
+      if (eventRow.status !== "pending") {
         throw new Error("Invalid status");
       }
 
