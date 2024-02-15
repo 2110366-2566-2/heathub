@@ -8,9 +8,10 @@ import { type Channel } from "pusher-js";
 import { usePusher } from "../../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useIntersection } from "@mantine/hooks";
 import LoadingSVG from "./LoadingSVG";
+import { cn } from "@/utils/tailwind-merge";
 
 export function ChatRoom({ withUser }: { withUser: string }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -30,8 +31,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
       chatChannel.bind(CHAT_MESSAGE_EVENT, (data: ChatMessage) => {
-        if (data.sender.id !== withUser && data.receiver.id !== withUser)
-          return;
+        if (data.sender.id !== withUser && data.receiver.id !== withUser) return;
         setMessages((prev) => {
           if (prev.some((x) => x.id === data.id)) {
             return prev;
@@ -103,16 +103,9 @@ export function ChatRoom({ withUser }: { withUser: string }) {
               if (message.sender.id === user?.userId) {
                 isMine = true;
               }
-              if (
-                i === messages.length - 1 ||
-                reversePost[i + 1]?.sender?.id !== message.sender.id
-              )
+              if (i === messages.length - 1 || reversePost[i + 1]?.sender?.id !== message.sender.id)
                 isShowBot = true;
-              if (
-                !isMine &&
-                (i === 0 ||
-                  reversePost[i - 1]?.sender?.id !== message.sender.id)
-              )
+              if (!isMine && (i === 0 || reversePost[i - 1]?.sender?.id !== message.sender.id))
                 isShowTop = true;
               if (i === 5)
                 return (
@@ -162,6 +155,7 @@ export function ChatMessageBox(props: { toUserID: string }) {
       setMessage("");
     },
   });
+  const handleOnClick = () => {};
 
   return (
     <form
@@ -174,6 +168,12 @@ export function ChatMessageBox(props: { toUserID: string }) {
       }}
       className="bottom-0 z-10 mb-14 mt-6 flex w-full flex-row items-center justify-center gap-2 bg-white px-14 max-lg:mb-6 max-lg:px-6"
     >
+      <button className="h-fit w-fit" type="button" onClick={handleOnClick}>
+        <FontAwesomeIcon
+          icon={faPlus}
+          className={cn("h-6 w-6 rounded-full bg-primary-500 p-2 text-white")}
+        />
+      </button>
       <input
         type="text"
         placeholder="Write your message"
