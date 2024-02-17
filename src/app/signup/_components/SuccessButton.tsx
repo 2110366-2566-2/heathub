@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -34,14 +33,12 @@ export default function SuccessButton(props: SuccessButtonProps) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button
-          type="submit"
+        <span
+          className="inline-flex h-12 w-[168px] items-center justify-center rounded-xl bg-primary-500 text-white hover:bg-primary-600 disabled:bg-primary-100"
           onClick={handleClick}
-          className="h-12 w-[168px] bg-primary-500 text-white"
-          variant="outline"
         >
           Create Account
-        </Button>
+        </span>
       </DialogTrigger>
       {isModalPop ? (
         <DialogContent className="h-fit w-full max-w-[360px] rounded-md bg-white">
@@ -57,14 +54,14 @@ export default function SuccessButton(props: SuccessButtonProps) {
           </DialogHeader>
           <DialogFooter className="flex w-full justify-self-center">
             <DialogClose className="w-full">
-              <Button
-                className="h-fit w-full rounded-xl bg-primary-500 text-white"
+              <span
+                className="text-h4 ring-offset-background focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-primary-500 font-medium text-white transition-colors hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-primary-100"
                 onClick={() => {
                   handleStartButton();
                 }}
               >
                 Get Started
-              </Button>
+              </span>
             </DialogClose>
           </DialogFooter>
         </DialogContent>

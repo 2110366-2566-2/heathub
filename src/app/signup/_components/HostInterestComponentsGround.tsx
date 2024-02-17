@@ -10,11 +10,10 @@ import InterestPickerBox from "./InterestPickerBox";
 
 interface ComponentGroundProps {
   data: User;
-  allInterestList: string[];
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
-  const { data, allInterestList } = props;
+  const { data } = props;
   const [isModalPop, setModalPop] = useState<boolean>(false);
   const [notice, setNotice] = useState<string>("");
   const router = useRouter();
@@ -83,7 +82,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     <div className="flex flex-col items-center gap-y-8">
       <div className="h1 text-primary-900">Interests</div>
       <InterestPickerBox
-        allInterestList={allInterestList}
         selectedInterestList={selectedInterestList}
         setSelectedInterestList={setSelectedInterestList}
       />

@@ -13,12 +13,14 @@ interface EmailPasswordBoxProps {
   setValid: (valid: boolean) => void;
   formRef: React.RefObject<HTMLFormElement>;
   data: User;
+  emailNotice: string;
+  setEmailNotice: (emailNotice: string) => void;
 }
 
 const emailSchema = z.string().email();
 
 export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
-  const { setValid, formRef, data } = props;
+  const { setValid, formRef, data, emailNotice, setEmailNotice } = props;
   const [emailText, setEmailText] = useState(data.Email ? data.Email : "");
   const [passwordText, setPasswordText] = useState(
     data.Password ? data.Password : "",
@@ -26,8 +28,6 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   const [cfPasswordText, setCfPasswordText] = useState(
     data.Password ? data.Password : "",
   );
-
-  const [emailNotice, setEmailNotice] = useState<string>("");
 
   const [passwordNotice, setPasswordNotice] = useState<string>("");
 
@@ -39,7 +39,9 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   });
 
   const formCheck = () => {
-    setEmailNotice("");
+    if (emailNotice != "This Email is already exits") {
+      setEmailNotice("");
+    }
     setPasswordNotice("");
     setConfirmPasswordNotice("");
     if (!formRef.current) {
