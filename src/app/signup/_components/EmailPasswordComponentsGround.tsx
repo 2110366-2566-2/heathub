@@ -7,13 +7,7 @@ import {
   type User,
 } from "@/app/signup/interfaces";
 import { Button } from "@/components/ui/button";
-import {
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-  useEffect,
-} from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import EmailPasswordBox from "./EmailPasswordBox";
 import { api } from "@/trpc/react";
 

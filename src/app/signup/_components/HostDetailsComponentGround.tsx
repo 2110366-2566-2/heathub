@@ -2,13 +2,7 @@
 
 import { type Host, type User } from "@/app/signup/interfaces";
 import { Button } from "@/components/ui/button";
-import {
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-  useEffect,
-} from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import RegisterFormBox from "./HostRegisterFormBox";
 import { api } from "@/trpc/react";
 
@@ -105,7 +99,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         className="h-12 w-[108px] bg-primary-500 text-white"
         variant="default"
         onClick={() => {
-          handleButtonClick();
+          void handleButtonClick();
         }}
       >
         Next
