@@ -10,6 +10,7 @@ import {
   useEffect,
 } from "react";
 import RegisterFormBox from "./HostRegisterFormBox";
+import { api } from "@/trpc/react";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
@@ -31,9 +32,17 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const [gender, setGender] = useState<string>((data as Host).Gender);
   const [notice, setNotice] = useState<string>("");
 
+  const testAKA = api.auth.isAKAAlreadyExist.useMutation();
+
+  const isAKADup = async (AKA: string) => {
+    return await testAKA.mutateAsync({
+      aka: AKA,
+    });
+  };
+
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (!formRef.current) {
       return;
     }
@@ -56,6 +65,20 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     ) {
       setNotice("Please fill in your details.");
       return;
+    } else {
+      try {
+        if (await isAKADup(AKAInput ? AKAInput : "")) {
+          setNotice("This AKA is already exits.");
+          return;
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          setNotice(error.message);
+        } else {
+          setNotice("Something went wrong. Please try again.");
+        }
+        return;
+      }
     }
 
     const host: Host = {
