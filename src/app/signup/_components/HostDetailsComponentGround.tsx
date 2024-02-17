@@ -28,7 +28,7 @@ interface ComponentGroundProps {
 export default function ComponentsGround(props: ComponentGroundProps) {
   const { setData, setPage, data } = props;
 
-  const [gender, setGender] = useState<string>();
+  const [gender, setGender] = useState<string>((data as Host).Gender);
   const [notice, setNotice] = useState<string>("");
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -45,9 +45,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const AKAInput = formData.get("AKA") as string | null;
     const BioInput = formData.get("Bio") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
-    if (!gender) {
-      setGender((data as Host).Gender);
-    }
     if (
       !gender ||
       !firstnameInput ||
