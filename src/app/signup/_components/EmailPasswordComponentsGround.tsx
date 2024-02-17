@@ -41,7 +41,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const testEmail = api.auth.isEmailAlreadyExist.useMutation();
 
-  const isEmailExits = async (email: string) => {
+  const isEmailDup = async (email: string) => {
     return await testEmail.mutateAsync({
       email: email,
     });
@@ -57,7 +57,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const email = formData.get("Email") as string | null;
 
     try {
-      if (!(await isEmailExits(email ? email : ""))) {
+      if (!(await isEmailDup(email ? email : ""))) {
         if (isHost(data)) {
           const host: Host = {
             Firstname: "",
