@@ -82,108 +82,163 @@ export const authRouter = createTRPCRouter({
     }));
     return simplifiedHosts;
   }),
-  getHostsByAge: publicProcedure
+  getHostsByFilter: publicProcedure
     .input(
       z.object({
+        interests: z.array(z.string()),
+        rating: z.number(),
+        gender: z.string(),
         ageRange: z.array(z.number()),
       }),
     )
-    .query(async ({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const minDate = new Date();
       const maxDate = new Date();
       maxDate.setFullYear(maxDate.getFullYear() - (input.ageRange[0] ?? 0)); // min age = 0 = current = maxdate
       minDate.setFullYear(minDate.getFullYear() - (input.ageRange[1] ?? 99)); // max age = 99 = current-99 = mindate
-      const hosts = await ctx.db
-        .select({
-          aka: user.aka,
-          bio: user.bio,
-          email: user.email,
-          firstName: user.firstName,
-          gender: user.gender,
-          role: user.role,
-          lastName: user.lastName,
-          dateOfBirth: user.dateOfBirth,
-          profileImageURL: user.profileImageURL,
-          interests: sql`CONCAT('[',GROUP_CONCAT(${hostInterest.interest}),']') AS interests`,
-        }) //use JSON.parse(interests) to interests for turn it to array
-        .from(user)
-        .where(
-          and(gte(user.dateOfBirth, minDate), lte(user.dateOfBirth, maxDate)),
-        )
-        .innerJoin(hostInterest, eq(user.id, hostInterest.userID))
-        .groupBy(user.id);
-      return hosts;
-    }),
-  getHostsByRating: publicProcedure
-    .input(
-      z.object({
-        rating: z.number(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      const hosts = await ctx.db.query.hostUser.findMany({
-        where: gte(hostUser.avgRating, input.rating),
-        with: {
-          onUser: true,
-          interests: true,
-        },
-      });
-      const simplifiedHosts = hosts.map((host) => ({
-        aka: host.onUser.aka,
-        bio: host.onUser.bio,
-        email: host.onUser.email,
-        firstName: host.onUser.firstName,
-        gender: host.onUser.gender,
-        role: host.onUser.role,
-        lastName: host.onUser.lastName,
-        profileImageURL: host.onUser.profileImageURL,
-        interests: host.interests.map((interest) => interest.interest),
-      }));
-      return simplifiedHosts;
-    }),
-  getHostsByInterest: publicProcedure
-    .input(
-      z.object({
-        interests: z.array(z.string()),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      if (input.interests.length == 0){
-        throw new Error("Interests array is empty.");
+      let select: {
+        aka: string;
+        bio: string | null;
+        email: string;
+        firstName: string;
+        gender: string;
+        role: "host" | "participant";
+        lastName: string;
+        dateOfBirth: Date | null;
+        profileImageURL: string | null;
+        interests: unknown;
+      }[] = [];
+      if (input.gender != "" && input.interests.length != 0) {
+        select = await ctx.db
+          .select({
+            aka: user.aka,
+            bio: user.bio,
+            email: user.email,
+            firstName: user.firstName,
+            gender: user.gender,
+            role: user.role,
+            lastName: user.lastName,
+            dateOfBirth: user.dateOfBirth,
+            profileImageURL: user.profileImageURL,
+            interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
+          })
+          .from(hostUser)
+          .where(
+            and(
+              inArray(
+                hostUser.userID,
+                ctx.db
+                  .select({ userID: hostUser.userID })
+                  .from(hostUser)
+                  .innerJoin(hostInterest, eq(hostInterest.userID, user.id))
+                  .where(and(inArray(hostInterest.interest, input.interests)))
+                  .groupBy(hostUser.userID)
+                  .having(
+                    sql`count(${hostUser.userID}) >= ${input.interests.length}`,
+                  ),
+              ),
+              gte(user.dateOfBirth, minDate),
+              lte(user.dateOfBirth, maxDate),
+              gte(hostUser.avgRating, input.rating),
+              eq(user.gender, input.gender),
+            ),
+          )
+          .innerJoin(user, eq(user.id, hostUser.userID))
+          .innerJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
+          .groupBy(hostUser.userID);
+        return select;
       }
-      const hosts = await ctx.db
-        .select({
-          aka: user.aka,
-          bio: user.bio,
-          email: user.email,
-          firstName: user.firstName,
-          gender: user.gender,
-          role: user.role,
-          lastName: user.lastName,
-          profileImageURL: user.profileImageURL,
-          interests: sql`CONCAT('[',GROUP_CONCAT(${hostInterest.interest}),']') AS interests`,
-        })
-        .from(user)
-        .where(
-          inArray(
-            user.id,
-            ctx.db
-              .select({
-                userID: hostUser.userID,
-              })
-              .from(hostUser)
-              .innerJoin(hostInterest, eq(hostUser.userID, hostInterest.userID))
-              .where(inArray(hostInterest.interest, input.interests))
-              .groupBy(hostUser.userID)
-              .having(
-                sql`count(${hostUser.userID}) = ${input.interests.length}`,
-              )
-              .innerJoin(user, eq(hostUser.userID, user.id)),
-          ),
-        )
-        .innerJoin(hostInterest, eq(user.id, hostInterest.userID))
-        .groupBy(user.id);
-      return hosts;
+      if (input.gender != "" && input.interests.length == 0) {
+        select = await ctx.db
+          .select({
+            aka: user.aka,
+            bio: user.bio,
+            email: user.email,
+            firstName: user.firstName,
+            gender: user.gender,
+            role: user.role,
+            lastName: user.lastName,
+            dateOfBirth: user.dateOfBirth,
+            profileImageURL: user.profileImageURL,
+            interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
+          })
+          .from(hostUser)
+          .where(
+            and(
+              gte(user.dateOfBirth, minDate),
+              lte(user.dateOfBirth, maxDate),
+              gte(hostUser.avgRating, input.rating),
+              eq(user.gender, input.gender),
+            ),
+          )
+          .innerJoin(user, eq(user.id, hostUser.userID))
+          .innerJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
+          .groupBy(hostUser.userID);
+        return select;
+      }
+      if (input.gender == "" && input.interests.length != 0) {
+        select = await ctx.db
+          .select({
+            aka: user.aka,
+            bio: user.bio,
+            email: user.email,
+            firstName: user.firstName,
+            gender: user.gender,
+            role: user.role,
+            lastName: user.lastName,
+            dateOfBirth: user.dateOfBirth,
+            profileImageURL: user.profileImageURL,
+            interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
+          })
+          .from(hostUser)
+          .where(
+            and(
+              inArray(
+                hostUser.userID,
+                ctx.db
+                  .select({ userID: hostUser.userID })
+                  .from(hostUser)
+                  .innerJoin(hostInterest, eq(hostInterest.userID, user.id))
+                  .where(and(inArray(hostInterest.interest, input.interests)))
+                  .groupBy(hostUser.userID)
+                  .having(
+                    sql`count(${hostUser.userID}) >= ${input.interests.length}`,
+                  ),
+              ),
+              gte(user.dateOfBirth, minDate),
+              lte(user.dateOfBirth, maxDate),
+              gte(hostUser.avgRating, input.rating),
+            ),
+          )
+          .innerJoin(user, eq(user.id, hostUser.userID))
+          .innerJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
+          .groupBy(hostUser.userID);
+        return select;
+      }
+      if (input.gender == "" && input.interests.length == 0) {
+        select = await ctx.db
+          .select({
+            aka: user.aka,
+            bio: user.bio,
+            email: user.email,
+            firstName: user.firstName,
+            gender: user.gender,
+            role: user.role,
+            lastName: user.lastName,
+            dateOfBirth: user.dateOfBirth,
+            profileImageURL: user.profileImageURL,
+            interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
+          })
+          .from(hostUser)
+          .where(
+            and(gte(user.dateOfBirth, minDate), lte(user.dateOfBirth, maxDate)),
+          )
+          .innerJoin(user, eq(user.id, hostUser.userID))
+          .innerJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
+          .groupBy(hostUser.userID);
+        return select;
+      }
+      return select;
     }),
   isEmailAlreadyExist: publicProcedure
     .input(
