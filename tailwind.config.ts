@@ -32,6 +32,12 @@ const config = withUt({
         invert: "#ffffff",
         disable: "#cbd5e1",
         bgColor: "#f8fafc",
+        error: {
+          default: "#F86C6C",
+          hover: "#E14C4C"
+        },
+        success: "#52D382",
+        pending: "#FFC164",
         primary: {
           50: "#e4edff",
           100: "#c3d7ff",
