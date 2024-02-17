@@ -9,27 +9,40 @@ import { useEffect, useRef, useState } from "react";
 
 interface GenderSelectorProps {
   setGender: (gender: string) => void;
+  gender: string;
 }
 
 export default function GenderSelector(props: GenderSelectorProps) {
-  const { setGender } = props;
-  const [currentGender, setCurrentGender] = useState<string>();
+  const { setGender, gender } = props;
+  const [genderText, setGenderText] = useState(
+    gender == "Male" || gender == "Female" || gender == "NotToSay"
+      ? ""
+      : gender,
+  );
+  const [selectedGender, setSelectedGender] = useState<string>(
+    gender == "Male" ||
+      gender == "Female" ||
+      gender == "NotToSay" ||
+      gender == ""
+      ? gender
+      : "Custom",
+  );
   const [isCustom, setCustom] = useState<boolean>(false);
 
   const customGenderRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (currentGender == "Custom") {
+    if (selectedGender == "Custom") {
       setCustom(true);
     } else {
       setCustom(false);
     }
-  }, [currentGender]);
+  }, [selectedGender]);
 
   const checkToggle = (gender: string): string => {
     return cn(
       "flex h-20 w-20 md:h-full md:w-full aspect-square flex-col gap-y-1 rounded-xl border border-solid py-2 px-0 md:px-4",
-      currentGender == gender
+      selectedGender == gender
         ? "border-primary-500 bg-primary-100"
         : "border-primary-50 bg-primary-50",
     );
@@ -42,9 +55,9 @@ export default function GenderSelector(props: GenderSelectorProps) {
         <ToggleGroup
           className="grid aspect-square w-52 grid-cols-2 gap-4 self-center p-4 md:w-full"
           type="single"
-          value={currentGender}
+          value={selectedGender}
           onValueChange={(val) => {
-            setCurrentGender(val);
+            setSelectedGender(val);
             const customInput = customGenderRef.current?.value;
             if (val == "Custom" && customInput) {
               setGender(customInput);
@@ -98,6 +111,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
           Custom Gender
         </Label>
         <Input
+          value={isCustom ? genderText : ""}
           disabled={!isCustom}
           className="h-9"
           ref={customGenderRef}
@@ -105,6 +119,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
           onChange={(e) => {
             e.preventDefault();
             setGender(e.target.value);
+            setGenderText(e.target.value);
           }}
         />
       </div>

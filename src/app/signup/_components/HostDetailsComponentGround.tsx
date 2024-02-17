@@ -2,7 +2,13 @@
 
 import { type Host, type User } from "@/app/signup/interfaces";
 import { Button } from "@/components/ui/button";
-import { useRef, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+} from "react";
 import RegisterFormBox from "./HostRegisterFormBox";
 
 interface ComponentGroundProps {
@@ -39,7 +45,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const AKAInput = formData.get("AKA") as string | null;
     const BioInput = formData.get("Bio") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
-    const imageInput = formData.get("Image") as File | null;
+    if (!gender) {
+      setGender((data as Host).Gender);
+    }
     if (
       !gender ||
       !firstnameInput ||
@@ -73,7 +81,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     <div className="flex flex-col items-center gap-y-6 p-6">
       <div className="h1 text-primary-900">Tell us about yourself</div>
 
-      <RegisterFormBox formRef={formRef} setGender={setGender} />
+      <RegisterFormBox data={data} formRef={formRef} setGender={setGender} />
       <Button
         className="h-12 w-[108px] bg-primary-500 text-white"
         variant="outline"
