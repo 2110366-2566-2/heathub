@@ -62,26 +62,6 @@ export const authRouter = createTRPCRouter({
     });
     return participants;
   }),
-  getHosts: publicProcedure.query(async ({ ctx }) => {
-    const hosts = await ctx.db.query.hostUser.findMany({
-      with: {
-        onUser: true,
-        interests: true,
-      },
-    });
-    const simplifiedHosts = hosts.map((host) => ({
-      aka: host.onUser.aka,
-      bio: host.onUser.bio,
-      email: host.onUser.email,
-      firstName: host.onUser.firstName,
-      gender: host.onUser.gender,
-      role: host.onUser.role,
-      lastName: host.onUser.lastName,
-      profileImageURL: host.onUser.profileImageURL,
-      interests: host.interests.map((interest) => interest.interest),
-    }));
-    return simplifiedHosts;
-  }),
   getHostsByFilter: publicProcedure
     .input(
       z.object({
