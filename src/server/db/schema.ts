@@ -71,10 +71,10 @@ export const ratingAndReview = mysqlTable("rating_review", {
   appointmentID: varchar("appointment_id", {
     length: 64,
   }),
-  participantID: varchar("appointment_id", {
+  participantID: varchar("participant_id", {
     length: 64,
   }),
-  hostID: varchar("appointment_id", {
+  hostID: varchar("host_id", {
     length: 64,
   }),
   ratingScore: int("rating_score").default(0),
