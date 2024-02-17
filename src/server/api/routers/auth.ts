@@ -71,7 +71,7 @@ export const authRouter = createTRPCRouter({
         ageRange: z.array(z.number()),
       }),
     )
-    .mutation(async ({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       const minDate = new Date();
       const maxDate = new Date();
       maxDate.setFullYear(maxDate.getFullYear() - (input.ageRange[0] ?? 0)); // min age = 0 = current = maxdate
