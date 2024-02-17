@@ -80,7 +80,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       <RegisterFormBox data={data} formRef={formRef} setGender={setGender} />
       <Button
         className="h-12 w-[108px] bg-primary-500 text-white"
-        variant="outline"
+        variant="default"
         onClick={() => {
           handleButtonClick();
         }}

@@ -67,7 +67,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       gender == ""
     ) {
       setNotice("Please fill in your details.");
-      setModalPop(false);
       return;
     }
     const participant: Participant = {
