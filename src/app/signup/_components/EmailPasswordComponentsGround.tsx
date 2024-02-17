@@ -72,7 +72,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   return (
     <div className="flex flex-col items-center gap-y-6">
       <div className="h1 font-bold text-primary-900">Create your account</div>
-      <EmailPasswordBox setValid={setIsValid} formRef={formRef} />
+      <EmailPasswordBox data={data} setValid={setIsValid} formRef={formRef} />
       <Button
         className="absolute bottom-6 h-12 w-[108px] bg-primary-500 text-white sm:static"
         variant="outline"
