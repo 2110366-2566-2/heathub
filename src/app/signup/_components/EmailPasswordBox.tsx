@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/utils/tailwind-merge";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
-import { type Host, type User } from "../interfaces";
+import { type User } from "../interfaces";
 
 interface EmailPasswordBoxProps {
   setValid: (valid: boolean) => void;
@@ -33,6 +33,10 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
 
   const [confirmPasswordNotice, setConfirmPasswordNotice] =
     useState<string>("");
+
+  useEffect(() => {
+    formCheck();
+  });
 
   const formCheck = () => {
     setEmailNotice("");
@@ -109,7 +113,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               }}
             />
             <div
-              className={cn("text-sm text-subtle ", {
+              className={cn("text-sm text-placeholder ", {
                 "text-red-500": passwordNotice,
               })}
             >
