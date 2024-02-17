@@ -111,7 +111,7 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
           </div>
           <div className="h-[0.5px] bg-primary-500 md:h-auto md:w-[0.5px]"></div>
           <div className="h-full">
-            <GenderSelector setGender={setGender} />
+            <GenderSelector gender="" setGender={setGender} />
           </div>
         </form>
       </CardContent>
