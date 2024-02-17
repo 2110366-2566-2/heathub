@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup } from "@/components/ui/toggle-group";
-import { tagList, type TagList, tagIcon } from "../../../utils/icon-mapping";
+import { tagList, tagIcon } from "../../../utils/icon-mapping";
 
 interface InterestPickerBoxProps {
   selectedInterestList: string[];
