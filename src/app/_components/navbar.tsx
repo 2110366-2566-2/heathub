@@ -13,7 +13,7 @@ import Link from "next/link";
 export function NavBar() {
   const pathName = usePathname();
   const isDiscover = pathName.startsWith("/discover") ? "block" : "hidden";
-  const isEvent = pathName.startsWith("/event") ? "block" : "hidden";
+  const isEvent = pathName.startsWith("/myevent") ? "block" : "hidden";
   const isChat = pathName.startsWith("/chat") ? "block" : "hidden";
 
   return (
@@ -40,7 +40,7 @@ export function NavBar() {
         </Link>
         <Link
           className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
-          href="/event"
+          href="/myevent"
         >
           <FontAwesomeIcon
             icon={faCalendarCheck}
@@ -93,7 +93,7 @@ export function NavBarMobile({ className }: { className?: string }) {
   const isDiscover = usePathname().startsWith("/discover")
     ? "text-primary-500"
     : "text-medium";
-  const isEvent = usePathname().startsWith("/event")
+  const isEvent = usePathname().startsWith("/myevent")
     ? "text-primary-500"
     : "text-medium";
   const isChat = usePathname().startsWith("/chat")
@@ -114,7 +114,7 @@ export function NavBarMobile({ className }: { className?: string }) {
           />
         </Link>
         <Link
-          href="/event"
+          href="/myevent"
           className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
         >
           <FontAwesomeIcon

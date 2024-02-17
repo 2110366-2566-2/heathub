@@ -22,7 +22,7 @@ function Content() {
                     <div className="relative flex items-center gap-3 w-full">
                     <FontAwesomeIcon
                         icon={faCalendar}
-                        className="h-10 w-10 text-secondary-400"
+                        className="h-8 w-8 text-secondary-400"
                         />
                     <div className="h2 font-bold text-primary-900">Upcoming Event</div>
                     </div>
