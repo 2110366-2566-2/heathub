@@ -39,7 +39,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   });
 
   const formCheck = () => {
-    if (emailNotice != "This Email is already exits") {
+    if (emailNotice != "This Email is already exits.") {
       setEmailNotice("");
     }
     setPasswordNotice("");

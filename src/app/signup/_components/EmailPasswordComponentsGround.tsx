@@ -86,7 +86,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           setPage("ParticipantDetails");
         }
       } else {
-        setEmailNotice("This Email is already exits");
+        setEmailNotice("This Email is already exits.");
       }
     } catch (error) {
       if (error instanceof Error) {
