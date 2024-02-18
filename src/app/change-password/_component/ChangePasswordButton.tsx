@@ -8,9 +8,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { api } from "@/trpc/react";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
 export default function ChangePasswordButton() {
@@ -28,18 +30,43 @@ export default function ChangePasswordButton() {
     return;
   };
 
-  const handleConfirm = () => {
+  // const router = useRouter();
+  const mutate = api.auth.changePassword.useMutation({});
+  const [error, setError] = useState<string | null>(null);
+  const [criticalError, _setCriticalError] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async () => {
     if (!formRef.current) {
       return;
     }
     const formData = new FormData(formRef.current);
+    const password = formData.get("Current Password") as string;
+    const oldPassword = formData.get("New Password") as string;
+    const confirm_password = formData.get("Ponfirm password") as string;
+    if (password !== confirm_password) {
+      setError("Passwords do not match");
+      return;
+    }
 
-    const oldPwInput = formData.get("Old Password") as string | null;
-    const newPwInput = formData.get("New Password") as string | null;
-    const confirmPwInput = formData.get("Confirm Password") as string | null;
+    try {
+      await mutate.mutateAsync({
+        oldPassword: oldPassword,
+        newPassword: password,
+      });
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(`Error: ${e.message}`);
+      } else {
+        setError("Unknown error");
+      }
+    }
+    // void router.push("/");
   };
 
-  const formRef = useRef<HTMLFormElement>(null);
+  const handleClose = () => {
+    return;
+  };
 
   return (
     <Dialog
@@ -57,15 +84,15 @@ export default function ChangePasswordButton() {
         </span>
       </DialogTrigger>
 
-      <DialogContent className="flex h-[462px] w-full max-w-[422px] flex-col items-center gap-y-4 rounded-md bg-white p-6">
+      <DialogContent className="flex h-fit w-full max-w-[422px] flex-col items-center gap-y-4 rounded-md bg-white p-6">
         <FontAwesomeIcon
           icon={faKey}
           className={"h-12 w-12 text-primary-500"}
         />
         <div className="flex w-full flex-col items-center gap-y-6">
           <div className="h3 font-bold">Change your password</div>
-          <form className="flex w-full flex-col gap-y-2" ref={formRef}>
-            <div className="flex w-full flex-col gap-y-1.5">
+          <form className="flex w-full flex-col gap-y-3" ref={formRef}>
+            <div className="flex w-full flex-col gap-y-1">
               <Label htmlFor="Current Password">Current Password</Label>
               <Input
                 type="text"
@@ -74,7 +101,7 @@ export default function ChangePasswordButton() {
                 placeholder="Enter your current password"
               />
             </div>
-            <div className="flex w-full flex-col gap-y-1.5">
+            <div className="flex w-full flex-col gap-y-1">
               <Label htmlFor="New Password">New Password</Label>
               <Input
                 type="text"
@@ -83,7 +110,7 @@ export default function ChangePasswordButton() {
                 placeholder="New password"
               />
             </div>
-            <div className="flex w-full flex-col gap-y-1.5">
+            <div className="flex w-full flex-col gap-y-1">
               <Label htmlFor="Confirm Password">Confirm Password</Label>
               <Input
                 type="text"
@@ -94,6 +121,21 @@ export default function ChangePasswordButton() {
             </div>
           </form>
         </div>
+        <div className="flex h-10 w-full flex-row-reverse gap-x-3">
+          <span
+            className="inline-flex h-full w-24 items-center justify-center rounded-xl bg-primary-500 text-white hover:cursor-pointer hover:bg-primary-600 disabled:bg-primary-100"
+            onClick={handleSubmit}
+          >
+            Confirm
+          </span>
+          <span
+            className="inline-flex h-full w-20 items-center justify-center rounded-xl border border-primary-500 bg-white text-primary-500 hover:cursor-pointer hover:border-primary-600 hover:text-primary-600 disabled:bg-primary-100"
+            onClick={handleClose}
+          >
+            Cancel
+          </span>
+        </div>
+        {error && <p className="text-red-500">{error}</p>}
       </DialogContent>
     </Dialog>
   );
