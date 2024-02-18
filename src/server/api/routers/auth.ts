@@ -120,7 +120,7 @@ export const authRouter = createTRPCRouter({
           profileImageURL: user.profileImageURL,
           interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
           avgRating: hostUser.avgRating,
-          reviewCount : hostUser.reviewCount,
+          reviewCount: hostUser.reviewCount,
         })
         .from(hostUser)
         .where(
