@@ -1,6 +1,14 @@
 import { removeUploadthingURLPrefix, utapi } from "@/app/api/uploadthing/core";
-import { createTRPCRouter, userProcedure } from "@/server/api/trpc";
-import { unconfirmedUserProfileImage, user } from "@/server/db/schema";
+import {
+  createTRPCRouter,
+  hostProcedure,
+  userProcedure,
+} from "@/server/api/trpc";
+import {
+  hostInterest,
+  unconfirmedUserProfileImage,
+  user,
+} from "@/server/db/schema";
 import { SQL, and, eq, ne, or } from "drizzle-orm";
 import { z } from "zod";
 
@@ -109,6 +117,27 @@ export const profileRouter = createTRPCRouter({
         dateOfBirth: input.dateOfBirth,
         email: input.email,
         gender: input.gender,
+      });
+    }),
+
+  updateInterests: hostProcedure
+    .input(
+      z.object({
+        interests: z.string().array(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.transaction(async (tx) => {
+        await tx
+          .delete(hostInterest)
+          .where(eq(hostInterest.userID, ctx.session.user.userId));
+
+        const values = input.interests.map((v) => ({
+          userID: ctx.session.user.userId,
+          interest: v,
+        }));
+
+        await tx.insert(hostInterest).values(values);
       });
     }),
 });
