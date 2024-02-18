@@ -53,6 +53,7 @@ export const hostUser = mysqlTable("host_user", {
     length: 64,
   }).primaryKey(),
   avgRating: int("rating").default(0),
+  reviewCount: int("review_count").default(0),
 });
 
 export const hostRelation = relations(hostUser, ({ one, many }) => ({
