@@ -93,7 +93,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   return (
     <div className="flex flex-col items-center gap-y-6 p-6">
-      <div className="h1 text-primary-900">Tell us about yourself</div>
+      <div className="h1 font-bold text-primary-900">
+        Tell us about yourself
+      </div>
 
       <RegisterFormBox data={data} formRef={formRef} setGender={setGender} />
       <Button
