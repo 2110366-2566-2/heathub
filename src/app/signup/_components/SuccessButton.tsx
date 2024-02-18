@@ -11,7 +11,7 @@ import {
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 interface SuccessButtonProps {
   handleClick: () => void | Promise<void>;
   isModalPop: boolean;
@@ -24,6 +24,11 @@ export default function SuccessButton(props: SuccessButtonProps) {
     router.push("/signin");
   };
 
+  const [isOpen, setOpen] = useState(false);
+  useEffect(() => {
+    setOpen(true);
+  }, [isOpen]);
+
   useEffect(() => {
     if (setModalPop) {
       setModalPop(isModalPop);
@@ -31,7 +36,12 @@ export default function SuccessButton(props: SuccessButtonProps) {
   }, [isModalPop, setModalPop]);
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={() => {
+        setOpen(true);
+      }}
+      open={isOpen}
+    >
       <DialogTrigger>
         <span
           className="inline-flex h-12 w-[168px] items-center justify-center rounded-xl bg-primary-500 text-white hover:bg-primary-600 disabled:bg-primary-100"
@@ -53,16 +63,16 @@ export default function SuccessButton(props: SuccessButtonProps) {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="flex w-full justify-self-center">
-            <DialogClose className="w-full">
-              <span
-                className="text-h4 ring-offset-background focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-primary-500 font-medium text-white transition-colors hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-primary-100"
-                onClick={() => {
-                  handleStartButton();
-                }}
-              >
-                Get Started
-              </span>
-            </DialogClose>
+            {/* <DialogClose className="w-full"> */}
+            <span
+              className="text-h4 ring-offset-background focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-primary-500 font-medium text-white transition-colors hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-primary-100"
+              onClick={() => {
+                handleStartButton();
+              }}
+            >
+              Get Started
+            </span>
+            {/* </DialogClose> */}
           </DialogFooter>
         </DialogContent>
       ) : (
