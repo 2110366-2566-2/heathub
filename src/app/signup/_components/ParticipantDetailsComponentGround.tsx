@@ -88,13 +88,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       } else {
         setNotice("Something went wrong. Please try again.");
       }
-      setModalPop(false);
     }
   };
 
   return (
     <div className="flex flex-col items-center gap-y-6 p-6">
-      <div className="h1 text-primary-900">Tell us about yourself</div>
+      <div className="h1 font-bold text-primary-900">
+        Tell us about yourself
+      </div>
 
       <RegisterFormBox formRef={formRef} setGender={setGender} />
       <SuccessButton

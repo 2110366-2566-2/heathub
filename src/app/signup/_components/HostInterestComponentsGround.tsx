@@ -67,7 +67,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   return (
     <div className="flex flex-col items-center gap-y-8">
-      <div className="h1 text-primary-900">Interests</div>
+      <div className="h1 font-bold text-primary-900">Interests</div>
       <InterestPickerBox
         selectedInterestList={selectedInterestList}
         setSelectedInterestList={setSelectedInterestList}
