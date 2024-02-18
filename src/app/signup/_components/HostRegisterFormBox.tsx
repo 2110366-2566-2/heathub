@@ -22,7 +22,9 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
   const condition = !!host.Firstname;
   const [firstText, setFirstText] = useState(condition ? host.Firstname : "");
   const [lastText, setLastText] = useState(condition ? host.Lastname : "");
-  const [AKAText, setAKAText] = useState(condition ? host.AKA : "");
+  const [usernameText, setUsernameText] = useState(
+    condition ? host.Username : "",
+  );
   const [bioText, setBioText] = useState(condition ? host.Bio : "");
   const [DOBText, setDOBText] = useState(
     condition ? host.DOB.toISOString().slice(0, 10) : "",
@@ -83,15 +85,15 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
-                <Label htmlFor="AKA">AKA</Label>
+                <Label htmlFor="Username">Username</Label>
                 <Input
-                  value={AKAText}
+                  value={usernameText}
                   type="text"
                   className="h-9"
-                  name="AKA"
-                  placeholder="Enter your aka"
+                  name="Username"
+                  placeholder="Enter your username"
                   onChange={(e) => {
-                    setAKAText(e.target.value);
+                    setUsernameText(e.target.value);
                   }}
                 />
               </div>

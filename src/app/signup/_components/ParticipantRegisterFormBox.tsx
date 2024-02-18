@@ -66,12 +66,12 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
-                <Label htmlFor="AKA">AKA</Label>
+                <Label htmlFor="Username">Username</Label>
                 <Input
                   type="text"
                   className="h-9"
-                  name="AKA"
-                  placeholder="Enter your aka"
+                  name="Username"
+                  placeholder="Enter your username"
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">

@@ -34,7 +34,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     await signUpPaticipate.mutateAsync({
       email: participant.Email,
       password: participant.Password,
-      aka: participant.AKA,
+      aka: participant.Username,
       firstName: participant.Firstname,
       lastName: participant.Lastname,
       gender: participant.Gender,
@@ -54,14 +54,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
     const firstnameInput = formData.get("Firstname") as string | null;
     const lastnameInput = formData.get("Lastname") as string | null;
-    const AKAInput = formData.get("AKA") as string | null;
+    const usernameInput = formData.get("Username") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
 
     if (
       !gender ||
       !firstnameInput ||
       !lastnameInput ||
-      !AKAInput ||
+      !usernameInput ||
       !DOBInput ||
       gender == "Custom" ||
       gender == ""
@@ -72,7 +72,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const participant: Participant = {
       Firstname: firstnameInput,
       Lastname: lastnameInput,
-      AKA: AKAInput,
+      Username: usernameInput,
       DOB: new Date(DOBInput),
       Gender: gender,
       Email: data.Email,
