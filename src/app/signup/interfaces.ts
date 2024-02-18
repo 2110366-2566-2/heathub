@@ -1,24 +1,22 @@
 export interface User {
   Email: string;
   Password: string;
+  Firstname: string;
+  Lastname: string;
+  AKA: string;
+  DOB: Date;
 }
 
 export interface Host extends User {
-  Firstname: string;
-  Lastname: string;
-  AKA: string;
   Bio: string;
-  DOB: Date;
   Gender: string;
   Interest: string[];
+  Image: File | null;
 }
 
 export interface Participant extends User {
-  Firstname: string;
-  Lastname: string;
-  AKA: string;
-  DOB: Date;
   Gender: string;
+  Image: File | null;
 }
 
 export const createHost = () => {
@@ -32,6 +30,7 @@ export const createHost = () => {
     Password: "",
     DOB: new Date(),
     Interest: [],
+    Image: null,
   };
   return user;
 };
@@ -45,6 +44,7 @@ export const createParticipant = () => {
     Email: "",
     Password: "",
     DOB: new Date(),
+    Image: null,
   };
   return user;
 };
