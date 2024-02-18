@@ -11,7 +11,7 @@ import {
   user,
 } from "@/server/db/schema";
 import { sendResetPasswordEmail } from "@/server/resend/resend";
-import { type SQL, and, eq, gte, inArray, lte, sql } from "drizzle-orm";
+import { and, eq, gte, inArray, lte, sql, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 export const authRouter = createTRPCRouter({
