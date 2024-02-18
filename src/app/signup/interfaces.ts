@@ -5,19 +5,16 @@ export interface User {
   Lastname: string;
   AKA: string;
   DOB: Date;
+  Image: File | null;
+  Gender: string;
 }
 
 export interface Host extends User {
   Bio: string;
-  Gender: string;
   Interest: string[];
-  Image: File | null;
 }
 
-export interface Participant extends User {
-  Gender: string;
-  Image: File | null;
-}
+export type Participant = User;
 
 export const createHost = () => {
   const user: Host = {
