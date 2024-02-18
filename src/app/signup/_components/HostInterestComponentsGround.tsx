@@ -52,7 +52,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       await signUpHost.mutateAsync({
         email: host.Email,
         password: host.Password,
-        username: host.AKA,
+        username: host.Username,
         firstName: host.Firstname,
         lastName: host.Lastname,
         gender: host.Gender,

@@ -31,6 +31,19 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     }
   }, [userData]);
 
+  const handleSubmit = async (participant: Participant) => {
+    await signUpPaticipate.mutateAsync({
+      email: participant.Email,
+      password: participant.Password,
+      aka: participant.Username,
+      firstName: participant.Firstname,
+      lastName: participant.Lastname,
+      gender: participant.Gender,
+      bio: "",
+      dateOfBirth: participant.DOB,
+    });
+  };
+
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleButtonClick = async () => {
@@ -41,7 +54,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const formData = new FormData(formRef.current);
     const firstnameInput = formData.get("Firstname") as string | null;
     const lastnameInput = formData.get("Lastname") as string | null;
-    const AKAInput = formData.get("AKA") as string | null;
+    const usernameInput = formData.get("Username") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
     const imageInput = formData.get("Image") as File | null;
 
@@ -49,7 +62,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       !gender ||
       !firstnameInput ||
       !lastnameInput ||
-      !AKAInput ||
+      !usernameInput ||
       !DOBInput ||
       gender == "Custom" ||
       gender == ""
@@ -65,7 +78,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const participant: Participant = {
       Firstname: firstnameInput,
       Lastname: lastnameInput,
-      AKA: AKAInput,
+      Username: usernameInput,
       DOB: new Date(DOBInput),
       Gender: gender,
       Email: data.Email,

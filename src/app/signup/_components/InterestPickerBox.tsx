@@ -3,7 +3,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup } from "@/components/ui/toggle-group";
-import { tagList, tagIcon } from "../../../utils/icon-mapping";
+import {
+  tagList as allInterestList,
+  tagIcon,
+} from "../../../utils/icon-mapping";
 
 interface InterestPickerBoxProps {
   selectedInterestList: string[];
@@ -11,7 +14,6 @@ interface InterestPickerBoxProps {
 }
 
 export default function InterestPickerBox(props: InterestPickerBoxProps) {
-  const allInterestList = tagList;
   const { selectedInterestList, setSelectedInterestList } = props;
   const handleSelectedInterestList = (handleItem: string) => {
     // add if don't have, remove is have
@@ -40,7 +42,7 @@ export default function InterestPickerBox(props: InterestPickerBoxProps) {
                 icon={tagIcon[interestItem]}
                 size="md"
                 onClick={() => {
-                  handleSelectedInterestList(interestItem as string);
+                  handleSelectedInterestList(interestItem);
                 }}
               >
                 {interestItem}

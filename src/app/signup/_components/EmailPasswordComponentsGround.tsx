@@ -56,7 +56,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           const host: Host = {
             Firstname: "",
             Lastname: "",
-            AKA: "",
+            Username: "",
             Bio: "",
             DOB: new Date(),
             Gender: "",
@@ -70,7 +70,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           const participant: Participant = {
             Firstname: "",
             Lastname: "",
-            AKA: "",
+            Username: "",
             DOB: new Date(),
             Gender: "",
             Email: email ? email : "",

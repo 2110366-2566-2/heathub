@@ -34,11 +34,8 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
   const [confirmPasswordNotice, setConfirmPasswordNotice] =
     useState<string>("");
 
-  useEffect(() => {
-    formCheck();
-  });
-
   const formCheck = () => {
+    console.log("formCheck");
     if (emailNotice != "This Email is already exits.") {
       setEmailNotice("");
     }
@@ -80,6 +77,10 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
     setValid(valid);
   };
 
+  useEffect(() => {
+    formCheck();
+  }, []);
+
   return (
     <Card className="w-fit justify-center rounded-3xl border-solid border-primary-500 bg-white p-12">
       <CardContent className="flex h-full w-full justify-center p-0">
@@ -93,6 +94,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               type="text"
               name="Email"
               placeholder="Enter your Email"
+              onKeyUp={formCheck}
               onChange={(e) => {
                 setEmailText(e.currentTarget.value);
               }}
@@ -108,6 +110,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               type="password"
               name="Password"
               placeholder="Enter your password"
+              onKeyUp={formCheck}
               onChange={(e) => {
                 setPasswordText(e.currentTarget.value);
               }}
@@ -129,6 +132,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               type="password"
               name="Confirm Password"
               placeholder="Enter your password"
+              onKeyUp={formCheck}
               onChange={(e) => {
                 setCfPasswordText(e.currentTarget.value);
               }}
