@@ -23,14 +23,14 @@ interface ComponentGroundProps {
 export default function ComponentsGround(props: ComponentGroundProps) {
   const { setData, setPage, data } = props;
 
-  const [gender, setGender] = useState<string>((data as Host).Gender);
+  const [gender, setGender] = useState<string>(data.Gender);
   const [notice, setNotice] = useState<string>("");
 
-  const testAKA = api.auth.isAKAAlreadyExist.useMutation();
+  const testUsername = api.auth.isAKAAlreadyExist.useMutation();
 
-  const isAKADup = async (AKA: string) => {
-    return await testAKA.mutateAsync({
-      aka: AKA,
+  const isUsernameDup = async (username: string) => {
+    return await testUsername.mutateAsync({
+      aka: username,
     });
   };
 
@@ -45,14 +45,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
     const firstnameInput = formData.get("Firstname") as string | null;
     const lastnameInput = formData.get("Lastname") as string | null;
-    const AKAInput = formData.get("AKA") as string | null;
-    const BioInput = formData.get("Bio") as string | null;
+    const usernameInput = formData.get("Username") as string | null;
+    const bioInput = formData.get("Bio") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
     if (
       !gender ||
       !firstnameInput ||
       !lastnameInput ||
-      !AKAInput ||
+      !usernameInput ||
       !DOBInput ||
       gender == "Custom" ||
       gender == ""
@@ -61,8 +61,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       return;
     } else {
       try {
-        if (await isAKADup(AKAInput ? AKAInput : "")) {
-          setNotice("This AKA is already exits.");
+        if (await isUsernameDup(usernameInput ? usernameInput : "")) {
+          setNotice("This username is already exits.");
           return;
         }
       } catch (error) {
@@ -78,8 +78,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const host: Host = {
       Firstname: firstnameInput,
       Lastname: lastnameInput,
-      AKA: AKAInput,
-      Bio: BioInput ? BioInput : "",
+      Username: usernameInput,
+      Bio: bioInput ? bioInput : "",
       DOB: new Date(DOBInput),
       Gender: gender,
       Email: data.Email,
