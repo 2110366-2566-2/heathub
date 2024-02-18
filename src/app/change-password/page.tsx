@@ -3,6 +3,7 @@
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ChangePasswordButton from "./_component/ChangePasswordButton";
 
 export default function ChangePassword() {
   const router = useRouter();
@@ -69,6 +70,7 @@ export default function ChangePassword() {
             Sign In
           </button>
         </form>
+        <ChangePasswordButton />
       </div>
     </main>
   );
