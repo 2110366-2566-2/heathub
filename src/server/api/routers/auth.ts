@@ -119,6 +119,8 @@ export const authRouter = createTRPCRouter({
           dateOfBirth: user.dateOfBirth,
           profileImageURL: user.profileImageURL,
           interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
+          avgRating: hostUser.avgRating,
+          reviewCount : hostUser.reviewCount,
         })
         .from(hostUser)
         .where(
@@ -135,7 +137,7 @@ export const authRouter = createTRPCRouter({
         .then((result) => {
           return result.map((row) => ({
             ...row,
-            interests: (row.interests as string).split(","), // Split the string into an array
+            interests: (row.interests as string).split(","),
           }));
         });
       return select;
