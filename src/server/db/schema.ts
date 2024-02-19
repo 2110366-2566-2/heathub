@@ -5,6 +5,7 @@ import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   date,
+  float,
   index,
   int,
   mysqlTable,
@@ -52,7 +53,7 @@ export const hostUser = mysqlTable("host_user", {
   userID: varchar("user_id", {
     length: 64,
   }).primaryKey(),
-  avgRating: int("rating").default(0),
+  avgRating: float("rating").default(0),
   reviewCount: int("review_count").default(0),
 });
 

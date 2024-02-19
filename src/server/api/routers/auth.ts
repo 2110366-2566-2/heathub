@@ -68,7 +68,7 @@ export const authRouter = createTRPCRouter({
         interests: z.array(z.string()).optional(),
         rating: z.number().optional(),
         gender: z.string().optional(),
-        ageRange: z.tuple([z.number() || 0, z.number() || 99]).optional(),
+        ageRange: z.tuple([z.number().default(0), z.number().default(99)]).optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -77,8 +77,8 @@ export const authRouter = createTRPCRouter({
       }
       const minDate = new Date();
       const maxDate = new Date();
-      maxDate.setFullYear(maxDate.getFullYear() - (input.ageRange[0] ?? 0)); // min age = 0 = current = maxdate
-      minDate.setFullYear(minDate.getFullYear() - (input.ageRange[1] ?? 99)); // max age = 99 = current-99 = mindate
+      maxDate.setFullYear(maxDate.getFullYear() - Math.max(input.ageRange[0],0)); // min age = 0 = current = maxdate
+      minDate.setFullYear(minDate.getFullYear() - Math.min(input.ageRange[1],99)); // max age = 99 = current-99 = mindate
       let checkInput: SQL<unknown>[] = [];
       if (!input.rating) {
         input.rating = 0;
