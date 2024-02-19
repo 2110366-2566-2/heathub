@@ -48,6 +48,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const usernameInput = formData.get("Username") as string | null;
     const bioInput = formData.get("Bio") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
+    const imageInput = formData.get("Image") as File | null;
     if (
       !gender ||
       !firstnameInput ||
@@ -85,6 +86,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Email: data.Email,
       Password: data.Password,
       Interest: [],
+      Image: imageInput ? imageInput : null,
     };
     setData(host);
     setPage("HostInterest");

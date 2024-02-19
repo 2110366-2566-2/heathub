@@ -7,6 +7,7 @@ import RegisterFormBox from "./ParticipantRegisterFormBox";
 import { api } from "@/trpc/react";
 import { redirect, useRouter } from "next/navigation";
 import SuccessButton from "./SuccessButton";
+import { uploadFiles } from "@/components/ui/upload";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
@@ -40,6 +41,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       gender: participant.Gender,
       bio: "",
       dateOfBirth: participant.DOB,
+      imageUrl: participant.Image,
     });
   };
 
@@ -56,6 +58,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const lastnameInput = formData.get("Lastname") as string | null;
     const usernameInput = formData.get("Username") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
+    const imageInput = formData.get("Image") as File | null;
 
     if (
       !gender ||
@@ -69,6 +72,20 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       setNotice("Please fill in your details.");
       return;
     }
+    if (!imageInput) {
+      setNotice("Please upload a profile picture.");
+      return;
+    }
+
+    const files = [imageInput];
+    const res = await uploadFiles("signupProfileUploader", {
+      files,
+    });
+    if (res.length !== 1) {
+      setNotice("An error occurred");
+      return;
+    }
+    const imageUrl = res[0]?.url ? res[0].url : "";
     const participant: Participant = {
       Firstname: firstnameInput,
       Lastname: lastnameInput,
@@ -77,6 +94,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Gender: gender,
       Email: data.Email,
       Password: data.Password,
+      Image: imageUrl,
     };
     setData(participant);
     try {

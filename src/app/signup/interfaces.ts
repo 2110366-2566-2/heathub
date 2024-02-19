@@ -5,7 +5,12 @@ export interface User {
   Lastname: string;
   Username: string;
   DOB: Date;
+  Image: File | null;
   Gender: string;
+}
+
+export interface Host extends User {
+  Bio: string;
 }
 
 export interface Host extends User {
@@ -13,6 +18,7 @@ export interface Host extends User {
   Interest: string[];
 }
 
+export type Participant = User;
 export type Participant = User;
 
 export const createHost = () => {
@@ -26,6 +32,7 @@ export const createHost = () => {
     Password: "",
     DOB: new Date(),
     Interest: [],
+    Image: null,
   };
   return user;
 };
@@ -39,6 +46,7 @@ export const createParticipant = () => {
     Email: "",
     Password: "",
     DOB: new Date(),
+    Image: null,
   };
   return user;
 };
