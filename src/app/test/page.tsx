@@ -1,10 +1,9 @@
-import ChatEventForm from "../chat/components/ChatEventForm";
-import GoogleMapLocation from "../chat/components/GoogleMapLocation";
+import Place from "@/app/chat/components/AutoComplete";
 export default function Page() {
   return (
-    <div>
-      <ChatEventForm />
-      <GoogleMapLocation />
+    <div className="p-5">
+      <Place />
+      {/* <GoogleMapLocation /> */}
     </div>
   );
 }
