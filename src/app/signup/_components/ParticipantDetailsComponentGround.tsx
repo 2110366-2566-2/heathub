@@ -32,6 +32,20 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   }, [userData]);
 
   const handleSubmit = async (participant: Participant) => {
+    if (!participant.Image) {
+      setNotice("Please upload a profile picture.");
+      return;
+    }
+
+    const files = [participant.Image];
+    const res = await uploadFiles("signupProfileUploader", {
+      files,
+    });
+    if (res.length !== 1) {
+      setNotice("An error occurred");
+      return;
+    }
+    const imageUrl = res[0]?.url ? res[0].url : "";
     await signUpPaticipate.mutateAsync({
       email: participant.Email,
       password: participant.Password,
@@ -41,7 +55,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       gender: participant.Gender,
       bio: "",
       dateOfBirth: participant.DOB,
-      imageUrl: participant.Image,
+      imageUrl: imageUrl,
     });
   };
 
@@ -77,15 +91,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       return;
     }
 
-    const files = [imageInput];
-    const res = await uploadFiles("signupProfileUploader", {
-      files,
-    });
-    if (res.length !== 1) {
-      setNotice("An error occurred");
-      return;
-    }
-    const imageUrl = res[0]?.url ? res[0].url : "";
     const participant: Participant = {
       Firstname: firstnameInput,
       Lastname: lastnameInput,
@@ -94,7 +99,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Gender: gender,
       Email: data.Email,
       Password: data.Password,
-      Image: imageUrl,
+      Image: imageInput,
     };
     setData(participant);
     try {
