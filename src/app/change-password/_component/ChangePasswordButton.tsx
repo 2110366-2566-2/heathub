@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
-import { faKey } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
@@ -132,9 +132,15 @@ export default function ChangePasswordButton() {
                 name="New Password"
                 placeholder="New password"
               />
-              <span className={cn("text-sm", noticeColor)}>
-                The password must be at least 8 characters.
-              </span>
+              <div className="flex flex-row gap-x-1">
+                <FontAwesomeIcon
+                  icon={faCircleInfo}
+                  className={cn("h-4 w-4", noticeColor)}
+                />
+                <span className={cn("text-sm", noticeColor)}>
+                  The password must be at least 8 characters.
+                </span>
+              </div>
             </div>
             <div className="flex w-full flex-col gap-y-1">
               <Label htmlFor="Confirm Password">Confirm Password</Label>
