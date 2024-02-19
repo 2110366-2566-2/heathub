@@ -4,6 +4,7 @@ import { Lato } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import { Toaster } from "@/components/ui/sonner";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={`${lato.variable} font-sans`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           {children}
+          <Toaster />
         </TRPCReactProvider>
       </body>
     </html>

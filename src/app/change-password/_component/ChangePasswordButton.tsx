@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 export default function ChangePasswordButton() {
   const router = useRouter();
@@ -72,7 +73,9 @@ export default function ChangePasswordButton() {
         newPassword: password,
       });
       handleClose();
-      //**********show toast************
+      toast("Password changed", {
+        description: "Your password has been changed successfully.",
+      });
       console.log(`password change to ${password}`);
     } catch (e: unknown) {
       if (e instanceof Error) {
