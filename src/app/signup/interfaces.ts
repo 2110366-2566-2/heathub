@@ -19,7 +19,6 @@ export interface Host extends User {
 }
 
 export type Participant = User;
-export type Participant = User;
 
 export const createHost = () => {
   const user: Host = {
