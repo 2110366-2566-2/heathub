@@ -4,6 +4,7 @@ import { Nunito } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import { Toaster } from "@/components/ui/sonner";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className={`${nunito.variable} font-sans`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           {children}
+          <Toaster />
         </TRPCReactProvider>
       </body>
     </html>
