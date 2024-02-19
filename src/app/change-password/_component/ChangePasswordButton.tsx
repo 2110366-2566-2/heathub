@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 export default function ChangePasswordButton() {
+  const router = useRouter();
+
   const [isOpen, setOpen] = useState(false);
   const [isClose, setClose] = useState(false);
   useEffect(() => {
@@ -22,28 +24,27 @@ export default function ChangePasswordButton() {
     return;
   };
 
-  const router = useRouter();
-  const mutate = api.auth.changePassword.useMutation({});
+  const [criticalError, _setCriticalError] = useState<string | null>(null);
+  const [noticeColor, setNoticeColor] = useState("text-placeholder");
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     if (error === "Error: AUTH_INVALID_PASSWORD") {
       setError("Wrong password");
     }
   }, [error]);
-  const [criticalError, _setCriticalError] = useState<string | null>(null);
-  const formRef = useRef<HTMLFormElement>(null);
 
-  const [noticeColor, setNoticeColor] = useState("text-placeholder");
+  const mutate = api.auth.changePassword.useMutation({});
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async () => {
     if (!formRef.current) {
       return;
     }
     const formData = new FormData(formRef.current);
-    const oldPassword = formData.get("Current Password") as string;
+    const currentPassword = formData.get("Current Password") as string;
     const password = formData.get("New Password") as string;
-    const confirm_password = formData.get("Confirm Password") as string;
-    if (password !== confirm_password) {
+    const confirmPassword = formData.get("Confirm Password") as string;
+    if (password !== confirmPassword) {
       setError("Password do not match.");
       password.length < 8 ? {} : setNoticeColor("text-placeholder");
       return;
@@ -55,19 +56,19 @@ export default function ChangePasswordButton() {
       return;
     }
 
-    if (!oldPassword || !password || !confirm_password) {
+    if (!currentPassword || !password || !confirmPassword) {
       return;
     }
 
     setNoticeColor("text-placeholder");
-    if (oldPassword.length < 8) {
+    if (currentPassword.length < 8) {
       setError("Wrong password");
       return;
     }
 
     try {
       await mutate.mutateAsync({
-        oldPassword: oldPassword,
+        oldPassword: currentPassword,
         newPassword: password,
       });
       handleClose();
