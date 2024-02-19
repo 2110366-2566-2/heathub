@@ -9,7 +9,9 @@ export function ChatMessage(props: ChatMessageProps) {
   const messageBg = isMine ? "bg-primary-500" : "bg-neutral-100";
   const messageColor = isMine ? "text-invert" : "text-high";
   const justifyPosition = isMine ? "justify-end" : "justify-start";
-  const roundedSide = isMine ? "rounded-l-lg rounded-br-lg" : "rounded-r-lg rounded-bl-lg";
+  const roundedSide = isMine
+    ? "rounded-l-lg rounded-br-lg"
+    : "rounded-r-lg rounded-bl-lg";
   const textAlign = isMine ? "text-end" : "text-start";
   return (
     <div className={cn("flex h-fit w-full flex-row gap-2", justifyPosition)}>

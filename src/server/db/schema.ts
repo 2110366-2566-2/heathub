@@ -13,6 +13,7 @@ import {
   text,
   timestamp,
   varchar,
+  float,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -207,7 +208,7 @@ export const chatMessage = mysqlTable(
     receiverUserID: varchar("receiver_id", { length: 64 }).notNull(),
     contentType: varchar("content_type", {
       length: 32,
-      enum: ["text", "imageURL"],
+      enum: ["text", "imageURL", "event"],
     }).notNull(),
     content: varchar("content", { length: 256 }).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -355,3 +356,46 @@ export const tranferTransactionRelation = relations(
     }),
   }),
 );
+
+export const event = mysqlTable(
+  "event",
+  {
+    id: bigint("id", {
+      mode: "number",
+    })
+      .primaryKey()
+      .autoincrement(),
+    hostID: varchar("host_id", {
+      length: 64,
+    }).notNull(),
+    participantID: varchar("participant_id", {
+      length: 64,
+    }).notNull(),
+    description: varchar("description", {
+      length: 64,
+    }),
+    startTime: timestamp("start_time").notNull(),
+    endTime: timestamp("end_time").notNull(),
+    price: float("price").notNull(),
+    location: varchar("location", {
+      length: 128,
+    }).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (event) => ({
+    pk: primaryKey({
+      columns: [event.hostID, event.participantID, event.id],
+    }),
+  }),
+);
+
+export const eventRelation = relations(event, ({ one }) => ({
+  host: one(user, {
+    fields: [event.hostID],
+    references: [user.id],
+  }),
+  participant: one(user, {
+    fields: [event.participantID],
+    references: [user.id],
+  }),
+}));

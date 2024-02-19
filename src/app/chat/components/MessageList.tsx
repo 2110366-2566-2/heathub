@@ -102,20 +102,25 @@ export function MessageList({
       >
         {user &&
           recentMessages?.map((data) => {
-            const buttonBg = pagePathName.includes(data.discourserId)
-              ? "bg-primary-50 hover:bg-primary-50 hover:cursor-default "
-              : "bg-white hover:bg-white hover:drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]";
-            return (
-              <MessageCard
-                className={buttonBg}
-                key={data.id}
-                discourserId={data.discourserId}
-                discourserAka={data.discourserAka}
-                lastestMessage={data.lastestContent}
-                createdAt={data.createdAt?.toString()} // Applying optional chaining here
-                imageUrl={data.discourserImageURL}
-              />
-            );
+            if (
+              data.contentType === "text" ||
+              data.contentType === "imageURL"
+            ) {
+              const buttonBg = pagePathName.includes(data.discourserId)
+                ? "bg-primary-50 hover:bg-primary-50 hover:cursor-default "
+                : "bg-white hover:bg-white hover:drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]";
+              return (
+                <MessageCard
+                  className={buttonBg}
+                  key={data.id}
+                  discourserId={data.discourserId}
+                  discourserAka={data.discourserAka}
+                  lastestMessage={data.content}
+                  createdAt={data.createdAt?.toString()} // Applying optional chaining here
+                  imageUrl={data.discourserImageURL}
+                />
+              );
+            }
           })}
         {hasNextPage && (
           <div ref={ref}>

@@ -30,13 +30,34 @@ export type ChatMessage = {
     aka: string;
   };
 };
-export type RecentMessage = {
+export type RecentNormalMessage = {
   id: number;
   myId: string;
   discourserId: string;
   discourserAka: string;
+  senderId: string;
   discourserImageURL: string | null;
   contentType: "text" | "imageURL";
-  lastestContent: string;
+  content: string;
   createdAt: Date;
 };
+
+export type RecentEventMessage = {
+  id: number;
+  myId: string;
+  discourserId: string;
+  discourserAka: string;
+  senderId: string;
+  discourserImageURL: string | null;
+  contentType: "event";
+  content: {
+    description: string | null;
+    location: string;
+    price: number;
+    startTime: Date;
+    endTime: Date;
+  };
+  createdAt: Date;
+};
+
+export type RecentMessage = RecentNormalMessage | RecentEventMessage;
