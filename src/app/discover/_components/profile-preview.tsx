@@ -6,25 +6,16 @@ import {
   DrawerOverlay,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/utils/tailwind-merge";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
-import { tagIcon, type TagList } from "../../../utils/icon-mapping";
+import { tagIcon } from "../../../utils/icon-mapping";
 import Card from "./card";
 import { ChatDialog } from "./chat";
-
-export type ProfilePreviewProps = {
-  name: string;
-  age: number;
-  image: string;
-  rating: number;
-  reviews: number;
-  about: string;
-  interests: TagList;
-};
+import { Tag } from "@/app/_components/tag";
+import { type ProfilePreviewProps } from "../types";
 
 export function ProfilePreview(props: ProfilePreviewProps) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
@@ -57,7 +48,7 @@ export function ProfilePreview(props: ProfilePreviewProps) {
 function DialogProfile(props: ProfilePreviewProps) {
   const { image } = props;
   return (
-    <DialogContent className="flex gap-3 bg-white p-0 md:min-h-[568px] md:min-w-[720px] lg:min-w-[845px]">
+    <DialogContent className="flex gap-6 bg-white p-0 md:min-h-[568px] md:min-w-[720px] lg:min-w-[845px]">
       <div className="relative w-[460px]">
         <Image
           src={image}
@@ -66,7 +57,7 @@ function DialogProfile(props: ProfilePreviewProps) {
           fill
         />
       </div>
-      <div className="relative flex flex-col gap-3 rounded-r-3xl py-6 pr-6">
+      <div className="flex min-w-[336px] flex-col gap-3 rounded-r-3xl py-6">
         <NameReview {...props} />
         <About props={props} />
         <Interests props={props} />
@@ -125,12 +116,12 @@ function About({
   props: ProfilePreviewProps;
   isDrawer?: boolean;
 }) {
-  const { about } = props;
+  const { bio } = props;
   const maxWidth = isDrawer ? "" : "max-w-[340px]";
   return (
     <div className={cn("flex flex-col gap-3 text-wrap break-words", maxWidth)}>
       <div className="h4 text-medium">About</div>
-      <div className="h5 text-high">{about}</div>
+      <div className="h5 text-high">{bio}</div>
     </div>
   );
 }
@@ -150,15 +141,9 @@ function Interests({
       <div className="flex flex-row flex-wrap items-center justify-start gap-2 self-stretch">
         {interests.map((tag, index) => {
           return (
-            <Toggle
-              key={index}
-              variant="outline"
-              icon={tagIcon[tag]}
-              size="md"
-              disabled
-            >
+            <Tag key={index} variant="outline" icon={tagIcon[tag]} size="md">
               {tag}
-            </Toggle>
+            </Tag>
           );
         })}
       </div>

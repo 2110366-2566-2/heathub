@@ -1,11 +1,36 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { faCompass, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfilePreview } from "./_components/profile-preview";
-import type { TagList } from "../../utils/icon-mapping";
+import { api } from "@/trpc/react";
+import { useEffect, useState } from "react";
+import { type userProps, type userApiProps } from "./types";
+import { type TagList } from "@/utils/icon-mapping";
+import Filter from "./_components/filter";
 
 export default function DiscoverPage() {
+  const [users, setUsers] = useState<userProps[]>([]);
+  const { data, isSuccess } = api.auth.getHostsByFilter.useQuery({});
+  // const [filter, setFilter] = useState<
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      const _users = data.map((user: userApiProps) => ({
+        name: `${user.firstName} ${user.lastName}`,
+        age: user.dateOfBirth
+          ? new Date().getFullYear() - new Date(user.dateOfBirth).getFullYear()
+          : 0,
+        image: user.profileImageURL ? user.profileImageURL : "",
+        rating: user.avgRating ? user.avgRating : 0,
+        reviews: user.reviewCount ? user.reviewCount : 0,
+        interests: user.interests as TagList,
+        bio: user.bio ? user.bio : "",
+      }));
+      setUsers(_users);
+    }
+  }, [isSuccess, data]);
+
   return (
     <div className="flex w-full flex-col gap-4 p-6 lg:p-9">
       <div className="flex flex-col gap-4 self-stretch">
@@ -13,7 +38,7 @@ export default function DiscoverPage() {
         <SearchBar />
       </div>
       <div className="flex justify-center rounded-xl border border-solid border-primary-300 bg-white px-4 py-6 lg:p-9">
-        <CardContainer />
+        <CardContainer users={users} />
       </div>
     </div>
   );
@@ -28,9 +53,6 @@ function Header() {
           className="h-10 w-10 text-secondary-400"
         />
         <div className="h2 font-bold text-primary-900">Discover</div>
-        <div className="absolute right-0 flex h-12 w-14 items-center justify-center rounded-lg bg-primary-500 p-2 lg:hidden">
-          <FontAwesomeIcon icon={faFilter} className="h-5 w-5 text-white" />
-        </div>
       </div>
       <div className="h5 lg:h4 text-primary-700">
         Unlock a World of Possibilities: Find Friends for Every Adventure on
@@ -44,105 +66,15 @@ function SearchBar() {
   return (
     <div className="hidden flex-row items-center gap-4 self-stretch lg:flex">
       <Input className="h-full p-3" placeholder="Search for friends" />
-      <div className="flex h-12 w-14 items-center justify-center rounded-lg bg-primary-500 p-2">
-        <FontAwesomeIcon icon={faFilter} className="h-5 w-5 text-white" />
-      </div>
+      <Filter />
     </div>
   );
 }
 
-type userProps = {
-  name: string;
-  age: number;
-  image: string;
-  rating: number;
-  reviews: number;
-  interests: TagList;
-  about: string;
-};
-
-const mockData: userProps[] = [
-  {
-    name: "BowyStar",
-    age: 23,
-    image: "/images/discover/mock-profile/mock-1.jpg",
-    rating: 4.5,
-    reviews: 10,
-    interests: [
-      "Football",
-      "Music",
-      "K-pop",
-      "Movie",
-      "Anime",
-      "Book",
-      "Fashion",
-      "Animal",
-      "Gym",
-      "Photography",
-      "Gaming",
-      "Coffee",
-      "Arts",
-      "Camping",
-    ],
-    about:
-      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
-  },
-  {
-    name: "JaySaeliew",
-    age: 21,
-    image: "/images/discover/mock-profile/mock-2.png",
-    rating: 5.0,
-    reviews: 10,
-    interests: ["Arts", "Camping", "Basketball"],
-    about:
-      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
-  },
-  {
-    name: "Winnie",
-    age: 21,
-    image: "/images/discover/mock-profile/mock-3.png",
-    rating: 4.9,
-    reviews: 10,
-    interests: ["Arts", "Camping", "Basketball"],
-    about:
-      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
-  },
-  {
-    name: "BowyStar2",
-    age: 23,
-    image: "/images/discover/mock-profile/mock-1.jpg",
-    rating: 4.5,
-    reviews: 10,
-    interests: ["Arts", "Camping", "Basketball"],
-    about:
-      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
-  },
-  {
-    name: "JaySaeliew2",
-    age: 21,
-    image: "/images/discover/mock-profile/mock-2.png",
-    rating: 5.0,
-    reviews: 10,
-    interests: ["Arts", "Camping", "Basketball"],
-    about:
-      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
-  },
-  {
-    name: "Winnie2",
-    age: 21,
-    image: "/images/discover/mock-profile/mock-3.png",
-    rating: 4.9,
-    reviews: 10,
-    interests: ["Arts", "Camping", "Basketball"],
-    about:
-      "I love to travel and explore new places. I'm looking for a travel buddy to go on a road trip with me to the Grand Canyon!",
-  },
-];
-
-function CardContainer() {
+function CardContainer({ users }: { users: userProps[] }) {
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
-      {mockData.map((profile) => (
+      {users.map((profile) => (
         <ProfilePreview {...profile} key={profile.name} />
       ))}
     </div>

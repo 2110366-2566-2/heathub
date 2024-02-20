@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 import { Tag } from "../../_components/tag";
 import Chat from "./chat";
-import { type ProfilePreviewProps } from "./profile-preview";
+import { type ProfilePreviewProps } from "../types";
 
 export default function Card(props: ProfilePreviewProps) {
   const { name, age, image, interests } = props;
@@ -26,7 +26,7 @@ export default function Card(props: ProfilePreviewProps) {
           className="rounded-t-3xl object-cover object-top"
         />
         <div className="absolute bottom-0 flex flex-col gap-2 p-4">
-          <div className="flex">
+          <div className="flex text-start">
             <div className="h2 font-bold text-white">
               {name}, {age}
             </div>
