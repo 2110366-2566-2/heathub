@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { type userProps, type userApiProps, type filters } from "./types";
 import { type TagList } from "@/utils/icon-mapping";
 import Filter from "./_components/filter";
+import { useMediaQuery } from "react-responsive";
 
 export default function DiscoverPage() {
   const [users, setUsers] = useState<userProps[]>([]);
@@ -43,10 +44,10 @@ export default function DiscoverPage() {
   }, [isSuccess, data, filters]);
 
   return (
-    <div className="flex w-full flex-col gap-4 p-6 lg:p-9">
+    <div className="flex h-full w-full flex-col gap-4 p-6 lg:p-9">
       <div className="flex flex-col gap-4 self-stretch">
-        <Header />
-        <SearchBar setFilters={setFilters} />
+        <Header setFilters={setFilters} />
+        <SearchFilter setFilters={setFilters} />
       </div>
       <div className="flex justify-center rounded-xl border border-solid border-primary-300 bg-white px-4 py-6 lg:p-9">
         <CardContainer users={users} />
@@ -55,7 +56,9 @@ export default function DiscoverPage() {
   );
 }
 
-function Header() {
+function Header({ setFilters }: { setFilters: (filters: filters) => void }) {
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
+
   return (
     <div className="flex flex-col justify-center gap-2">
       <div className="relative flex items-center gap-3">
@@ -64,6 +67,7 @@ function Header() {
           className="h-10 w-10 text-secondary-400"
         />
         <div className="h2 font-bold text-primary-900">Discover</div>
+        {isMobile && <SearchFilterMobile setFilters={setFilters} />}
       </div>
       <div className="h5 lg:h4 text-primary-700">
         Unlock a World of Possibilities: Find Friends for Every Adventure on
@@ -73,7 +77,23 @@ function Header() {
   );
 }
 
-function SearchBar({ setFilters }: { setFilters: (filters: filters) => void }) {
+function SearchFilterMobile({
+  setFilters,
+}: {
+  setFilters: (filters: filters) => void;
+}) {
+  return (
+    <div className="flex w-full flex-row items-center justify-end gap-4 lg:hidden">
+      <Filter setFilters={setFilters} />
+    </div>
+  );
+}
+
+function SearchFilter({
+  setFilters,
+}: {
+  setFilters: (filters: filters) => void;
+}) {
   return (
     <div className="hidden flex-row items-center gap-4 self-stretch lg:flex">
       <Input className="h-full p-3" placeholder="Search for friends" />
@@ -84,7 +104,7 @@ function SearchBar({ setFilters }: { setFilters: (filters: filters) => void }) {
 
 function CardContainer({ users }: { users: userProps[] }) {
   return (
-    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
+    <div className="grid min-h-screen w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
       {users.map((profile) => (
         <ProfilePreview {...profile} key={profile.name} />
       ))}
