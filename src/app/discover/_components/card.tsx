@@ -32,7 +32,7 @@ export default function Card(props: ProfilePreviewProps) {
             </div>
           </div>
           <div className="flex flex-row flex-wrap gap-2">
-            {visibleInterests.map((tag) => (
+            {visibleInterests.sort().map((tag) => (
               <Tag key={tag} variant="ghost" icon={tagIcon[tag]} size="md">
                 {tag}
               </Tag>

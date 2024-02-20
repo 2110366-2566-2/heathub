@@ -139,7 +139,7 @@ function Interests({
     <div className={cn("flex flex-col gap-3 text-wrap break-words", maxWidth)}>
       <div className="h4 text-medium">Interests</div>
       <div className="flex flex-row flex-wrap items-center justify-start gap-2 self-stretch">
-        {interests.map((tag, index) => {
+        {interests.sort().map((tag, index) => {
           return (
             <Tag key={index} variant="outline" icon={tagIcon[tag]} size="md">
               {tag}
