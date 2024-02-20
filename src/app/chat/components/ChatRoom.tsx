@@ -40,13 +40,14 @@ export function ChatRoom({ withUser }: { withUser: string }) {
         });
       });
     },
-    refetchOnWindowFocus: false,
+    cacheTime: 0,
+    refetchOnWindowFocus: true,
   });
 
   const { hasNextPage, fetchNextPage } = api.chat.infiniteChat.useInfiniteQuery(
     {
       pairUserID: withUser,
-      limit: 20,
+      limit: 100,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -57,7 +58,8 @@ export function ChatRoom({ withUser }: { withUser: string }) {
         }
       },
 
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
+      cacheTime: 0,
     },
   );
   const setChatEvent = () => {
