@@ -31,10 +31,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   }, [userData]);
 
   const handleSubmit = async (participant: Participant) => {
+    if (!participant.Image) {
+      setNotice("Please upload a profile picture.");
+      return;
+    }
     await signUpPaticipate.mutateAsync({
       email: participant.Email,
       password: participant.Password,
-      aka: participant.AKA,
+      aka: participant.Username,
       firstName: participant.Firstname,
       lastName: participant.Lastname,
       gender: participant.Gender,
@@ -54,30 +58,36 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
     const firstnameInput = formData.get("Firstname") as string | null;
     const lastnameInput = formData.get("Lastname") as string | null;
-    const AKAInput = formData.get("AKA") as string | null;
+    const usernameInput = formData.get("Username") as string | null;
     const DOBInput = formData.get("Date of birth") as string | null;
+    const imageInput = formData.get("Image") as File | null;
 
     if (
       !gender ||
       !firstnameInput ||
       !lastnameInput ||
-      !AKAInput ||
+      !usernameInput ||
       !DOBInput ||
       gender == "Custom" ||
       gender == ""
     ) {
       setNotice("Please fill in your details.");
-      setModalPop(false);
       return;
     }
+    if (!imageInput) {
+      setNotice("Please upload a profile picture.");
+      return;
+    }
+
     const participant: Participant = {
       Firstname: firstnameInput,
       Lastname: lastnameInput,
-      AKA: AKAInput,
+      Username: usernameInput,
       DOB: new Date(DOBInput),
       Gender: gender,
       Email: data.Email,
       Password: data.Password,
+      Image: imageInput,
     };
     setData(participant);
     try {
@@ -89,13 +99,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       } else {
         setNotice("Something went wrong. Please try again.");
       }
-      setModalPop(false);
     }
   };
 
   return (
     <div className="flex flex-col items-center gap-y-6 p-6">
-      <div className="h1 text-primary-900">Tell us about yourself</div>
+      <div className="h1 font-bold text-primary-900">
+        Tell us about yourself
+      </div>
 
       <RegisterFormBox formRef={formRef} setGender={setGender} />
       <SuccessButton
