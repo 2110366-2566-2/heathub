@@ -20,7 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { type filters } from "../types";
 
-const schema = z.object({
+const formSchema = z.object({
   interests: z.array(z.string()),
   rating: z.number(),
   gender: z.string(),
