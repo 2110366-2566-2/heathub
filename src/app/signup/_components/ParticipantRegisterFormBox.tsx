@@ -20,7 +20,6 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
   const [firsttext, setFirstText] = useState("");
   const [lasttext, setLastText] = useState("");
   const [imageUrl, setimageUrl] = useState("");
-  const [, setImage] = useState<File | null>(null);
 
   return (
     <Card className=" w-full min-w-[256px] max-w-[600px] justify-center self-center rounded-3xl border-solid border-primary-500 bg-white md:max-w-[844px]">
@@ -53,7 +52,6 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
                       if (!file) return;
                       const url = URL.createObjectURL(file);
                       setimageUrl(url);
-                      setImage(file);
                     }
                   }}
                 />
