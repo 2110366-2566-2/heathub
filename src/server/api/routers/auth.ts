@@ -196,6 +196,7 @@ export const authRouter = createTRPCRouter({
         gender: z.string().min(1),
         bio: z.string(),
         dateOfBirth: z.date(),
+        imageUrl: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -220,6 +221,7 @@ export const authRouter = createTRPCRouter({
         .set({
           bio: input.bio,
           dateOfBirth: input.dateOfBirth,
+          profileImageURL: input.imageUrl,
         })
         .where(eq(user.id, res.userId));
 
@@ -241,6 +243,7 @@ export const authRouter = createTRPCRouter({
         bio: z.string(),
         dateOfBirth: z.date(),
         interests: z.array(z.string()),
+        imageUrl: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -264,6 +267,7 @@ export const authRouter = createTRPCRouter({
         .set({
           bio: input.bio,
           dateOfBirth: input.dateOfBirth,
+          profileImageURL: input.imageUrl,
         })
         .where(eq(user.id, res.userId));
 
