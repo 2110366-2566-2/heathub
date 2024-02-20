@@ -3,6 +3,8 @@ import type { VariantProps } from "class-variance-authority";
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import { cn } from "@/utils/tailwind-merge";
 import { toggleVariants } from "@/components/ui/toggle";
+import { type IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants>
@@ -32,8 +34,8 @@ ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName;
 const ToggleGroupItem = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item> &
-    VariantProps<typeof toggleVariants>
->(({ className, children, variant, size, ...props }, ref) => {
+    VariantProps<typeof toggleVariants> & { icon?: IconDefinition }
+>(({ className, children, variant, size, icon, ...props }, ref) => {
   const context = React.useContext(ToggleGroupContext);
 
   return (
@@ -48,6 +50,7 @@ const ToggleGroupItem = React.forwardRef<
       )}
       {...props}
     >
+      {icon && <FontAwesomeIcon icon={icon} className="mr-2 h-3 w-3" />}
       {children}
     </ToggleGroupPrimitive.Item>
   );

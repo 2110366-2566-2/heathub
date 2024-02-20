@@ -35,8 +35,8 @@ export type ProfilePreviewProps = {
   interests: TagList;
 };
 
-export type Filters = {
-  interest: TagList;
+export type filters = {
+  interests: string[];
   rating: number;
   gender: string;
   age: {

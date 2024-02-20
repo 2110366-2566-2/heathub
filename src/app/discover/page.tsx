@@ -5,14 +5,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfilePreview } from "./_components/profile-preview";
 import { api } from "@/trpc/react";
 import { useEffect, useState } from "react";
-import { type userProps, type userApiProps } from "./types";
+import { type userProps, type userApiProps, type filters } from "./types";
 import { type TagList } from "@/utils/icon-mapping";
 import Filter from "./_components/filter";
 
 export default function DiscoverPage() {
   const [users, setUsers] = useState<userProps[]>([]);
-  const { data, isSuccess } = api.auth.getHostsByFilter.useQuery({});
-  // const [filter, setFilter] = useState<
+
+  const [filters, setFilters] = useState<filters>({
+    interests: new Array<string>(),
+    rating: 0,
+    age: { min: 0, max: 99 },
+    gender: "-",
+  });
+  const { data, isSuccess } = api.auth.getHostsByFilter.useQuery({
+    interests: filters.interests ?? undefined,
+    rating: filters.rating ?? undefined,
+    gender: filters.gender === "-" ? undefined : filters.gender,
+    ageRange: [filters.age.min ?? 0, filters.age.max ?? 99],
+  });
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -29,13 +40,13 @@ export default function DiscoverPage() {
       }));
       setUsers(_users);
     }
-  }, [isSuccess, data]);
+  }, [isSuccess, data, filters]);
 
   return (
     <div className="flex w-full flex-col gap-4 p-6 lg:p-9">
       <div className="flex flex-col gap-4 self-stretch">
         <Header />
-        <SearchBar />
+        <SearchBar setFilters={setFilters} />
       </div>
       <div className="flex justify-center rounded-xl border border-solid border-primary-300 bg-white px-4 py-6 lg:p-9">
         <CardContainer users={users} />
@@ -62,11 +73,11 @@ function Header() {
   );
 }
 
-function SearchBar() {
+function SearchBar({ setFilters }: { setFilters: (filters: filters) => void }) {
   return (
     <div className="hidden flex-row items-center gap-4 self-stretch lg:flex">
       <Input className="h-full p-3" placeholder="Search for friends" />
-      <Filter />
+      <Filter setFilters={setFilters} />
     </div>
   );
 }
