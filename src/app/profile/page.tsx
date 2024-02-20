@@ -1,6 +1,7 @@
 import { serverapi } from "@/trpc/server";
 import { redirect } from "next/navigation";
 import { TopUpDialog } from "./_components/topup-modal";
+import MyReview from "./_component/MyReview";
 
 export default async function SignIn() {
   const user = await serverapi.auth.me.query();
@@ -25,6 +26,7 @@ export default async function SignIn() {
           <p>balance: {balance / 100}THB</p>
         </div>
         <TopUpDialog />
+        <MyReview rating={5} />
       </div>
     </main>
   );
