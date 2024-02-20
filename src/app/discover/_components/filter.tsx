@@ -62,7 +62,7 @@ function FilterButton() {
 
 function DialogFilter(props: FilterProps) {
   const methods = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(formSchema),
     defaultValues,
   });
 
