@@ -7,7 +7,7 @@ import Chat from "./chat";
 import { type ProfilePreviewProps } from "../types";
 
 export default function Card(props: ProfilePreviewProps) {
-  const { name, age, image, interests } = props;
+  const { aka, age, image, interests } = props;
 
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   const isLaptop = useMediaQuery({ maxWidth: 1279 });
@@ -28,7 +28,7 @@ export default function Card(props: ProfilePreviewProps) {
         <div className="absolute bottom-0 flex flex-col gap-2 p-4">
           <div className="flex text-start">
             <div className="h2 font-bold text-white">
-              {name}, {age}
+              {aka}, {age}
             </div>
           </div>
           <div className="flex flex-row flex-wrap gap-2">

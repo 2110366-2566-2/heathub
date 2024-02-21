@@ -87,7 +87,7 @@ function DrawerProfile(props: ProfilePreviewProps) {
 }
 
 function NameReview(props: ProfilePreviewProps) {
-  const { name, age, rating, reviews } = props;
+  const { aka, age, rating, reviews } = props;
   return (
     <div className="flex flex-col justify-between py-3">
       <div className="flex flex-row gap-1">
@@ -103,7 +103,7 @@ function NameReview(props: ProfilePreviewProps) {
         </div>
       </div>
       <div className="h2 font-bold">
-        {name}, {age}
+        {aka}, {age}
       </div>
     </div>
   );

@@ -29,10 +29,8 @@ export default function DiscoverPage() {
   useEffect(() => {
     if (isSuccess && data) {
       const _users = data.map((user: userApiProps) => ({
-        name: `${user.firstName} ${user.lastName}`,
-        age: user.dateOfBirth
-          ? new Date().getFullYear() - new Date(user.dateOfBirth).getFullYear()
-          : 0,
+        aka: user.aka,
+        age: CalculateAge(user.dateOfBirth),
         image: user.profileImageURL ? user.profileImageURL : "",
         rating: user.avgRating ? user.avgRating : 0,
         reviews: user.reviewCount ? user.reviewCount : 0,
@@ -106,8 +104,22 @@ function CardContainer({ users }: { users: userProps[] }) {
   return (
     <div className="grid min-h-screen w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
       {users.map((profile) => (
-        <ProfilePreview {...profile} key={profile.name} />
+        <ProfilePreview {...profile} key={profile.aka} />
       ))}
     </div>
   );
+}
+
+function CalculateAge(dateOfBirth: Date | null) {
+  if (!dateOfBirth) return 0;
+  const nowDate = new Date();
+  const birthDate = new Date(dateOfBirth);
+  const age =
+    nowDate.getFullYear() -
+    birthDate.getFullYear() -
+    (nowDate <
+    new Date(nowDate.getFullYear(), birthDate.getMonth(), birthDate.getDate())
+      ? 1
+      : 0);
+  return age;
 }

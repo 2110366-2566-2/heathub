@@ -1,7 +1,7 @@
 import { type TagList } from "@/utils/icon-mapping";
 
 export type userProps = {
-  name: string;
+  aka: string;
   age: number;
   image: string;
   rating: number;
@@ -26,7 +26,7 @@ export type userApiProps = {
 };
 
 export type ProfilePreviewProps = {
-  name: string;
+  aka: string;
   age: number;
   image: string;
   rating: number;
