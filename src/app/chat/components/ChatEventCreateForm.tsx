@@ -25,7 +25,20 @@ import { PlacesAutocomplete } from "./AutoComplete";
 import { type Library } from "@googlemaps/js-api-loader";
 
 const googlelib = ["places"] as Library[];
-export default function ChatEventForm({ isOpen }: { isOpen: boolean }) {
+export interface CreateFormInfo {
+  location: string;
+  price: number;
+  description?: string;
+  startTime: Date;
+  endTime: Date;
+}
+export default function ChatEventForm({
+  isOpen,
+  onConfirm,
+}: {
+  isOpen: boolean;
+  onConfirm: (form: CreateFormInfo) => void;
+}) {
   const formSchema = z.object({
     location: z.string().min(1, {
       message: "location is empty",
@@ -50,7 +63,19 @@ export default function ChatEventForm({ isOpen }: { isOpen: boolean }) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     //parse price to float
-    console.log(values);
+    const [hours, minutes] = values.time.split(":").map((e) => parseInt(e));
+    let startTime = values.date.from;
+    let endTime = values.date.to ?? values.date.from;
+    startTime.setHours(hours ?? 0);
+    startTime.setMinutes(minutes ?? 0);
+    endTime.setHours(hours ?? 23);
+    endTime.setMinutes(minutes ?? 59);
+    onConfirm({
+      location: values.location,
+      price: values.price,
+      startTime: startTime,
+      endTime: endTime,
+    });
   }
 
   return (
