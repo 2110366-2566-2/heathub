@@ -83,7 +83,7 @@ export const authRouter = createTRPCRouter({
         maxDate.getFullYear() - Math.max(input.ageRange[0], 0),
       ); // min age = 0 = current = maxdate
       minDate.setFullYear(
-        minDate.getFullYear() - Math.min(input.ageRange[1], 99),
+        minDate.getFullYear() - Math.min(input.ageRange[1]+1, 99),
       ); // max age = 99 = current-99 = mindate
       let checkInput: SQL<unknown>[] = [];
       if (!input.rating) {
@@ -138,13 +138,18 @@ export const authRouter = createTRPCRouter({
           ),
         )
         .innerJoin(user, eq(user.id, hostUser.userID))
-        .innerJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
+        .leftJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
         .groupBy(hostUser.userID)
         .then((result) => {
-          return result.map((row) => ({
-            ...row,
-            interests: (row.interests as string).split(","),
-          }));
+          return result.map((row) => {
+            const arrayInterests = (row.interests as string)
+              ? (row.interests as string).split(",")
+              : [];
+            return {
+              ...row,
+              interests: arrayInterests,
+            };
+          });
         });
       return select;
     }),
