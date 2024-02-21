@@ -11,7 +11,7 @@ export const eventRouter = createTRPCRouter({
       z.object({
         hostUserID: z.string().min(1),
         participantUserID: z.string().min(1),
-        eventName: z.string().min(1),
+        description: z.string().min(1),
         startTime: z.date(),
         endTime: z.date(),
         location: z.string().min(1),

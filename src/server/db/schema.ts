@@ -5,7 +5,6 @@ import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   date,
-  float,
   index,
   int,
   mysqlTable,

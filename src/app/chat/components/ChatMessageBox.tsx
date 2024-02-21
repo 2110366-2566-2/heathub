@@ -7,9 +7,11 @@ import { cn } from "@/utils/tailwind-merge";
 export default function ChatMessageBox({
   toUserID,
   setOpenChatEvent,
+  userRole,
 }: {
   toUserID: string;
   setOpenChatEvent: () => void;
+  userRole: "participant" | "host";
 }) {
   const [message, setMessage] = useState("");
   const sendMessage = api.chat.sendMessage.useMutation({
@@ -29,7 +31,13 @@ export default function ChatMessageBox({
       }}
       className="bottom-0 z-10 mb-14 mt-6 flex w-full flex-row items-center justify-center gap-2 bg-white px-14 max-lg:mb-6 max-lg:px-6"
     >
-      <button className="h-fit w-fit" type="button" onClick={setOpenChatEvent}>
+      <button
+        className={cn("h-fit w-fit", {
+          hidden: !(userRole === "host"),
+        })}
+        type="button"
+        onClick={setOpenChatEvent}
+      >
         <FontAwesomeIcon
           icon={faPlus}
           className={cn("h-6 w-6 rounded-full bg-primary-500 p-2 text-white")}

@@ -10,8 +10,9 @@ import { type Channel } from "pusher-js";
 import { usePusher } from "../../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
 import { useIntersection } from "@mantine/hooks";
-import ChatEventForm from "./ChatEventCreateForm";
+import ChatEventForm, { type CreateFormInfo } from "./ChatEventCreateForm";
 import ChatMessageBox from "./ChatMessageBox";
+import ChatEventInfo, { ChatEventInfoInterface } from "./ChatEventInfo";
 export function ChatRoom({ withUser }: { withUser: string }) {
   const [messages, setMessages] = useState<RecentMessage[]>([]);
   const [isOpenChatEvent, setOpenChatEvent] = useState<boolean>(false);
@@ -47,7 +48,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const { hasNextPage, fetchNextPage } = api.chat.infiniteChat.useInfiniteQuery(
     {
       pairUserID: withUser,
-      limit: 100,
+      limit: 20,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -96,6 +97,26 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   }, [messages, user]);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const createEvent = api.event.createEvent.useMutation({
+    onSuccess: () => {
+      console.log("success create Event");
+      setOpenChatEvent(false);
+    },
+  });
+
+  const onEventConfirm = (eventData: CreateFormInfo) => {
+    console.log(eventData);
+    if (!user) return;
+    createEvent.mutate({
+      hostUserID: user?.userId,
+      startTime: eventData.startTime,
+      endTime: eventData.endTime,
+      price: eventData.price,
+      location: eventData.location,
+      participantUserID: withUser,
+      description: eventData.description ?? "asdjfkl",
+    });
+  };
 
   const reversePost = [...messages].reverse();
   return (
@@ -124,46 +145,65 @@ export function ChatRoom({ withUser }: { withUser: string }) {
               )
                 isShowTop = true;
 
-              if (message.contentType === "event") return <div>event</div>;
+              if (message.contentType === "event")
+                return (
+                  <ChatEventInfo
+                    key={message.id}
+                    location={message.content.location}
+                    price={message.content.price}
+                    startTime={message.content.startTime}
+                    endTime={message.content.endTime}
+                    status="success"
+                  />
+                );
               if (i === 5) {
                 return (
-                  <>
-                    <div ref={ref} key={message.id + "hot-fix"} />
+                  <div key={"hot"}>
+                    <div ref={ref} key={"hot-fix" + i} />
                     <ChatMessageComponent
                       key={message.id}
                       senderName={message.discourserAka}
                       isShowBot={isShowBot}
                       isMine={isMine}
                       isShowTop={isShowTop}
-                      message={message.content}
+                      message={message.content + message.id}
                       createdAt={message.createdAt.toString()}
                       imageUrl={message.discourserImageURL}
                     />
-                  </>
+                  </div>
+                );
+              } else {
+                return (
+                  <ChatMessageComponent
+                    key={message.id}
+                    senderName={message.discourserAka}
+                    isShowBot={isShowBot}
+                    isMine={isMine}
+                    isShowTop={isShowTop}
+                    message={message.content + message.id}
+                    createdAt={message.createdAt.toString()}
+                    imageUrl={message.discourserImageURL}
+                  />
                 );
               }
-              return (
-                <ChatMessageComponent
-                  key={message.id}
-                  senderName={message.discourserAka}
-                  isShowBot={isShowBot}
-                  isMine={isMine}
-                  isShowTop={isShowTop}
-                  message={message.content}
-                  createdAt={message.createdAt.toString()}
-                  imageUrl={message.discourserImageURL}
-                />
-              );
             })}
           </>
         ) : (
           <p>You have no posts yet.</p>
         )}
-        <ChatEventForm isOpen={isOpenChatEvent} />
+        <ChatEventForm
+          key=""
+          isOpen={isOpenChatEvent}
+          onConfirm={onEventConfirm}
+        />
         <div ref={chatContainerRef} />
       </div>
       {user && (
-        <ChatMessageBox toUserID={withUser} setOpenChatEvent={setChatEvent} />
+        <ChatMessageBox
+          toUserID={withUser}
+          setOpenChatEvent={setChatEvent}
+          userRole={user.role}
+        />
       )}
     </>
   );
