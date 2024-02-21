@@ -83,7 +83,7 @@ export const authRouter = createTRPCRouter({
         maxDate.getFullYear() - Math.max(input.ageRange[0], 0),
       ); // min age = 0 = current = maxdate
       minDate.setFullYear(
-        minDate.getFullYear() - Math.min(input.ageRange[1]+1, 99),
+        minDate.getFullYear() - Math.min(input.ageRange[1] + 1, 99),
       ); // max age = 99 = current-99 = mindate
       let checkInput: SQL<unknown>[] = [];
       if (!input.rating) {
