@@ -31,6 +31,7 @@ import {
   DrawerContent,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import Search from "./search";
 
 const formSchema = z.object({
   interests: z.array(z.string()),
@@ -219,6 +220,7 @@ export default function Filter(props: FilterProps) {
           <FilterButton />
         </DrawerTrigger>
         <DrawerContent className="h-[90%] flex-col gap-8 bg-white p-4">
+          <Search />
           <Form {...methods}>
             <form
               onSubmit={handleSubmit(formSubmit)}

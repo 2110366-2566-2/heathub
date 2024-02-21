@@ -1,5 +1,4 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import { faCompass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ProfilePreview } from "./_components/profile-preview";
@@ -9,6 +8,7 @@ import { type userProps, type userApiProps, type filters } from "./types";
 import { type TagList } from "@/utils/icon-mapping";
 import Filter from "./_components/filter";
 import { useMediaQuery } from "react-responsive";
+import Search from "./_components/search";
 
 export default function DiscoverPage() {
   const [users, setUsers] = useState<userProps[]>([]);
@@ -94,7 +94,7 @@ function SearchFilter({
 }) {
   return (
     <div className="hidden flex-row items-center gap-4 self-stretch lg:flex">
-      <Input className="h-full p-3" placeholder="Search for friends" />
+      <Search />
       <Filter setFilters={setFilters} />
     </div>
   );
@@ -102,7 +102,7 @@ function SearchFilter({
 
 function CardContainer({ users }: { users: userProps[] }) {
   return (
-    <div className="grid min-h-screen w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
+    <div className="grid min-h-screen w-full grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
       {users.map((profile) => (
         <ProfilePreview {...profile} key={profile.aka} />
       ))}
