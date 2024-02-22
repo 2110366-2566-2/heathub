@@ -12,7 +12,7 @@ import {
 
 import Image from "next/image";
 import { StatusTag } from "./StatusTag";
-import { EventStatus } from "./Card";
+import { type EventStatus } from "./Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faCircleInfo, faComment, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";

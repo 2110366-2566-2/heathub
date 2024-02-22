@@ -1,5 +1,3 @@
-import { extend } from "dayjs";
-
 export interface MessageCardProps {
   className?: string;
   discourserId: string;

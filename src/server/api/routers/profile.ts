@@ -9,7 +9,7 @@ import {
   unconfirmedUserProfileImage,
   user,
 } from "@/server/db/schema";
-import { SQL, and, eq, ne, or } from "drizzle-orm";
+import { type SQL, and, eq, ne, or } from "drizzle-orm";
 import { z } from "zod";
 
 export const profileRouter = createTRPCRouter({
