@@ -34,7 +34,7 @@ const config = withUt({
         bgColor: "#f8fafc",
         error: {
           default: "#F86C6C",
-          hover: "#E14C4C"
+          hover: "#E14C4C",
         },
         success: "#52D382",
         pending: "#FFC164",
