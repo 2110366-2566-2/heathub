@@ -1,6 +1,6 @@
 import { NavBar, NavBarMobile } from "../_components/navbar";
 
-export default function DiscoverLayout({
+export default function MyEventLayout({
   children,
 }: {
   children: React.ReactNode;

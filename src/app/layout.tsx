@@ -8,7 +8,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 const lato = Lato({
   subsets: ["latin"],
   variable: "--font-lato",
-  weight: ["400", "700"],
+  weight: ["300","400","700", "900"],
 });
 
 export const metadata = {
