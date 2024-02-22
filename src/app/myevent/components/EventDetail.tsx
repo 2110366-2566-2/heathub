@@ -22,7 +22,7 @@ interface EventDetailProps {
   location: string;
   date: Date;
   status?: EventStatus;
-  image?: string;
+  image: string;
   detail?: string;
   children: React.ReactNode;
 }
@@ -44,29 +44,31 @@ export function EventDetail(props: EventDetailProps) {
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="flex flex-col gap-3">
-            <div className="flex flex-row w-full gap-3 items-center p-2 rounded-md bg-neutral-100">
+            <div className="flex flex-row w-full gap-3 items-center p-2 rounded-md bg-neutral-100 border border-neutral-200">
                 <div className="relative h-9 w-9 overflow-hidden rounded-full">
                   <Image
-                    src="/images/discover/mock-profile/mock-1.jpg"
+                    src={props.image}
                     fill
                     objectFit="cover"
                     alt="logo"
                     />
                 </div>
-                <h4 className="h4 font-bold flex-1">Rosy</h4>
-                <FontAwesomeIcon
-                  icon={faComment}
-                  className="h-3 w-3 text-primary-500"
-                />
+                <h4 className="h4 font-bold flex-1 text-primary-800">Rosy</h4>
+                <div className="flex bg-white items-center justify-center w-9 h-9 rounded-full border border-primary-200">
+                  <FontAwesomeIcon
+                    icon={faComment}
+                    className="h-5 w-5 text-primary-500"
+                  />
+                </div>
             </div>
-            <div className="flex flex-col p-2 border border-neutral-200 rounded-md">
+            <div className="flex flex-col gap-3 p-2 border border-neutral-200 rounded-md">
               <div className="flex flex-row justify-between">
                 <div className="flex flex-row items-center gap-1">
                   <FontAwesomeIcon
                     icon={faLocationDot}
                     className="h-3 w-3 text-primary-500"
                   />
-                  <h6 className="h6 text-primary-900">{props.location}</h6>
+                  <h6 className="h6 text-primary-900 font-bold">{props.location}</h6>
                 </div>
                 <div className="flex flex-row items-center gap-1">
                   <FontAwesomeIcon
@@ -78,7 +80,7 @@ export function EventDetail(props: EventDetailProps) {
                   </h6>
                 </div>
               </div>
-              <div>
+              {props.detail != undefined && <div>
                 <div className="flex flex-row items-center gap-1">
                   <FontAwesomeIcon
                         icon={faCircleInfo}
@@ -88,11 +90,11 @@ export function EventDetail(props: EventDetailProps) {
                     Detail
                   </h6>
                 </div>
-                <h6>Coffee date Karaoke Gallery</h6>
-              </div>
+                <h6>{props.detail}</h6>
+              </div>}
             </div>
         </DialogDescription>
-        <DialogFooter className="sm:justify-start">
+        <DialogFooter className="justify-end">
           <DialogClose asChild>
             <Button
                 variant="outline"
