@@ -18,9 +18,9 @@ const toggleVariants = cva(
         ghost: "bg-white bg-opacity-50 text-white",
       },
       size: {
-        md: "h-7 px-3 py-1",
-        sm: "h-5 px-3 py-1",
-        lg: "h-10 px-3 py-1",
+        md: "h6 h-7 px-3 py-1",
+        sm: "small h-5 px-3 py-1",
+        lg: "h6 h-10 px-3 py-1",
       },
     },
     defaultVariants: {
