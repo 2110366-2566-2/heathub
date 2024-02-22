@@ -28,7 +28,8 @@ type EventProps = {
   location: string;
   date: Date;
   status?: EventStatus;
-  image?: string;
+  image: string;
+  detail?: string;
 };
 
 export enum EventStatus {
@@ -91,11 +92,11 @@ export function Card(prop: EventProps) {
 
   return (
     <div className="h-18 flex w-full  flex-col items-center gap-4 rounded-xl border border-primary-300 bg-white p-3 lg:flex-row">
-      <EventDetail name ={prop.name} location={prop.location} date={prop.date} status={prop.status}>
+      <EventDetail name ={prop.name} location={prop.location} date={prop.date} image={prop.image} status={prop.status} detail={prop.detail}>
         <div className="flew-row flex w-full gap-4">
           <div className=" relative h-14 w-14 overflow-hidden rounded-full">
             <Image
-              src="/images/discover/mock-profile/mock-1.jpg"
+              src={prop.image}
               fill
               objectFit="cover"
               alt="logo"
@@ -154,7 +155,7 @@ export function Card(prop: EventProps) {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>This will use confirmation dialog from Q</DialogTitle>
+              <DialogTitle>This will be replaced with confirmation dialog from Q</DialogTitle>
             </DialogHeader>
           </DialogContent>
         </Dialog>

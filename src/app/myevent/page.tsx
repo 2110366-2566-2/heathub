@@ -16,6 +16,8 @@ export default function Page() {
 function Content() {
     const mockDate = new Date();
     const mockLocation = "Dream World, BKK";
+    const mockImage = "/images/discover/mock-profile/mock-1.jpg";
+    const mockDetail = "This is a detail of the event";
 
     return (
       <div className="flex flex-col gap-2 w-full h-screen">
@@ -55,18 +57,18 @@ function Content() {
             </div>
             <TabsContent value="upcoming" className="border-none p-0 outline-none">
                 <div className="flex flex-col gap-4">
-                    <Card name="Faii" location={mockLocation} date={mockDate} status={EventStatus.NOTSTARTED}/>
-                    <Card name="BoBo" location={mockLocation} date={mockDate} status={EventStatus.STARTED}/>
-                    <Card name="halo" location={mockLocation} date={mockDate} status={EventStatus.STARTED}/>
-                    <Card name="halo" location={mockLocation} date={mockDate} status={EventStatus.NOTSTARTED}/>
+                    <Card name="Faii" image={mockImage} location={mockLocation} date={mockDate} status={EventStatus.NOTSTARTED} detail={mockDetail}/>
+                    <Card name="BoBo" image={mockImage} location={mockLocation} date={mockDate} status={EventStatus.STARTED}/>
+                    <Card name="halo" image={mockImage} location={mockLocation} date={mockDate} status={EventStatus.STARTED}/>
+                    <Card name="halo" image={mockImage} location={mockLocation} date={mockDate} status={EventStatus.NOTSTARTED}/>
                 </div>
             </TabsContent>
             <TabsContent value="completed" className="h-full flex-col border-none p-0 data-[state=active]:flex">
             <div className="flex flex-col gap-4">
-                    <Card name="Faii" location={mockLocation} date={mockDate} status={EventStatus.WAITINGREVIEW}/>
-                    <Card name="BoBo" location={mockLocation} date={mockDate} status={EventStatus.COMPLETED}/>
-                    <Card name="halo" location={mockLocation} date={mockDate} status={EventStatus.COMPLETED}/>
-                    <Card name="halo" location={mockLocation} date={mockDate} status={EventStatus.COMPLETED}/>
+                    <Card name="Faii" image={mockImage} location={mockLocation} date={mockDate} status={EventStatus.WAITINGREVIEW}/>
+                    <Card name="BoBo" image={mockImage} location={mockLocation} date={mockDate} status={EventStatus.COMPLETED}/>
+                    <Card name="halo" image={mockImage} location={mockLocation} date={mockDate} status={EventStatus.COMPLETED}/>
+                    <Card name="halo" image={mockImage} location={mockLocation} date={mockDate} status={EventStatus.COMPLETED}/>
                 </div>
             </TabsContent>
         </Tabs>
