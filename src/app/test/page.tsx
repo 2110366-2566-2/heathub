@@ -1,9 +1,8 @@
-import Place from "@/app/chat/components/AutoComplete";
+import ConfirmEventPayment from "../chat/components/ConfirmEventPayment";
 export default function Page() {
   return (
     <div className="p-5">
-      <Place />
-      {/* <GoogleMapLocation /> */}
+      <ConfirmEventPayment />
     </div>
   );
 }

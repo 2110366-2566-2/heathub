@@ -7,7 +7,7 @@ export interface ChatEventInfoInterface {
 }
 export default function ChatEventInfo(info: ChatEventInfoInterface) {
   return (
-    <div className="flex h-fit w-full max-w-[460px] flex-col bg-white">
+    <div className="flex h-fit w-full max-w-[460px] flex-col bg-blue-500  p-2">
       <div className="flex flex-row justify-between">
         <div className="h3 flex-1 font-bold">Event Detail</div>
         <div className="bg-green-700">{info.status}</div>
@@ -25,10 +25,7 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
 
       <div className="flex flex-row justify-between">
         <div className="h4 flex-1">Date</div>
-        <div className="bg-green-700">
-          {info.startTime.getDate()}
-          {info.endTime.getDate()}
-        </div>
+        <div className="bg-green-700"></div>
       </div>
       <div></div>
     </div>
