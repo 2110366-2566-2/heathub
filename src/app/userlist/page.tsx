@@ -7,7 +7,7 @@ config.autoAddCss = false;
 export default async function Home() {
   const user = await serverapi.auth.me.query();
 
-  const us = await serverapi.auth.getAllUsers.query();
+  const us = await serverapi.user.getAllUsers.query();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">

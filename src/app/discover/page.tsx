@@ -19,7 +19,7 @@ export default function DiscoverPage() {
     age: { min: 0, max: 99 },
     gender: "-",
   });
-  const { data, isSuccess } = api.auth.getHostsByFilter.useQuery({
+  const { data, isSuccess } = api.user.getHostsByFilter.useQuery({
     interests: filters.interests ?? undefined,
     rating: filters.rating ?? undefined,
     gender: filters.gender === "-" ? undefined : filters.gender,
