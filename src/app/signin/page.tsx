@@ -1,23 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { api } from "@/trpc/react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { signIn } from "../../action/auth";
 
 export default function SignIn() {
-  const { data: user } = api.auth.me.useQuery();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      redirect("/discover");
-    }
-  }, [user]);
 
   const signInHandler = async (e: FormData) => {
     setLoading(true);
