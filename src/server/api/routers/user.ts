@@ -55,15 +55,15 @@ export const userRouter = createTRPCRouter({
         rating: z.number().optional(),
         gender: z.string().optional(),
         ageRange: z
-          .tuple([z.number().gte().default(0), z.number().default(99)])
-          .optional(),
+          .tuple([
+            z.number().nonnegative().max(99),
+            z.number().nonnegative().max(99),
+          ])
+          .optional()
+          .default([0, 99]),
       }),
     )
     .query(async ({ ctx, input }) => {
-      if (!input.ageRange) {
-        input.ageRange = [0, 99];
-      }
-
       const minDate = new Date();
       const maxDate = new Date();
 
