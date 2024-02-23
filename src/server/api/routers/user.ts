@@ -1,6 +1,17 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { hostInterest, hostUser, user } from "@/server/db/schema";
-import { and, eq, gte, inArray, lte, sql, type SQL } from "drizzle-orm";
+import {
+  and,
+  eq,
+  gte,
+  inArray,
+  like,
+  lte,
+  or,
+  sql,
+  type SQL,
+} from "drizzle-orm";
+import Fuse from "fuse.js";
 import { z } from "zod";
 
 export const userRouter = createTRPCRouter({
@@ -31,6 +42,7 @@ export const userRouter = createTRPCRouter({
       });
       return res;
     }),
+
   getParticipants: publicProcedure.query(async ({ ctx }) => {
     const participants = await ctx.db.query.user.findMany({
       where: eq(user.role, "participant"),
@@ -47,10 +59,11 @@ export const userRouter = createTRPCRouter({
     });
     return participants;
   }),
+
   getHostsByFilter: publicProcedure
     .input(
       z.object({
-        query: z.string().optional(),
+        searchQuery: z.string().optional(),
         interests: z.array(z.string()).optional(),
         rating: z.number().optional(),
         gender: z.string().optional(),
@@ -76,31 +89,38 @@ export const userRouter = createTRPCRouter({
       ); // max age = 99 = current-99 = mindate
 
       let checkInput: SQL<unknown>[] = [];
+
+      if (input.searchQuery) {
+        const fuzzyName = or(like(user.aka, `%${input.searchQuery}%`));
+
+        if (fuzzyName) {
+          checkInput.push(fuzzyName);
+        }
+      }
+
       if (!input.rating) {
         input.rating = 0;
       }
-      if (input.interests) {
-        if (input.interests.length != 0) {
-          checkInput.push(
-            inArray(
-              hostUser.userID,
-              ctx.db
-                .select({ userID: hostUser.userID })
-                .from(hostUser)
-                .innerJoin(hostInterest, eq(hostInterest.userID, user.id))
-                .where(and(inArray(hostInterest.interest, input.interests)))
-                .groupBy(hostUser.userID)
-                .having(
-                  sql`count(${hostUser.userID}) >= ${input.interests.length}`,
-                ),
-            ),
-          );
-        }
+
+      if (input.interests && input.interests.length != 0) {
+        checkInput.push(
+          inArray(
+            hostUser.userID,
+            ctx.db
+              .select({ userID: hostUser.userID })
+              .from(hostUser)
+              .innerJoin(hostInterest, eq(hostInterest.userID, user.id))
+              .where(and(inArray(hostInterest.interest, input.interests)))
+              .groupBy(hostUser.userID)
+              .having(
+                sql`count(${hostUser.userID}) >= ${input.interests.length}`,
+              ),
+          ),
+        );
       }
+
       if (input.gender) {
-        if (input.gender != "") {
-          checkInput.push(eq(user.gender, input.gender));
-        }
+        checkInput.push(eq(user.gender, input.gender));
       }
 
       const select = await ctx.db
@@ -136,6 +156,18 @@ export const userRouter = createTRPCRouter({
             interests: (row.interests as string).split(","),
           }));
         });
+
+      if (input.searchQuery) {
+        const list = new Fuse(select, {
+          shouldSort: true,
+          threshold: 1,
+          keys: ["aka", "firstName", "lastName"],
+        });
+
+        const result = list.search(input.searchQuery).map((item) => item.item);
+        return result;
+      }
+
       return select;
     }),
 });
