@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
 import { serverapi } from "@/trpc/server";
 import { type TagList, tagIcon } from "@/utils/icon-mapping";
+import { faCamera, faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { redirect } from "next/navigation";
 
 interface ProfileDetailsProps {
@@ -19,8 +21,10 @@ export default async function ProfileDetails(props: ProfileDetailsProps) {
       <CardContent className="flex h-full w-full flex-col items-center gap-y-4 p-0 md:gap-0">
         <div className="h-max-[128px] flex h-fit w-full flex-row gap-x-6 md:h-[124px]">
           <div className="flex h-full w-full flex-row gap-4">
-            <div className="h-[100px] w-[100px] flex-none bg-slate-400 text-black">
-              picture
+            <div className="relative h-[100px] w-[100px] flex-none rounded-full bg-slate-400">
+              <div className="absolute bottom-0 right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
+                <FontAwesomeIcon icon={faEye} />
+              </div>
             </div>
             <div className="flex h-fit w-full flex-col gap-y-2">
               <div className="h3 font-bold text-purple-900">{`${user.userName}, 17`}</div>
