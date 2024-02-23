@@ -4,10 +4,10 @@ import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 import { Tag } from "../../_components/tag";
 import Chat from "./chat";
-import { type ProfilePreviewProps } from "./profile-preview";
+import { type ProfilePreviewProps } from "../types";
 
 export default function Card(props: ProfilePreviewProps) {
-  const { name, age, image, interests } = props;
+  const { aka, age, image, interests } = props;
 
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   const isLaptop = useMediaQuery({ maxWidth: 1279 });
@@ -26,13 +26,13 @@ export default function Card(props: ProfilePreviewProps) {
           className="rounded-t-3xl object-cover object-top"
         />
         <div className="absolute bottom-0 flex flex-col gap-2 p-4">
-          <div className="flex">
+          <div className="flex text-start">
             <div className="h2 font-bold text-white">
-              {name}, {age}
+              {aka}, {age}
             </div>
           </div>
           <div className="flex flex-row flex-wrap gap-2">
-            {visibleInterests.map((tag) => (
+            {visibleInterests.sort().map((tag) => (
               <Tag key={tag} variant="ghost" icon={tagIcon[tag]} size="md">
                 {tag}
               </Tag>

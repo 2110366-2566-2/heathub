@@ -2,7 +2,7 @@
 
 import { api } from "@/trpc/react";
 import { redirect, useRouter } from "next/navigation";
-
+import { uploadFiles } from "@/components/ui/upload";
 import SuccessButton from "@/app/signup/_components/SuccessButton";
 import { useEffect, useState } from "react";
 import { type Host, type User } from "../interfaces";
@@ -34,6 +34,21 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const handleSubmit = async (host: Host) => {
     selectedInterestList.sort();
+    if (!host.Image) {
+      setNotice("Please upload a profile picture.");
+      return;
+    }
+
+    const files = [host.Image];
+    const res = await uploadFiles("signupProfileUploader", {
+      files,
+    });
+    if (res.length !== 1) {
+      setNotice("An error occurred");
+      return;
+    }
+    const imageUrl = res[0]?.url ? res[0].url : "";
+
     try {
       await signUpHost.mutateAsync({
         email: host.Email,
@@ -45,7 +60,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         bio: host.Bio,
         dateOfBirth: host.DOB,
         interests: selectedInterestList,
+        imageUrl: imageUrl,
       });
+      console.log(imageUrl);
       setModalPop(true);
     } catch (error) {
       if (error instanceof Error) {

@@ -11,7 +11,7 @@ import {
   user,
 } from "@/server/db/schema";
 import { sendResetPasswordEmail } from "@/server/resend/resend";
-import { and, eq } from "drizzle-orm";
+import { type SQL, and, eq, gte, inArray, lte, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const authRouter = createTRPCRouter({
@@ -62,43 +62,91 @@ export const authRouter = createTRPCRouter({
     });
     return participants;
   }),
-  getParticipantsByFilter: publicProcedure
+  getHostsByFilter: publicProcedure
     .input(
       z.object({
-        filters: z.array(z.string()),
+        interests: z.array(z.string()).optional(),
+        rating: z.number().optional(),
+        gender: z.string().optional(),
+        ageRange: z
+          .tuple([z.number().default(0), z.number().default(99)])
+          .optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      type Participant = {
-        email: string;
-        firstName: string;
-        lastName: string;
-        gender: string;
-        role: "host" | "participant";
-        aka: string;
-        bio: string | null;
-        profileImageURL: string | null;
-      };
-      let participants: Participant[] = [];
-      if (input.filters[0] == "gender") {
-        participants = await ctx.db.query.user.findMany({
-          where: and(
-            eq(user.role, "participant"),
-            eq(user.role, "participant"),
-          ),
-          columns: {
-            aka: true,
-            bio: true,
-            email: true,
-            firstName: true,
-            gender: true,
-            role: true,
-            lastName: true,
-            profileImageURL: true,
-          },
-        });
+      if (!input.ageRange) {
+        input.ageRange = [0, 99];
       }
-      return participants;
+      const minDate = new Date();
+      const maxDate = new Date();
+      maxDate.setFullYear(
+        maxDate.getFullYear() - Math.max(input.ageRange[0], 0),
+      ); // min age = 0 = current = maxdate
+      minDate.setFullYear(
+        minDate.getFullYear() - Math.min(input.ageRange[1], 99),
+      ); // max age = 99 = current-99 = mindate
+      let checkInput: SQL<unknown>[] = [];
+      if (!input.rating) {
+        input.rating = 0;
+      }
+      if (input.interests) {
+        if (input.interests.length != 0) {
+          checkInput.push(
+            inArray(
+              hostUser.userID,
+              ctx.db
+                .select({ userID: hostUser.userID })
+                .from(hostUser)
+                .innerJoin(hostInterest, eq(hostInterest.userID, user.id))
+                .where(and(inArray(hostInterest.interest, input.interests)))
+                .groupBy(hostUser.userID)
+                .having(
+                  sql`count(${hostUser.userID}) >= ${input.interests.length}`,
+                ),
+            ),
+          );
+        }
+      }
+      if (input.gender) {
+        if (input.gender != "") {
+          checkInput.push(eq(user.gender, input.gender));
+        }
+      }
+
+      const select = await ctx.db
+        .select({
+          aka: user.aka,
+          bio: user.bio,
+          email: user.email,
+          firstName: user.firstName,
+          gender: user.gender,
+          role: user.role,
+          lastName: user.lastName,
+          dateOfBirth: user.dateOfBirth,
+          profileImageURL: user.profileImageURL,
+          interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
+          avgRating: hostUser.avgRating,
+          reviewCount: hostUser.reviewCount,
+        })
+        .from(hostUser)
+        .where(
+          and(
+            gte(user.dateOfBirth, minDate),
+            lte(user.dateOfBirth, maxDate),
+            gte(hostUser.avgRating, input.rating),
+            and(...checkInput),
+          ),
+        )
+        .innerJoin(user, eq(user.id, hostUser.userID))
+        .innerJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
+        .groupBy(hostUser.userID)
+        .then((result) => {
+          return result.map((row) => ({
+            ...row,
+            interests: (row.interests as string).split(","),
+          }));
+        });
+      return select;
     }),
   isEmailAlreadyExist: publicProcedure
     .input(
@@ -148,6 +196,7 @@ export const authRouter = createTRPCRouter({
         gender: z.string().min(1),
         bio: z.string(),
         dateOfBirth: z.date(),
+        imageUrl: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -172,6 +221,7 @@ export const authRouter = createTRPCRouter({
         .set({
           bio: input.bio,
           dateOfBirth: input.dateOfBirth,
+          profileImageURL: input.imageUrl,
         })
         .where(eq(user.id, res.userId));
 
@@ -193,6 +243,7 @@ export const authRouter = createTRPCRouter({
         bio: z.string(),
         dateOfBirth: z.date(),
         interests: z.array(z.string()),
+        imageUrl: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -216,13 +267,13 @@ export const authRouter = createTRPCRouter({
         .set({
           bio: input.bio,
           dateOfBirth: input.dateOfBirth,
+          profileImageURL: input.imageUrl,
         })
         .where(eq(user.id, res.userId));
 
       await ctx.db.insert(hostUser).values({
         userID: res.userId,
       });
-
       await ctx.db.insert(hostInterest).values(
         input.interests.map((interest) => ({
           userID: res.userId,

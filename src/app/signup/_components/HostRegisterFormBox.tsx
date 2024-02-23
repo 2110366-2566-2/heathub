@@ -8,6 +8,7 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
 import { useState } from "react";
+import Image from "next/image";
 
 interface RegisterFormBoxProps {
   setGender: (gender: string) => void;
@@ -18,6 +19,7 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
   const { setGender, formRef } = props;
   const [firsttext, setFirstText] = useState("");
   const [lasttext, setLastText] = useState("");
+  const [imageUrl, setimageUrl] = useState("");
 
   return (
     <Card className=" w-full min-w-[256px] max-w-[600px] justify-center self-center rounded-3xl border-solid border-primary-500 bg-white md:max-w-[844px]">
@@ -28,8 +30,31 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
         >
           <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:items-start">
             <div className="relative h-32 w-32 rounded-full bg-slate-200">
+              {imageUrl ? (
+                <Image
+                  src={imageUrl}
+                  alt="Profile Picture"
+                  fill
+                  className="rounded-full"
+                />
+              ) : (
+                ""
+              )}
               <div className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
                 <FontAwesomeIcon icon={faCamera} />
+                <Input
+                  type="file"
+                  name="Image"
+                  className="absolute h-8 w-8 rounded-full opacity-0"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      const file = e.target.files[0];
+                      if (!file) return;
+                      const url = URL.createObjectURL(file);
+                      setimageUrl(url);
+                    }
+                  }}
+                />
               </div>
             </div>
             <div className="flex w-full flex-col space-y-4 md:w-64 lg:w-80">

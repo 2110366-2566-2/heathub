@@ -51,6 +51,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         Email: email ? email : "",
         Password: password ? password : "",
         Interest: [],
+        Image: null,
       };
       setData(host);
       setPage("HostDetails");
@@ -63,6 +64,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         Gender: "",
         Email: email ? email : "",
         Password: password ? password : "",
+        Image: null,
       };
       setData(participant);
       setPage("ParticipantDetails");

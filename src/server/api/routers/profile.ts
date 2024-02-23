@@ -1,7 +1,16 @@
 import { removeUploadthingURLPrefix, utapi } from "@/app/api/uploadthing/core";
-import { createTRPCRouter, userProcedure } from "@/server/api/trpc";
-import { unconfirmedUserProfileImage, user } from "@/server/db/schema";
-import { and, eq, ne } from "drizzle-orm";
+import {
+  createTRPCRouter,
+  hostProcedure,
+  userProcedure,
+} from "@/server/api/trpc";
+import {
+  hostInterest,
+  unconfirmedUserProfileImage,
+  user,
+} from "@/server/db/schema";
+import { type SQL, and, eq, ne, or } from "drizzle-orm";
+import { z } from "zod";
 
 export const profileRouter = createTRPCRouter({
   confirmNewProfileImage: userProcedure.mutation(async ({ ctx }) => {
@@ -69,4 +78,66 @@ export const profileRouter = createTRPCRouter({
 
     console.log("Profile image confirmed");
   }),
+
+  updateProfile: userProcedure
+    .input(
+      z.object({
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+        bio: z.string().optional(),
+        gender: z.string().optional(),
+        email: z.string().optional(),
+        aka: z.string().optional(),
+        dateOfBirth: z.date().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      let duplicateCheck: SQL<unknown>[] = [];
+      if (input.email) {
+        duplicateCheck.push(eq(user.email, input.email));
+      }
+
+      if (input.aka) {
+        duplicateCheck.push(eq(user.aka, input.aka));
+      }
+
+      let found = await ctx.db.query.user.findFirst({
+        where: and(or(...duplicateCheck), ne(user.id, ctx.session.user.userId)),
+      });
+
+      if (found) {
+        throw new Error("Duplicate email or aka");
+      }
+
+      await ctx.db.update(user).set({
+        firstName: input.firstName,
+        lastName: input.lastName,
+        aka: input.aka,
+        bio: input.bio,
+        dateOfBirth: input.dateOfBirth,
+        email: input.email,
+        gender: input.gender,
+      });
+    }),
+
+  updateInterests: hostProcedure
+    .input(
+      z.object({
+        interests: z.string().array(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.transaction(async (tx) => {
+        await tx
+          .delete(hostInterest)
+          .where(eq(hostInterest.userID, ctx.session.user.userId));
+
+        const values = input.interests.map((v) => ({
+          userID: ctx.session.user.userId,
+          interest: v,
+        }));
+
+        await tx.insert(hostInterest).values(values);
+      });
+    }),
 });
