@@ -29,8 +29,10 @@ export default async function SignIn() {
         </div>
         <TopUpDialog />
       </div> */}
+      {/* <div className="flex flex-col md:flex-row"> */}
       <ProfileDetails interests={tagList} />
-      {/* <MyReview rating={4.5} /> */}
+      <MyReview rating={4.5} />
+      {/* </div> */}
     </main>
   );
 }
