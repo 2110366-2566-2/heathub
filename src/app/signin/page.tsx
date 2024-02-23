@@ -40,30 +40,30 @@ export default function SignIn() {
           <div className="md:hidden">
             <Quote />
           </div>
-          <div className="container flex flex-col items-center justify-center gap-6 px-4 py-6 md:gap-9 md:py-16">
-            <div className="h1 font-bold text-primary-900">Login</div>
+          <div className="container flex flex-col items-center justify-center gap-6 px-4 py-6 md:gap-8 md:py-16">
+            <div className="h1 hidden md:block font-bold text-primary-900">Login</div>
             <form action={signInHandler} className="flex flex-col gap-4 ">
               <Input
                 type="email"
                 name="email"
                 placeholder="Email"
-                className="w-[284px] md:w-[361px] "
+                className="w-[284px] md:w-[360px] "
               />
               <Input
                 type="password"
                 name="password"
                 placeholder="Password"
-                className="w-[284px] md:w-[361px]"
+                className="w-[284px] md:w-[360px]"
               />
               {error && <p className="h5 text-red-500">{error}</p>}
-              <div className="flex flex-col gap-6 md:gap-9">
-                <Button variant="link" className="h-2 justify-start px-0">
+              <div className="flex flex-col gap-6 md:gap-8">
+                <Button variant="link" className="h-2 justify-start md:justify-end px-0">
                   <Link href="/reset-password">Forgot your password?</Link>
                 </Button>
 
                 <Button
                   type="submit"
-                  className="mx-20 h-12 w-[108px] md:mx-32"
+                  className="h4 mx-[88px] md:mx-[126px] lg:mx-[92px] h-12 w-[108px] lg:w-[176px]"
                   disabled={loading}
                 >
                   Login
@@ -75,7 +75,7 @@ export default function SignIn() {
               <div className="h5 text-primary-700">
                 Don&apos;t have an account yet?
               </div>
-              <Button variant="link" className="text-secondary-400">
+              <Button variant="link" className="text-secondary-400 py-0 h-3">
                 <Link href="/signup">Sign up now</Link>
               </Button>
             </div>
