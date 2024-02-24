@@ -1,10 +1,8 @@
 "use client";
 import { useMediaQuery } from "react-responsive";
 import { MyAccountPreview } from "./my-account";
-import { type TagList } from "@/utils/icon-mapping";
+import { TagList } from "@/utils/icon-mapping";
 import PaymentCard from "./payment-card";
-import ProfileDetails from "./ProfileDetails";
-import MyReview from "./MyReview";
 
 export type ProfilePreviewProps = {
   email: string;
@@ -15,29 +13,28 @@ export type ProfilePreviewProps = {
   reviews: number;
   about: string;
   interests: TagList;
-  balance: number;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  dateOfBirth: Date;
 };
 export default function ProfileContainer(props: ProfilePreviewProps) {
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
   const balance = {
-    balance: props.balance,
+    balance: 9999,
   };
-
-  return (
-    <div className="flex flex-col gap-4 ">
-      <div className="flex flex-col lg:flex-row lg:gap-4">
-        <ProfileDetails {...props} />
-        <MyReview {...props} />
-      </div>
-      <div className="flex flex-col gap-4 lg:flex-row">
-        <div className="flex h-64 w-full justify-center rounded-xl border border-solid border-primary-300 bg-white p-6 lg:w-1/3">
+  if (isMobile) {
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="flex h-64 w-full justify-center rounded-xl border border-solid border-primary-300 bg-white lg:p-6">
           <MyAccountPreview {...props} key={props.name} />
         </div>
         <PaymentCard {...balance} />
       </div>
+    );
+  }
+  return (
+    <div className="flex flex-row gap-4">
+      <div className="flex h-64 w-1/3 justify-center rounded-xl border border-solid border-primary-300 bg-white lg:p-6">
+        <MyAccountPreview {...props} key={props.name} />
+      </div>
+      <PaymentCard {...balance} />
     </div>
   );
 }

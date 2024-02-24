@@ -29,7 +29,7 @@ export default function PaymentCard(props: PaymentCardProps) {
         </p>
         <Separator className="border-t-[1px] border-disable" />
         <div className="grid grow grid-cols-1 grid-rows-3 place-items-center justify-around md:grid-cols-3 md:grid-rows-1">
-          <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-primary-50 md:py-2">
+          <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-4 py-4 hover:bg-primary-50 md:py-2">
             <div className="relative h-6 w-8">
               <FontAwesomeIcon
                 className="h-6 w-6 text-primary-500"
@@ -44,14 +44,14 @@ export default function PaymentCard(props: PaymentCardProps) {
             Top Up
           </button>
 
-          <button className="h5 flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-primary-50 md:py-2">
+          <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-4 py-4 hover:bg-primary-50 md:py-2">
             <div className="relative h-6 w-8">
               <FontAwesomeIcon
                 className="h-6 w-6 text-primary-500"
                 icon={faWallet}
               />
               <FontAwesomeIcon
-                className="h5 absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-primary-300 p-[2px] text-white"
+                className="absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-primary-300 p-[2px] text-white"
                 fontWeight={900}
                 icon={faMinus}
               />
@@ -59,7 +59,7 @@ export default function PaymentCard(props: PaymentCardProps) {
             With Draw
           </button>
 
-          <button className="h5 flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-primary-50 md:py-2">
+          <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-4 py-4 hover:bg-primary-50 md:py-2">
             <FontAwesomeIcon
               className="h-6 w-6 text-primary-500"
               icon={faHistory}
