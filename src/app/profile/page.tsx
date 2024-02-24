@@ -1,8 +1,8 @@
 import { serverapi } from "@/trpc/server";
 import { redirect } from "next/navigation";
-import { TagList } from "@/utils/icon-mapping";
+import { type TagList } from "@/utils/icon-mapping";
 import ProfileContainer, {
-  ProfilePreviewProps,
+  type ProfilePreviewProps,
 } from "./_components/profile-container";
 
 export default async function Profile() {
@@ -37,6 +37,10 @@ export default async function Profile() {
       email: user.email,
       about: user.bio ?? "",
       balance: 9999,
+      firstName : user.firstName,
+      lastName : user.lastName,
+      gender : user.gender,
+      dateOfBirth : user.dateOfBirth ?? new Date(),
     };
   } else {
     show = {
@@ -49,6 +53,10 @@ export default async function Profile() {
       email: user.email,
       about: user.bio ?? "",
       balance: 9999,
+      firstName : user.firstName,
+      lastName : user.lastName,
+      gender : user.gender,
+      dateOfBirth : user.dateOfBirth ?? new Date(),
     };
   }
   console.log(show);

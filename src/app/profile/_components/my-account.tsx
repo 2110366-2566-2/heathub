@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/drawer";
 import { TagList, tagIcon } from "@/utils/icon-mapping";
 import { useMediaQuery } from "react-responsive";
-import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
@@ -20,7 +19,7 @@ import { cn } from "@/utils/tailwind-merge";
 import { Toggle } from "@/components/ui/toggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ProfilePreviewProps } from "./profile-container";
+import { type ProfilePreviewProps } from "./profile-container";
 
 export function MyAccountPreview(props: ProfilePreviewProps) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
