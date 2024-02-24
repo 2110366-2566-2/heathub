@@ -2,7 +2,13 @@
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/utils/tailwind-merge";
-import { faFemale, faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFemale,
+  faMars,
+  faMinus,
+  faSliders,
+  faVenus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
 import { useEffect, useRef, useState } from "react";
@@ -87,7 +93,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
             value="Custom"
             aria-label="Toggle Custom"
           >
-            <FontAwesomeIcon className="h-6 w-6" icon={faFemale} />
+            <FontAwesomeIcon className="h-6 w-6" icon={faSliders} />
             <div className="h6 max-h-4">Custom</div>
           </ToggleGroupItem>
           <ToggleGroupItem
@@ -95,7 +101,7 @@ export default function GenderSelector(props: GenderSelectorProps) {
             value="NotToSay"
             aria-label="Toggle NotToSay"
           >
-            <FontAwesomeIcon className="h-6 w-6" icon={faFemale} />
+            <FontAwesomeIcon className="h-6 w-6" icon={faMinus} />
             <div className="h6 max-h-4 overflow-x-visible leading-4">
               Prefer Not To Say
             </div>
