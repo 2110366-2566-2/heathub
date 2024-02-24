@@ -20,24 +20,14 @@ import { cn } from "@/utils/tailwind-merge";
 import { Toggle } from "@/components/ui/toggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-export type ProfilePreviewProps = {
-  email: string;
-  name: string;
-  age: number;
-  image: string;
-  rating: number;
-  reviews: number;
-  about: string;
-  interests: TagList;
-};
+import { ProfilePreviewProps } from "./profile-container";
 
 export function MyAccountPreview(props: ProfilePreviewProps) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   if (isMobile) {
     return (
       <Drawer>
-        <div className="flex h-full w-full flex-col justify-between p-6 lg:p-6 ">
+        <div className="flex h-full w-full flex-col gap-4">
           <div className="flex w-full flex-col gap-3">
             <div className="flex items-center gap-3">
               <FontAwesomeIcon
@@ -72,7 +62,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
 
   return (
     <Dialog>
-      <div className="flex h-full w-full flex-col justify-between">
+      <div className="flex h-full w-full flex-col lg:justify-between gap-4">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <FontAwesomeIcon
