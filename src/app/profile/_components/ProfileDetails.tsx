@@ -1,6 +1,6 @@
 import { Tag } from "@/app/_components/tag";
 import { CardContent, Card } from "@/components/ui/card";
-import { type TagList, tagIcon } from "@/utils/icon-mapping";
+import { tagIcon } from "@/utils/icon-mapping";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditProfileButton from "./EditProfileButton";
@@ -11,19 +11,21 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
   const { interests } = props;
   const { image } = props;
   return (
-    <Card className="h-fit min-h-[334px] w-full max-w-[912px] justify-center rounded-none border-none p-5 lg:bg-white shadow-none lg:min-h-[256px] lg:rounded-xl lg:border-solid lg:border-primary-300">
+    <Card className="h-fit min-h-[334px] w-full justify-center rounded-none border-none p-5 shadow-none lg:min-h-[256px] lg:rounded-lg lg:border-solid lg:border-primary-300 lg:bg-white">
       <CardContent className="flex h-full w-full flex-col items-center gap-y-4 p-0 md:gap-0">
         <div className="h-max-[128px] flex h-fit w-full flex-row gap-x-6 md:h-[124px]">
           <div className="flex h-full w-full flex-row gap-4">
-            <Image
-              className="relative h-[100px] w-[100px] flex-none rounded-full bg-slate-400"
-              src={image}
-              width={100}
-              height={100}
-              alt="profilePic"
-            />
-            <div className="z-100 absolute bottom-0 right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
-              <FontAwesomeIcon icon={faEye} />
+            <div className="relative h-[100px] w-[100px] flex-none rounded-full">
+              <Image
+                className="items-center justify-center rounded-full"
+                src={image}
+                width={100}
+                height={100}
+                alt="profilePic"
+              />
+              <div className="z-100 absolute bottom-0 right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
+                <FontAwesomeIcon icon={faEye} />
+              </div>
             </div>
 
             <div className="flex h-fit w-full flex-col gap-y-2">

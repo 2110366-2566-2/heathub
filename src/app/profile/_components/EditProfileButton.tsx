@@ -31,6 +31,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   const [gender, setGender] = useState(cGender);
   const [usernameText, setUsernameText] = useState(cUsername);
   const [bioText, setBioText] = useState(cBio);
+  const [DOB, setDOB] = useState<Date | undefined>(cDOB);
   const [notice, setNotice] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [isClose, setClose] = useState(false);
@@ -89,6 +90,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     setGender(cGender);
     setUsernameText(cUsername);
     setBioText(cBio);
+    setDOB(cDOB);
     return;
   };
 
@@ -153,7 +155,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
               <Label className="h5 text-high" htmlFor="Date of birth">
                 Date of birth
               </Label>
-              <DatePicker />
+              <DatePicker date={DOB} setDate={setDOB} />
             </div>
             <GenderSelector gender={gender} setGender={setGender} />
           </div>
