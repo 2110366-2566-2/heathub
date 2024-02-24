@@ -14,7 +14,7 @@ type PaymentCardProps = {
 
 export default function PaymentCard(props: PaymentCardProps) {
   return (
-    <div className="flex w-full flex-col gap-4 rounded-lg border-[1px] border-primary-500 bg-white p-6 text-high md:h-[256px]">
+    <div className="flex w-full flex-col gap-4 rounded-lg border-[1px] border-primary-300 bg-white p-6 text-high md:h-[256px]">
       <div className="flex gap-2">
         <FontAwesomeIcon
           className="h-6 w-6 text-primary-500"
