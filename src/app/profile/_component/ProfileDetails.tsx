@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
 import { serverapi } from "@/trpc/server";
 import { type TagList, tagIcon } from "@/utils/icon-mapping";
-import { faCamera, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { redirect } from "next/navigation";
+import EditProfileButton from "./EditProfileButton";
 
 interface ProfileDetailsProps {
   interests: TagList;
@@ -48,9 +49,13 @@ export default async function ProfileDetails(props: ProfileDetailsProps) {
             </div>
           </div>
           <div className="hidden h-full w-fit md:flex">
-            <Button className="w-[126px]" variant={"default"}>
-              Edit Profile
-            </Button>
+            <EditProfileButton
+              cUsername={user.userName}
+              cGender={user.gender}
+              cBio={""}
+              cDOB={new Date()}
+              cProfileURL={""}
+            />
           </div>
         </div>
         <div className="flex h-fit min-h-[94px] w-full flex-col gap-y-3">
@@ -63,7 +68,15 @@ export default async function ProfileDetails(props: ProfileDetailsProps) {
             ))}
           </div>
         </div>
-        <Button className="flex h-10 w-full md:hidden">Edit Profile</Button>
+        <div className="flex h-10 w-full md:hidden">
+          <EditProfileButton
+            cUsername={user.userName}
+            cGender={user.gender}
+            cBio={""}
+            cDOB={new Date()}
+            cProfileURL={""}
+          />
+        </div>
       </CardContent>
     </Card>
   );
