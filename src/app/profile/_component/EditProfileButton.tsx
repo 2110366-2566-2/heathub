@@ -4,10 +4,19 @@ import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCamera,
+  faMinus,
+  faSliders,
+  faMars,
+  faVenus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as React from "react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { cn } from "@/utils/tailwind-merge";
+import { api } from "@/trpc/react";
 
 interface EditProfileButtonProps {
   cUsername: string;
@@ -19,6 +28,10 @@ interface EditProfileButtonProps {
 
 export default function EditProfileButton(props: EditProfileButtonProps) {
   const { cUsername, cDOB, cBio, cGender, cProfileURL } = props;
+  const [gender, setGender] = useState(cGender);
+  const [usernameText, setUsernameText] = useState(cUsername);
+  const [bioText, setBioText] = useState(cBio);
+  const [notice, setNotice] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [isClose, setClose] = useState(false);
   useEffect(() => {
@@ -27,21 +40,57 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   useEffect(() => {
     setOpen(false);
   }, [isClose]);
-  const handleSubmit = () => {
-    return;
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const handleSubmit = async () => {
+    if (!formRef.current) {
+      return;
+    }
+    console.log("...");
+
+    const formData = new FormData(formRef.current);
+    const usernameInput = formData.get("Username") as string | null;
+    const bioInput = formData.get("Bio") as string | null;
+    const genderInput = gender;
+    const DOBInput = new Date();
+    const profileUrl = "";
+
+    if (
+      !gender ||
+      !usernameInput ||
+      !DOBInput ||
+      gender == "Custom" ||
+      gender == ""
+    ) {
+      setNotice("Please fill in your details.");
+      return;
+    }
+
+    const testUsername = api.auth.isAKAAlreadyExist.useMutation();
+    const isUsernameDup = async () => {
+      return await testUsername.mutateAsync({
+        aka: usernameInput,
+      });
+    };
+
+    if (await isUsernameDup()) {
+      setNotice("This username is already used.");
+      return;
+    }
   };
+
+  useEffect(() => {
+    console.log(notice);
+  }, [notice]);
 
   const handleClose = () => {
     setClose(true);
+    setNotice("");
     setGender(cGender);
     setUsernameText(cUsername);
     setBioText(cBio);
     return;
   };
-
-  const [gender, setGender] = useState(cGender);
-  const [usernameText, setUsernameText] = useState(cUsername);
-  const [bioText, setBioText] = useState(cBio);
 
   return (
     <Dialog
@@ -69,7 +118,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
             </div>
           </div>
         </div>
-        <form>
+        <form ref={formRef}>
           <div className="flex flex-col gap-y-4">
             <div className="flex w-full flex-col gap-y-1">
               <Label className="h5 text-high" htmlFor="Username">
@@ -108,6 +157,9 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
             </div>
             <GenderSelector gender={gender} setGender={setGender} />
           </div>
+          <div className="flex flex-row-reverse">
+            {notice && <p className="h-0 text-sm text-red-500">{notice}</p>}
+          </div>
         </form>
         <div className="flex h-fit w-full flex-row-reverse gap-x-3">
           <span
@@ -127,11 +179,6 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     </Dialog>
   );
 }
-
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { cn } from "@/utils/tailwind-merge";
-import { faFemale, faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
-import { useRef } from "react";
 
 interface GenderSelectorProps {
   setGender: (gender: string) => void;
@@ -213,7 +260,7 @@ function GenderSelector(props: GenderSelectorProps) {
             value="Custom"
             aria-label="Toggle Custom"
           >
-            <FontAwesomeIcon className="h-6 w-6" icon={faFemale} />
+            <FontAwesomeIcon className="h-6 w-6" icon={faSliders} />
             <div className="h6 max-h-4">Custom</div>
           </ToggleGroupItem>
           <ToggleGroupItem
@@ -221,7 +268,7 @@ function GenderSelector(props: GenderSelectorProps) {
             value="NotToSay"
             aria-label="Toggle NotToSay"
           >
-            <FontAwesomeIcon className="h-6 w-6" icon={faFemale} />
+            <FontAwesomeIcon className="h-6 w-6" icon={faMinus} />
             <div className="h6 max-h-4 overflow-x-visible leading-4">
               Prefer Not To Say
             </div>
