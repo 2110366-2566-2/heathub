@@ -6,7 +6,7 @@ export default function DiscoverLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-auto flex-row bg-bgColor">
+    <div className="flex h-auto flex-row bg-bgColor max-lg:mb-16">
       <NavBar />
       <NavBarMobile />
       {children}

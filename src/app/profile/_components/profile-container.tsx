@@ -27,8 +27,8 @@ export default function ProfileContainer(props: ProfilePreviewProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col lg:gap-4 lg:flex-row">
+    <div className="flex flex-col gap-4 ">
+      <div className="flex flex-col lg:flex-row lg:gap-4">
         <ProfileDetails {...props} />
         <MyReview {...props} />
       </div>
