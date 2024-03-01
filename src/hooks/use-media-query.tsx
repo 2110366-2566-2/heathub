@@ -3,11 +3,9 @@ import { useEffect, useState } from "react";
 export function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false);
 
-  const matchQuery = window.matchMedia(query);
-
   useEffect(() => {
     const matchQueryList = window.matchMedia(query);
-    setMatches(matchQuery.matches);
+    setMatches(matchQueryList.matches);
 
     function handleChange(e: any) {
       setMatches(e.matches);
