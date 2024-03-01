@@ -1,8 +1,6 @@
-import { topUp } from "@/action/payment";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { serverapi } from "@/trpc/server";
 import { redirect } from "next/navigation";
+import { TopUpDialog } from "./_components/topup-modal";
 
 export default async function SignIn() {
   const user = await serverapi.auth.me.query();
@@ -26,10 +24,7 @@ export default async function SignIn() {
           <p>gender: {user.gender}</p>
           <p>balance: {balance / 100}THB</p>
         </div>
-        <form action={topUp}>
-          <Input type="number" name="price" className="text-high" />
-          <Button>TOP UP</Button>
-        </form>
+        <TopUpDialog />
       </div>
     </main>
   );

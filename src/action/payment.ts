@@ -37,6 +37,7 @@ export async function topUp(formData: FormData) {
         quantity: 1,
       },
     ],
+    payment_method_types: ["card", "promptpay"],
     mode: "payment",
     success_url: `${origin}/api/stripe/topup?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/profile?topup=failed`,
