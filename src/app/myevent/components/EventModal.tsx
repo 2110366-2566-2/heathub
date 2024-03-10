@@ -40,7 +40,7 @@ export function EventModal(prop: EventModalProps) {
       case EventStatus.WAITINGREVIEW:
         return (
           <Button variant="default" className="bg-primary-500 text-white">
-            Sant a Review
+            Sent a Review
           </Button>
         );
       case EventStatus.COMPLETED:
