@@ -3,7 +3,6 @@ import { type ChatMessageProps } from "./type";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/utils/tailwind-merge";
 import { Dayjs } from "@/utils/dayjs";
-
 export function ChatMessage(props: ChatMessageProps) {
   const { isMine, isShowTop, isShowBot, imageUrl } = props;
 

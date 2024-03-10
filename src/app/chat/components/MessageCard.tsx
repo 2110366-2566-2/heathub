@@ -16,7 +16,7 @@ export function MessageCard(props: MessageCardProps) {
     <Button
       variant="outline"
       className={cn(
-        "delay-50 h-fit w-full whitespace-normal rounded-lg border-2 border-primary-300  p-0 transition ease-in-out  lg:w-[380px] ",
+        "delay-50 h-fit w-full whitespace-normal rounded-lg border-2 border-primary-300  p-0 transition ease-in-out  lg:w-[380px]",
         props.className,
       )}
       onClick={onClick}

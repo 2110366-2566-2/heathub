@@ -1,19 +1,21 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-
-import { CHAT_MESSAGE_EVENT } from "@/constants/pusher-events";
+import {
+  CHAT_MESSAGE_EVENT,
+  RECENT_MESSAGE_EVENT,
+} from "@/constants/pusher-events";
 import { api } from "@/trpc/react";
-import { type ChatMessage } from "@/types/pusher";
+import { type RecentMessage } from "@/types/pusher";
 import { type Channel } from "pusher-js";
 import { usePusher } from "../../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useIntersection } from "@mantine/hooks";
-import LoadingSVG from "./LoadingSVG";
-
+import ChatEventForm, { type CreateFormInfo } from "./ChatEventCreateForm";
+import ChatMessageBox from "./ChatMessageBox";
+import ChatEventInfo, { ChatEventInfoInterface } from "./ChatEventInfo";
 export function ChatRoom({ withUser }: { withUser: string }) {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<RecentMessage[]>([]);
+  const [isOpenChatEvent, setOpenChatEvent] = useState<boolean>(false);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const topChatRef = useRef<HTMLDivElement>(null);
@@ -29,9 +31,8 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     onSuccess: (data) => {
       if (!data) return;
       chatChannel = pusher.subscribe(`private-user-${data.userId}`);
-      chatChannel.bind(CHAT_MESSAGE_EVENT, (data: ChatMessage) => {
-        if (data.sender.id !== withUser && data.receiver.id !== withUser)
-          return;
+      chatChannel.bind(RECENT_MESSAGE_EVENT, (data: RecentMessage) => {
+        if (data.discourserId !== withUser) return;
         setMessages((prev) => {
           if (prev.some((x) => x.id === data.id)) {
             return prev;
@@ -40,7 +41,8 @@ export function ChatRoom({ withUser }: { withUser: string }) {
         });
       });
     },
-    refetchOnWindowFocus: false,
+    cacheTime: 0,
+    refetchOnWindowFocus: true,
   });
 
   const { hasNextPage, fetchNextPage } = api.chat.infiniteChat.useInfiniteQuery(
@@ -51,15 +53,24 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
       onSuccess: (data) => {
-        const latestPage = data.pages.at(-1)?.messages;
+        const latestPage = data.pages.at(-1)?.convertedMessage;
         if (latestPage) {
-          setMessages((prev: ChatMessage[]) => [...prev, ...latestPage]);
+          setMessages((prev: RecentMessage[]) => [...prev, ...latestPage]);
         }
       },
 
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
+      cacheTime: 0,
     },
   );
+  const setChatEvent = () => {
+    setOpenChatEvent((prev) => !prev);
+  };
+  useEffect(() => {
+    chatContainerRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [isOpenChatEvent]);
 
   useEffect(() => {
     return () => {
@@ -77,7 +88,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
 
   useEffect(() => {
     if (messages.length) {
-      if (messages[0]?.senderUserID === user?.userId) {
+      if (messages[0]?.myId === user?.userId) {
         chatContainerRef.current?.scrollIntoView({
           behavior: "smooth",
         });
@@ -86,12 +97,32 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   }, [messages, user]);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const createEvent = api.event.createEvent.useMutation({
+    onSuccess: () => {
+      console.log("success create Event");
+      setOpenChatEvent(false);
+    },
+  });
+
+  const onEventConfirm = (eventData: CreateFormInfo) => {
+    console.log(eventData);
+    if (!user) return;
+    createEvent.mutate({
+      hostUserID: user?.userId,
+      startTime: eventData.startTime,
+      endTime: eventData.endTime,
+      price: eventData.price,
+      location: eventData.location,
+      participantUserID: withUser,
+      description: eventData.description ?? "asdjfkl",
+    });
+  };
 
   const reversePost = [...messages].reverse();
   return (
     <>
       <div
-        className="relative h-full w-full overflow-y-scroll px-14 max-lg:px-6"
+        className="relative flex h-full w-full flex-col overflow-y-scroll px-14 max-lg:px-6"
         ref={containerRef}
       >
         {messages ? (
@@ -100,100 +131,80 @@ export function ChatRoom({ withUser }: { withUser: string }) {
               let isMine = false;
               let isShowTop = false;
               let isShowBot = false;
-              if (message.sender.id === user?.userId) {
+              if (message.senderId === user?.userId) {
                 isMine = true;
               }
               if (
                 i === messages.length - 1 ||
-                reversePost[i + 1]?.sender?.id !== message.sender.id
+                reversePost[i + 1]?.senderId !== message.senderId
               )
                 isShowBot = true;
               if (
                 !isMine &&
-                (i === 0 ||
-                  reversePost[i - 1]?.sender?.id !== message.sender.id)
+                (i === 0 || reversePost[i - 1]?.senderId !== message.senderId)
               )
                 isShowTop = true;
-              if (i === 5)
+
+              if (message.contentType === "event")
                 return (
-                  <>
-                    <div ref={ref} key={message.id} />
+                  <ChatEventInfo
+                    key={message.id}
+                    location={message.content.location}
+                    price={message.content.price}
+                    startTime={message.content.startTime}
+                    endTime={message.content.endTime}
+                    status="success"
+                  />
+                );
+              if (i === 5) {
+                return (
+                  <div key={"hot"}>
+                    <div ref={ref} key={"hot-fix" + i} />
                     <ChatMessageComponent
                       key={message.id}
-                      senderName={message.sender.firstName}
+                      senderName={message.discourserAka}
                       isShowBot={isShowBot}
                       isMine={isMine}
                       isShowTop={isShowTop}
-                      message={message.content}
+                      message={message.content + message.id}
                       createdAt={message.createdAt.toString()}
-                      imageUrl={message.sender.profileImageURL}
+                      imageUrl={message.discourserImageURL}
                     />
-                  </>
+                  </div>
                 );
-              return (
-                <ChatMessageComponent
-                  key={message.id}
-                  senderName={message.sender.firstName}
-                  isShowBot={isShowBot}
-                  isMine={isMine}
-                  isShowTop={isShowTop}
-                  message={message.content}
-                  createdAt={message.createdAt.toString()}
-                  imageUrl={message.sender.profileImageURL}
-                />
-              );
+              } else {
+                return (
+                  <ChatMessageComponent
+                    key={message.id}
+                    senderName={message.discourserAka}
+                    isShowBot={isShowBot}
+                    isMine={isMine}
+                    isShowTop={isShowTop}
+                    message={message.content + message.id}
+                    createdAt={message.createdAt.toString()}
+                    imageUrl={message.discourserImageURL}
+                  />
+                );
+              }
             })}
           </>
         ) : (
           <p>You have no posts yet.</p>
         )}
+        <ChatEventForm
+          key=""
+          isOpen={isOpenChatEvent}
+          onConfirm={onEventConfirm}
+        />
         <div ref={chatContainerRef} />
       </div>
-      {user && <ChatMessageBox toUserID={withUser} />}
-    </>
-  );
-}
-
-export function ChatMessageBox(props: { toUserID: string }) {
-  const { toUserID: userID } = props;
-  const [message, setMessage] = useState("");
-  const sendMessage = api.chat.sendMessage.useMutation({
-    onSuccess: () => {
-      setMessage("");
-    },
-  });
-
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        sendMessage.mutate({
-          content: message,
-          toUserID: userID,
-        });
-      }}
-      className="bottom-0 z-10 mb-14 mt-6 flex w-full flex-row items-center justify-center gap-2 bg-white px-14 max-lg:mb-6 max-lg:px-6"
-    >
-      <input
-        type="text"
-        placeholder="Write your message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        className="w-full flex-1 rounded-xl bg-neutral-50 px-4 py-2 text-black"
-      />
-      {message !== "" && (
-        <button
-          type="submit"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 font-semibold text-white transition hover:bg-primary-600"
-          disabled={sendMessage.isLoading}
-        >
-          {!sendMessage.isLoading ? (
-            <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4" />
-          ) : (
-            <LoadingSVG />
-          )}
-        </button>
+      {user && (
+        <ChatMessageBox
+          toUserID={withUser}
+          setOpenChatEvent={setChatEvent}
+          userRole={user.role}
+        />
       )}
-    </form>
+    </>
   );
 }

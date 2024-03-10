@@ -6,6 +6,7 @@ export const env = createEnv({
    * Specify your server-side environment variables schema here. This way you can ensure the app
    * isn't built with invalid env vars.
    */
+
   server: {
     DATABASE_HOST: z.string(),
     DATABASE_USERNAME: z.string(),
@@ -25,6 +26,7 @@ export const env = createEnv({
     UPLOADTHING_SECRET: z.string(),
     UPLOADTHING_APP_ID: z.string(),
     STRIPE_SECRET_KEY: z.string(),
+    GOOGLEMAP_API_KEY: z.string(),
   },
 
   /**
@@ -57,6 +59,7 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    GOOGLEMAP_API_KEY: process.env.GOOGLEMAP_API_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

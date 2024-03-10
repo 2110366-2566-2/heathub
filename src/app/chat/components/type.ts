@@ -17,3 +17,9 @@ export interface ChatMessageProps {
   imageUrl: string | null;
 }
 export type MessageType = string;
+export interface EventDetailCardProps {
+  className?: string;
+  status: "success" | "pending" | "confirmed" | "denied";
+  date: Date;
+  price: number;
+}

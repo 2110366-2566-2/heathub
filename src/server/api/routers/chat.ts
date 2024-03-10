@@ -1,9 +1,6 @@
 import { z } from "zod";
 
-import {
-  CHAT_MESSAGE_EVENT,
-  RECENT_MESSAGE_EVENT,
-} from "@/constants/pusher-events";
+import { RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
 import {
   createTRPCRouter,
   participantProcedure,
@@ -11,9 +8,13 @@ import {
 } from "@/server/api/trpc";
 import type { DB } from "@/server/db";
 import { chatInbox, chatMessage, user } from "@/server/db/schema";
-import { type ChatMessage, type RecentMessage } from "@/types/pusher";
+import {
+  type RecentNormalMessage,
+  type RecentMessage,
+  type RecentEventMessage,
+} from "@/types/pusher";
 import { and, desc, eq, lte, or, sql } from "drizzle-orm";
-async function createInbox(
+export async function createInbox(
   db: DB,
   userID1: string,
   userID2: string,
@@ -105,28 +106,28 @@ export const chatRouter = createTRPCRouter({
 
         return lastestMessage;
       });
-      const messageForSender: RecentMessage = {
+      const messageForSender: RecentNormalMessage = {
         id: result.id,
         myId: ctx.session.user.userId,
         discourserId: result.receiver.id,
         discourserAka: result.receiver.aka,
+        senderId: result.senderUserID,
         discourserImageURL: result.receiver.profileImageURL,
-        contentType: result.contentType,
-        lastestContent: result.content,
+        contentType: result.contentType as "text" | "imageURL",
+        content: result.content,
         createdAt: result.createdAt,
       };
-      const messageForReciever: RecentMessage = {
+      const messageForReciever: RecentNormalMessage = {
         id: result.id,
         myId: result.receiver.id,
         discourserId: ctx.session.user.userId,
         discourserAka: ctx.session.user.userName,
+        senderId: result.senderUserID,
         discourserImageURL: result.sender.profileImageURL,
-        contentType: result.contentType,
-        lastestContent: result.content,
+        contentType: result.contentType as "text" | "imageURL",
+        content: result.content,
         createdAt: result.createdAt,
       };
-
-      const messages: ChatMessage = result;
 
       await Promise.all([
         ctx.pusher.trigger(
@@ -138,16 +139,6 @@ export const chatRouter = createTRPCRouter({
           `private-user-${input.toUserID}`,
           RECENT_MESSAGE_EVENT,
           messageForReciever,
-        ),
-        ctx.pusher.trigger(
-          `private-user-${ctx.session.user.userId}`,
-          CHAT_MESSAGE_EVENT,
-          messages,
-        ),
-        ctx.pusher.trigger(
-          `private-user-${input.toUserID}`,
-          CHAT_MESSAGE_EVENT,
-          messages,
         ),
       ]);
     }),
@@ -162,58 +153,134 @@ export const chatRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       let { pairUserID, cursor, limit } = input;
-      limit ??= 10;
+      let nextCursor: number | null = null;
 
-      const messages: ChatMessage[] = await ctx.db.query.chatMessage.findMany({
-        limit: limit + 1,
-        orderBy: (posts, { desc }) => [desc(posts.id)],
-        where: and(
-          lte(chatMessage.id, cursor ?? Number.MAX_SAFE_INTEGER),
-          or(
-            and(
-              eq(chatMessage.senderUserID, ctx.session.user.userId),
-              eq(chatMessage.receiverUserID, pairUserID),
-            ),
-            and(
-              eq(chatMessage.senderUserID, pairUserID),
-              eq(chatMessage.receiverUserID, ctx.session.user.userId),
+      const { eventMap, messages } = await ctx.db.transaction(async (tx) => {
+        limit ??= 10;
+        const messages = await tx.query.chatMessage.findMany({
+          limit: limit + 1,
+          orderBy: (posts, { desc }) => [desc(posts.id)],
+          where: and(
+            lte(chatMessage.id, cursor ?? Number.MAX_SAFE_INTEGER),
+            or(
+              and(
+                eq(chatMessage.senderUserID, ctx.session.user.userId),
+                eq(chatMessage.receiverUserID, pairUserID),
+              ),
+              and(
+                eq(chatMessage.senderUserID, pairUserID),
+                eq(chatMessage.receiverUserID, ctx.session.user.userId),
+              ),
             ),
           ),
-        ),
-        with: {
-          sender: {
-            columns: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              profileImageURL: true,
-              role: true,
-              aka: true,
+          with: {
+            sender: {
+              columns: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                profileImageURL: true,
+                role: true,
+                aka: true,
+              },
+            },
+            receiver: {
+              columns: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                profileImageURL: true,
+                role: true,
+                aka: true,
+              },
             },
           },
-          receiver: {
-            columns: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              profileImageURL: true,
-              role: true,
-              aka: true,
-            },
-          },
-        },
+        });
+
+        if (messages.length > limit && limit > 0) {
+          const message = messages.pop();
+          if (message) {
+            nextCursor = message.id;
+          }
+        }
+        const eventId = messages
+          .filter((e) => {
+            if (e.contentType === "event") return true;
+          })
+          .map((e) => parseInt(e.content));
+
+        const eventMap = new Map<number, (typeof eventDetail)[0]>();
+        if (eventId.length === 0) return { eventMap, messages };
+        const eventDetail = await tx.query.event.findMany({
+          where: (event, { inArray }) => inArray(event.id, eventId),
+        });
+        eventDetail.forEach((e) => {
+          eventMap.set(e.id, e);
+        });
+        return { eventMap, messages };
       });
 
-      let nextCursor: number | null = null;
-      if (messages.length > limit && limit > 0) {
-        const message = messages.pop();
-        if (message) {
-          nextCursor = message.id;
+      let convertedMessage: RecentMessage[] = [];
+      for (let i = 0; i <= messages.length; i++) {
+        const e = messages[i];
+        if (!e) continue;
+        if (e.contentType == "event") {
+          const content = eventMap.get(parseInt(e.content));
+          if (!content) {
+            continue;
+          }
+          convertedMessage.push({
+            id: e.id,
+            myId: ctx.session.user.userId,
+            discourserId:
+              ctx.session.user.userId === e.sender.id
+                ? e.receiver.id
+                : e.sender.id,
+            discourserAka:
+              ctx.session.user.userId === e.sender.id
+                ? e.receiver.aka
+                : e.sender.aka,
+            discourserImageURL:
+              ctx.session.user.userId === e.sender.id
+                ? e.receiver.profileImageURL
+                : e.sender.profileImageURL,
+            senderId: e.sender.id,
+            contentType: e.contentType,
+            content: {
+              description: content.description,
+              location: content.location,
+              price: content.price,
+              startTime: content.startTime,
+              endTime: content.endTime,
+            },
+            createdAt: e.createdAt,
+          } satisfies RecentEventMessage);
+          continue;
         }
+        convertedMessage.push({
+          id: e.id,
+          myId: ctx.session.user.userId,
+          discourserId:
+            ctx.session.user.userId === e.sender.id
+              ? e.receiver.id
+              : e.sender.id,
+          discourserAka:
+            ctx.session.user.userId === e.sender.id
+              ? e.receiver.aka
+              : e.sender.aka,
+          discourserImageURL:
+            ctx.session.user.userId === e.sender.id
+              ? e.receiver.profileImageURL
+              : e.sender.profileImageURL,
+          senderId: e.sender.id,
+          contentType: e.contentType,
+          content: e.content,
+          createdAt: e.createdAt,
+        } satisfies RecentNormalMessage);
       }
 
       return {
-        messages,
+        convertedMessage,
         nextCursor,
       };
     }),
@@ -282,15 +349,29 @@ export const chatRouter = createTRPCRouter({
           return !isMatched;
         })
         .map((e) => {
+          if (e.chat_message.contentType === "event") {
+            return {
+              id: e.chat_message.id,
+              myId: ctx.session.user.userId,
+              discourserId: e.user.id,
+              discourserAka: e.user.aka,
+              discourserImageURL: e.user.profileImageURL,
+              senderId: e.chat_message.senderUserID,
+              createdAt: e.chat_message.createdAt,
+              contentType: "text",
+              content: "New Event",
+            };
+          }
           return {
             id: e.chat_message.id,
             myId: ctx.session.user.userId,
             discourserId: e.user.id,
             discourserAka: e.user.aka,
             discourserImageURL: e.user.profileImageURL,
+            senderId: e.chat_message.senderUserID,
             createdAt: e.chat_message.createdAt,
             contentType: e.chat_message.contentType,
-            lastestContent: e.chat_message.content,
+            content: e.chat_message.content,
           };
         });
 
