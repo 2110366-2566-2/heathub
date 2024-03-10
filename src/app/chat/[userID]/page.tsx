@@ -1,11 +1,11 @@
 import { ChatRoom } from "@/app/chat/components/ChatRoom";
 import { serverapi } from "@/trpc/server";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
 export default async function Chat({ params }: { params: { userID: string } }) {
-  const pairUser = await serverapi.auth.getUserPublicData.query({
+  const pairUser = await serverapi.user.getUserPublicData.query({
     userID: params.userID,
   });
 
