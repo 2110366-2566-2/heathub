@@ -31,7 +31,7 @@ const config = withUt({
         placeholder: "#94a3b8",
         invert: "#ffffff",
         disable: "#cbd5e1",
-        bgColor: "#f8fafc",
+        bgColor: "#ffffff",
         error: {
           default: "#F86C6C",
           hover: "#E14C4C",
