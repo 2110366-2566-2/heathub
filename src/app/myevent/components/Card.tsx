@@ -3,6 +3,7 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendar,
+  faCheckCircle,
   faEllipsisVertical,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +23,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { StatusTag } from "./StatusTag";
+import { formatDate } from "../utils/formatDate";
 
 type EventProps = {
   name: string;
@@ -30,6 +32,7 @@ type EventProps = {
   status?: EventStatus;
   image: string;
   detail?: string;
+  isVerified?: Boolean;
 };
 
 export enum EventStatus {
@@ -46,7 +49,7 @@ export function Card(prop: EventProps) {
         return (
           <Button
             variant="default"
-            className="z-[100 !w-full bg-primary-500 text-white"
+            className="z-[100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
           >
             Finish Event
           </Button>
@@ -55,7 +58,7 @@ export function Card(prop: EventProps) {
         return (
           <Button
             variant="default"
-            className="z-100 !w-full bg-error-default text-white hover:bg-error-hover"
+            className="z-100 !w-full border border-secondary-500 bg-white text-secondary-500 hover:bg-secondary-100"
           >
             Cancel Event
           </Button>
@@ -64,7 +67,7 @@ export function Card(prop: EventProps) {
         return (
           <Button
             variant="default"
-            className="z-50 !w-full bg-primary-500 text-white"
+            className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
           >
             Give Review
           </Button>
@@ -73,7 +76,7 @@ export function Card(prop: EventProps) {
         return (
           <Button
             variant="default"
-            className="z-50 !w-full bg-primary-500 text-white"
+            className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
           >
             My Review
           </Button>
@@ -82,7 +85,7 @@ export function Card(prop: EventProps) {
         return (
           <Button
             variant="default"
-            className="z-50 !w-full bg-primary-500 text-white"
+            className="z-50 !w-full border border-secondary-500 bg-white text-secondary-500 hover:bg-secondary-100"
           >
             Cancel Event
           </Button>
@@ -91,7 +94,7 @@ export function Card(prop: EventProps) {
   };
 
   return (
-    <div className="h-18 flex w-full  flex-col items-center gap-4 rounded-xl border border-primary-300 bg-white p-3 lg:flex-row">
+    <div className="h-18 flex w-full  flex-col items-center gap-4 rounded-xl bg-white p-3 lg:flex-row hover:bg-neutral-50">
       <EventDetail
         name={prop.name}
         location={prop.location}
@@ -104,11 +107,16 @@ export function Card(prop: EventProps) {
           <div className=" relative h-14 w-14 overflow-hidden rounded-full">
             <Image src={prop.image} fill objectFit="cover" alt="logo" />
           </div>
-          <div className="flex flex-1 flex-col">
+          <div className="flex flex-1 flex-col gap-2">
             <div className="flex flex-row gap-1">
               <div className="flex w-full flex-row gap-2">
                 <div className="flex flex-1 items-center gap-2">
                   <h4 className="h4 font-bold">{prop.name}</h4>
+                  {prop.isVerified && <FontAwesomeIcon
+                      icon={faCheckCircle}
+                      className="h-4 w-4 text-secondary-500"
+                    />
+                  }
                   <StatusTag status={prop.status} size="sm" />
                 </div>
                 <DropdownMenu>
@@ -143,7 +151,7 @@ export function Card(prop: EventProps) {
                   className="h-3 w-3 text-medium"
                 />
                 <h6 className="h6 font-normal text-medium">
-                  {prop.date.toUTCString()}
+                  {formatDate(prop.date)}
                 </h6>
               </div>
             </div>

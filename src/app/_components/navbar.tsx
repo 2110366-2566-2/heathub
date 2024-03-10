@@ -5,75 +5,23 @@ import {
   faComment,
   faCompass,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { NavItem } from "./navItem";
 
 export function NavBar() {
   const pathName = usePathname();
-  const isDiscover = pathName.startsWith("/discover") ? "block" : "hidden";
-  const isEvent = pathName.startsWith("/myevent") ? "block" : "hidden";
-  const isChat = pathName.startsWith("/chat") ? "block" : "hidden";
+  const isDiscover = pathName.startsWith("/discover");
+  const isEvent = pathName.startsWith("/myevent");
+  const isChat = pathName.startsWith("/chat");
 
   return (
-    <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[100px] flex-col justify-between gap-3 bg-white px-6 py-9 shadow-sm lg:flex">
-      <div className="flex h-[762px] flex-col gap-9">
-        <Image src="/svgs/logo-default.svg" width={62} height={46} alt="logo" />
-        <Link
-          className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
-          href="/discover"
-        >
-          <FontAwesomeIcon
-            icon={faCompass}
-            className={cn(
-              "h-8 w-8",
-              isDiscover == "block" ? "text-primary-500" : "text-medium",
-            )}
-          />
-          <div
-            className={cn(
-              "absolute left-[62px] h-10 w-1 rounded-sm bg-primary-500 group-hover:block",
-              isDiscover,
-            )}
-          />
-        </Link>
-        <Link
-          className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
-          href="/myevent"
-        >
-          <FontAwesomeIcon
-            icon={faCalendarCheck}
-            className={cn(
-              "h-8 w-8",
-              isEvent == "block" ? "text-primary-500" : "text-medium",
-            )}
-          />
-          <div
-            className={cn(
-              "absolute left-[62px] h-10 w-1 rounded-sm bg-primary-500 group-hover:block",
-              isEvent,
-            )}
-          />
-        </Link>
-        <Link
-          className="group relative flex h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
-          href="/chat"
-        >
-          <FontAwesomeIcon
-            icon={faComment}
-            className={cn(
-              "h-8 w-8",
-              isChat == "block" ? "text-primary-500" : "text-medium",
-            )}
-          />
-          <div
-            className={cn(
-              "absolute left-[62px] h-10 w-1 rounded-sm bg-primary-500 group-hover:block",
-              isChat,
-            )}
-          />
-        </Link>
+    <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[80px] flex-col justify-between gap-3 bg-secondary-400 py-9 shadow-sm lg:flex">
+      <div className="flex h-full flex-col gap-8">
+        {/* <Image src="/svgs/logo-default.svg" width={62} height={46} alt="logo" /> */}
+        <NavItem link="/discover" icon={faCompass} isSelected={isDiscover}/>
+        <NavItem link="/myevent" icon={faCalendarCheck} isSelected={isEvent}/>
+        <NavItem link="/chat" icon={faComment} isSelected={isChat}/>
       </div>
       <div className="items-center justify-center self-center">
         <div className="relative flex h-10 w-10">
@@ -81,7 +29,7 @@ export function NavBar() {
             src="/images/discover/mock-profile/mock-1.jpg"
             fill
             alt="logo"
-            className="self-center rounded-full object-cover"
+            className="self-center rounded-full object-cover border-2	 border-white"
           />
         </div>
       </div>
@@ -91,50 +39,23 @@ export function NavBar() {
 
 export function NavBarMobile({ className }: { className?: string }) {
   const isDiscover = usePathname().startsWith("/discover")
-    ? "text-primary-500"
-    : "text-medium";
   const isEvent = usePathname().startsWith("/myevent")
-    ? "text-primary-500"
-    : "text-medium";
   const isChat = usePathname().startsWith("/chat")
-    ? "text-primary-500"
-    : "text-medium";
   return (
     <nav
       className={cn("fixed bottom-4 z-50 w-full justify-center ", className)}
     >
-      <div className=" z-50 mx-auto flex h-16 w-[80%] max-w-[448px] justify-between rounded-3xl bg-white px-9 lg:hidden">
-        <Link
-          href="/discover"
-          className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
-        >
-          <FontAwesomeIcon
-            icon={faCompass}
-            className={cn("h-8 w-8", isDiscover)}
-          />
-        </Link>
-        <Link
-          href="/myevent"
-          className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
-        >
-          <FontAwesomeIcon
-            icon={faCalendarCheck}
-            className={cn("h-8 w-8", isEvent)}
-          />
-        </Link>
-        <Link
-          href="/chat"
-          className="h-8 w-8 flex-row items-center self-center hover:cursor-pointer"
-        >
-          <FontAwesomeIcon icon={faComment} className={cn("h-8 w-8", isChat)} />
-        </Link>
+      <div className=" z-50 mx-auto flex h-[68px] w-[80%] max-w-[448px] justify-between rounded-full bg-secondary-400 px-9 lg:hidden">
+        <NavItem link="/discover" icon={faCompass} isSelected={isDiscover}/>
+        <NavItem link="/myevent" icon={faCalendarCheck} isSelected={isEvent}/>
+        <NavItem link="/chat" icon={faComment} isSelected={isChat}/>
         <div className="items-center justify-center self-center">
           <div className="relative flex h-10 w-10">
             <Image
               src="/images/discover/mock-profile/mock-1.jpg"
               fill
               alt="logo"
-              className="self-center rounded-full object-cover"
+              className="self-center rounded-full object-cover border-2 border-white"
             />
           </div>
         </div>
