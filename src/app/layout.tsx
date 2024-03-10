@@ -8,7 +8,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 const nunito = Nunito({
   subsets: ["latin"],
   variable: "--font-nunito",
-  weight: ["300", "400","500","600","700", "900"],
+  weight: ["300", "400", "500", "600", "700", "900"],
 });
 
 export const metadata = {

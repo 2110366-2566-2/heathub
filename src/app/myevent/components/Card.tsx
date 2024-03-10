@@ -32,7 +32,7 @@ type EventProps = {
   status?: EventStatus;
   image: string;
   detail?: string;
-  isVerified?: Boolean;
+  isVerified?: boolean;
 };
 
 export enum EventStatus {
@@ -94,7 +94,7 @@ export function Card(prop: EventProps) {
   };
 
   return (
-    <div className="h-18 flex w-full  flex-col items-center gap-4 rounded-xl bg-white p-3 lg:flex-row hover:bg-neutral-50">
+    <div className="h-18 flex w-full  flex-col items-center gap-4 rounded-xl bg-white p-3 hover:bg-neutral-50 lg:flex-row">
       <EventDetail
         name={prop.name}
         location={prop.location}
@@ -112,11 +112,12 @@ export function Card(prop: EventProps) {
               <div className="flex w-full flex-row gap-2">
                 <div className="flex flex-1 items-center gap-2">
                   <h4 className="h4 font-bold">{prop.name}</h4>
-                  {prop.isVerified && <FontAwesomeIcon
+                  {prop.isVerified && (
+                    <FontAwesomeIcon
                       icon={faCheckCircle}
                       className="h-4 w-4 text-secondary-500"
                     />
-                  }
+                  )}
                   <StatusTag status={prop.status} size="sm" />
                 </div>
                 <DropdownMenu>
