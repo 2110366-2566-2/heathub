@@ -33,7 +33,7 @@ interface EventDetailProps {
 }
 
 export function EventDetail(props: EventDetailProps) {
-  const { children } = props; 
+  const { children } = props;
 
   return (
     <Dialog>

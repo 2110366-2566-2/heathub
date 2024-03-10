@@ -12,7 +12,7 @@ import {
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label"
+import { Label } from "@/components/ui/label";
 import StarRateOnclick, { StarRate } from "./StarRate";
 
 interface EventModalProps {
@@ -23,34 +23,24 @@ interface EventModalProps {
   review: string;
 }
 
-export function EventModal(prop:EventModalProps){
-
+export function EventModal(prop: EventModalProps) {
   const ModalButton = () => {
     switch (prop.status) {
       case EventStatus.STARTED:
         return (
-          <Button
-            variant="default"
-            className="bg-primary-500 text-white"
-          >
+          <Button variant="default" className="bg-primary-500 text-white">
             Finish Event
           </Button>
         );
       case EventStatus.NOTSTARTED:
         return (
-          <Button
-            variant="default"
-            className="bg-primary-500 text-white"
-          >
+          <Button variant="default" className="bg-primary-500 text-white">
             Cancel Event
           </Button>
         );
       case EventStatus.WAITINGREVIEW:
         return (
-          <Button
-            variant="default"
-            className="bg-primary-500 text-white"
-          >
+          <Button variant="default" className="bg-primary-500 text-white">
             Sant a Review
           </Button>
         );
@@ -63,7 +53,7 @@ export function EventModal(prop:EventModalProps){
     switch (prop.status) {
       case EventStatus.STARTED:
         return (
-          <DialogTitle className="flex flex-col items-begin gap-1">
+          <DialogTitle className="items-begin flex flex-col gap-1">
             <h3 className="h3 flex flex-1 font-extrabold text-primary-800">
               Do you want to finish this event ?
             </h3>
@@ -74,7 +64,7 @@ export function EventModal(prop:EventModalProps){
         );
       case EventStatus.NOTSTARTED:
         return (
-          <DialogTitle className="flex flex-col items-begin gap-1">
+          <DialogTitle className="items-begin flex flex-col gap-1">
             <h3 className="h3 flex flex-1 font-extrabold text-primary-800">
               Do you want to cancel this event ?
             </h3>
@@ -85,7 +75,7 @@ export function EventModal(prop:EventModalProps){
         );
       case EventStatus.WAITINGREVIEW:
         return (
-          <DialogTitle className="flex flex-col items-begin gap-1">
+          <DialogTitle className="items-begin flex flex-col gap-1">
             <h3 className="md:h3 h4 flex flex-1 font-extrabold text-primary-800">
               Give {prop.name} a review
             </h3>
@@ -96,7 +86,7 @@ export function EventModal(prop:EventModalProps){
         );
       case EventStatus.COMPLETED:
         return (
-          <DialogTitle className="flex flex-col items-begin gap-1">
+          <DialogTitle className="items-begin flex flex-col gap-1">
             <h3 className="md:h3 h4 flex flex-1 font-extrabold text-primary-800">
               Your review to {prop.name}
             </h3>
@@ -108,36 +98,36 @@ export function EventModal(prop:EventModalProps){
     }
   };
 
-  const ModalDesc= () => {
+  const ModalDesc = () => {
     switch (prop.status) {
       case EventStatus.STARTED:
-        return (
-          ""
-        );
+        return "";
       case EventStatus.NOTSTARTED:
-        return (
-          ""
-        );
+        return "";
 
-        case EventStatus.WAITINGREVIEW:
-          return (
-            <DialogDescription className="flex flex-col gap-3 text-medium">
-            <StarRateOnclick/>
-            <Label htmlFor="message" className="h5 text-black">Review</Label>
+      case EventStatus.WAITINGREVIEW:
+        return (
+          <DialogDescription className="flex flex-col gap-3 text-medium">
+            <StarRateOnclick />
+            <Label htmlFor="message" className="h5 text-black">
+              Review
+            </Label>
             <Textarea placeholder="Type your review here" id="message" />
           </DialogDescription>
-          );
+        );
 
-        case EventStatus.COMPLETED:
-          return (
-            <DialogDescription className="flex flex-col gap-3 text-medium">
-            <StarRate 
-            Rating={prop.rating}
-            />
-            <Label htmlFor="message" className="h5 text-black">Review</Label>
-            <Textarea id="message" disabled >You did really great. I’m so happy to have a dinner with you</Textarea>
+      case EventStatus.COMPLETED:
+        return (
+          <DialogDescription className="flex flex-col gap-3 text-medium">
+            <StarRate Rating={prop.rating} />
+            <Label htmlFor="message" className="h5 text-black">
+              Review
+            </Label>
+            <Textarea id="message" disabled>
+              You did really great. I’m so happy to have a dinner with you
+            </Textarea>
           </DialogDescription>
-          );
+        );
     }
   };
 
@@ -148,9 +138,9 @@ export function EventModal(prop:EventModalProps){
       <DialogTrigger className="flex w-full flex-1">{children}</DialogTrigger>
       <DialogContent className="bg-white">
         <DialogHeader>
-          <ModalHeader/>
+          <ModalHeader />
         </DialogHeader>
-        <ModalDesc/>
+        <ModalDesc />
         <DialogFooter className="flex flex-row justify-end">
           <DialogClose asChild>
             <Button
@@ -161,7 +151,7 @@ export function EventModal(prop:EventModalProps){
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <ModalButton/>
+            <ModalButton />
           </DialogClose>
         </DialogFooter>
       </DialogContent>

@@ -33,7 +33,9 @@ export default function SignIn() {
             <Quote />
           </div>
           <div className="container flex flex-col items-center justify-center gap-6 px-4 py-6 md:gap-8 md:py-16">
-            <div className="h1 hidden md:block font-bold text-primary-900">Login</div>
+            <div className="h1 hidden font-bold text-primary-900 md:block">
+              Login
+            </div>
             <form action={signInHandler} className="flex flex-col gap-4 ">
               <Input
                 type="email"
@@ -49,13 +51,16 @@ export default function SignIn() {
               />
               {error && <p className="h5 text-red-500">{error}</p>}
               <div className="flex flex-col gap-6 md:gap-8">
-                <Button variant="link" className="h-2 justify-start md:justify-end px-0">
+                <Button
+                  variant="link"
+                  className="h-2 justify-start px-0 md:justify-end"
+                >
                   <Link href="/reset-password">Forgot your password?</Link>
                 </Button>
 
                 <Button
                   type="submit"
-                  className="h4 mx-[88px] md:mx-[126px] lg:mx-[92px] h-12 w-[108px] lg:w-[176px]"
+                  className="h4 mx-[88px] h-12 w-[108px] md:mx-[126px] lg:mx-[92px] lg:w-[176px]"
                   disabled={loading}
                 >
                   Login
@@ -67,7 +72,7 @@ export default function SignIn() {
               <div className="h5 text-primary-700">
                 Don&apos;t have an account yet?
               </div>
-              <Button variant="link" className="text-secondary-400 py-0 h-3">
+              <Button variant="link" className="h-3 py-0 text-secondary-400">
                 <Link href="/signup">Sign up now</Link>
               </Button>
             </div>
