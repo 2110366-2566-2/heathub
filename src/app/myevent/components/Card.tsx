@@ -15,13 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { EventDetail } from "./EventDetail";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { EventModal } from "./EventModal";
 import { StatusTag } from "./StatusTag";
 import { formatDate } from "../utils/formatDate";
 
@@ -160,18 +154,16 @@ export function Card(prop: EventProps) {
         </div>
       </EventDetail>
       <div className="flex w-full flex-row items-center gap-1 lg:w-fit">
-        <Dialog>
-          <DialogTrigger className="w-full">
-            <CardButton />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>
-                This will be replaced with confirmation dialog from Q
-              </DialogTitle>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <EventModal
+          name={prop.name}
+          status={prop.status}
+          rating={4}
+          review={
+            "You did really great. I’m so happy to have a dinner with you"
+          }
+        >
+          <CardButton />
+        </EventModal>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <FontAwesomeIcon
