@@ -7,9 +7,10 @@ export function useMediaQuery(query: string) {
     const matchQueryList = window.matchMedia(query);
     setMatches(matchQueryList.matches);
 
-    function handleChange(e: any) {
+    function handleChange(e: MediaQueryListEvent) {
       setMatches(e.matches);
     }
+
     matchQueryList.addEventListener("change", handleChange);
 
     return () => {
