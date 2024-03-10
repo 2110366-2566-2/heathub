@@ -47,13 +47,13 @@ function Content() {
               >
                 <TabsTrigger
                   value="upcoming"
-                  className="h5 relative data-[state=active]:bg-secondary-500  data-[state=active]:text-white text-medium"
+                  className="h5 relative text-medium  data-[state=active]:bg-secondary-500 data-[state=active]:text-white"
                 >
                   Upcoming
                 </TabsTrigger>
                 <TabsTrigger
                   value="completed"
-                  className="h5 data-[state=active]:bg-secondary-500  data-[state=active]:text-white text-medium"
+                  className="h5 text-medium  data-[state=active]:bg-secondary-500 data-[state=active]:text-white"
                 >
                   Completed
                 </TabsTrigger>
@@ -69,13 +69,13 @@ function Content() {
           >
             <TabsTrigger
               value="upcoming"
-              className="h5 relative w-full data-[state=active]:bg-secondary-500  data-[state=active]:text-white text-medium"
+              className="h5 relative w-full text-medium  data-[state=active]:bg-secondary-500 data-[state=active]:text-white"
             >
               Upcoming
             </TabsTrigger>
             <TabsTrigger
               value="completed"
-              className="h5 w-full data-[state=active]:bg-secondary-500  data-[state=active]:text-white text-medium"
+              className="h5 w-full text-medium  data-[state=active]:bg-secondary-500 data-[state=active]:text-white"
             >
               Completed
             </TabsTrigger>
