@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { EventDetail } from "./EventDetail";
+import { EventModal } from "./EventModal";
 import {
   Dialog,
   DialogContent,
@@ -90,6 +91,7 @@ export function Card(prop: EventProps) {
     }
   };
 
+
   return (
     <div className="h-18 flex w-full  flex-col items-center gap-4 rounded-xl border border-primary-300 bg-white p-3 lg:flex-row">
       <EventDetail
@@ -151,18 +153,13 @@ export function Card(prop: EventProps) {
         </div>
       </EventDetail>
       <div className="flex w-full flex-row items-center gap-1 lg:w-fit">
-        <Dialog>
-          <DialogTrigger className="w-full">
-            <CardButton />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>
-                This will be replaced with confirmation dialog from Q
-              </DialogTitle>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <EventModal 
+        name={prop.name}
+        status={prop.status}
+        rating={4}
+        review={"You did really great. I’m so happy to have a dinner with you"}>
+          <CardButton />
+        </EventModal>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <FontAwesomeIcon
