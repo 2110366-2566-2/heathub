@@ -1,13 +1,13 @@
 import "@/styles/globals.css";
 
-import { Lato } from "next/font/google";
+import { Nunito } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
-const lato = Lato({
+const nunito = Nunito({
   subsets: ["latin"],
-  variable: "--font-lato",
+  variable: "--font-nunito",
   weight: ["300", "400", "700", "900"],
 });
 
@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${lato.variable} font-sans`}>
+      <body className={`${nunito.variable} font-sans`}>
         <TRPCReactProvider cookies={cookies().toString()}>
           {children}
         </TRPCReactProvider>
