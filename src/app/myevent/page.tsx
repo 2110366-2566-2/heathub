@@ -21,14 +21,14 @@ function Content() {
 
   return (
     <div className="flex h-screen w-full flex-col gap-2">
-      <Tabs defaultValue="upcoming" className="flex w-full flex-col gap-8">
+      <Tabs defaultValue="upcoming" className="flex w-full flex-col gap-6">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <div className="flex flex-row">
               <div className="relative flex w-full items-center gap-3">
                 <FontAwesomeIcon
                   icon={faCalendar}
-                  className="h-7 w-7 text-secondary-400"
+                  className="h-7 w-7 text-secondary-500"
                 />
                 <TabsContent value="upcoming">
                   <div className="h2 font-extrabold text-primary-900">
@@ -47,19 +47,19 @@ function Content() {
               >
                 <TabsTrigger
                   value="upcoming"
-                  className="h5 relative data-[state=active]:bg-invert"
+                  className="h5 relative data-[state=active]:bg-secondary-500  data-[state=active]:text-white text-medium"
                 >
                   Upcoming
                 </TabsTrigger>
                 <TabsTrigger
                   value="completed"
-                  className="h5 data-[state=active]:bg-invert"
+                  className="h5 data-[state=active]:bg-secondary-500  data-[state=active]:text-white text-medium"
                 >
                   Completed
                 </TabsTrigger>
               </TabsList>
             </div>
-            <div className="h5 lg:h4 text-medium">
+            <div className="h5 lg:h4 text-primary-700">
               Events displayed in chronological order by date and time.
             </div>
           </div>
@@ -69,13 +69,13 @@ function Content() {
           >
             <TabsTrigger
               value="upcoming"
-              className="h5 relative w-full data-[state=active]:bg-invert"
+              className="h5 relative w-full data-[state=active]:bg-secondary-500  data-[state=active]:text-white text-medium"
             >
               Upcoming
             </TabsTrigger>
             <TabsTrigger
               value="completed"
-              className="h5 w-full data-[state=active]:bg-invert"
+              className="h5 w-full data-[state=active]:bg-secondary-500  data-[state=active]:text-white text-medium"
             >
               Completed
             </TabsTrigger>
@@ -90,6 +90,7 @@ function Content() {
               date={mockDate}
               status={EventStatus.NOTSTARTED}
               detail={mockDetail}
+              isVerified
             />
             <Card
               name="BoBo"
