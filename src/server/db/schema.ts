@@ -42,6 +42,9 @@ export const user = mysqlTable(
       .notNull()
       .default("participant"),
     profileImageURL: varchar("profile_image_url", { length: 256 }).default(""),
+    balance: bigint("balance", {
+      mode: "number",
+    }).default(0),
   },
   (user) => ({
     akaIndex: index("aka_idx").on(user.aka),
@@ -279,6 +282,75 @@ export const unconfirmedUserProfileImageRelation = relations(
   ({ one }) => ({
     user: one(user, {
       fields: [unconfirmedUserProfileImage.userID],
+      references: [user.id],
+    }),
+  }),
+);
+
+export const externalTransaction = mysqlTable(
+  "external_transaction",
+  {
+    id: bigint("id", {
+      mode: "number",
+    })
+      .primaryKey()
+      .autoincrement(),
+    userID: varchar("user_id", {
+      length: 64,
+    }).notNull(),
+    amount: bigint("amount", {
+      mode: "number",
+    }).notNull(),
+    sessionID: varchar("session_id", { length: 128 }).notNull().unique(),
+    type: varchar("type", {
+      length: 16,
+      enum: ["topup", "withdraw"],
+    }).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (externalTransaction) => ({
+    userIDIndex: index("user_id_idx").on(externalTransaction.userID),
+    sessionIDIndex: index("session_id_idx").on(externalTransaction.sessionID),
+  }),
+);
+
+export const externalTransactionRelation = relations(
+  externalTransaction,
+  ({ one }) => ({
+    user: one(user, {
+      fields: [externalTransaction.userID],
+      references: [user.id],
+    }),
+  }),
+);
+
+export const tranferTransaction = mysqlTable("tranfer_transaction", {
+  id: bigint("id", {
+    mode: "number",
+  })
+    .primaryKey()
+    .autoincrement(),
+  senderID: varchar("sender_id", {
+    length: 64,
+  }).notNull(),
+  receiverID: varchar("receiver_id", {
+    length: 64,
+  }).notNull(),
+  amount: bigint("amount", {
+    mode: "number",
+  }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const tranferTransactionRelation = relations(
+  tranferTransaction,
+  ({ one }) => ({
+    sender: one(user, {
+      fields: [tranferTransaction.senderID],
+      references: [user.id],
+    }),
+    receiver: one(user, {
+      fields: [tranferTransaction.receiverID],
       references: [user.id],
     }),
   }),

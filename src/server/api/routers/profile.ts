@@ -9,7 +9,7 @@ import {
   unconfirmedUserProfileImage,
   user,
 } from "@/server/db/schema";
-import { type SQL, and, eq, ne, or } from "drizzle-orm";
+import { and, eq, ne, or, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 export const profileRouter = createTRPCRouter({
@@ -140,4 +140,15 @@ export const profileRouter = createTRPCRouter({
         await tx.insert(hostInterest).values(values);
       });
     }),
+
+  balance: userProcedure.query(async ({ ctx }) => {
+    const res = await ctx.db.query.user.findFirst({
+      where: eq(user.id, ctx.session.user.userId),
+      columns: {
+        balance: true,
+      },
+    });
+
+    return res?.balance ?? 0;
+  }),
 });

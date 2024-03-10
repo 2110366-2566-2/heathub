@@ -1,12 +1,14 @@
 import { serverapi } from "@/trpc/server";
 import { redirect } from "next/navigation";
+import { TopUpDialog } from "./_components/topup-modal";
 
 export default async function SignIn() {
   const user = await serverapi.auth.me.query();
-
   if (!user) {
     redirect("/");
   }
+
+  const balance = await serverapi.profile.balance.query();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -20,7 +22,9 @@ export default async function SignIn() {
           <p>email: {user.email}</p>
           <p>id: {user.userId}</p>
           <p>gender: {user.gender}</p>
+          <p>balance: {balance / 100}THB</p>
         </div>
+        <TopUpDialog />
       </div>
     </main>
   );

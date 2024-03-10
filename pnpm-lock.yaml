@@ -62,6 +62,9 @@ dependencies:
   '@radix-ui/react-toggle-group':
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.55)(react-dom@18.2.0)(react@18.2.0)
+  '@stripe/stripe-js':
+    specifier: ^3.0.5
+    version: 3.0.5
   '@t3-oss/env-nextjs':
     specifier: ^0.7.3
     version: 0.7.3(typescript@5.3.3)(zod@3.22.4)
@@ -137,6 +140,9 @@ dependencies:
   server-only:
     specifier: ^0.0.1
     version: 0.0.1
+  stripe:
+    specifier: ^14.18.0
+    version: 14.18.0
   superjson:
     specifier: ^2.2.1
     version: 2.2.1
@@ -1738,6 +1744,11 @@ packages:
     dependencies:
       domhandler: 5.0.3
       selderee: 0.11.0
+    dev: false
+
+  /@stripe/stripe-js@3.0.5:
+    resolution: {integrity: sha512-0BTd2bC+8gSKty7jXKRntLnvmWgFTmpZkY0oP7ADBYfdV0JtuGoDbfQawui0W5eUlwT3CcKh2IeRV4SPOBIeXQ==}
+    engines: {node: '>=12.16'}
     dev: false
 
   /@swc/helpers@0.5.2:
@@ -4979,6 +4990,14 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
     dev: true
+
+  /stripe@14.18.0:
+    resolution: {integrity: sha512-yLqKPqYgGJbMxrQiE4+i2i00ZVA2NRIZbZ1rejzj5XR3F3Uc+1iy9QE133knZudhVGMw367b8vTpB8D9pYMETw==}
+    engines: {node: '>=12.*'}
+    dependencies:
+      '@types/node': 18.19.15
+      qs: 6.11.2
+    dev: false
 
   /styled-jsx@5.1.1(react@18.2.0):
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
