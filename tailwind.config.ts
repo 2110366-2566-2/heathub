@@ -14,7 +14,7 @@ const config = withUt({
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-lato)", ...fontFamily.sans],
+        sans: ["var(--font-nunito)", ...fontFamily.sans],
       },
       screens: {
         sm: "376px",
@@ -51,16 +51,17 @@ const config = withUt({
           900: "#122f6e",
         },
         secondary: {
-          50: "#ffe2ec",
-          100: "#ffb8ce",
-          200: "#fa8bae",
-          300: "#f55b8e",
-          400: "#f13775",
-          500: "#ed0a5d",
-          600: "#db0059",
-          700: "#c70457",
-          800: "#b10053",
-          900: "#8d004d",
+          50: "#FEF1F5",
+          100: "#FEE5EE",
+          200: "#FFCBDF",
+          300: "#FFA1C3",
+          400: "#FF80AA",
+          500: "#FA3A74",
+          600: "#EA184D",
+          700: "#CC0A36",
+          800: "#A80C2D",
+          900: "#8C0F29",
+          950: "#560113",
           a100: "#ff7ba7",
           a200: "#ff377c",
           a400: "#f80051",
