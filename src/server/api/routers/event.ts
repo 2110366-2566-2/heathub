@@ -1,10 +1,15 @@
-import { createTRPCRouter, hostProcedure } from "@/server/api/trpc";
 import { RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
-import { event, chatMessage, chatInbox } from "@/server/db/schema";
+import {
+  createTRPCRouter,
+  hostProcedure,
+  participantProcedure,
+  userProcedure,
+} from "@/server/api/trpc";
+import { chatInbox, chatMessage, event } from "@/server/db/schema";
 import { type RecentEventMessage } from "@/types/pusher";
+import { SQL, and, eq, or } from "drizzle-orm";
 import { z } from "zod";
 import { createInbox } from "./chat";
-import { and, eq, or } from "drizzle-orm";
 export const eventRouter = createTRPCRouter({
   createEvent: hostProcedure
     .input(
@@ -131,5 +136,120 @@ export const eventRouter = createTRPCRouter({
           messageForReciever,
         ),
       ]);
+    }),
+
+  myEvent: userProcedure
+    .input(
+      z.object({
+        status: z.enum(["upcoming", "completed"]).optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const filter: SQL[] = [eq(event.hostID, ctx.session.user.userId)];
+      if (input.status === "upcoming") {
+        filter.push(
+          or(
+            eq(event.status, "payment-await"),
+            eq(event.status, "payment-done"),
+          )!,
+        );
+      } else if (input.status === "completed") {
+        filter.push(
+          or(eq(event.status, "completed"), eq(event.status, "canceled"))!,
+        );
+      }
+
+      const res = await ctx.db.query.event.findMany({
+        where: and(...filter),
+      });
+      return res;
+    }),
+
+  comfirmEvent: participantProcedure
+    .input(
+      z.object({
+        eventID: z.number().int(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const eventRow = await ctx.db.query.event.findFirst({
+        where: eq(event.id, input.eventID),
+      });
+
+      if (!eventRow) {
+        throw new Error("Event not found");
+      }
+
+      if (eventRow.participantID !== ctx.session.user.userId) {
+        throw new Error("Unauthorized");
+      }
+
+      await ctx.db
+        .update(event)
+        .set({
+          status: "completed",
+        })
+        .where(eq(event.id, input.eventID));
+    }),
+
+  cancelEvent: participantProcedure
+    .input(
+      z.object({
+        eventID: z.number().int(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const eventRow = await ctx.db.query.event.findFirst({
+        where: eq(event.id, input.eventID),
+      });
+
+      if (!eventRow) {
+        throw new Error("Event not found");
+      }
+
+      if (eventRow.participantID !== ctx.session.user.userId) {
+        throw new Error("Unauthorized");
+      }
+
+      await ctx.db
+        .update(event)
+        .set({
+          status: "canceled",
+        })
+        .where(eq(event.id, input.eventID));
+    }),
+
+  payEvent: participantProcedure
+    .input(
+      z.object({
+        eventID: z.number().int(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const eventRow = await ctx.db.query.event.findFirst({
+        where: eq(event.id, input.eventID),
+      });
+
+      if (!eventRow) {
+        throw new Error("Event not found");
+      }
+
+      if (eventRow.participantID !== ctx.session.user.userId) {
+        throw new Error("Unauthorized");
+      }
+
+      if (eventRow.status !== "payment-await") {
+        throw new Error("Invalid status");
+      }
+
+      await ctx.db.transaction(async (tx) => {
+        await tx
+          .update(event)
+          .set({
+            status: "payment-done",
+          })
+          .where(eq(event.id, input.eventID));
+        // TODO: transfer money and add to transaction history
+      });
     }),
 });

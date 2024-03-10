@@ -5,6 +5,7 @@ import { relations, sql } from "drizzle-orm";
 import {
   bigint,
   date,
+  float,
   index,
   int,
   mysqlTable,
@@ -12,7 +13,6 @@ import {
   text,
   timestamp,
   varchar,
-  float,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -380,6 +380,12 @@ export const event = mysqlTable(
       length: 128,
     }).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
+    status: varchar("status", {
+      length: 32,
+      enum: ["payment-await", "payment-done", "completed", "canceled"],
+    })
+      .default("payment-await")
+      .notNull(),
   },
   (event) => ({
     pk: primaryKey({
