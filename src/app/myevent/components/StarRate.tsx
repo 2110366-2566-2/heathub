@@ -7,7 +7,7 @@ export default function StarRateOnclick() {
 
   return (
     <div className="flex">
-      {[...Array(5)].map((_, index) => {
+      {Array.from({ length: 5 }).map((_, index) => {
         const currentRate = index + 1;
         return (
           <div key={index} onClick={() => setRating(currentRate)}>
@@ -30,7 +30,7 @@ interface StarRating {
 export function StarRate(props: StarRating) {
   return (
     <div className="flex">
-      {[...Array(5)].map((_, index) => {
+      {Array.from({ length: 5 }).map((_, index) => {
         return (
           <div key={index}>
             <FontAwesomeIcon

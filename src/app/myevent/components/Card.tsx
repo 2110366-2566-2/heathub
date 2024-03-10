@@ -15,13 +15,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { EventDetail } from "./EventDetail";
 import { EventModal } from "./EventModal";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { StatusTag } from "./StatusTag";
 
 type EventProps = {
