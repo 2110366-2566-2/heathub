@@ -1,18 +1,18 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
 import {
   CHAT_MESSAGE_EVENT,
   RECENT_MESSAGE_EVENT,
 } from "@/constants/pusher-events";
 import { api } from "@/trpc/react";
 import { type RecentMessage } from "@/types/pusher";
-import { type Channel } from "pusher-js";
-import { usePusher } from "../../_context/PusherContext";
-import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
 import { useIntersection } from "@mantine/hooks";
+import { type Channel } from "pusher-js";
+import { useEffect, useRef, useState } from "react";
+import { usePusher } from "../../_context/PusherContext";
 import ChatEventForm, { type CreateFormInfo } from "./ChatEventCreateForm";
+import ChatEventInfo from "./ChatEventInfo";
+import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
 import ChatMessageBox from "./ChatMessageBox";
-import ChatEventInfo, { ChatEventInfoInterface } from "./ChatEventInfo";
 export function ChatRoom({ withUser }: { withUser: string }) {
   const [messages, setMessages] = useState<RecentMessage[]>([]);
   const [isOpenChatEvent, setOpenChatEvent] = useState<boolean>(false);
