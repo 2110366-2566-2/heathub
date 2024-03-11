@@ -18,6 +18,10 @@ import { EventDetail } from "./EventDetail";
 import { EventModal } from "./EventModal";
 import { StatusTag } from "./StatusTag";
 import { formatDate } from "../utils/formatDate";
+import { FinishModal } from "./FinishModal";
+import { CancelModal } from "./CancelModal";
+import { GivereviewModal } from "./GivereviewModal";
+import { ViewreviewModal } from "./ViewreviewModal";
 
 type EventProps = {
   name: string;
@@ -74,6 +78,50 @@ export function Card(prop: EventProps) {
           >
             My Review
           </Button>
+        );
+      default:
+        return (
+          <Button
+            variant="default"
+            className="z-50 !w-full border border-secondary-500 bg-white text-secondary-500 hover:bg-secondary-100"
+          >
+            Cancel Event
+          </Button>
+        );
+    }
+  };
+
+  const Modal = () => {
+    switch (prop.status) {
+      case EventStatus.STARTED:
+        return (
+          <FinishModal>
+            <CardButton />
+          </FinishModal>
+        );
+      case EventStatus.NOTSTARTED:
+        return (
+          <CancelModal>
+            <CardButton />
+          </CancelModal>
+        );
+      case EventStatus.WAITINGREVIEW:
+        return (
+          <GivereviewModal
+            name={prop.name}
+          >
+            <CardButton />
+          </GivereviewModal>
+        );
+      case EventStatus.COMPLETED:
+        return (
+          <ViewreviewModal
+            name={prop.name}
+            rating={4}
+            review={"You did really great. I’m so happy to have a dinner with you"}
+          >
+            <CardButton />
+          </ViewreviewModal>
         );
       default:
         return (
@@ -154,16 +202,7 @@ export function Card(prop: EventProps) {
         </div>
       </EventDetail>
       <div className="flex w-full flex-row items-center gap-1 lg:w-fit">
-        <EventModal
-          name={prop.name}
-          status={prop.status}
-          rating={4}
-          review={
-            "You did really great. I’m so happy to have a dinner with you"
-          }
-        >
-          <CardButton />
-        </EventModal>
+          <Modal/>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <FontAwesomeIcon
