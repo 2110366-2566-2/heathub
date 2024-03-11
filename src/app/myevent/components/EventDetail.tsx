@@ -21,7 +21,7 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../utils";
 
 interface EventDetailProps {
   name: string;

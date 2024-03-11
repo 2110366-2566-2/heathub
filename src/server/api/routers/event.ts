@@ -5,7 +5,7 @@ import {
   participantProcedure,
   userProcedure,
 } from "@/server/api/trpc";
-import { chatInbox, chatMessage, event } from "@/server/db/schema";
+import { chatInbox, chatMessage, event, user } from "@/server/db/schema";
 import { type RecentEventMessage } from "@/types/pusher";
 import { SQL, and, eq, or } from "drizzle-orm";
 import { z } from "zod";
@@ -161,7 +161,12 @@ export const eventRouter = createTRPCRouter({
 
       const res = await ctx.db.query.event.findMany({
         where: and(...filter),
+        with: {
+          host: true,
+          participant: true,
+        }
       });
+
       return res;
     }),
 
