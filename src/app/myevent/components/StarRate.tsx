@@ -13,7 +13,9 @@ export default function StarRateOnclick() {
           <div key={index} onClick={() => setRating(currentRate)}>
             <FontAwesomeIcon
               icon={faStar}
-              className={`h-8 w-8 px-1 ${currentRate <= rating ? "text-pending" : "text-neutral-200"}`}
+              className={`h-8 w-8 px-1 ${
+                currentRate <= rating ? "text-pending" : "text-neutral-200"
+              }`}
             />
           </div>
         );
@@ -35,7 +37,9 @@ export function StarRate(props: StarRating) {
           <div key={index}>
             <FontAwesomeIcon
               icon={faStar}
-              className={`h-8 w-8 px-1 ${index <= props.Rating - 1 ? "text-pending" : "text-neutral-200"}`}
+              className={`h-8 w-8 px-1 ${
+                index <= props.Rating - 1 ? "text-pending" : "text-neutral-200"
+              }`}
             />
           </div>
         );
