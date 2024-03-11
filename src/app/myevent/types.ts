@@ -7,11 +7,13 @@ export type myEventProps = {
   id: number;
   participantID: string;
   participant: {
+    id: string;
     aka: string;
     profileImageURL: string | null;
   };
   hostID: string;
   host: {
+    id: string;
     aka: string;
     profileImageURL: string | null;
   };

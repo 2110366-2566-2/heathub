@@ -25,21 +25,23 @@ export default function Page() {
         if (!data) return;
         const _events: EventProps[] = data.map((event: myEventProps) => ({
           id: event.id,
-          name: role == "participant" ? event.participant.aka : event.host.aka,
+          userID: role == "participant" ? event.host.id : event.participant.id,
+          name: role == "participant" ? event.host.aka : event.participant.aka,
           location: event.location,
           date: event.startTime,
           status: parseEventStatus(event.startTime, event.status),
           image:
             role == "participant"
-              ? event.participant.profileImageURL
-              : event.host.profileImageURL,
+              ? event.host.profileImageURL
+              : event.participant.profileImageURL,
           detail: event.description,
         }));
         setEvents(_events);
+        console.log(_events);
       },
     },
   );
-
+  
   const [role, setRole] = useState("host");
 
   return (
@@ -119,11 +121,12 @@ export default function Page() {
                   <Card
                     key={event.id}
                     id={event.id}
+                    userID={event.userID}
                     name={event.name}
                     image={event.image ?? ""}
                     location={event.location}
                     date={event.date}
-                    status={EventStatus.NOTSTARTED}
+                    status={event.status}
                     detail={event.detail ?? ""}
                     isVerified
                   />
@@ -141,11 +144,12 @@ export default function Page() {
                   <Card
                     key={event.id}
                     id={event.id}
+                    userID={event.userID}
                     name={event.name}
                     image={event.image}
                     location={event.location}
                     date={event.date}
-                    status={EventStatus.NOTSTARTED}
+                    status={event.status}
                     detail={event.detail}
                     isVerified
                   />

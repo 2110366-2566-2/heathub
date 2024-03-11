@@ -19,10 +19,10 @@ export function parseEventStatus(dateTime: Date, status: string): EventStatus {
   if (currentDateTime > dateTime) {
     isStarted = true;
   }
-
-  if ((status === "payment-await" || status === "payment-done") && isStarted) {
+  
+  if ((status == "payment-await" || status == "payment-done") && isStarted) {
     return EventStatus.STARTED;
-  } else if (status === "completed") {
+  } else if (status == "completed") {
     return EventStatus.COMPLETED;
   } else {
     return EventStatus.NOTSTARTED;
