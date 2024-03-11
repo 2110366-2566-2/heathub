@@ -1,3 +1,6 @@
+import { is } from "drizzle-orm";
+import { EventStatus } from "./components/Card";
+
 export function parseTabValue(value: string): "upcoming" | "completed" | undefined {
   switch (value) {
     case "upcoming":
@@ -9,6 +12,22 @@ export function parseTabValue(value: string): "upcoming" | "completed" | undefin
   }
 }
 
+export function parseEventStatus(dateTime: Date, status: string): EventStatus {
+  var isStarted = false;
+  const currentDateTime = new Date();
+  if (currentDateTime > dateTime) {
+    isStarted = true;
+  }
+
+  if ((status === "payment-await" || status === "payment-done") && isStarted) {
+    return EventStatus.STARTED;
+  } else if (status === "completed") {
+      return EventStatus.COMPLETED;
+  } else {
+      return EventStatus.NOTSTARTED;
+}
+
+}
 export function formatDate(dt: Date): string {
   const outputDate = new Intl.DateTimeFormat("en-US", {
     day: "2-digit",

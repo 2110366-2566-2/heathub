@@ -24,7 +24,7 @@ export type EventProps = {
   name: string;
   location: string;
   date: Date;
-  status?: EventStatus;
+  status: EventStatus;
   image: string | null;
   detail?: string | null;
   isVerified?: boolean;
