@@ -1,3 +1,14 @@
+export function parseTabValue(value: string): "upcoming" | "completed" | undefined {
+  switch (value) {
+    case "upcoming":
+      return "upcoming";
+    case "completed":
+      return "completed";
+    default:
+      return "upcoming";
+  }
+}
+
 export function formatDate(dt: Date): string {
   const outputDate = new Intl.DateTimeFormat("en-US", {
     day: "2-digit",
