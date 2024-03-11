@@ -16,7 +16,22 @@ import { z } from "zod";
 
 export const authRouter = createTRPCRouter({
   me: publicProcedure.query(async ({ ctx }) => {
-    return ctx.session?.user ?? null;
+    if (!ctx.session?.user) return null;
+    const userData = await ctx.db.query.user.findFirst({
+      where: eq(user.id, ctx.session.user.userId),
+    });
+
+    if (!userData) {
+      return null;
+    }
+
+    return {
+      ...userData,
+      userId: userData.id,
+      userName: userData.aka,
+      aka: undefined,
+      id: undefined,
+    };
   }),
   isEmailAlreadyExist: publicProcedure
     .input(
