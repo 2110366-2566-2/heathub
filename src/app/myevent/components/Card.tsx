@@ -19,9 +19,11 @@ import { EventModal } from "./EventModal";
 import { StatusTag } from "./StatusTag";
 import { formatDate } from "../utils";
 import { useState } from "react";
+import Link from "next/link";
 
 export type EventProps = {
   id: number;
+  userID: string;
   name: string;
   location: string;
   date: Date;
@@ -98,6 +100,7 @@ export function Card(prop: EventProps) {
   return (
     <div className="h-18 flex w-full  flex-col items-center gap-4 rounded-xl bg-white p-3 hover:bg-neutral-50 lg:flex-row">
       <EventDetail
+        userID={prop.userID}
         name={prop.name}
         location={prop.location}
         date={prop.date}
@@ -146,9 +149,9 @@ export function Card(prop: EventProps) {
                   icon={faLocationDot}
                   className="h-3 w-3 text-primary-500"
                 />
-                <h6 className="h6 text-primary-900">{prop.location}</h6>
+                <h6 className="h6 text-primary-900 line-clamp-1">{prop.location}</h6>
               </div>
-              <div className="flex flex-row items-center gap-1">
+              <div className="flex flex-row w-fit items-center gap-1">
                 <FontAwesomeIcon
                   icon={faCalendar}
                   className="h-3 w-3 text-medium"
@@ -184,7 +187,7 @@ export function Card(prop: EventProps) {
               Report Event
             </DropdownMenuItem>
             <DropdownMenuItem className="hover:bg-neutral-100">
-              Go To Chat
+              <Link href={"/chat/"+prop.userID}>Go To Chat</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
