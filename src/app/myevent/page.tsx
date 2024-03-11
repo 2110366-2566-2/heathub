@@ -117,8 +117,8 @@ export default function Page() {
               {events.map((event) => {
                 return (
                   <Card
-                    key = {event.id}
-                    id = {event.id}
+                    key={event.id}
+                    id={event.id}
                     name={event.name}
                     image={event.image ?? ""}
                     location={event.location}
@@ -140,7 +140,7 @@ export default function Page() {
                 return (
                   <Card
                     key={event.id}
-                    id = {event.id}
+                    id={event.id}
                     name={event.name}
                     image={event.image}
                     location={event.location}
