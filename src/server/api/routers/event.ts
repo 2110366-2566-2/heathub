@@ -5,9 +5,9 @@ import {
   participantProcedure,
   userProcedure,
 } from "@/server/api/trpc";
-import { chatInbox, chatMessage, event, user } from "@/server/db/schema";
+import { chatInbox, chatMessage, event } from "@/server/db/schema";
 import { type RecentEventMessage } from "@/types/pusher";
-import { SQL, and, eq, or } from "drizzle-orm";
+import { type SQL, and, eq, or } from "drizzle-orm";
 import { z } from "zod";
 import { createInbox } from "./chat";
 export const eventRouter = createTRPCRouter({
@@ -164,7 +164,7 @@ export const eventRouter = createTRPCRouter({
         with: {
           host: true,
           participant: true,
-        }
+        },
       });
 
       return res;

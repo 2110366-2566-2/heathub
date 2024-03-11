@@ -5,37 +5,51 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "./components/Card";
 import { EventStatus } from "./components/Card";
 import { api } from "@/trpc/react";
-import { useEffect, useState } from "react";
-import { myEventProps } from "./types";
-import { EventProps } from "./components/Card";
+import { useState } from "react";
+import { type myEventProps } from "./types";
+import { type EventProps } from "./components/Card";
 import { parseEventStatus, parseTabValue } from "./utils";
 
 export default function Page() {
   const [events, setEvents] = useState<EventProps[]>([]);
-  const [tabValue, setTabValue] = useState<"upcoming" | "completed" | undefined>('upcoming');
+  const [tabValue, setTabValue] = useState<
+    "upcoming" | "completed" | undefined
+  >("upcoming");
 
-  const {data} = api.event.myEvent.useQuery({
-    status: tabValue,
-  },{
-    onSuccess: (data) => {
-      if (!data) return;
-      const _events: EventProps[] = data.map((event: myEventProps) => ({
-        name: role == "participant" ? event.participant.aka: event.host.aka,
-        location: event.location,
-        date: event.startTime,
-        status: parseEventStatus(event.startTime, event.status),
-        image: role == "participant" ? event.participant.profileImageURL: event.host.profileImageURL,
-        detail: event.description,
-      }));
-      setEvents(_events);
-  }});
+  api.event.myEvent.useQuery(
+    {
+      status: tabValue,
+    },
+    {
+      onSuccess: (data) => {
+        if (!data) return;
+        const _events: EventProps[] = data.map((event: myEventProps) => ({
+          id: event.id,
+          name: role == "participant" ? event.participant.aka : event.host.aka,
+          location: event.location,
+          date: event.startTime,
+          status: parseEventStatus(event.startTime, event.status),
+          image:
+            role == "participant"
+              ? event.participant.profileImageURL
+              : event.host.profileImageURL,
+          detail: event.description,
+        }));
+        setEvents(_events);
+      },
+    },
+  );
 
   const [role, setRole] = useState("host");
 
   return (
     <div className="w-screen grow flex-col items-center gap-6 p-9 lg:flex xl:flex">
       <div className="flex h-screen w-full flex-col gap-2">
-        <Tabs defaultValue="upcoming" className="flex w-full flex-col gap-6" onValueChange={(value) => setTabValue(parseTabValue(value))}>
+        <Tabs
+          defaultValue="upcoming"
+          className="flex w-full flex-col gap-6"
+          onValueChange={(value) => setTabValue(parseTabValue(value))}
+        >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <div className="flex flex-row">
@@ -95,18 +109,25 @@ export default function Page() {
               </TabsTrigger>
             </TabsList>
           </div>
-          <TabsContent value="upcoming" className="border-none p-0 outline-none">
+          <TabsContent
+            value="upcoming"
+            className="border-none p-0 outline-none"
+          >
             <div className="flex flex-col gap-4">
               {events.map((event) => {
-                return <Card
-                name={event.name}
-                image={event.image == null ? "":event.image}
-                location={event.location}
-                date={event.date}
-                status={EventStatus.NOTSTARTED}
-                detail={event.detail == null ? "":event.detail}
-                isVerified
-                />
+                return (
+                  <Card
+                    key = {event.id}
+                    id = {event.id}
+                    name={event.name}
+                    image={event.image ?? ""}
+                    location={event.location}
+                    date={event.date}
+                    status={EventStatus.NOTSTARTED}
+                    detail={event.detail ?? ""}
+                    isVerified
+                  />
+                );
               })}
             </div>
           </TabsContent>
@@ -115,16 +136,20 @@ export default function Page() {
             className="h-full flex-col border-none p-0 data-[state=active]:flex"
           >
             <div className="flex flex-col gap-4">
-            {events.map((event) => {
-                return <Card
-                name={event.name}
-                image={event.image}
-                location={event.location}
-                date={event.date}
-                status={EventStatus.NOTSTARTED}
-                detail={event.detail}
-                isVerified
-                />
+              {events.map((event) => {
+                return (
+                  <Card
+                    key={event.id}
+                    id = {event.id}
+                    name={event.name}
+                    image={event.image}
+                    location={event.location}
+                    date={event.date}
+                    status={EventStatus.NOTSTARTED}
+                    detail={event.detail}
+                    isVerified
+                  />
+                );
               })}
             </div>
           </TabsContent>
@@ -133,4 +158,3 @@ export default function Page() {
     </div>
   );
 }
-
