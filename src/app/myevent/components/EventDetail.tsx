@@ -21,6 +21,7 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "../utils";
 
 interface EventDetailProps {
   name: string;
@@ -51,7 +52,7 @@ export function EventDetail(props: EventDetailProps) {
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="flex flex-col gap-3">
-          <div className="flex w-full flex-row items-center gap-3 rounded-md border border-neutral-200 bg-neutral-100 p-2">
+          <div className="flex w-full flex-row items-center gap-3 rounded-md bg-neutral-100 p-2">
             <div className="relative h-9 w-9 overflow-hidden rounded-full">
               <Image src={props.image} fill objectFit="cover" alt="logo" />
             </div>
@@ -80,7 +81,7 @@ export function EventDetail(props: EventDetailProps) {
                   className="h-3 w-3 text-medium"
                 />
                 <h6 className="h6 font-normal text-medium">
-                  {props.date.toUTCString()}
+                  {formatDate(props.date)}
                 </h6>
               </div>
             </div>
