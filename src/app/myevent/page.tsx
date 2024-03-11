@@ -41,8 +41,13 @@ export default function Page() {
       },
     },
   );
-
+  
   const [role, setRole] = useState("host");
+  api.auth.me.useQuery(undefined, {
+    onSuccess: (data) => {
+      if (!data) return;
+      setRole(data.role);
+    }});
 
   return (
     <div className="w-screen grow flex-col items-center gap-6 p-9 lg:flex xl:flex">
