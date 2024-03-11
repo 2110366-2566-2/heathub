@@ -149,9 +149,11 @@ export function Card(prop: EventProps) {
                   icon={faLocationDot}
                   className="h-3 w-3 text-primary-500"
                 />
-                <h6 className="h6 text-primary-900 line-clamp-1">{prop.location}</h6>
+                <h6 className="h6 line-clamp-1 text-primary-900">
+                  {prop.location}
+                </h6>
               </div>
-              <div className="flex flex-row w-fit items-center gap-1">
+              <div className="flex w-fit flex-row items-center gap-1">
                 <FontAwesomeIcon
                   icon={faCalendar}
                   className="h-3 w-3 text-medium"
@@ -187,7 +189,7 @@ export function Card(prop: EventProps) {
               Report Event
             </DropdownMenuItem>
             <DropdownMenuItem className="hover:bg-neutral-100">
-              <Link href={"/chat/"+prop.userID}>Go To Chat</Link>
+              <Link href={"/chat/" + prop.userID}>Go To Chat</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

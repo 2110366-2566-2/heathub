@@ -60,8 +60,13 @@ export function EventDetail(props: EventDetailProps) {
             <div className="relative h-9 w-9 overflow-hidden rounded-full">
               <Image src={props.image} fill objectFit="cover" alt="logo" />
             </div>
-            <h4 className="h4 flex-1 font-bold text-primary-800">{props.name}</h4>
-            <Link href={"/chat/"+ props.userID} className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-400">
+            <h4 className="h4 flex-1 font-bold text-primary-800">
+              {props.name}
+            </h4>
+            <Link
+              href={"/chat/" + props.userID}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-400"
+            >
               <FontAwesomeIcon
                 icon={faComment}
                 className="h-4 w-4 text-invert"
@@ -79,7 +84,7 @@ export function EventDetail(props: EventDetailProps) {
                   {props.location}
                 </h6>
               </div>
-              <div className="flex flex-row items-center gap-2 w-fit">
+              <div className="flex w-fit flex-row items-center gap-2">
                 <FontAwesomeIcon
                   icon={faCalendar}
                   className="h-3 w-3 text-medium"
