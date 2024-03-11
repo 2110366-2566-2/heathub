@@ -41,7 +41,7 @@ export default function Page() {
       },
     },
   );
-  
+
   const [role, setRole] = useState("host");
 
   return (
