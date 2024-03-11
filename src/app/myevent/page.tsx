@@ -8,7 +8,7 @@ import { api } from "@/trpc/react";
 import { useEffect, useState } from "react";
 import { myEventProps } from "./types";
 import { EventProps } from "./components/Card";
-import { parseTabValue } from "./utils";
+import { parseEventStatus, parseTabValue } from "./utils";
 
 export default function Page() {
   const [events, setEvents] = useState<EventProps[]>([]);
@@ -23,7 +23,7 @@ export default function Page() {
         name: role == "participant" ? event.participant.aka: event.host.aka,
         location: event.location,
         date: event.startTime,
-        // status: event.status,
+        status: parseEventStatus(event.startTime, event.status),
         image: role == "participant" ? event.participant.profileImageURL: event.host.profileImageURL,
         detail: event.description,
       }));
