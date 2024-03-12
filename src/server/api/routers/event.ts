@@ -7,7 +7,7 @@ import {
 } from "@/server/api/trpc";
 import { chatInbox, chatMessage, event } from "@/server/db/schema";
 import { type RecentEventMessage } from "@/types/pusher";
-import { SQL, and, eq, or } from "drizzle-orm";
+import { type SQL, and, eq, or } from "drizzle-orm";
 import { z } from "zod";
 import { createInbox } from "./chat";
 export const eventRouter = createTRPCRouter({
@@ -145,7 +145,12 @@ export const eventRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const filter: SQL[] = [eq(event.hostID, ctx.session.user.userId)];
+      const filter: SQL[] = [
+        or(
+          eq(event.hostID, ctx.session.user.userId),
+          eq(event.participantID, ctx.session.user.userId),
+        )!,
+      ];
       if (input.status === "upcoming") {
         filter.push(
           or(
@@ -161,11 +166,16 @@ export const eventRouter = createTRPCRouter({
 
       const res = await ctx.db.query.event.findMany({
         where: and(...filter),
+        with: {
+          host: true,
+          participant: true,
+        },
       });
+
       return res;
     }),
 
-  comfirmEvent: participantProcedure
+  finishEvent: participantProcedure
     .input(
       z.object({
         eventID: z.number().int(),
@@ -192,7 +202,7 @@ export const eventRouter = createTRPCRouter({
         .where(eq(event.id, input.eventID));
     }),
 
-  cancelEvent: participantProcedure
+  cancelEvent: userProcedure
     .input(
       z.object({
         eventID: z.number().int(),
@@ -207,7 +217,10 @@ export const eventRouter = createTRPCRouter({
         throw new Error("Event not found");
       }
 
-      if (eventRow.participantID !== ctx.session.user.userId) {
+      if (
+        eventRow.participantID !== ctx.session.user.userId &&
+        eventRow.hostID !== ctx.session.user.userId
+      ) {
         throw new Error("Unauthorized");
       }
 

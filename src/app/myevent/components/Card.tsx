@@ -16,19 +16,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { EventDetail } from "./EventDetail";
 import { StatusTag } from "./StatusTag";
-import { formatDate } from "../utils/formatDate";
 import { FinishModal } from "./FinishModal";
 import { CancelModal } from "./CancelModal";
 import { GivereviewModal } from "./GivereviewModal";
 import { ViewreviewModal } from "./ViewreviewModal";
+import { formatDate } from "../utils";
+import { useState } from "react";
+import Link from "next/link";
 
-type EventProps = {
+export type EventProps = {
+  id: number;
+  userID: string;
   name: string;
   location: string;
   date: Date;
-  status?: EventStatus;
-  image: string;
-  detail?: string;
+  status: EventStatus;
+  image: string | null;
+  detail?: string | null;
   isVerified?: boolean;
 };
 
@@ -40,16 +44,20 @@ export enum EventStatus {
 }
 
 export function Card(prop: EventProps) {
+  const [role, setRole] = useState("host");
+
   const CardButton = () => {
     switch (prop.status) {
       case EventStatus.STARTED:
         return (
-          <Button
-            variant="default"
-            className="z-[100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
-          >
-            Finish Event
-          </Button>
+          role == "participant" && (
+            <Button
+              variant="default"
+              className="z-[100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
+            >
+              Finish Event
+            </Button>
+          )
         );
       case EventStatus.NOTSTARTED:
         return (
@@ -62,12 +70,14 @@ export function Card(prop: EventProps) {
         );
       case EventStatus.WAITINGREVIEW:
         return (
-          <Button
-            variant="default"
-            className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
-          >
-            Give Review
-          </Button>
+          role == "participant" && (
+            <Button
+              variant="default"
+              className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
+            >
+              Give Review
+            </Button>
+          )
         );
       case EventStatus.COMPLETED:
         return (
@@ -137,16 +147,17 @@ export function Card(prop: EventProps) {
   return (
     <div className="h-18 flex w-full  flex-col items-center gap-4 rounded-xl bg-white p-3 hover:bg-neutral-50 lg:flex-row">
       <EventDetail
+        userID={prop.userID}
         name={prop.name}
         location={prop.location}
         date={prop.date}
-        image={prop.image}
+        image={prop.image ?? ""}
         status={prop.status}
-        detail={prop.detail}
+        detail={prop.detail ?? ""}
       >
         <div className="flew-row flex w-full gap-4">
           <div className=" relative h-14 w-14 overflow-hidden rounded-full">
-            <Image src={prop.image} fill objectFit="cover" alt="logo" />
+            <Image src={prop.image ?? ""} fill objectFit="cover" alt="logo" />
           </div>
           <div className="flex flex-1 flex-col gap-2">
             <div className="flex flex-row gap-1">
@@ -185,9 +196,11 @@ export function Card(prop: EventProps) {
                   icon={faLocationDot}
                   className="h-3 w-3 text-primary-500"
                 />
-                <h6 className="h6 text-primary-900">{prop.location}</h6>
+                <h6 className="h6 line-clamp-1 text-primary-900">
+                  {prop.location}
+                </h6>
               </div>
-              <div className="flex flex-row items-center gap-1">
+              <div className="flex w-fit flex-row items-center gap-1">
                 <FontAwesomeIcon
                   icon={faCalendar}
                   className="h-3 w-3 text-medium"
@@ -214,7 +227,7 @@ export function Card(prop: EventProps) {
               Report Event
             </DropdownMenuItem>
             <DropdownMenuItem className="hover:bg-neutral-100">
-              Go To Chat
+              <Link href={"/chat/" + prop.userID}>Go To Chat</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
