@@ -90,7 +90,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
           </div>
           <div className="hidden h-full w-fit lg:flex">
             <EditProfileButton
-              cUsername={about}
+              cUsername={name}
               cGender={gender}
               cBio={about}
               cDOB={dateOfBirth}
