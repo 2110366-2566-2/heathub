@@ -159,9 +159,7 @@ export const eventRouter = createTRPCRouter({
           )!,
         );
       } else if (input.status === "completed") {
-        filter.push(
-          or(eq(event.status, "completed"))!,
-        );
+        filter.push(or(eq(event.status, "completed"))!);
       }
 
       const res = await ctx.db.query.event.findMany({

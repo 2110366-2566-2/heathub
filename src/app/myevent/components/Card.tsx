@@ -42,7 +42,7 @@ export enum EventStatus {
   NOTSTARTED = "Not Started",
   WAITINGREVIEW = "Waiting for Review",
   COMPLETED = "Completed",
-  CANCEL = "Cancel"
+  CANCEL = "Cancel",
 }
 
 export function Card(prop: EventProps) {
@@ -89,12 +89,12 @@ export function Card(prop: EventProps) {
         );
       case EventStatus.COMPLETED:
         return (
-            <Button
-              variant="default"
-              className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
-            >
-              My Review
-            </Button>
+          <Button
+            variant="default"
+            className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
+          >
+            My Review
+          </Button>
         );
       default:
         return (
@@ -124,10 +124,7 @@ export function Card(prop: EventProps) {
         );
       case EventStatus.WAITINGREVIEW:
         return (
-          <GivereviewModal
-            id={prop.id}
-            name={prop.name}
-          >
+          <GivereviewModal id={prop.id} name={prop.name}>
             <CardButton />
           </GivereviewModal>
         );
@@ -137,7 +134,9 @@ export function Card(prop: EventProps) {
             id={prop.id}
             name={prop.name}
             rating={4}
-            review={"You did really great. I’m so happy to have a dinner with you"}
+            review={
+              "You did really great. I’m so happy to have a dinner with you"
+            }
           >
             <CardButton />
           </ViewreviewModal>
@@ -221,7 +220,7 @@ export function Card(prop: EventProps) {
         </div>
       </EventDetail>
       <div className="flex w-full flex-row items-center gap-1 lg:w-fit">
-          <Modal/>
+        <Modal />
         <DropdownMenu>
           <DropdownMenuTrigger>
             <FontAwesomeIcon

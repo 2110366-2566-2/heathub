@@ -9,8 +9,6 @@ import { type myEventProps } from "./types";
 import { type EventProps } from "./components/Card";
 import { parseEventStatus, parseTabValue } from "./utils";
 
-
-
 export default function Page() {
   const [events, setEvents] = useState<EventProps[]>([]);
   const [tabValue, setTabValue] = useState<
@@ -50,7 +48,6 @@ export default function Page() {
       setRole(data.role);
     },
   });
-  
 
   return (
     <div className="w-screen grow flex-col items-center gap-6 p-9 lg:flex xl:flex">

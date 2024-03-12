@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form";
 import { cn } from "@/utils/tailwind-merge";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,18 +11,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
 export interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   size?: "sm" | "md" | "lg";
 }
 
-
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, size = "md", ...props }, ref) => {
-
-
     return (
       <input
         type={type}
@@ -44,6 +41,5 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   },
 );
 Input.displayName = "Input";
-
 
 export { Input };

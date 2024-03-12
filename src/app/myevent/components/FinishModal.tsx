@@ -12,9 +12,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { api } from "@/trpc/react";
 
-
 interface EventModalProps {
-  id: number
+  id: number;
   children: React.ReactNode;
 }
 
@@ -33,7 +32,7 @@ export function FinishModal(prop: EventModalProps) {
   return (
     <Dialog>
       <DialogTrigger className="flex w-full flex-1">{children}</DialogTrigger>
-      <DialogContent className="bg-white rounded-3xl">
+      <DialogContent className="rounded-3xl bg-white">
         <DialogHeader>
           <DialogTitle className="items-begin flex flex-col gap-1">
             <h3 className="h3 flex flex-1 font-extrabold text-primary-800">
@@ -54,7 +53,11 @@ export function FinishModal(prop: EventModalProps) {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button variant="default" className="bg-primary-500 text-white" onClick={() => handleFinishEvent(prop.id)}>
+            <Button
+              variant="default"
+              className="bg-primary-500 text-white"
+              onClick={() => handleFinishEvent(prop.id)}
+            >
               Finish Event
             </Button>
           </DialogClose>
