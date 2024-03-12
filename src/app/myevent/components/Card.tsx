@@ -15,7 +15,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { EventDetail } from "./EventDetail";
-import { EventModal } from "./EventModal";
 import { StatusTag } from "./StatusTag";
 import { formatDate } from "../utils/formatDate";
 import { FinishModal } from "./FinishModal";
