@@ -15,19 +15,18 @@ import { Label } from "@/components/ui/label";
 import StarRateOnclick from "./StarRate";
 
 interface EventModalProps {
-  id: number
+  id: number;
   name: string;
   children: React.ReactNode;
 }
 
 export function GivereviewModal(prop: EventModalProps) {
-
   const { children } = prop;
 
   return (
     <Dialog>
       <DialogTrigger className="flex w-full flex-1">{children}</DialogTrigger>
-      <DialogContent className="bg-white rounded-3xl">
+      <DialogContent className="rounded-3xl bg-white">
         <DialogHeader>
           <DialogTitle className="items-begin flex flex-col gap-1">
             <h3 className="md:h3 h4 flex flex-1 font-extrabold text-primary-800">
