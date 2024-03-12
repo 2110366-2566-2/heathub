@@ -12,6 +12,7 @@ import { useState } from "react";
 import { eventRouter } from '@/server/api/routers/event';
 import { api } from "@/trpc/react";
 interface EventModalProps {
+  id: number
   children: React.ReactNode;
 }
 

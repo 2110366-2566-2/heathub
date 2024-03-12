@@ -104,19 +104,20 @@ export function Card(prop: EventProps) {
     switch (prop.status) {
       case EventStatus.STARTED:
         return (
-          <FinishModal>
+          <FinishModal id={prop.id}>
             <CardButton />
           </FinishModal>
         );
       case EventStatus.NOTSTARTED:
         return (
-          <CancelModal>
+          <CancelModal id={prop.id}>
             <CardButton />
           </CancelModal>
         );
       case EventStatus.WAITINGREVIEW:
         return (
           <GivereviewModal
+            id={prop.id}
             name={prop.name}
           >
             <CardButton />

@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import StarRateOnclick, { StarRate } from "./StarRate";
 
 interface EventModalProps {
+  id: number
   name: string;
   children: React.ReactNode;
   rating: number;

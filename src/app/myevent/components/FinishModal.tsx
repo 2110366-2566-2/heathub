@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 
 
 interface EventModalProps {
+  id: number
   children: React.ReactNode;
 }
 
