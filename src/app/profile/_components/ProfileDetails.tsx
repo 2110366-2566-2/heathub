@@ -1,4 +1,3 @@
-"use client";
 import { Tag } from "@/app/_components/tag";
 import { CardContent, Card } from "@/components/ui/card";
 import { tagIcon } from "@/utils/icon-mapping";
@@ -14,7 +13,6 @@ import {
   DrawerProfile,
 } from "@/app/discover/_components/profile-preview";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { useEffect, useReducer } from "react";
 
 export default function ProfileDetails(props: ProfilePreviewProps) {
   const {
@@ -29,22 +27,6 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
     dateOfBirth,
   } = props;
 
-  function useForceUpdate(): () => void {
-    return useReducer(() => ({}), {})[1] as () => void; // <- paste here
-  }
-  useEffect(() => {
-    useForceUpdate;
-  }, [
-    interests,
-    image,
-    name,
-    age,
-    firstName,
-    lastName,
-    gender,
-    about,
-    dateOfBirth,
-  ]);
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   return (
     <Card className="h-fit min-h-[334px] w-full justify-center rounded-none border-none p-5 shadow-none lg:min-h-[256px] lg:rounded-lg lg:border-solid lg:border-primary-300 lg:bg-white">
@@ -68,7 +50,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
                   </DrawerTrigger>
                   <DrawerOverlay
                     className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${props.image})` }}
+                    style={{ backgroundImage: `url(${image})` }}
                   />
                   <DrawerProfile {...props} />
                 </Drawer>
@@ -105,11 +87,11 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
           </div>
           <div className="hidden h-full w-fit lg:flex">
             <EditProfileButton
-              cUsername={props.name}
-              cGender={props.gender}
-              cBio={props.about}
-              cDOB={props.dateOfBirth}
-              cProfileURL={props.image}
+              cUsername={about}
+              cGender={gender}
+              cBio={about}
+              cDOB={dateOfBirth}
+              cProfileURL={image}
             />
           </div>
         </div>
