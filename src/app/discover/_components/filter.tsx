@@ -2,7 +2,12 @@
 import { Input } from "@/components/ui/input";
 import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { type TagList, tagStyle, tagList, type Tag } from "@/utils/icon-mapping";
+import {
+  type TagList,
+  tagStyle,
+  tagList,
+  type Tag,
+} from "@/utils/icon-mapping";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -27,7 +32,6 @@ import {
 } from "@/components/ui/drawer";
 import Search from "./search";
 import { cn } from "@/utils/tailwind-merge";
-import { useEffect, useRef } from "react";
 
 const formSchema = z.object({
   searchQuery: z.string(),
@@ -66,11 +70,6 @@ export default function Filter(props: FilterProps) {
 
   const formSubmit = (filters: filters) => {
     props.setFilters(filters);
-    // setValue("searchQuery", "");
-    // setValue("interests", []);
-    // setValue("rating", 0);
-    // setValue("age", { min: 0, max: 99 });
-    // setValue("gender", "-");
   };
 
   const InterestFilter = (
@@ -184,10 +183,14 @@ export default function Filter(props: FilterProps) {
           max={99}
           size="sm"
           onChange={(e) => {
-            if (parseInt(e.target.value) > values.age.max) {
-              setValue("age.max", parseInt(e.target.value));
+            if (parseInt(e.target.value)) {
+              if (parseInt(e.target.value) > values.age.max) {
+                setValue("age.max", parseInt(e.target.value));
+              }
+              setValue("age.min", parseInt(e.target.value));
+            } else {
+              setValue("age.min", 0);
             }
-            setValue("age.min", parseInt(e.target.value));
           }}
         />
         <div className="body6 text-medium">To</div>
@@ -202,10 +205,14 @@ export default function Filter(props: FilterProps) {
           max={99}
           size="sm"
           onChange={(e) => {
-            if (parseInt(e.target.value) < values.age.min) {
-              setValue("age.min", parseInt(e.target.value));
+            if (parseInt(e.target.value)) {
+              if (parseInt(e.target.value) < values.age.min) {
+                setValue("age.min", parseInt(e.target.value));
+              }
+              setValue("age.max", parseInt(e.target.value));
+            } else {
+              setValue("age.max", 99);
             }
-            setValue("age.max", parseInt(e.target.value));
           }}
         />
       </div>

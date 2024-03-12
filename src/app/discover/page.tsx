@@ -2,12 +2,15 @@
 import { ProfilePreview } from "./_components/profile-preview";
 import { api } from "@/trpc/react";
 import { useEffect, useState } from "react";
-import { type userProps, type userApiProps, type filters } from "./types";
-import { type TagList } from "@/utils/icon-mapping";
+import type {
+  userProps,
+  userApiProps,
+  filters,
+  ProfilePreviewProps,
+} from "./types";
+import type { TagList } from "@/utils/icon-mapping";
 import Filter from "./_components/filter";
 import { useMediaQuery } from "react-responsive";
-import Search from "./_components/search";
-import { cn } from "@/utils/tailwind-merge";
 
 export default function DiscoverPage() {
   const [users, setUsers] = useState<userProps[]>([]);
@@ -19,6 +22,7 @@ export default function DiscoverPage() {
     age: { min: 0, max: 99 },
     gender: "-",
   });
+
   const { data, isSuccess } = api.user.getHostsByFilter.useQuery({
     searchQuery: filters.searchQuery ?? undefined,
     interests: filters.interests ?? undefined,
@@ -26,6 +30,7 @@ export default function DiscoverPage() {
     gender: filters.gender === "-" ? undefined : filters.gender,
     ageRange: [filters.age.min ?? 0, filters.age.max ?? 99],
   });
+  const { data: me } = api.auth.me.useQuery();
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -37,11 +42,14 @@ export default function DiscoverPage() {
         reviews: user.reviewCount ? user.reviewCount : 0,
         interests: user.interests as TagList,
         bio: user.bio ? user.bio : "",
+        id: user.id,
       }));
       setUsers(_users);
     }
   }, [isSuccess, data, filters]);
-
+  if (!me) {
+    return <div></div>;
+  }
   return (
     <div className="flex h-full w-full flex-col gap-4 p-6 lg:p-9">
       <div className="flex flex-col gap-4 self-stretch">
@@ -49,7 +57,7 @@ export default function DiscoverPage() {
       </div>
       <div className="flex flex-col justify-center gap-6 rounded-lg bg-secondary-50 px-4 py-6 lg:p-9">
         <SearchFilter setFilters={setFilters} />
-        <CardContainer users={users} />
+        <CardContainer users={users} role={me.role} />
       </div>
     </div>
   );
@@ -106,11 +114,16 @@ function SearchFilter({
   );
 }
 
-function CardContainer({ users }: { users: userProps[] }) {
+type CardContainerProps = {
+  users: userProps[];
+  role: string;
+};
+
+function CardContainer(props: CardContainerProps) {
   return (
-    <div className="grid min-h-screen w-full grid-cols-1 items-start justify-between gap-y-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-      {users.map((profile) => (
-        <ProfilePreview {...profile} key={profile.aka} />
+    <div className="grid min-h-screen w-full grid-cols-1 items-start justify-between gap-y-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      {props.users.map((profile: ProfilePreviewProps) => (
+        <ProfilePreview key={profile.aka} props={profile} role={props.role} />
       ))}
     </div>
   );
