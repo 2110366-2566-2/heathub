@@ -15,7 +15,7 @@ interface ComponentGroundProps {
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
-  const { setData, data } = props;
+  const { data } = props;
   const router = useRouter();
   const [isModalPop, setModalPop] = useState(false);
   const [gender, setGender] = useState<string>();

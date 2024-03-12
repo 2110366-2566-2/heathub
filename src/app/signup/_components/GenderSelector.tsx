@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/utils/tailwind-merge";
 import {
-  faFemale,
   faMars,
   faMinus,
   faSliders,
