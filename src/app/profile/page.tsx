@@ -7,7 +7,7 @@ import ProfileContainer, {
 
 export default async function Profile() {
   const user2 = await serverapi.auth.me.query();
-  const user = await serverapi.auth.getUserPublicData.query({
+  const user = await serverapi.user.getUserPublicData.query({
     userID: user2?.userId ?? "",
   });
   if (!user) {
@@ -24,7 +24,7 @@ export default async function Profile() {
       : 0);
   let show: ProfilePreviewProps;
   if (user.role == "host") {
-    const hostData = await serverapi.auth.getHostData.query({
+    const hostData = await serverapi.user.getHostData.query({
       hostID: user2?.userId ?? "",
     });
     show = {
@@ -36,11 +36,11 @@ export default async function Profile() {
       interests: (hostData[0] ?? { interests: [] }).interests as TagList,
       email: user.email,
       about: user.bio ?? "",
-      balance: 9999,
-      firstName : user.firstName,
-      lastName : user.lastName,
-      gender : user.gender,
-      dateOfBirth : user.dateOfBirth ?? new Date(),
+      balance: balance / 100,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      gender: user.gender,
+      dateOfBirth: user.dateOfBirth ?? new Date(),
     };
   } else {
     show = {
@@ -52,15 +52,18 @@ export default async function Profile() {
       interests: [] as TagList,
       email: user.email,
       about: user.bio ?? "",
-      balance: 9999,
-      firstName : user.firstName,
-      lastName : user.lastName,
-      gender : user.gender,
-      dateOfBirth : user.dateOfBirth ?? new Date(),
+      balance: balance / 100,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      gender: user.gender,
+      dateOfBirth: user.dateOfBirth ?? new Date(),
     };
   }
   console.log(show);
   return (
+    <div className="flex min-h-screen w-full flex-col gap-4 p-6 lg:p-9">
+      <ProfileContainer {...show} />
+    </div>
     <div className="flex min-h-screen w-full flex-col gap-4 p-6 lg:p-9">
       <ProfileContainer {...show} />
     </div>

@@ -29,9 +29,9 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
 
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   return (
-    <Card className="h-fit min-h-[334px] w-full justify-center rounded-none border-none p-5 shadow-none lg:min-h-[256px] lg:rounded-lg lg:border-solid lg:border-primary-300 lg:bg-white">
-      <CardContent className="flex h-full w-full flex-col items-center gap-y-4 p-0 md:gap-0">
-        <div className="h-max-[128px] flex h-fit w-full flex-row gap-x-6 md:h-[124px]">
+    <Card className="h-fit min-h-[334px] w-full justify-center rounded-none border-none shadow-none lg:min-h-[256px] lg:rounded-lg lg:border-solid lg:border-primary-300 lg:bg-white lg:p-5">
+      <CardContent className="flex h-full w-full flex-col items-center gap-y-4 p-0 lg:gap-0">
+        <div className="h-max-[128px] flex h-fit w-full flex-row gap-x-6 lg:h-[124px]">
           <div className="flex h-full w-full flex-row gap-4">
             <div className="relative h-[100px] w-[100px] flex-none rounded-full">
               <Image
