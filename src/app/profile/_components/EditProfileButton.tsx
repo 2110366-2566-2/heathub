@@ -43,13 +43,13 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   }, [isClose]);
 
   const updateProfile = api.profile.updateProfile.useMutation({
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data) => {
       console.log(data);
       console.log("success");
       handleClose();
       window.location.reload();
     },
-    onError: (error, variables, context) => {
+    onError: (error, variables) => {
       console.log(error, variables);
       console.log("error");
     },
