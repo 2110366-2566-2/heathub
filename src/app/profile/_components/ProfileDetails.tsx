@@ -14,7 +14,6 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ChatDialog } from "@/app/discover/_components/chat";
 import { cn } from "@/utils/tailwind-merge";
 import { Toggle } from "@/components/ui/toggle";
 
