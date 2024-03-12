@@ -47,6 +47,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       console.log(data);
       console.log("success");
       handleClose();
+      window.location.reload();
     },
     onError: (error, variables, context) => {
       console.log(error, variables);
