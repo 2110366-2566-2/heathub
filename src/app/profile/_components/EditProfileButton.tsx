@@ -42,6 +42,18 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     setOpen(false);
   }, [isClose]);
 
+  const updateProfile = api.profile.updateProfile.useMutation({
+    onSuccess: (data, variables, context) => {
+      console.log(data);
+      console.log("success");
+      handleClose();
+    },
+    onError: (error, variables, context) => {
+      console.log(error, variables);
+      console.log("error");
+    },
+  });
+  const testUsername = api.auth.isAKAAlreadyExist.useMutation();
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = async () => {
     if (!formRef.current) {
@@ -69,14 +81,47 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
 
     const testUsername = api.auth.isAKAAlreadyExist.useMutation();
     const isUsernameDup = async () => {
-      return await testUsername.mutateAsync({
-        aka: usernameInput,
-      });
+      return (
+        (await testUsername.mutateAsync({
+          aka: usernameInput,
+        })) && usernameInput != cUsername
+      );
     };
 
     if (await isUsernameDup()) {
       setNotice("This username is already used.");
       return;
+    }
+
+    let imageUrl;
+    if (!!imageInput && imageInput.name != "") {
+      const files = [imageInput];
+      const res = await uploadFiles("signupProfileUploader", {
+        files,
+      });
+      if (res.length !== 1) {
+        setNotice("An error occurred");
+        return;
+      }
+      imageUrl = res[0]?.url ? res[0].url : "";
+    } else {
+      imageUrl = profileURL;
+    }
+
+    try {
+      updateProfile.mutate({
+        bio: bioInput ? bioInput : "",
+        gender: genderInput,
+        aka: usernameInput,
+        dateOfBirth: DOBInput,
+        imgURL: imageUrl,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        setNotice(error.message);
+      } else {
+        setNotice("Something went wrong. Please try again.");
+      }
     }
   };
 
