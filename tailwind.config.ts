@@ -81,7 +81,13 @@ const config = withUt({
           900: "#0f172a",
           950: "#020617",
         },
-      },
+        tag: {
+          "green" : "#56C683",
+          "blue" : "#6189D5",
+          "yellow" : "#FFB35B",
+          "red": "#F84B4B",
+          "pink": "#F488A9",
+      }},
       borderRadius: {
         sm: "4px",
         md: "8px",
