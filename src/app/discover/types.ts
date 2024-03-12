@@ -1,6 +1,7 @@
 import { type TagList } from "@/utils/icon-mapping";
 
 export type userProps = {
+  id: string;
   aka: string;
   age: number;
   image: string;
@@ -23,6 +24,7 @@ export type userApiProps = {
   profileImageURL: string | null;
   avgRating: number | null;
   reviewCount: number | null;
+  id: string;
 };
 
 export type ProfilePreviewProps = {
@@ -33,6 +35,7 @@ export type ProfilePreviewProps = {
   reviews: number;
   bio: string;
   interests: TagList;
+  id: string;
 };
 
 export type filters = {
