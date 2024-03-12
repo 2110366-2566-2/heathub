@@ -137,6 +137,7 @@ export const userRouter = createTRPCRouter({
           interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
           avgRating: hostUser.avgRating,
           reviewCount: hostUser.reviewCount,
+          id: user.id,
         })
         .from(hostUser)
         .where(
