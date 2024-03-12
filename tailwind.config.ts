@@ -38,6 +38,7 @@ const config = withUt({
         },
         success: "#52D382",
         pending: "#FFC164",
+        toggle: "#FF80AA",
         primary: {
           50: "#e4edff",
           100: "#c3d7ff",
