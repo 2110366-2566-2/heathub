@@ -38,6 +38,7 @@ export const userRouter = createTRPCRouter({
           role: true,
           lastName: true,
           profileImageURL: true,
+          dateOfBirth: true,
         },
       });
       return res;
@@ -59,6 +60,36 @@ export const userRouter = createTRPCRouter({
     });
     return participants;
   }),
+  getHostData: publicProcedure
+    .input(
+      z.object({
+        hostID: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const res = await ctx.db
+        .select({
+          interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
+          avgRating: hostUser.avgRating,
+          reviewCount: hostUser.reviewCount,
+        })
+        .from(hostUser)
+        .where(eq(hostUser.userID, input.hostID))
+        .leftJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
+        .groupBy(hostUser.userID)
+        .then((result) => {
+          return result.map((row) => {
+            const arrayInterests = (row.interests as string)
+              ? (row.interests as string).split(",")
+              : [];
+            return {
+              ...row,
+              interests: arrayInterests,
+            };
+          });
+        });
+      return res;
+    }),
 
   getHostsByFilter: publicProcedure
     .input(
