@@ -6,10 +6,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditProfileButton from "./EditProfileButton";
 import { type ProfilePreviewProps } from "./profile-container";
 import Image from "next/image";
+import { useMediaQuery } from "react-responsive";
+import { Drawer, DrawerOverlay, DrawerTrigger } from "@/components/ui/drawer";
+import {
+  DialogProfile,
+  DrawerProfile,
+} from "@/app/discover/_components/profile-preview";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 export default function ProfileDetails(props: ProfilePreviewProps) {
-  const { interests } = props;
-  const { image } = props;
+  const {
+    interests,
+    image,
+    name,
+    age,
+    firstName,
+    lastName,
+    gender,
+    about,
+    dateOfBirth,
+  } = props;
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
   return (
     <Card className="h-fit min-h-[334px] w-full justify-center rounded-none border-none p-5 shadow-none lg:min-h-[256px] lg:rounded-lg lg:border-solid lg:border-primary-300 lg:bg-white">
       <CardContent className="flex h-full w-full flex-col items-center gap-y-4 p-0 md:gap-0">
@@ -23,9 +40,29 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
                 height={100}
                 alt="profilePic"
               />
-              <div className="z-100 absolute bottom-0 right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
-                <FontAwesomeIcon icon={faEye} />
-              </div>
+              {isMobile ? (
+                <Drawer>
+                  <DrawerTrigger>
+                    <div className="z-100 absolute bottom-0 right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
+                      <FontAwesomeIcon icon={faEye} />
+                    </div>
+                  </DrawerTrigger>
+                  <DrawerOverlay
+                    className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
+                    style={{ backgroundImage: `url(${props.image})` }}
+                  />
+                  <DrawerProfile {...props} />
+                </Drawer>
+              ) : (
+                <Dialog>
+                  <DialogTrigger>
+                    <div className="z-100 absolute bottom-0 right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
+                      <FontAwesomeIcon icon={faEye} />
+                    </div>
+                  </DialogTrigger>
+                  <DialogProfile {...props} />
+                </Dialog>
+              )}
             </div>
 
             <div className="flex h-fit w-full flex-col gap-y-2">
