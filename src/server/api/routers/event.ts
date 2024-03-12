@@ -160,7 +160,7 @@ export const eventRouter = createTRPCRouter({
         );
       } else if (input.status === "completed") {
         filter.push(
-          or(eq(event.status, "completed"), eq(event.status, "canceled"))!,
+          or(eq(event.status, "completed"))!,
         );
       }
 
