@@ -8,7 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { type TagList, tagIcon, tagList, type Tag } from "@/utils/icon-mapping";
+import { type TagList, tagStyle, tagList, type Tag } from "@/utils/icon-mapping";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -102,7 +102,7 @@ export default function Filter(props: FilterProps) {
               <ToggleGroupItem
                 key={tag}
                 variant="outline"
-                icon={tagIcon[tag]}
+                icon={tagStyle[tag].icon}
                 size="md"
                 value={tag}
               >
