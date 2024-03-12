@@ -45,7 +45,7 @@ export function ProfilePreview(props: ProfilePreviewProps) {
   );
 }
 
-function DialogProfile(props: ProfilePreviewProps) {
+export function DialogProfile(props: ProfilePreviewProps) {
   const { image } = props;
   return (
     <DialogContent className="flex gap-6 bg-white p-0 md:min-h-[568px] md:min-w-[720px] lg:min-w-[845px]">
@@ -69,7 +69,7 @@ function DialogProfile(props: ProfilePreviewProps) {
   );
 }
 
-function DrawerProfile(props: ProfilePreviewProps) {
+export function DrawerProfile(props: ProfilePreviewProps) {
   return (
     <DrawerContent className="flex flex-col gap-2 bg-white p-4">
       <div className="flex flex-col gap-2 rounded-r-3xl">
