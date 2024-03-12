@@ -9,6 +9,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { api } from "@/trpc/react";
 
 
 interface EventModalProps {
@@ -17,9 +19,16 @@ interface EventModalProps {
 }
 
 export function FinishModal(prop: EventModalProps) {
-
-
   const { children } = prop;
+  const finishEvent = api.event.finishEvent.useMutation();
+
+  const handleFinishEvent = async (eventID: number) => {
+    try {
+      await finishEvent.mutateAsync({ eventID: eventID });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Dialog>
@@ -45,7 +54,7 @@ export function FinishModal(prop: EventModalProps) {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button variant="default" className="bg-primary-500 text-white">
+            <Button variant="default" className="bg-primary-500 text-white" onClick={() => handleFinishEvent(prop.id)}>
               Finish Event
             </Button>
           </DialogClose>

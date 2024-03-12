@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { eventRouter } from '@/server/api/routers/event';
 import { api } from "@/trpc/react";
 interface EventModalProps {
   id: number
@@ -19,15 +18,12 @@ interface EventModalProps {
 export function CancelModal(prop: EventModalProps) {
 
   const { children } = prop;
-  const [error, setError] = useState<string | null>(null);
-
-  const { data: cancelEvent } = eventRouter.cancelEvent.useMutation();
-
+  const cancelEvent = api.event.cancelEvent.useMutation();
   const handleCancelEvent = async (eventID: number) => {
     try {
-      await cancelEvent({ eventID: eventID });
+      await cancelEvent.mutateAsync({ eventID: eventID });
     } catch (error) {
-      setError("Failed to cancel event. Please try again later.");
+      console.error(error);
     }
   };
 
@@ -55,7 +51,7 @@ export function CancelModal(prop: EventModalProps) {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button variant="default" className="bg-primary-500 text-white" onClick={handleCancelEvent}>
+            <Button variant="default" className="bg-primary-500 text-white" onClick={() => handleCancelEvent(prop.id)}>
               Cancel Event
             </Button>
           </DialogClose>

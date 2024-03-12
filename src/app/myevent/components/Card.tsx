@@ -23,6 +23,7 @@ import { ViewreviewModal } from "./ViewreviewModal";
 import { formatDate } from "../utils";
 import { useState } from "react";
 import Link from "next/link";
+import { api } from "@/trpc/react";
 
 export type EventProps = {
   id: number;
@@ -41,10 +42,17 @@ export enum EventStatus {
   NOTSTARTED = "Not Started",
   WAITINGREVIEW = "Waiting for Review",
   COMPLETED = "Completed",
+  CANCEL = "Cancel"
 }
 
 export function Card(prop: EventProps) {
-  const [role, setRole] = useState("host");
+  const [role, setRole] = useState("participant");
+  api.auth.me.useQuery(undefined, {
+    onSuccess: (data) => {
+      if (!data) return;
+      setRole(data.role);
+    },
+  });
 
   const CardButton = () => {
     switch (prop.status) {
@@ -53,7 +61,7 @@ export function Card(prop: EventProps) {
           role == "participant" && (
             <Button
               variant="default"
-              className="z-[100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
+              className="z-100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
             >
               Finish Event
             </Button>
@@ -81,12 +89,12 @@ export function Card(prop: EventProps) {
         );
       case EventStatus.COMPLETED:
         return (
-          <Button
-            variant="default"
-            className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
-          >
-            My Review
-          </Button>
+            <Button
+              variant="default"
+              className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
+            >
+              My Review
+            </Button>
         );
       default:
         return (
@@ -126,6 +134,7 @@ export function Card(prop: EventProps) {
       case EventStatus.COMPLETED:
         return (
           <ViewreviewModal
+            id={prop.id}
             name={prop.name}
             rating={4}
             review={"You did really great. I’m so happy to have a dinner with you"}
@@ -135,12 +144,9 @@ export function Card(prop: EventProps) {
         );
       default:
         return (
-          <Button
-            variant="default"
-            className="z-50 !w-full border border-secondary-500 bg-white text-secondary-500 hover:bg-secondary-100"
-          >
-            Cancel Event
-          </Button>
+          <CancelModal id={prop.id}>
+            <CardButton />
+          </CancelModal>
         );
     }
   };
