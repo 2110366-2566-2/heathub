@@ -23,7 +23,7 @@ export function ProfilePreview(props: ProfilePreviewProps) {
   if (isMobile) {
     return (
       <Drawer>
-        <DrawerTrigger>
+        <DrawerTrigger className="m-auto aspect-[0.76] min-h-[424px] max-w-[323px]">
           <Card {...props} />
         </DrawerTrigger>
         <DrawerOverlay
@@ -37,7 +37,7 @@ export function ProfilePreview(props: ProfilePreviewProps) {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger className="m-auto aspect-[0.76] min-h-[424px] max-w-[323px]">
         <Card {...props} />
       </DialogTrigger>
       <DialogProfile {...props} />

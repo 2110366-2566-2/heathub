@@ -17,8 +17,16 @@ export default function Card(props: ProfilePreviewProps) {
   const hiddenInterestsCount = interests.length - maxInterestsToDisplay;
 
   return (
-    <div className="relative mx-auto flex aspect-[7/10] max-w-[464px] flex-col gap-0 rounded-3xl shadow-md">
-      <div className="relative h-full">
+    <div className="relative flex aspect-[0.76] min-h-[424px] max-w-[323px] flex-col gap-0 rounded-3xl bg-white p-4 shadow-md">
+      <div className="aspect-9/10 relative h-full max-h-[264px]">
+        <Image
+          src={image}
+          alt="card"
+          fill
+          className="rounded-lg object-cover object-top"
+        />
+      </div>
+      {/* aspect-[0.76]<div className="relative h-full">
         <Image
           src={image}
           alt="card"
@@ -44,11 +52,7 @@ export default function Card(props: ProfilePreviewProps) {
             )}
           </div>
         </div>
-      </div>
-
-      <div className="my-auto flex aspect-[4.316] w-full items-center justify-center">
-        <Chat />
-      </div>
+      </div> */}
     </div>
   );
 }
