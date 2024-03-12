@@ -54,10 +54,10 @@ export default function ForgetPassword() {
       const timer = (x: number) =>{
       if(x === 0) {
         setStatus("idle");
-        setButtonText('send');
+        setButtonText('Send');
         return ;
       }
-      setButtonText(`resend (${x})`);
+      setButtonText(`Resend (${x})`);
       return setTimeout(() => {timer(--x)}, 1000)
       }
       timer(5);
@@ -67,20 +67,23 @@ export default function ForgetPassword() {
   };
   const { toast } = useToast();
   return (
-    <main className="flex h-screen bg-subtle p-6 lg:p-14">
+    <main className="flex h-screen bg-white p-6 lg:p-14">
       <div className="flex h-full w-full flex-1 flex-col gap-2">
-        <Link href="/">
-          <button className="flex h-6 w-6 flex-row items-center justify-center">
-            <FontAwesomeIcon icon={faChevronLeft} className="h-4 text-high" />
+        <Link href="/" className="absolute">
+          <button className="absolute flex h-6 w-6 flex-row items-center justify-center">
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              className="absolute h-4 text-high"
+            />
           </button>
         </Link>
         <div className="flex h-full w-full items-center justify-center">
-          <div className="flex h-full w-full justify-center rounded-4xl border border-solid border-primary-500 bg-neutral-0 px-6 py-10 lg:h-[493px] lg:w-[846px] lg:items-center lg:px-0 lg:py-0">
+          <div className="flex h-full w-full justify-center rounded-4xl px-6 py-10 lg:h-[493px] lg:w-[846px] lg:items-center lg:px-0 lg:py-0">
             <div className="flex w-full flex-col items-center gap-9 lg:w-[412px] lg:justify-center">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-subtle lg:h-[60px] lg:w-[60px]">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faKey}
-                  className="h-12 text-primary-500 lg:h-8"
+                  className="h-12 text-neutral-0 lg:h-8"
                 />
               </div>
               <div className="flex flex-col items-center gap-3">
@@ -92,7 +95,7 @@ export default function ForgetPassword() {
                   verify link to your email
                 </div>
               </div>
-              <div className="flex h-full w-full flex-col items-center gap-2 lg:gap-9">
+              <div className="flex w-full flex-1 flex-col items-center gap-2 lg:gap-9">
                 <form
                   onSubmit={handleSubmit}
                   className="flex h-full w-full flex-col justify-between gap-9 text-black lg:h-fit lg:justify-normal"
@@ -105,12 +108,12 @@ export default function ForgetPassword() {
                       className="w-full"
                       type="email"
                       name="email"
-                      placeholder="Add value"
+                      placeholder="Enter your email"
                     />
                   </div>
                   <Button
-                    type= "submit"
-                    variant="default"
+                    type="submit"
+                    variant="secondary"
                     size={"lg"}
                     disabled={status === "loading" || status === "done"}
                   >
@@ -121,7 +124,7 @@ export default function ForgetPassword() {
                   <div className="text-primary-700">
                     Don’t have an account yet?
                   </div>
-                  <Link href="/signup" className="text-secondary-400">
+                  <Link href="/signup" className="text-secondary-500">
                     Sign up now
                   </Link>
                 </div>
@@ -131,5 +134,5 @@ export default function ForgetPassword() {
         </div>
       </div>
     </main>
-  )
+  );
 }
