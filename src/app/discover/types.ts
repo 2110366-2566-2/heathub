@@ -36,6 +36,7 @@ export type ProfilePreviewProps = {
 };
 
 export type filters = {
+  searchQuery: string;
   interests: string[];
   rating: number;
   gender: string;
