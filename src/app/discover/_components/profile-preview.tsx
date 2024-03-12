@@ -11,7 +11,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
-import { tagIcon } from "../../../utils/icon-mapping";
+import { tagStyle } from "../../../utils/icon-mapping";
 import Card from "./card";
 import { ChatDialog } from "./chat";
 import { Tag } from "@/app/_components/tag";
@@ -141,7 +141,7 @@ function Interests({
       <div className="flex flex-row flex-wrap items-center justify-start gap-2 self-stretch">
         {interests.sort().map((tag, index) => {
           return (
-            <Tag key={index} variant="outline" icon={tagIcon[tag]} size="md">
+            <Tag className={"bg-tag-"+tagStyle[tag].color} key={index} variant="solid" icon={tagStyle[tag].icon} size="md">
               {tag}
             </Tag>
           );
