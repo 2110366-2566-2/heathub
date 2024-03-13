@@ -10,7 +10,6 @@ import { type Channel } from "pusher-js";
 import { useEffect, useRef, useState } from "react";
 import { usePusher } from "../../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
-import { useIntersection } from "@mantine/hooks";
 import { type CreateFormInfo } from "./ChatEventCreateForm";
 import ChatMessageBox from "./ChatMessageBox";
 import ChatEventInfo from "./ChatEventInfo";

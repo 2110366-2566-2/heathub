@@ -62,7 +62,7 @@ export const PlacesAutocomplete = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
-        className="combobox-input border-primary-200 text-primary-500 placeholder-primary-400 w-full rounded-xl border p-2"
+        className="combobox-input w-full rounded-xl border border-primary-200 p-2 text-primary-500 placeholder-primary-400"
         placeholder="location"
       />
       <ComboboxPopover className="z-50" portal={false}>
@@ -74,7 +74,7 @@ export const PlacesAutocomplete = ({
               <ComboboxOption
                 key={place_id}
                 value={description}
-                className={`text-primary-500 hover:bg-primary-50 z-[9999] cursor-pointer p-2`}
+                className={`z-[9999] cursor-pointer p-2 text-primary-500 hover:bg-primary-50`}
               />
             ))}
         </ComboboxList>

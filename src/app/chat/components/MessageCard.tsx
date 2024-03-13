@@ -17,7 +17,7 @@ export function MessageCard(props: MessageCardProps) {
       variant="default"
       className={cn(
         props.isSelected
-          ? "bg-secondary-400 hover:bg-secondary-400 text-white transition ease-in-out lg:w-[380px]"
+          ? "bg-secondary-400 text-white transition ease-in-out hover:bg-secondary-400 lg:w-[380px]"
           : "bg-white hover:bg-neutral-50",
         props.className,
         "delay-50 h-fit w-full cursor-pointer whitespace-normal rounded-lg p-0",
