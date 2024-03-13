@@ -21,7 +21,7 @@ export function CancelModal(prop: EventModalProps) {
     try {
       await cancelEvent.mutateAsync({ eventID: eventID });
       const utils = api.useUtils();
-      utils.event.myEvent.invalidate();
+      await utils.event.myEvent.invalidate();
     } catch (error) {
       console.error(error);
     }

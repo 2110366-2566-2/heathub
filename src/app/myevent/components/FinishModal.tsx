@@ -23,7 +23,7 @@ export function FinishModal(prop: EventModalProps) {
     try {
       await finishEvent.mutateAsync({ eventID: eventID });
       const utils = api.useUtils();
-      utils.event.myEvent.invalidate();
+      await utils.event.myEvent.invalidate();
     } catch (error) {
       console.error(error);
     }
