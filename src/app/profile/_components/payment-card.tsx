@@ -22,7 +22,7 @@ export default function PaymentCard(props: PaymentCardProps) {
         />
         <h4 className="h4 font-bold">Payment</h4>
       </div>
-      <div className="flex h-full flex-col gap-4 rounded-lg bg-neutral-100 p-4">
+      <div className="flex h-full flex-col gap-4 rounded-lg bg-invert p-4">
         <p className="flex flex-col gap-2">
           <span className="text-sm text-medium">My Wallet</span>
           <span className="h2 font-bold">฿{props.balance}</span>

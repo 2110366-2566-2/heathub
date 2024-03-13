@@ -24,7 +24,7 @@ export type ProfilePreviewProps = {
   lastName: string;
   gender: string;
   dateOfBirth: Date;
-  id : string;
+  id: string;
 };
 export default function ProfileContainer(props: ProfilePreviewProps) {
   const balance = {
@@ -34,10 +34,7 @@ export default function ProfileContainer(props: ProfilePreviewProps) {
   return (
     <div className="flex flex-col gap-4 ">
       <div className="flex h-10 w-full flex-row items-center gap-x-2">
-        <FontAwesomeIcon
-          icon={faUser}
-          className="h-10 w-10 text-secondary-500"
-        />
+        <FontAwesomeIcon icon={faUser} className="h-7 w-7 text-secondary-500" />
         <div className="h2 font-bold text-high">Profile</div>
       </div>
       <div className="flex flex-col lg:flex-row lg:gap-4">

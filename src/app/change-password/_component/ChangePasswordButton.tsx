@@ -115,7 +115,7 @@ export default function ChangePasswordButton() {
           className={"h-12 w-12 text-primary-500"}
         />
         <div className="flex w-full flex-col items-center gap-y-6">
-          <div className="h3 font-bold">Change your password</div>
+          <div className="h3 font-bold text-high">Change your password</div>
           <form className="flex w-full flex-col gap-y-3" ref={formRef}>
             <div className="flex w-full flex-col gap-y-1">
               <Label htmlFor="Current Password">Current Password</Label>
@@ -160,13 +160,13 @@ export default function ChangePasswordButton() {
         </div>
         <div className="flex h-fit w-full flex-row-reverse gap-x-3">
           <span
-            className="inline-flex h-10 w-24 items-center justify-center rounded-xl bg-primary-500 text-white hover:cursor-pointer hover:bg-primary-600 disabled:bg-primary-100"
+            className="inline-flex h-10 w-24 items-center justify-center rounded-xl bg-secondary-400 text-white hover:cursor-pointer hover:bg-secondary-500 disabled:bg-secondary-100"
             onClick={handleSubmit}
           >
             Confirm
           </span>
           <span
-            className="inline-flex h-10 w-20 items-center justify-center rounded-xl border border-primary-500 bg-white text-primary-500 hover:cursor-pointer hover:border-primary-600 hover:text-primary-600 disabled:bg-primary-100"
+            className="inline-flex h-10 w-20 items-center justify-center rounded-xl border border-primary-500 bg-white text-medium hover:cursor-pointer hover:border-primary-600 hover:text-primary-600 disabled:bg-primary-100"
             onClick={handleClose}
           >
             Cancel

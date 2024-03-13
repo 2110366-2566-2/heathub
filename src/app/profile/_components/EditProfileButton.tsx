@@ -160,7 +160,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       }}
       open={isOpen && !isClose}
     >
-      <DialogTrigger className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-secondary-500 text-white hover:bg-secondary-600 disabled:bg-secondary-100 lg:w-[126px]">
+      <DialogTrigger className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-secondary-400 text-white hover:bg-secondary-500 disabled:bg-secondary-100 lg:w-[126px]">
         Edit Profile
       </DialogTrigger>
       <DialogContent
@@ -220,11 +220,11 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
               <Label className="h5 text-high" htmlFor="Bio">
                 Bio
               </Label>
-              <Textarea
+              <Input
                 value={bioText}
                 className="h-9 resize-none"
                 name="Bio"
-                placeholder="Enter your bio"
+                placeholder="Type your message here"
                 onChange={(e) => {
                   setBioText(e.target.value);
                 }}

@@ -36,7 +36,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
               />
               <div className="h4 font-bold text-high">My Account</div>
             </div>
-            <div className="flex flex-col items-start rounded-xl bg-neutral-100  px-6 py-6 lg:p-4">
+            <div className="flex flex-col items-start rounded-xl bg-invert  px-6 py-6 lg:p-4">
               <div className="placeholder flex justify-center text-medium">
                 Email
               </div>
@@ -67,7 +67,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
             />
             <div className="h4 font-bold text-high">My Account</div>
           </div>
-          <div className="flex flex-col items-start rounded-xl bg-neutral-100 px-6 py-6 lg:p-4">
+          <div className="flex flex-col items-start rounded-xl bg-invert px-6 py-6 lg:p-4">
             <div className="placeholder flex justify-center text-medium">
               Email
             </div>

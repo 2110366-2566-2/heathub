@@ -22,7 +22,7 @@ export default function MyReview(props: ProfilePreviewProps) {
         </div>
         <Button
           variant={"outline"}
-          className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-100"
+          className="w-full border-secondary-500 bg-invert text-secondary-500 hover:bg-secondary-100"
         >
           See All Reviews
         </Button>

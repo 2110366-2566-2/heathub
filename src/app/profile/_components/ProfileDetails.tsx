@@ -30,7 +30,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
     dateOfBirth,
     id,
   } = props;
-
+  const genderName = gender == "NotToSay" ? "Prefer not to say" : gender;
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   return (
     <Card className="h-fit min-h-[334px] w-full justify-center rounded-none border-none shadow-none lg:min-h-[256px] lg:rounded-lg lg:bg-neutral-50 lg:p-5">
@@ -80,7 +80,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
                   </div>
                   <div>•</div>
                   <div className="flex h-[18px] flex-row items-center gap-x-2">
-                    <div>{props.gender}</div>
+                    <div>{genderName}</div>
                   </div>
                 </div>
                 <div className="h5 line-clamp-3 w-full text-placeholder md:line-clamp-2">
