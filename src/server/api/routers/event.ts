@@ -157,10 +157,7 @@ export const eventRouter = createTRPCRouter({
       ];
       if (input.status === "upcoming") {
         filter.push(
-          or(
-            eq(event.status, "payment-await"),
-            eq(event.status, "payment-done"),
-          )!,
+          or(eq(event.status, "pending"), eq(event.status, "payment-done"))!,
         );
       } else if (input.status === "completed") {
         filter.push(or(eq(event.status, "completed"))!);
@@ -265,6 +262,39 @@ export const eventRouter = createTRPCRouter({
           })
           .where(eq(event.id, input.eventID));
         // TODO: transfer money and add to transaction history
+      });
+    }),
+
+  rejectEvent: participantProcedure
+    .input(
+      z.object({
+        eventID: z.number().int(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const eventRow = await ctx.db.query.event.findFirst({
+        where: eq(event.id, input.eventID),
+      });
+
+      if (!eventRow) {
+        throw new Error("Event not found");
+      }
+
+      if (eventRow.participantID !== ctx.session.user.userId) {
+        throw new Error("Unauthorized");
+      }
+
+      if (eventRow.status !== "pending") {
+        throw new Error("Invalid status");
+      }
+
+      await ctx.db.transaction(async (tx) => {
+        await tx
+          .update(event)
+          .set({
+            status: "rejected",
+          })
+          .where(eq(event.id, input.eventID));
       });
     }),
 });

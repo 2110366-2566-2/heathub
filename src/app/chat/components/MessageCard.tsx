@@ -14,10 +14,13 @@ export function MessageCard(props: MessageCardProps) {
 
   return (
     <Button
-      variant="outline"
+      variant="default"
       className={cn(
-        "delay-50 h-fit w-full whitespace-normal rounded-lg border-2 border-primary-300  p-0 transition ease-in-out  lg:w-[380px]",
+        props.isSelected
+          ? "bg-secondary-400 hover:bg-secondary-400 text-white transition ease-in-out lg:w-[380px]"
+          : "bg-white hover:bg-neutral-50",
         props.className,
+        "delay-50 h-fit w-full cursor-pointer whitespace-normal rounded-lg p-0",
       )}
       onClick={onClick}
     >
@@ -28,18 +31,31 @@ export function MessageCard(props: MessageCardProps) {
             <AvatarFallback>{props.discourserAka}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col justify-start">
-            <div className="h5 w-fit">{props.discourserAka}</div>
             <div
-              className="small line-clamp-1 w-full
-              break-all
-              text-start  text-medium"
+              className={cn(
+                "h5 w-fit",
+                props.isSelected ? "text-white" : "text-black",
+              )}
+            >
+              {props.discourserAka}
+            </div>
+            <div
+              className={cn(
+                "small line-clamp-1 w-full break-all text-start",
+                props.isSelected ? "text-white" : "text-medium",
+              )}
             >
               {props.lastestMessage}
             </div>
           </div>
         </div>
-        <div className="flex flex-none flex-col justify-around gap-2 self-start text-primary-600">
-          <div className="small text-primary-600">
+        <div className=" flex flex-none flex-col justify-around gap-2 self-start">
+          <div
+            className={cn(
+              "small group-hover:text-primary-600",
+              props.isSelected ? "text-white" : "text-primary-600",
+            )}
+          >
             {Dayjs(props.createdAt).format("HH:mm")}
           </div>
         </div>

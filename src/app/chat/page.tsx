@@ -5,7 +5,7 @@ export default async function Page() {
       <div className="h-fit w-fit">
         <Image width={150} height={150} src="/svgs/no-chat.svg" alt="No chat" />
         <div className="h2-bold text-medium flex items-center justify-center">
-          No Message
+          Start a new chat !
         </div>
       </div>
     </div>

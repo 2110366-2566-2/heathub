@@ -35,26 +35,23 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
   } = info;
   const justifyPosition = isMine ? "justify-end" : "justify-start";
 
-  const updateStatusByHost = api.event.cancelEvent.useMutation({
+  const cancelEvent = api.event.cancelEvent.useMutation({
     onSuccess: () => {
-      console.log("success update event by host");
       updateStatus(eventID, "cancelled");
     },
   });
 
-  const updateStatusByParticipant =
-    api.event.updateEventByParticipant.useMutation({
-      onSuccess: (_, variables) => {
-        updateStatus(eventID, variables.status);
-      },
-    });
+  const rejectEvent = api.event.rejectEvent.useMutation({
+    onSuccess: () => {
+      updateStatus(eventID, "rejected");
+    },
+  });
 
-  const confirmEvent = () => {
-    updateStatusByParticipant.mutate({
-      eventID: eventID,
-      status: "payment-done",
-    });
-  };
+  const confirmEvent = api.event.payEvent.useMutation({
+    onSuccess: () => {
+      updateStatus(eventID, "payment-done");
+    },
+  });
 
   return (
     <div className={cn("flex w-full flex-row", justifyPosition)}>
@@ -100,22 +97,27 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    updateStatusByParticipant.mutate({
+                    rejectEvent.mutate({
                       eventID: eventID,
-                      status: "rejected",
                     });
                   }}
                 >
                   Reject Event
                 </Button>
-                <ConfirmEventPayment confirmEvent={confirmEvent} />
+                <ConfirmEventPayment
+                  confirmEvent={() => {
+                    confirmEvent.mutate({
+                      eventID: eventID,
+                    });
+                  }}
+                />
               </div>
             ) : (
               <div className="flex w-full flex-row justify-end">
                 <Button
                   variant="outline"
                   onClick={() => {
-                    updateStatusByHost.mutate({
+                    cancelEvent.mutate({
                       eventID: eventID,
                     });
                   }}

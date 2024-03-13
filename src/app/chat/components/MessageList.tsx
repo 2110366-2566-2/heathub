@@ -85,16 +85,16 @@ export function MessageList({
   return (
     <div
       className={cn(
-        "flex h-screen flex-col justify-center bg-subtle p-9 md:min-w-[452px]",
+        "flex h-screen flex-col justify-center p-9 md:min-w-[452px]",
         className,
       )}
     >
-      <div className="mb-5  flex flex-row items-center gap-2.5 pl-4">
+      <div className="mb-5 flex flex-row items-center gap-2.5">
         <FontAwesomeIcon
           icon={faComment}
-          className={"h-8 w-7 text-secondary-400"}
+          className={"text-secondary-500 h-8 w-7"}
         />
-        <span className="h2 font-bold  text-primary-900">Message</span>
+        <span className="h2 text-primary-900  font-bold">Message</span>
       </div>
       <div
         id="scroll"
@@ -106,12 +106,9 @@ export function MessageList({
               data.contentType === "text" ||
               data.contentType === "imageURL"
             ) {
-              const buttonBg = pagePathName.includes(data.discourserId)
-                ? "bg-primary-50 hover:bg-primary-50 hover:cursor-default "
-                : "bg-white hover:bg-white hover:drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]";
               return (
                 <MessageCard
-                  className={buttonBg}
+                  isSelected={pagePathName.includes(data.discourserId)}
                   key={data.id}
                   discourserId={data.discourserId}
                   discourserAka={data.discourserAka}
