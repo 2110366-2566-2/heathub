@@ -1,12 +1,4 @@
 "use client";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCalendar,
-  faCheckCircle,
-  faEllipsisVertical,
-  faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,16 +6,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EventDetail } from "./EventDetail";
-import { StatusTag } from "./StatusTag";
-import { FinishModal } from "./FinishModal";
-import { CancelModal } from "./CancelModal";
-import { GivereviewModal } from "./GivereviewModal";
-import { ViewreviewModal } from "./ViewreviewModal";
-import { formatDate } from "../utils";
-import { useState } from "react";
-import Link from "next/link";
 import { api } from "@/trpc/react";
+import {
+  faCalendar,
+  faCheckCircle,
+  faEllipsisVertical,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { formatDate } from "../utils";
+import { CancelModal } from "./CancelModal";
+import { EventDetail } from "./EventDetail";
+import { FinishModal } from "./FinishModal";
+import { GivereviewModal } from "./GivereviewModal";
+import { StatusTag } from "./StatusTag";
+import { ViewreviewModal } from "./ViewreviewModal";
 
 export type EventProps = {
   id: number;
@@ -163,7 +163,13 @@ export function Card(prop: EventProps) {
       >
         <div className="flew-row flex w-full gap-4">
           <div className=" relative h-14 w-14 overflow-hidden rounded-full">
-            <Image src={prop.image ?? ""} fill objectFit="cover" alt="logo" />
+            <Image
+              src={prop.image ?? ""}
+              fill
+              objectFit="cover"
+              alt="logo"
+              unoptimized
+            />
           </div>
           <div className="flex flex-1 flex-col gap-2">
             <div className="flex flex-row gap-1">
