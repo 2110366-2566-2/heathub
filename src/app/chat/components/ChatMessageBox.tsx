@@ -15,13 +15,14 @@ export default function ChatMessageBox({
   setOpenChatEvent,
   userRole,
   onConfirm,
+  isOpenChatEvent,
 }: {
   toUserID: string;
-  setOpenChatEvent: () => void;
+  setOpenChatEvent: (open: boolean) => void;
   userRole: "participant" | "host";
   onConfirm: (form: CreateFormInfo) => void;
+  isOpenChatEvent: boolean;
 }) {
-  const [openCreate, setOpenCreate] = useState(false);
   const [message, setMessage] = useState("");
   const sendMessage = api.chat.sendMessage.useMutation({
     onSuccess: () => {
@@ -32,30 +33,20 @@ export default function ChatMessageBox({
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        sendMessage.mutate({
-          content: message,
-          toUserID: toUserID,
-        });
-      }}
-      className="bottom-0 z-10 mt-4 flex w-full flex-row items-center justify-center gap-2 bg-white px-6"
-    >
+    <div className="bottom-0 z-10 mt-4 flex w-full flex-row items-center justify-center gap-2 bg-white px-6">
       {isMobile ? (
-        <Drawer open={openCreate} onOpenChange={setOpenCreate}>
-          <DrawerTrigger>
+        <Drawer open={isOpenChatEvent} onOpenChange={setOpenChatEvent}>
+          <DrawerTrigger className="cursor-pointer">
             <button
               className={cn("h-fit w-fit", {
                 hidden: !(userRole === "host"),
               })}
               type="button"
-              onClick={setOpenChatEvent}
             >
               <FontAwesomeIcon
                 icon={faPlus}
                 className={cn(
-                  "h-6 w-6 rounded-full bg-primary-500 p-2 text-white",
+                  "bg-primary-500 h-6 w-6 rounded-full p-2 text-white",
                 )}
               />
             </button>
@@ -65,19 +56,18 @@ export default function ChatMessageBox({
           </DrawerContent>
         </Drawer>
       ) : (
-        <Dialog open={openCreate} onOpenChange={setOpenCreate}>
-          <DialogTrigger>
+        <Dialog open={isOpenChatEvent} onOpenChange={setOpenChatEvent}>
+          <DialogTrigger className="cursor-pointer">
             <button
               className={cn("h-fit w-fit", {
                 hidden: !(userRole === "host"),
               })}
               type="button"
-              onClick={setOpenChatEvent}
             >
               <FontAwesomeIcon
                 icon={faPlus}
                 className={cn(
-                  "h-6 w-6 rounded-full bg-primary-500 p-2 text-white",
+                  "bg-primary-500 h-6 w-6 rounded-full p-2 text-white",
                 )}
               />
             </button>
@@ -87,26 +77,37 @@ export default function ChatMessageBox({
           </DialogContent>
         </Dialog>
       )}
-      <input
-        type="text"
-        placeholder="Write your message"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        className="w-full flex-1 rounded-xl bg-neutral-50 px-4 py-2 text-black"
-      />
-      {message !== "" && (
-        <button
-          type="submit"
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 font-semibold text-white transition hover:bg-primary-600"
-          disabled={sendMessage.isLoading}
-        >
-          {!sendMessage.isLoading ? (
-            <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4" />
-          ) : (
-            <LoadingSVG />
-          )}
-        </button>
-      )}
-    </form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          sendMessage.mutate({
+            content: message,
+            toUserID: toUserID,
+          });
+        }}
+        className="w-full"
+      >
+        <input
+          type="text"
+          placeholder="Write your message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="w-full flex-1 rounded-xl bg-neutral-50 px-4 py-2 text-black"
+        />
+        {message !== "" && (
+          <button
+            type="submit"
+            className="bg-primary-500 hover:bg-primary-600 flex h-10 w-10 items-center justify-center rounded-full font-semibold text-white transition"
+            disabled={sendMessage.isLoading}
+          >
+            {!sendMessage.isLoading ? (
+              <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4" />
+            ) : (
+              <LoadingSVG />
+            )}
+          </button>
+        )}
+      </form>
+    </div>
   );
 }
