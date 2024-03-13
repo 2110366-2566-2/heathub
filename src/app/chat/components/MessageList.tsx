@@ -116,7 +116,7 @@ export function MessageList({
                   lastestMessage={data.content}
                   createdAt={data.createdAt?.toString()} // Applying optional chaining here
                   imageUrl={
-                    data.discourserImageURL ??
+                    data.discourserImageURL ||
                     generateAvatar(data.discourserAka)
                   }
                 />
