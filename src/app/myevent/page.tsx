@@ -8,7 +8,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { Card, type EventProps } from "./components/Card";
 import { type myEventProps } from "./types";
-import { parseEventStatus, parseTabValue } from "./utils";
+import { type EventProps } from "./components/Card";
+import { parseEventStatus, parseTabValue, shouldShowEvent } from "./utils";
 
 export default function Page() {
   const [events, setEvents] = useState<EventProps[]>([]);
@@ -138,6 +139,7 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
+                  shouldShowEvent(event.status) && 
                   <Card
                     key={event.id}
                     id={event.id}

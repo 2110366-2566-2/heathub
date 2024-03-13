@@ -13,6 +13,14 @@ export function parseTabValue(
   }
 }
 
+export function shouldShowEvent(status: string): boolean {
+  if (status == "pending" || status == "cancelled" || status == "rejected") {
+    return false;
+  }
+
+  return true;
+}
+
 export function parseEventStatus(dateTime: Date, status: string): EventStatus {
   let isStarted = false;
   const currentDateTime = new Date();
@@ -20,7 +28,7 @@ export function parseEventStatus(dateTime: Date, status: string): EventStatus {
     isStarted = true;
   }
 
-  if ((status == "payment-await" || status == "payment-done") && isStarted) {
+  if (status == "payment-done" && isStarted) {
     return EventStatus.STARTED;
   } else if (status == "completed") {
     return EventStatus.COMPLETED;
