@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { type Participant, type User } from "../interfaces";
 import RegisterFormBox from "./ParticipantRegisterFormBox";
 
+import { uploadFiles } from "@/components/ui/upload";
 import { api } from "@/trpc/react";
 import { redirect, useRouter } from "next/navigation";
 import SuccessButton from "./SuccessButton";
-import { uploadFiles } from "@/components/ui/upload";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
@@ -23,7 +23,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const signUpPaticipate = api.auth.signupPaticipate.useMutation();
 
-  const { data: userData } = api.auth.me.useQuery();
+  const { data: userData } = api.auth.me.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     if (userData) {
