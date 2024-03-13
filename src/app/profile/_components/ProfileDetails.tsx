@@ -1,9 +1,7 @@
 import { Tag } from "@/app/_components/tag";
 import { CardContent, Card } from "@/components/ui/card";
 import { type TagList, tagStyle } from "@/utils/icon-mapping";
-import {
-  faEye,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditProfileButton from "./EditProfileButton";
 import { type ProfilePreviewProps } from "./profile-container";
