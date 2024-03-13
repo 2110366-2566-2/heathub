@@ -130,7 +130,10 @@ export function MessageList({
                   discourserAka={data.discourserAka}
                   lastestMessage={"New Event"}
                   createdAt={data.createdAt?.toString()} // Applying optional chaining here
-                  imageUrl={data.discourserImageURL}
+                  imageUrl={
+                    data.discourserImageURL ??
+                    generateAvatar(data.discourserAka)
+                  }
                 />
               );
             }
