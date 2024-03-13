@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/trpc/react";
-import { faChevronLeft, faCircleInfo, faLock, faUnlockKeyhole } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faCircleInfo,
+  faLock,
+  faUnlockKeyhole,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -55,13 +60,15 @@ export default function ResetPassword({
       setPasswordNotice("Password must be at least 8 characters");
       valid = false;
       return;
-    }else{
+    } else {
       setPasswordNotice(null);
     }
 
     if (password !== confirm_password) {
       setError("Passwords do not match");
       return;
+    } else {
+      setError(null);
     }
     try {
       await mutate.mutateAsync({
@@ -77,7 +84,6 @@ export default function ResetPassword({
     }
     redirect("/signin");
   };
-
 
   return (
     <main className="flex h-screen bg-white p-6 lg:p-14">
@@ -114,11 +120,7 @@ export default function ResetPassword({
                     link
                   </div>
                 </div>
-                <Button
-                  variant={"secondary"}
-                  disabled={isDataLoading}
-                  asChild
-                >
+                <Button variant={"secondary"} disabled={isDataLoading} asChild>
                   <Link href="/reset-password">Forgot password</Link>
                 </Button>
               </div>
@@ -156,14 +158,22 @@ export default function ResetPassword({
                         />
                         {passwordNotice ? (
                           <div className="flex items-center">
-                            <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
+                            <FontAwesomeIcon
+                              icon={faCircleInfo}
+                              className="text-red-500"
+                              size="xs"
+                            />
                             <p className="px-1 text-xs text-red-500">
                               {passwordNotice}
                             </p>
                           </div>
                         ) : (
                           <div className="flex items-center">
-                            <FontAwesomeIcon icon={faCircleInfo} className="text-medium" size="xs" />
+                            <FontAwesomeIcon
+                              icon={faCircleInfo}
+                              className="text-medium"
+                              size="xs"
+                            />
                             <p className="px-1 text-xs text-medium">
                               {"The password must be at least 8 characters"}
                             </p>
@@ -181,13 +191,15 @@ export default function ResetPassword({
                           placeholder="Confirm password"
                         />
                         {error && (
-                            <div className="flex items-center">
-                            <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
-                            <p className="px-1 text-xs text-red-500">
-                              {error}
-                            </p>
+                          <div className="flex items-center">
+                            <FontAwesomeIcon
+                              icon={faCircleInfo}
+                              className="text-red-500"
+                              size="xs"
+                            />
+                            <p className="px-1 text-xs text-red-500">{error}</p>
                           </div>
-                          )}
+                        )}
                       </div>
                     </div>
                     <Button

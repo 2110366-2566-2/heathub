@@ -4,7 +4,11 @@ import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faCircleInfo, faKey } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faCircleInfo,
+  faKey,
+} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -142,11 +146,15 @@ export default function ForgetPassword() {
                     />
                     {errors.email && (
                       <div className="flex items-center">
-                      <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
-                      <p className="px-1 text-xs text-red-500">
-                        {errors.email.message}
-                      </p>
-                    </div>
+                        <FontAwesomeIcon
+                          icon={faCircleInfo}
+                          className="text-red-500"
+                          size="xs"
+                        />
+                        <p className="px-1 text-xs text-red-500">
+                          {errors.email.message}
+                        </p>
+                      </div>
                     )}
                   </div>
                   <Button
