@@ -1,4 +1,4 @@
-import { ChatRoom } from "@/app/chat/components/ChatRoom";
+import { ChatRoom } from "@/app/chat/_components/ChatRoom";
 import { serverapi } from "@/trpc/server";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
