@@ -82,10 +82,11 @@ function DialogProfile(props: ProfileProps) {
               fill
             />
           ) : (
-            <img
+            <Image
               src={generateAvatar(props.props.aka)}
               className="h-full rounded-md object-cover object-top"
-            ></img>
+              alt={`Avatar of ${props.props.aka}`}
+            ></Image>
           )}
         </div>
         <div className="absolute right-[-28px] top-[-20px] z-30 h-16 w-24 text-[#FFC661]">

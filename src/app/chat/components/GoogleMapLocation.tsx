@@ -2,8 +2,8 @@
 import React from "react";
 import {
   useJsApiLoader,
-  GoogleMap,
-  MarkerF,
+  // GoogleMap,
+  // MarkerF,
   Autocomplete,
 } from "@react-google-maps/api";
 // import usePlacesAutoComplete, {

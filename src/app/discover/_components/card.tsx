@@ -34,10 +34,11 @@ export default function Card(props: ProfilePreviewProps) {
             draggable="false"
           />
         ) : (
-          <img
+          <Image
             className="object-cover object-top"
             src={generateAvatar(aka)}
-          ></img>
+            alt={`Avatar of ${aka}`}
+          ></Image>
         )}
       </div>
       <div className="flex flex-col gap-3">

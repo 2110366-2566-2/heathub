@@ -90,6 +90,14 @@ const config = withUt({
           pink: "#F488A9",
         },
       },
+      status: {
+        error: {
+          default: "#F86C6C",
+          hover: "#E14C4C",
+        },
+        pending: "#FFC164",
+        success: "#52D382",
+      },
       borderRadius: {
         sm: "4px",
         md: "8px",
@@ -97,6 +105,7 @@ const config = withUt({
         xl: "16px",
         "2xl": "20px",
         "3xl": "24px",
+        "4xl": "36px",
       },
     },
   },
