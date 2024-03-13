@@ -356,43 +356,35 @@ export const tranferTransactionRelation = relations(
   }),
 );
 
-export const event = mysqlTable(
-  "event",
-  {
-    id: bigint("id", {
-      mode: "number",
-    })
-      .primaryKey()
-      .autoincrement(),
-    hostID: varchar("host_id", {
-      length: 64,
-    }).notNull(),
-    participantID: varchar("participant_id", {
-      length: 64,
-    }).notNull(),
-    description: varchar("description", {
-      length: 64,
-    }),
-    startTime: timestamp("start_time").notNull(),
-    endTime: timestamp("end_time").notNull(),
-    price: float("price").notNull(),
-    location: varchar("location", {
-      length: 128,
-    }).notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    status: varchar("status", {
-      length: 32,
-      enum: ["payment-await", "payment-done", "completed", "canceled"],
-    })
-      .default("payment-await")
-      .notNull(),
-  },
-  (event) => ({
-    pk: primaryKey({
-      columns: [event.hostID, event.participantID, event.id],
-    }),
+export const event = mysqlTable("event", {
+  id: bigint("id", {
+    mode: "number",
+  })
+    .primaryKey()
+    .autoincrement(),
+  hostID: varchar("host_id", {
+    length: 64,
+  }).notNull(),
+  participantID: varchar("participant_id", {
+    length: 64,
+  }).notNull(),
+  description: varchar("description", {
+    length: 64,
   }),
-);
+  startTime: timestamp("start_time").notNull(),
+  endTime: timestamp("end_time").notNull(),
+  price: float("price").notNull(),
+  location: varchar("location", {
+    length: 128,
+  }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  status: varchar("status", {
+    length: 32,
+    enum: ["pending", "payment-done", "completed", "cancelled", "rejected"],
+  })
+    .default("pending")
+    .notNull(),
+});
 
 export const eventRelation = relations(event, ({ one }) => ({
   host: one(user, {

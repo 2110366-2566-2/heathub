@@ -1,42 +1,37 @@
 "use client";
-import { useState, useMemo } from "react";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import usePlacesAutocomplete, {
-  type LatLng,
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+// import { GoogleMap, Marker } from "@react-google-maps/api";
+import usePlacesAutocomplete, { getGeocode } from "use-places-autocomplete";
 import {
   Combobox,
   ComboboxInput,
-  ComboboxPopover,
   ComboboxList,
   ComboboxOption,
+  ComboboxPopover,
 } from "@reach/combobox";
 
-function Map() {
-  const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
-  const [selected, setSelected] = useState<LatLng>(center);
-  const handleSelected = (location: LatLng) => {
-    setSelected(location);
-  };
+// function Map() {
+//   const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
+//   const [selected, setSelected] = useState<LatLng>(center);
+//   const handleSelected = (location: LatLng) => {
+//     setSelected(location);
+//   };
 
-  return (
-    <>
-      <div className="places-container">
-        {/* <PlacesAutocomplete setSelected={handleSelected} /> */}
-      </div>
+//   return (
+//     <>
+//       <div className="places-container">
+//         {/* <PlacesAutocomplete setSelected={handleSelected} /> */}
+//       </div>
 
-      <GoogleMap
-        zoom={10}
-        center={center}
-        mapContainerClassName="map-container"
-      >
-        {selected && <Marker position={selected} />}
-      </GoogleMap>
-    </>
-  );
-}
+//       <GoogleMap
+//         zoom={10}
+//         center={center}
+//         mapContainerClassName="map-container"
+//       >
+//         {selected && <Marker position={selected} />}
+//       </GoogleMap>
+//     </>
+//   );
+// }
 
 export const PlacesAutocomplete = ({
   setSelected,
@@ -52,11 +47,12 @@ export const PlacesAutocomplete = ({
   } = usePlacesAutocomplete();
 
   const handleSelect = async (address: string) => {
+    console.log(address);
     setValue(address, false);
     clearSuggestions();
 
     const results = await getGeocode({ address });
-    const { lat, lng } = getLatLng(results[0]!);
+    // const { lat, lng } = getLatLng(results[0]!);
     setSelected(results[0]?.formatted_address);
   };
 
@@ -66,19 +62,19 @@ export const PlacesAutocomplete = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
-        className="combobox-input w-full rounded-xl border border-primary-200  p-2 text-primary-500 placeholder-primary-400"
+        className="combobox-input w-full rounded-xl border border-primary-200 p-2 text-primary-500 placeholder-primary-400"
         placeholder="location"
       />
-      <ComboboxPopover className=" z-40">
+      <ComboboxPopover className="z-50" portal={false}>
         <ComboboxList
-          className={`overflow-hidden rounded-md border border-neutral-200 bg-white`}
+          className={`rounded-md border border-neutral-200 bg-white`}
         >
           {status === "OK" &&
             data.map(({ place_id, description }) => (
               <ComboboxOption
                 key={place_id}
                 value={description}
-                className={`p-2 text-primary-500 hover:cursor-pointer hover:bg-primary-50`}
+                className={`z-[9999] cursor-pointer p-2 text-primary-500 hover:bg-primary-50`}
               />
             ))}
         </ComboboxList>

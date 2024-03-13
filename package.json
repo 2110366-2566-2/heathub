@@ -8,7 +8,7 @@
     "build": "next build",
     "db:push": "drizzle-kit push:mysql",
     "db:studio": "drizzle-kit studio",
-    "dev": "next dev ",
+    "dev": "next dev --turbo",
     "lint": "next lint",
     "format": "prettier --write . --cache",
     "format:check": "prettier --check . --cache",

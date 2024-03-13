@@ -51,9 +51,11 @@ export type RecentEventMessage = {
   discourserImageURL: string | null;
   contentType: "event";
   content: {
+    eventId: number;
     description: string | null;
     location: string;
     price: number;
+    status: "pending" | "payment-done" | "completed" | "cancelled" | "rejected";
     startTime: Date;
     endTime: Date;
   };

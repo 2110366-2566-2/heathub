@@ -1,12 +1,13 @@
 "use client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { generateAvatar } from "@/lib/avatar";
+import { api } from "@/trpc/react";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "./components/Card";
-import { api } from "@/trpc/react";
+import Image from "next/image";
 import { useState } from "react";
+import { Card, type EventProps } from "./components/Card";
 import { type myEventProps } from "./types";
-import { type EventProps } from "./components/Card";
 import { parseEventStatus, parseTabValue } from "./utils";
 
 export default function Page() {
@@ -31,8 +32,9 @@ export default function Page() {
           status: parseEventStatus(event.startTime, event.status),
           image:
             role == "participant"
-              ? event.host.profileImageURL
-              : event.participant.profileImageURL,
+              ? event.host.profileImageURL || generateAvatar(event.host.aka)
+              : event.participant.profileImageURL ||
+                generateAvatar(event.participant.aka),
           detail: event.description,
         }));
         setEvents(_events);
@@ -54,13 +56,13 @@ export default function Page() {
       <div className="flex h-screen w-full flex-col gap-2">
         <Tabs
           defaultValue="upcoming"
-          className="flex w-full flex-col gap-6"
+          className="flex h-full w-full flex-col gap-6"
           onValueChange={(value) => setTabValue(parseTabValue(value))}
         >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <div className="flex flex-row">
-                <div className="relative flex w-full items-center gap-3">
+              <div className="flex h-fit flex-row">
+                <div className="flex w-full items-center gap-3">
                   <FontAwesomeIcon
                     icon={faCalendar}
                     className="h-7 w-7 text-secondary-500"
@@ -118,9 +120,22 @@ export default function Page() {
           </div>
           <TabsContent
             value="upcoming"
-            className="border-none p-0 outline-none"
+            className="h-full border-none p-0 outline-none"
           >
-            <div className="flex flex-col gap-4">
+            <div className="flex h-full flex-col gap-4">
+              {events.length === 0 && (
+                <div className="flex h-full flex-col items-center justify-center">
+                  <Image
+                    width={150}
+                    height={150}
+                    src="/svgs/no-event.svg"
+                    alt="No event"
+                  />
+                  <div className="h2-bold flex items-center justify-center text-medium">
+                    No Event
+                  </div>
+                </div>
+              )}
               {events.map((event) => {
                 return (
                   <Card
@@ -128,7 +143,7 @@ export default function Page() {
                     id={event.id}
                     userID={event.userID}
                     name={event.name}
-                    image={event.image ?? ""}
+                    image={event.image}
                     location={event.location}
                     date={event.date}
                     status={event.status}
@@ -143,7 +158,20 @@ export default function Page() {
             value="completed"
             className="h-full flex-col border-none p-0 data-[state=active]:flex"
           >
-            <div className="flex flex-col gap-4">
+            <div className="flex h-full flex-col gap-4">
+              {events.length === 0 && (
+                <div className="flex h-full flex-col items-center justify-center">
+                  <Image
+                    width={150}
+                    height={150}
+                    src="/svgs/no-event.svg"
+                    alt="No event"
+                  />
+                  <div className="h2-bold flex items-center justify-center text-medium">
+                    No Event
+                  </div>
+                </div>
+              )}
               {events.map((event) => {
                 return (
                   <Card
