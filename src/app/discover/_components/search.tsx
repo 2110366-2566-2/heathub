@@ -29,7 +29,7 @@ export default function Search(props: searchProps) {
         size="lg"
       />
       <Input
-        className={cn("border-none p-3 pl-9", isMobile ? "bg-neutral-100" : "")}
+        className={cn("border-none p-3 pl-9", isMobile ? "" : "bg-white")}
         placeholder="Search For partner"
         size="lg"
         onChange={(e) => {

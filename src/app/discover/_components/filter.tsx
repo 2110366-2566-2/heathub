@@ -174,10 +174,7 @@ export default function Filter(props: FilterProps) {
       <div className="flex flex-row items-center gap-2">
         <Input
           type="number"
-          className={cn(
-            "rounded-3xl border-none",
-            isMobile && "bg-neutral-100",
-          )}
+          className={cn("rounded-3xl border-none", isMobile ? "" : "bg-white")}
           placeholder="Min"
           min={0}
           max={99}
@@ -196,10 +193,7 @@ export default function Filter(props: FilterProps) {
         <div className="body6 text-medium">To</div>
         <Input
           type="number"
-          className={cn(
-            "rounded-3xl border-none",
-            isMobile && "bg-neutral-100",
-          )}
+          className={cn("rounded-3xl border-none", isMobile ? "" : "bg-white")}
           placeholder="Max"
           min={values.age.min}
           max={99}
