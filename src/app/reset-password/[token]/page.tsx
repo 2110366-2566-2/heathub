@@ -115,9 +115,9 @@ export default function ResetPassword({
                     {criticalError}
                   </div>
                   <div className="h6 text-medium">
-                    Oops! It seems the link you&apos;re trying to use has expired.
-                    Please return to the reset password page to generate a fresh
-                    link
+                    Oops! It seems the link you&apos;re trying to use has
+                    expired. Please return to the reset password page to
+                    generate a fresh link
                   </div>
                 </div>
                 <Button variant={"secondary"} disabled={isDataLoading} asChild>
