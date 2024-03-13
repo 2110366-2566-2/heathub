@@ -37,7 +37,7 @@ export default function ProfileContainer(props: ProfilePreviewProps) {
       </div>
       <div className="flex flex-col lg:flex-row lg:gap-4">
         <ProfileDetails {...props} />
-        <MyReview {...props} />
+        {props.reviews != -1 && <MyReview {...props} />}
       </div>
       <div className="flex flex-col gap-4 lg:flex-row">
         <div className="flex h-64 w-full justify-center rounded-xl border-none bg-neutral-50 p-6 lg:w-1/3">
