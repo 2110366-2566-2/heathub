@@ -8,18 +8,30 @@ import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
 import { useState } from "react";
+import { type Host, type User } from "../interfaces";
 import Image from "next/image";
 
 interface RegisterFormBoxProps {
   setGender: (gender: string) => void;
   formRef: React.RefObject<HTMLFormElement>;
+  data: User;
 }
 
 export default function RegisterFormBox(props: RegisterFormBoxProps) {
-  const { setGender, formRef } = props;
-  const [firsttext, setFirstText] = useState("");
-  const [lasttext, setLastText] = useState("");
+  const { setGender, formRef, data } = props;
+  const host = data as Host;
+  const condition = !!host.Firstname;
+  const [firstText, setFirstText] = useState(condition ? host.Firstname : "");
+  const [lastText, setLastText] = useState(condition ? host.Lastname : "");
+  const [usernameText, setUsernameText] = useState(
+    condition ? host.Username : "",
+  );
+  const [bioText, setBioText] = useState(condition ? host.Bio : "");
+  const [DOBText, setDOBText] = useState(
+    condition ? host.DOB.toISOString().slice(0, 10) : "",
+  );
   const [imageUrl, setimageUrl] = useState("");
+  const [, setImage] = useState<File | null>(null);
 
   return (
     <Card className=" w-full min-w-[256px] max-w-[600px] justify-center self-center rounded-3xl border-solid border-primary-500 bg-white md:max-w-[844px]">
@@ -52,6 +64,7 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
                       if (!file) return;
                       const url = URL.createObjectURL(file);
                       setimageUrl(url);
+                      setImage(file);
                     }
                   }}
                 />
@@ -61,66 +74,86 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Firstname">Firstname</Label>
                 <Input
-                  value={firsttext}
+                  value={firstText}
                   type="text"
                   className="h-9"
                   name="Firstname"
                   placeholder="Enter your firstname"
                   onChange={(e) => {
-                    setFirstText(
-                      e.target.value.charAt(0).toUpperCase() +
-                        e.target.value.slice(1),
-                    );
+                    if (e.target.value.length == 0) {
+                      setFirstText("");
+                    } else {
+                      setFirstText(
+                        e.target.value.charAt(0).toUpperCase() +
+                          e.target.value.slice(1),
+                      );
+                    }
                   }}
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Lastname">Lastname</Label>
                 <Input
-                  value={lasttext}
+                  value={lastText}
                   type="text"
                   className="h-9"
                   name="Lastname"
                   placeholder="Enter your Lastname"
                   onChange={(e) => {
-                    setLastText(
-                      e.target.value.charAt(0).toUpperCase() +
-                        e.target.value.slice(1),
-                    );
+                    if (e.target.value.length == 0) {
+                      setLastText("");
+                    } else {
+                      setLastText(
+                        e.target.value.charAt(0).toUpperCase() +
+                          e.target.value.slice(1),
+                      );
+                    }
                   }}
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
-                <Label htmlFor="AKA">AKA</Label>
+                <Label htmlFor="Username">Username</Label>
                 <Input
+                  value={usernameText}
                   type="text"
                   className="h-9"
-                  name="AKA"
-                  placeholder="Enter your aka"
+                  name="Username"
+                  placeholder="Enter your username"
+                  onChange={(e) => {
+                    setUsernameText(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Bio">Bio</Label>
                 <Input
+                  value={bioText}
                   type="text"
                   className="h-9"
                   name="Bio"
                   placeholder="Enter your bio"
+                  onChange={(e) => {
+                    setBioText(e.target.value);
+                  }}
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Date of birth">Date of birth</Label>
                 <Input
+                  value={DOBText}
                   type="date"
                   name="Date of birth"
                   placeholder="Select date"
+                  onChange={(e) => {
+                    setDOBText(e.target.value);
+                  }}
                 />
               </div>
             </div>
           </div>
           <div className="h-[0.5px] bg-primary-500 md:h-auto md:w-[0.5px]"></div>
           <div className="h-full">
-            <GenderSelector setGender={setGender} />
+            <GenderSelector gender={host.Gender} setGender={setGender} />
           </div>
         </form>
       </CardContent>

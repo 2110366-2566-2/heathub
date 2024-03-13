@@ -38,16 +38,18 @@ export default function ChatMessageBox({
         <Drawer open={isOpenChatEvent} onOpenChange={setOpenChatEvent}>
           <DrawerTrigger className="cursor-pointer">
             <button
-              className={cn("h-fit w-fit", {
-                hidden: !(userRole === "host"),
-              })}
+              className={cn(
+                "flex aspect-square h-8 w-8 items-center justify-center rounded-full bg-primary-500",
+                {
+                  hidden: !(userRole === "host"),
+                },
+              )}
               type="button"
             >
               <FontAwesomeIcon
+                size="1x"
                 icon={faPlus}
-                className={cn(
-                  "h-6 w-6 rounded-full bg-primary-500 p-2 text-white",
-                )}
+                className={cn("rounded-full bg-primary-500 text-white")}
               />
             </button>
           </DrawerTrigger>
@@ -59,16 +61,18 @@ export default function ChatMessageBox({
         <Dialog open={isOpenChatEvent} onOpenChange={setOpenChatEvent}>
           <DialogTrigger className="cursor-pointer">
             <button
-              className={cn("h-fit w-fit", {
-                hidden: !(userRole === "host"),
-              })}
+              className={cn(
+                "flex aspect-square h-8 w-8 items-center justify-center rounded-full bg-primary-500",
+                {
+                  hidden: !(userRole === "host"),
+                },
+              )}
               type="button"
             >
               <FontAwesomeIcon
+                size="1x"
                 icon={faPlus}
-                className={cn(
-                  "h-6 w-6 rounded-full bg-primary-500 p-2 text-white",
-                )}
+                className={cn("rounded-full bg-primary-500 text-white")}
               />
             </button>
           </DialogTrigger>
@@ -85,7 +89,7 @@ export default function ChatMessageBox({
             toUserID: toUserID,
           });
         }}
-        className="w-full"
+        className="flex w-full flex-row gap-2"
       >
         <input
           type="text"

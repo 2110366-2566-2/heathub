@@ -17,12 +17,10 @@ export const profileRouter = createTRPCRouter({
     if (!ctx.session?.user?.userId) {
       throw new Error("User not found");
     }
-
     let oldProfile = await ctx.db.query.user.findFirst({
       where: eq(user.id, ctx.session?.user?.userId),
       columns: { id: true, profileImageURL: true },
     });
-
     await ctx.db.transaction(async (tx) => {
       const newProfile = await tx.query.unconfirmedUserProfileImage.findFirst({
         where: eq(
@@ -31,11 +29,9 @@ export const profileRouter = createTRPCRouter({
         ),
         orderBy: (img, { desc }) => [desc(img.id)],
       });
-
       if (!newProfile) {
         throw new Error("No new profile image found");
       }
-
       await tx
         .update(user)
         .set({
@@ -96,13 +92,10 @@ export const profileRouter = createTRPCRouter({
       if (input.email) {
         duplicateCheck.push(eq(user.email, input.email));
       }
-
-      if (input.aka) {
-        duplicateCheck.push(eq(user.aka, input.aka));
-      }
+      console.log("PASS!!");
 
       let found = await ctx.db.query.user.findFirst({
-        where: and(or(...duplicateCheck), ne(user.id, ctx.session.user.userId)),
+        where: and(or(...duplicateCheck), eq(user.id, ctx.session.user.userId)),
       });
 
       if (found && duplicateCheck.length > 0) {

@@ -10,11 +10,10 @@ import InterestPickerBox from "./InterestPickerBox";
 
 interface ComponentGroundProps {
   data: User;
-  allInterestList: string[];
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
-  const { data, allInterestList } = props;
+  const { data } = props;
   const [isModalPop, setModalPop] = useState<boolean>(false);
   const [notice, setNotice] = useState<string>("");
   const router = useRouter();
@@ -33,6 +32,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   }, [userData]);
 
   const handleSubmit = async (host: Host) => {
+    if (selectedInterestList.length < 3) {
+      setNotice("Please select at least 3 Interests.");
+      return;
+    }
     selectedInterestList.sort();
     if (!host.Image) {
       setNotice("Please upload a profile picture.");
@@ -53,7 +56,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       await signUpHost.mutateAsync({
         email: host.Email,
         password: host.Password,
-        username: host.AKA,
+        username: host.Username,
         firstName: host.Firstname,
         lastName: host.Lastname,
         gender: host.Gender,
@@ -81,9 +84,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   return (
     <div className="flex flex-col items-center gap-y-8">
-      <div className="h1 text-primary-900">Interests</div>
+      <div className="h1 font-bold text-primary-900">Interests</div>
       <InterestPickerBox
-        allInterestList={allInterestList}
         selectedInterestList={selectedInterestList}
         setSelectedInterestList={setSelectedInterestList}
       />

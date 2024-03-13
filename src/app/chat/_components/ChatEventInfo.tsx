@@ -59,7 +59,7 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
       <div className="border-gray sha mb-2 flex h-fit w-full max-w-[460px] flex-col gap-6 rounded-md border-[1px] bg-white p-6">
         <div className="flex w-full flex-col items-start">
           <div className="flex w-full flex-row justify-between">
-            <div className="h3 flex-1 font-bold text-primary-800 text-primary-800">
+            <div className="h3 flex-1 font-bold text-primary-800">
               Event Details
             </div>
             <EventTag type={status} />
@@ -82,13 +82,13 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
           <div className="flex flex-row justify-between">
             <div className="h6 flex-11 flex text-medium">Start Date</div>
             <div className="h6 text-right font-bold text-high">
-              {Dayjs(startTime).format("	dddd, MMMM D, YYYY [ at ] hh:mm")}
+              {Dayjs(startTime).format("	dddd, MMMM D, YYYY [ at ] HH:mm")}
             </div>
           </div>
           <div className="flex flex-row justify-between">
             <div className="h6  flex-1 text-medium">End Date</div>
             <div className="h6 text-right font-bold text-high">
-              {Dayjs(endTime).format("	dddd, MMMM D, YYYY [ at ] hh:mm")}
+              {Dayjs(endTime).format("	dddd, MMMM D, YYYY [ at ] HH:mm")}
             </div>
           </div>
           {status === "pending" &&

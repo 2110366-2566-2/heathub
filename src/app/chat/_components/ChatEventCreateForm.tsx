@@ -124,7 +124,7 @@ export default function ChatEventForm({
                       <Button
                         id="date"
                         className={cn(
-                          "justify-start-100 w-full border-primary-300 bg-neutral-100 text-left font-normal hover:bg-neutral-200",
+                          "w-full justify-start border-primary-300 bg-neutral-100 text-left font-normal hover:bg-neutral-200",
                           !field?.value
                             ? "text-placeholder"
                             : "text-primary-500",
@@ -182,7 +182,7 @@ export default function ChatEventForm({
                       <Button
                         id="date"
                         className={cn(
-                          "justify-start-100 w-full border-primary-300 bg-neutral-100 text-left font-normal hover:bg-neutral-200",
+                          "w-full justify-start border-primary-300 bg-neutral-100 text-left font-normal hover:bg-neutral-200",
                           !field?.value
                             ? "text-placeholder"
                             : "text-primary-500",
