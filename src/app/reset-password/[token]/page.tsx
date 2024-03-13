@@ -9,6 +9,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const validationSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, { message: "Password must be atleast 8 characters" }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: "Confirm Password is required" }),
+  })
+  
+  type ValidationSchema = z.infer<typeof validationSchema>;
 
 export default function ResetPassword({
   params,
@@ -76,9 +91,18 @@ export default function ResetPassword({
     redirect("/signin");
   };
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ValidationSchema>({
+    resolver: zodResolver(validationSchema),
+  });
+
+  const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
 
   return (
-    <main className="flex h-screen bg-white p-6 lg:p-14">
+    <main className="flex h-screen bg-white p-6 lg:p-14" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex h-full w-full flex-1 flex-col gap-2">
         {criticalError ? (
           <></>
@@ -149,20 +173,32 @@ export default function ResetPassword({
                         <Input
                           className="w-full"
                           type="password"
-                          name="password"
+                          id="password"
                           placeholder="Enter new password"
+                          {...register("password")}
                         />
+                        {errors.password && (
+                          <p className="text-xs text-red-500 mt-2">
+                            {errors.password?.message}
+                          </p>
+                        )}
                       </div>
                       <div className="flex w-full flex-col gap-1">
                         <Label htmlFor="email" className="body5">
-                          Enter New Passoword
+                          Confirm Passoword
                         </Label>
                         <Input
                           className="w-full"
                           type="password"
-                          name="confirm_password"
+                          id="confirm_password"
                           placeholder="Confirm password"
+                          {...register("confirmPassword")}
                         />
+                        {errors.confirmPassword && (
+                          <p className="text-xs text-red-500 mt-2">
+                            {errors.confirmPassword?.message}
+                          </p>
+                        )}
                       </div>
                     </div>
                     {error && <p className="text-red-500">{error}</p>}
