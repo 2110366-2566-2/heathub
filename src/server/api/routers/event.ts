@@ -160,9 +160,7 @@ export const eventRouter = createTRPCRouter({
           or(eq(event.status, "pending"), eq(event.status, "payment-done"))!,
         );
       } else if (input.status === "completed") {
-        filter.push(
-          or(eq(event.status, "completed"), eq(event.status, "cancelled"))!,
-        );
+        filter.push(or(eq(event.status, "completed"))!);
       }
 
       const res = await ctx.db.query.event.findMany({

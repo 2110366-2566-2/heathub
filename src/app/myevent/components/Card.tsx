@@ -15,11 +15,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { EventDetail } from "./EventDetail";
-import { EventModal } from "./EventModal";
 import { StatusTag } from "./StatusTag";
+import { FinishModal } from "./FinishModal";
+import { CancelModal } from "./CancelModal";
+import { GivereviewModal } from "./GivereviewModal";
+import { ViewreviewModal } from "./ViewreviewModal";
 import { formatDate } from "../utils";
 import { useState } from "react";
 import Link from "next/link";
+import { api } from "@/trpc/react";
 
 export type EventProps = {
   id: number;
@@ -38,10 +42,17 @@ export enum EventStatus {
   NOTSTARTED = "Not Started",
   WAITINGREVIEW = "Waiting for Review",
   COMPLETED = "Completed",
+  CANCEL = "Cancel",
 }
 
 export function Card(prop: EventProps) {
-  const [role, setRole] = useState("host");
+  const [role, setRole] = useState("participant");
+  api.auth.me.useQuery(undefined, {
+    onSuccess: (data) => {
+      if (!data) return;
+      setRole(data.role);
+    },
+  });
 
   const CardButton = () => {
     switch (prop.status) {
@@ -50,7 +61,7 @@ export function Card(prop: EventProps) {
           role == "participant" && (
             <Button
               variant="default"
-              className="z-[100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
+              className="z-100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
             >
               Finish Event
             </Button>
@@ -93,6 +104,48 @@ export function Card(prop: EventProps) {
           >
             Cancel Event
           </Button>
+        );
+    }
+  };
+
+  const Modal = () => {
+    switch (prop.status) {
+      case EventStatus.STARTED:
+        return (
+          <FinishModal id={prop.id}>
+            <CardButton />
+          </FinishModal>
+        );
+      case EventStatus.NOTSTARTED:
+        return (
+          <CancelModal id={prop.id}>
+            <CardButton />
+          </CancelModal>
+        );
+      case EventStatus.WAITINGREVIEW:
+        return (
+          <GivereviewModal id={prop.id} name={prop.name}>
+            <CardButton />
+          </GivereviewModal>
+        );
+      case EventStatus.COMPLETED:
+        return (
+          <ViewreviewModal
+            id={prop.id}
+            name={prop.name}
+            rating={4}
+            review={
+              "You did really great. I’m so happy to have a dinner with you"
+            }
+          >
+            <CardButton />
+          </ViewreviewModal>
+        );
+      default:
+        return (
+          <CancelModal id={prop.id}>
+            <CardButton />
+          </CancelModal>
         );
     }
   };
@@ -167,16 +220,7 @@ export function Card(prop: EventProps) {
         </div>
       </EventDetail>
       <div className="flex w-full flex-row items-center gap-1 lg:w-fit">
-        <EventModal
-          name={prop.name}
-          status={prop.status}
-          rating={4}
-          review={
-            "You did really great. I’m so happy to have a dinner with you"
-          }
-        >
-          <CardButton />
-        </EventModal>
+        <Modal />
         <DropdownMenu>
           <DropdownMenuTrigger>
             <FontAwesomeIcon

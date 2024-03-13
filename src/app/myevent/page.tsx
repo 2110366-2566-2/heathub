@@ -3,7 +3,6 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "./components/Card";
-import { EventStatus } from "./components/Card";
 import { api } from "@/trpc/react";
 import { useState } from "react";
 import { type myEventProps } from "./types";
