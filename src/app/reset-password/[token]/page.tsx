@@ -4,30 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/trpc/react";
-import {
-  faChevronLeft,
-  faLock,
-  faUnlockKeyhole,
-  faCircleInfo
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faCircleInfo, faLock, faUnlockKeyhole } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-const validationSchema = z.object({
-  password: z
-    .string()
-    .min(8, { message: "Password must be atleast 8 characters" }),
-  confirmPassword: z
-    .string()
-    .min(1, { message: "Confirm Password is required" }),
-});
-
-type ValidationSchema = z.infer<typeof validationSchema>;
 
 export default function ResetPassword({
   params,
@@ -74,6 +55,8 @@ export default function ResetPassword({
       setPasswordNotice("Password must be at least 8 characters");
       valid = false;
       return;
+    }else{
+      setPasswordNotice(null);
     }
 
     if (password !== confirm_password) {
@@ -95,21 +78,9 @@ export default function ResetPassword({
     redirect("/signin");
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ValidationSchema>({
-    resolver: zodResolver(validationSchema),
-  });
-
-  const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
 
   return (
-    <main
-      className="flex h-screen bg-white p-6 lg:p-14"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <main className="flex h-screen bg-white p-6 lg:p-14">
       <div className="flex h-full w-full flex-1 flex-col gap-2">
         {criticalError ? (
           <></>
@@ -118,8 +89,7 @@ export default function ResetPassword({
             <button className="absolute flex h-6 w-6 items-center justify-center">
               <FontAwesomeIcon
                 icon={faChevronLeft}
-                className="absolute text-high"
-                size="lg"
+                className="absolute h-4 text-high"
               />
             </button>
           </Link>
@@ -130,8 +100,7 @@ export default function ResetPassword({
               <div className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faLock}
-                  className=" text-white lg:text-[32px]"
-                  size="3x"
+                  className="h-12 text-white lg:h-8"
                 />
               </div>
               <div className="flex h-full w-full flex-col justify-between gap-8 lg:h-fit lg:gap-9 ">
@@ -145,7 +114,11 @@ export default function ResetPassword({
                     link
                   </div>
                 </div>
-                <Button variant={"secondary"} disabled={isDataLoading} asChild>
+                <Button
+                  variant={"secondary"}
+                  disabled={isDataLoading}
+                  asChild
+                >
                   <Link href="/reset-password">Forgot password</Link>
                 </Button>
               </div>
@@ -155,8 +128,7 @@ export default function ResetPassword({
               <div className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faUnlockKeyhole}
-                  className="text-white lg:text-[32px]"
-                  size="3x"
+                  className="h-12 text-white lg:h-8"
                 />
               </div>
               <div className="flex h-full w-full flex-col gap-8 lg:gap-9">
@@ -179,48 +151,45 @@ export default function ResetPassword({
                         <Input
                           className="w-full"
                           type="password"
-                          id="password"
+                          name="password"
                           placeholder="Enter new password"
-                          {...register("password")}
                         />
-                        {errors.password ? (
+                        {passwordNotice ? (
                           <div className="flex items-center">
                             <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
                             <p className="px-1 text-xs text-red-500">
-                              {errors.password.message}
+                              {passwordNotice}
                             </p>
                           </div>
                         ) : (
                           <div className="flex items-center">
                             <FontAwesomeIcon icon={faCircleInfo} className="text-medium" size="xs" />
                             <p className="px-1 text-xs text-medium">
-                              {"Password must be at least 8 characters"}
+                              {"The password must be at least 8 characters"}
                             </p>
                           </div>
                         )}
                       </div>
                       <div className="flex w-full flex-col gap-1">
                         <Label htmlFor="email" className="body5">
-                          Confirm Passoword
+                          Enter New Passoword
                         </Label>
                         <Input
                           className="w-full"
                           type="password"
-                          id="confirm_password"
+                          name="confirm_password"
                           placeholder="Confirm password"
-                          {...register("confirmPassword")}
                         />
-                        {errors.confirmPassword && (
-                          <div className="flex items-center">
-                          <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
-                          <p className="px-1 text-xs text-red-500">
-                            {errors.confirmPassword.message}
-                          </p>
-                        </div>
-                        )}
+                        {error && (
+                            <div className="flex items-center">
+                            <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
+                            <p className="px-1 text-xs text-red-500">
+                              {error}
+                            </p>
+                          </div>
+                          )}
                       </div>
                     </div>
-                    {error && <p className="text-red-500">{error}</p>}
                     <Button
                       variant={"secondary"}
                       type="submit"
