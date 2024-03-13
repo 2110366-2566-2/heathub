@@ -53,12 +53,12 @@ export default function ResetPassword({
   const mutate = api.auth.changePasswordByEmailToken.useMutation({});
 
   const submitHandler = async (e: FormData) => {
-    let valid = true;
+    let _valid = true;
     const password = e.get("password") as string;
     const confirm_password = e.get("confirm_password") as string;
     if (password && password.length < 8) {
       setPasswordNotice("Password must be at least 8 characters");
-      valid = false;
+      _valid = false;
       return;
     } else {
       setPasswordNotice(null);
@@ -115,7 +115,7 @@ export default function ResetPassword({
                     {criticalError}
                   </div>
                   <div className="h6 text-medium">
-                    Oops! It seems the link you're trying to use has expired.
+                    Oops! It seems the link you&apos;re trying to use has expired.
                     Please return to the reset password page to generate a fresh
                     link
                   </div>

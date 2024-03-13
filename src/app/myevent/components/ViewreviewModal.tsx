@@ -1,4 +1,3 @@
-import { EventStatus } from "./Card";
 import {
   Dialog,
   DialogClose,
@@ -12,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import StarRateOnclick, { StarRate } from "./StarRate";
+import { StarRate } from "./StarRate";
 
 interface EventModalProps {
   id: number;

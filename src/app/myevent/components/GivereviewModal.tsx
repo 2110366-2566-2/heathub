@@ -1,4 +1,3 @@
-import { EventStatus } from "./Card";
 import {
   Dialog,
   DialogClose,
