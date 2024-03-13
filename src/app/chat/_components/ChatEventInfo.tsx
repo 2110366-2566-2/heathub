@@ -6,6 +6,7 @@ import { Dayjs } from "@/utils/dayjs";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 import ConfirmEventPayment from "./ConfirmEventPayment";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export interface ChatEventInfoInterface {
   eventID: number;
@@ -20,6 +21,8 @@ export interface ChatEventInfoInterface {
     eventId: number,
     status: "payment-done" | "rejected" | "cancelled",
   ) => void;
+  imageUrl: string | null;
+  senderName: string;
 }
 
 export default function ChatEventInfo(info: ChatEventInfoInterface) {
@@ -32,6 +35,8 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
     role,
     eventID,
     updateStatus,
+    imageUrl,
+    senderName,
   } = info;
   const justifyPosition = isMine ? "justify-end" : "justify-start";
 
@@ -55,7 +60,14 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
 
   return (
     <div className={cn("flex w-full flex-row", justifyPosition)}>
-      <div className="h-fit w-[52px]"></div>
+      <div className="mr-2 h-fit w-[52px]">
+        <Avatar
+          className={cn("h-[52px] w-[52px]", isMine ? "hidden" : "block")}
+        >
+          {imageUrl && <AvatarImage src={imageUrl} />}
+          <AvatarFallback>{senderName}</AvatarFallback>
+        </Avatar>
+      </div>
       <div className="border-gray sha mb-2 flex h-fit w-full max-w-[460px] flex-col gap-6 rounded-md border-[1px] bg-white p-6">
         <div className="flex w-full flex-col items-start">
           <div className="flex w-full flex-row justify-between">

@@ -171,6 +171,8 @@ export function ChatRoom({ withUser }: { withUser: string }) {
                       role={user?.role}
                       eventID={message.content.eventId}
                       updateStatus={updateEventStatus}
+                      imageUrl={message.discourserImageURL}
+                      senderName={message.discourserAka}
                     />
                   );
                 if (i === 5) {
