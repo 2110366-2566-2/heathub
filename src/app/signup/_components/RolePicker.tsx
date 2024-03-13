@@ -37,7 +37,7 @@ export default function RolePicker(props: rolePickerProps) {
             setData(createHost());
           }}
         >
-          I'm a Host
+          {"I'm a Host"}
         </Button>
         <Button
           size={"lg"}
@@ -48,7 +48,7 @@ export default function RolePicker(props: rolePickerProps) {
             setData(createParticipant());
           }}
         >
-          I'm a participant
+          {"I'm a participant"}
         </Button>
       </div>
       <div className="flex h-6 flex-row justify-center gap-x-2">
