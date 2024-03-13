@@ -13,14 +13,6 @@ export function parseTabValue(
   }
 }
 
-export function shouldShowEvent(status: string): boolean {
-  if (status == "pending" || status == "cancelled" || status == "rejected") {
-    return false;
-  }
-
-  return true;
-}
-
 export function parseEventStatus(dateTime: Date, status: string): EventStatus {
   let isStarted = false;
   const currentDateTime = new Date();
@@ -32,7 +24,10 @@ export function parseEventStatus(dateTime: Date, status: string): EventStatus {
     return EventStatus.STARTED;
   } else if (status == "completed") {
     return EventStatus.COMPLETED;
-  } else {
+  } else if (status == "pending" || status == "cancelled" || status == "rejected"){
+    return EventStatus.CANCELLED;
+  }
+  else {
     return EventStatus.NOTSTARTED;
   }
 }

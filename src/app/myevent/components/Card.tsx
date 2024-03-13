@@ -42,7 +42,7 @@ export enum EventStatus {
   NOTSTARTED = "Not Started",
   WAITINGREVIEW = "Waiting for Review",
   COMPLETED = "Completed",
-  CANCEL = "Cancel",
+  CANCELLED = "Cancelled",
 }
 
 export function Card(prop: EventProps) {
