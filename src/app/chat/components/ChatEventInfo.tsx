@@ -59,35 +59,35 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
       <div className="border-gray sha mb-2 flex h-fit w-full max-w-[460px] flex-col gap-6 rounded-md border-[1px] bg-white p-6">
         <div className="flex w-full flex-col items-start">
           <div className="flex w-full flex-row justify-between">
-            <div className="h3 text-primary-800 flex-1 font-bold">
+            <div className="h3 flex-1 font-bold text-primary-800">
               Event Details
             </div>
             <EventTag type={status} />
           </div>
-          <div className="text-medium text-sm">
+          <div className="text-sm text-medium">
             Please check the details before confirming the event
           </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex flex-row justify-between">
-            <div className="h6 text-medium flex-1">Location</div>
-            <div className="h6 text-high text-right font-bold">
+            <div className="h6 flex-1 text-medium">Location</div>
+            <div className="h6 text-right font-bold text-high">
               {info.location}
             </div>
           </div>
           <div className="flex flex-row justify-between">
-            <div className="h6 text-medium flex-1">Price</div>
-            <div className="h6 text-high font-bold">{price} Baht</div>
+            <div className="h6 flex-1 text-medium">Price</div>
+            <div className="h6 font-bold text-high">{price} Baht</div>
           </div>
           <div className="flex flex-row justify-between">
-            <div className="h6 text-medium flex-1">Start Date</div>
-            <div className="h6 text-high text-right font-bold">
+            <div className="h6 flex-1 text-medium">Start Date</div>
+            <div className="h6 text-right font-bold text-high">
               {Dayjs(startTime).format("	dddd, MMMM D, YYYY [ at ] hh:mm")}
             </div>
           </div>
           <div className="flex flex-row justify-between">
-            <div className="h6 text-medium flex-1">End Date</div>
-            <div className="h6 text-high text-right font-bold">
+            <div className="h6 flex-1 text-medium">End Date</div>
+            <div className="h6 text-right font-bold text-high">
               {Dayjs(endTime).format("	dddd, MMMM D, YYYY [ at ] hh:mm")}
             </div>
           </div>

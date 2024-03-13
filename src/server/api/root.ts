@@ -11,11 +11,11 @@ import { eventRouter } from "./routers/event";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-	chat: chatRouter,
-	auth: authRouter,
-	profile: profileRouter,
-	user: userRouter,
-	event: eventRouter,
+  chat: chatRouter,
+  auth: authRouter,
+  profile: profileRouter,
+  user: userRouter,
+  event: eventRouter,
 });
 
 // export type definition of API

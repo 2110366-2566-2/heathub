@@ -28,7 +28,7 @@ export default function ConfirmEventPaymet(props: ConfirmEventPaymetProps) {
         <DialogHeader className="flex w-full flex-col items-center">
           <FontAwesomeIcon
             icon={faMoneyCheckDollar}
-            className="text-primary-500 h-8 w-8 "
+            className="h-8 w-8 text-primary-500 "
           />
           <DialogTitle className="text-center">Confirm Payment</DialogTitle>
         </DialogHeader>
@@ -36,16 +36,17 @@ export default function ConfirmEventPaymet(props: ConfirmEventPaymetProps) {
           Please check your balance before confirm payment
         </DialogDescription>
         <div className="grid gap-2">
-          <div className="text-medium flex w-full flex-row">
+          <div className="flex w-full flex-row text-medium">
             Your Balance 3500
           </div>
           <hr />
-          <div className="text-medium flex w-full flex-row">
+          <div className="flex w-full flex-row text-medium">
             Total Price 3500
           </div>
         </div>
         <DialogFooter>
-          <Button            onClick={() => {
+          <Button
+            onClick={() => {
               confirmEvent();
             }}
           >

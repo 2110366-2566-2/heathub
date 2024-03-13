@@ -55,7 +55,7 @@ export default function ChatMessageBox({
               <FontAwesomeIcon
                 icon={faPlus}
                 className={cn(
-                  "bg-primary-500 h-6 w-6 rounded-full p-2 text-white",
+                  "h-6 w-6 rounded-full bg-primary-500 p-2 text-white",
                 )}
               />
             </button>
@@ -77,7 +77,7 @@ export default function ChatMessageBox({
               <FontAwesomeIcon
                 icon={faPlus}
                 className={cn(
-                  "bg-primary-500 h-6 w-6 rounded-full p-2 text-white",
+                  "h-6 w-6 rounded-full bg-primary-500 p-2 text-white",
                 )}
               />
             </button>
@@ -97,7 +97,7 @@ export default function ChatMessageBox({
       {message !== "" && (
         <button
           type="submit"
-          className="bg-primary-500 hover:bg-primary-600 flex h-10 w-10 items-center justify-center rounded-full font-semibold text-white transition"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 font-semibold text-white transition hover:bg-primary-600"
           disabled={sendMessage.isLoading}
         >
           {!sendMessage.isLoading ? (

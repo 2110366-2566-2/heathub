@@ -86,7 +86,7 @@ export default function ChatEventForm({
       >
         <div className="flex w-full max-w-[376px] flex-col gap-4">
           <div className="flex flex-col">
-            <div className="h3 text-primary-800 font-bold">Create Event</div>
+            <div className="h3 font-bold text-primary-800">Create Event</div>
             <div className="small text-medium">
               Fill the following details to create an event and this event will
               be show in your chat room.
@@ -120,7 +120,7 @@ export default function ChatEventForm({
                         id="date"
                         variant={"outline"}
                         className={cn(
-                          "border-primary-300  w-full justify-start bg-white text-left font-normal hover:bg-white",
+                          "w-full  justify-start border-primary-300 bg-white text-left font-normal hover:bg-white",
                           !field && "text-muted-foreground",
                         )}
                       >
@@ -166,7 +166,7 @@ export default function ChatEventForm({
                     <Input
                       onChange={field.onChange}
                       type="time"
-                      className="text-primary-500  w-fit appearance-none hover:cursor-pointer"
+                      className="w-fit  appearance-none text-primary-500 hover:cursor-pointer"
                     />
                   </FormControl>
                   <FormMessage />
@@ -185,7 +185,7 @@ export default function ChatEventForm({
                     {...field}
                     type="number"
                     autoComplete="off"
-                    className="text-primary-500 appearance-none"
+                    className="appearance-none text-primary-500"
                     min={0}
                     value={field.value ?? ""}
                   />
