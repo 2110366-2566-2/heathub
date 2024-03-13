@@ -28,7 +28,7 @@ type ValidationSchema = z.infer<typeof validationSchema>;
 export default function ForgetPassword() {
   const { data: user } = api.auth.me.useQuery();
   const [status, setStatus] = useState<"idle" | "loading" | "done">("loading");
-  const [buttonText, setButtonText] = useState<string>("send");
+  const [buttonText, setButtonText] = useState<string>("Send");
   const [url, setUrl] = useState<URL | null>(null);
   useEffect(() => {
     if (user) {
@@ -93,7 +93,6 @@ export default function ForgetPassword() {
   });
 
   const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
-
   return (
     <main
       className="flex h-screen bg-white p-6 lg:p-14"
@@ -115,9 +114,10 @@ export default function ForgetPassword() {
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faKey}
-                  className="text-neutral-0 lg:text-[32px]"
+                  className="text-neutral-0 lg:h-8"
                   size="3x"
                 />
+
               </div>
               <div className="flex flex-col items-center gap-3">
                 <div className="h3 lg:h2 font-extrabold text-primary-900 lg:font-extrabold">
