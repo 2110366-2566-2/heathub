@@ -109,15 +109,18 @@ export const profileRouter = createTRPCRouter({
         throw new Error("Duplicate email or aka");
       }
 
-      await ctx.db.update(user).set({
-        firstName: input.firstName,
-        lastName: input.lastName,
-        aka: input.aka,
-        bio: input.bio,
-        dateOfBirth: input.dateOfBirth,
-        email: input.email,
-        gender: input.gender,
-      });
+      await ctx.db
+        .update(user)
+        .set({
+          firstName: input.firstName,
+          lastName: input.lastName,
+          aka: input.aka,
+          bio: input.bio,
+          dateOfBirth: input.dateOfBirth,
+          email: input.email,
+          gender: input.gender,
+        })
+        .where(eq(user.id, ctx.session.user.userId));
     }),
 
   updateInterests: hostProcedure
