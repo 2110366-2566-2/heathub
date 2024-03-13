@@ -1,20 +1,20 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
-import { redirect } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faCircleInfo,
   faKey,
 } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useEffect, useState, type FormEvent } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
 const validationSchema = z.object({
@@ -26,7 +26,9 @@ const validationSchema = z.object({
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 export default function ForgetPassword() {
-  const { data: user } = api.auth.me.useQuery();
+  const { data: user } = api.auth.me.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
   const [status, setStatus] = useState<"idle" | "loading" | "done">("loading");
   const [buttonText, setButtonText] = useState<string>("Send");
   const [url, setUrl] = useState<URL | null>(null);

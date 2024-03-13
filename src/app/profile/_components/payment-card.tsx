@@ -42,7 +42,7 @@ export default function PaymentCard(props: PaymentCardProps) {
                 icon={faMinus}
               />
             </div>
-            With Draw
+            Withdraw
           </button>
 
           <button className="h5 flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
