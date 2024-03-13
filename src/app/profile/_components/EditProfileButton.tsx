@@ -105,7 +105,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       return;
     }
 
-    let imageUrl;
+    let _imageUrl;
     if (!!imageInput && imageInput.name != "") {
       const files = [imageInput];
       const res = await uploadFiles("signupProfileUploader", {
@@ -115,9 +115,9 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
         setNotice("An error occurred");
         return;
       }
-      imageUrl = res[0]?.url ? res[0].url : "";
+      _imageUrl = res[0]?.url ? res[0].url : "";
     } else {
-      imageUrl = profileURL;
+      _imageUrl = profileURL;
     }
 
     try {

@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
 import { faCircleInfo, faKey } from "@fortawesome/free-solid-svg-icons";
@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-
 
 export default function ChangePasswordButton() {
   const router = useRouter();
@@ -74,7 +73,6 @@ export default function ChangePasswordButton() {
       });
       handleClose();
       toast({
-        
         title: "Password Changed",
         description: "Your password has been changed successfully.",
         duration: 3000,

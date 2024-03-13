@@ -117,7 +117,6 @@ export default function ForgetPassword() {
                   className="text-neutral-0 lg:h-8"
                   size="3x"
                 />
-
               </div>
               <div className="flex flex-col items-center gap-3">
                 <div className="h3 lg:h2 font-extrabold text-primary-900 lg:font-extrabold">
