@@ -197,7 +197,9 @@ export default function ChatEventForm({
 
           <div className="flex w-fit gap-3 self-end">
             <DialogClose asChild>
-              <Button type="button">Cancel</Button>
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
             </DialogClose>
             <DialogClose asChild>
               <Button type="submit">Create Event</Button>

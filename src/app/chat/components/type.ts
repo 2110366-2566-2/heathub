@@ -5,6 +5,7 @@ export interface MessageCardProps {
   lastestMessage: string;
   createdAt: string;
   imageUrl: string | null;
+  isSelected: boolean;
 }
 export interface ChatMessageProps {
   className?: string;
