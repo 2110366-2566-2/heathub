@@ -18,6 +18,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/utils/tailwind-merge";
 import { api } from "@/trpc/react";
 import { uploadFiles } from "@/components/ui/upload";
+import { serverapi } from "@/trpc/server";
 
 interface EditProfileButtonProps {
   cUsername: string;
@@ -25,17 +26,33 @@ interface EditProfileButtonProps {
   cBio: string;
   cDOB: Date;
   cProfileURL: string;
+  id: string;
 }
 
 export default function EditProfileButton(props: EditProfileButtonProps) {
-  const { cUsername, cDOB, cBio, cGender, cProfileURL } = props;
-  const [gender, setGender] = useState(cGender);
-  const [usernameText, setUsernameText] = useState(cUsername);
-  const [bioText, setBioText] = useState(cBio);
-  const [DOB, setDOB] = useState<Date | undefined>(cDOB);
+  const { id } = props;
+  const [gender, setGender] = useState("");
+  const [usernameText, setUsernameText] = useState("");
+  const [bioText, setBioText] = useState("");
+  const [DOB, setDOB] = useState<Date | undefined>();
   const [notice, setNotice] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [isClose, setClose] = useState(false);
+  api.user.getUserPublicData.useQuery(
+    {
+      userID: id,
+    },
+    {
+      onSuccess: (data) => {
+        if (!data) return;
+        setUsernameText(data.aka);
+        setGender(data.gender);
+        setBioText(data.bio ?? "");
+        setDOB(data.dateOfBirth ?? undefined);
+      },
+    },
+  );
+
   useEffect(() => {
     setClose(false);
   }, [isOpen]);
@@ -66,17 +83,11 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     const formData = new FormData(formRef.current);
     const usernameInput = formData.get("Username") as string | null;
     const bioInput = formData.get("Bio") as string | null;
-    const genderInput = gender;
-    const DOBInput = new Date();
+    // const genderInput = gender;
+    // const DOBInput = new Date();
     const imageInput = formData.get("Image") as File | null;
 
-    if (
-      !gender ||
-      !usernameInput ||
-      !DOBInput ||
-      gender == "Custom" ||
-      gender == ""
-    ) {
+    if (!gender || !usernameInput || gender == "Custom" || gender == "") {
       setNotice("Please fill in your details.");
       return;
     }
@@ -85,7 +96,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       return (
         (await testUsername.mutateAsync({
           aka: usernameInput,
-        })) && usernameInput != cUsername
+        })) && usernameInput != usernameText
       );
     };
 
@@ -108,13 +119,12 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     } else {
       imageUrl = imageInput;
     }
-    console.log("HEEEE = ",usernameInput)
     try {
       updateProfile.mutate({
         bio: bioInput ? bioInput : "",
-        gender: genderInput,
+        gender: gender,
         aka: usernameInput,
-        dateOfBirth: DOBInput,
+        dateOfBirth: DOB,
         // imgURL: imageUrl,
       });
     } catch (error) {
@@ -133,10 +143,10 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   const handleClose = () => {
     setClose(true);
     setNotice("");
-    setGender(cGender);
-    setUsernameText(cUsername);
-    setBioText(cBio);
-    setDOB(cDOB);
+    setGender(gender);
+    setUsernameText(usernameText);
+    setBioText(bioText);
+    setDOB(DOB);
     return;
   };
 
@@ -147,11 +157,11 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       }}
       open={isOpen && !isClose}
     >
-      <DialogTrigger className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-primary-500 text-white hover:bg-primary-600 disabled:bg-primary-100 lg:w-[126px]">
+      <DialogTrigger className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-secondary-500 text-white hover:bg-secondary-600 disabled:bg-secondary-100 lg:w-[126px]">
         Edit Profile
       </DialogTrigger>
       <DialogContent
-        className="h-fit max-h-[90vh] w-full max-w-[95vw] gap-y-6 overflow-y-scroll rounded-md bg-white p-6 md:max-w-[644px]"
+        className="scrollbar-hide h-fit max-h-[90vh] w-full max-w-[95vw] gap-y-6 overflow-y-scroll rounded-md bg-white p-6 md:max-w-[644px]"
         onClick={(e) => {
           e.preventDefault();
         }}
@@ -211,13 +221,13 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
         </form>
         <div className="flex h-fit w-full flex-row-reverse gap-x-3">
           <span
-            className="inline-flex h-10 w-24 items-center justify-center rounded-xl bg-primary-500 text-white hover:cursor-pointer hover:bg-primary-600 disabled:bg-primary-100"
+            className="inline-flex h-10 w-24 items-center justify-center rounded-xl bg-secondary-500 text-white hover:cursor-pointer hover:bg-secondary-600 disabled:bg-secondary-100"
             onClick={handleSubmit}
           >
             Confirm
           </span>
           <span
-            className="inline-flex h-10 w-20 items-center justify-center rounded-xl border border-primary-500 bg-white text-primary-500 hover:cursor-pointer hover:border-primary-600 hover:text-primary-600 disabled:bg-primary-100"
+            className="inline-flex h-10 w-20 items-center justify-center rounded-xl border border-secondary-500 bg-white text-secondary-500 hover:cursor-pointer hover:border-secondary-600 hover:text-secondary-600 disabled:bg-secondary-100"
             onClick={handleClose}
           >
             Cancel
@@ -262,10 +272,8 @@ function GenderSelector(props: GenderSelectorProps) {
 
   const checkToggle = (gender: string): string => {
     return cn(
-      "flex h-20 w-20 aspect-square flex-col gap-y-1 rounded-xl border border-solid py-2 px-0",
-      selectedGender == gender
-        ? "border-primary-500 bg-primary-100"
-        : "border-primary-50 bg-primary-50",
+      "flex h-20 w-20 aspect-square flex-col gap-y-1 rounded-xl border border-solid py-2 px-0 border-primary-500 data-[state=on]:bg-secondary-400 data-[state=on]:text-white data-[state=on]:border-none  ",
+      selectedGender == gender ? "bg-white" : "bg-white",
     );
   };
 

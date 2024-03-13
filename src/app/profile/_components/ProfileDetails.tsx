@@ -28,6 +28,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
     gender,
     about,
     dateOfBirth,
+    id
   } = props;
 
   const isMobile = useMediaQuery({ maxWidth: 1023 });
@@ -95,6 +96,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
               cBio={about}
               cDOB={dateOfBirth}
               cProfileURL={image}
+              id={id}
             />
           </div>
         </div>
@@ -121,6 +123,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
             cBio={props.about}
             cDOB={props.dateOfBirth}
             cProfileURL={props.image}
+            id={id}
           />
         </div>
       </CardContent>
