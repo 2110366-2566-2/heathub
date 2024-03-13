@@ -8,6 +8,7 @@ import { useState } from "react";
 import { type myEventProps } from "./types";
 import { type EventProps } from "./components/Card";
 import { parseEventStatus, parseTabValue } from "./utils";
+import Image from "next/image";
 
 export default function Page() {
   const [events, setEvents] = useState<EventProps[]>([]);
@@ -54,7 +55,7 @@ export default function Page() {
       <div className="flex h-screen w-full flex-col gap-2">
         <Tabs
           defaultValue="upcoming"
-          className="flex w-full flex-col gap-6"
+          className="flex w-full h-full flex-col gap-6"
           onValueChange={(value) => setTabValue(parseTabValue(value))}
         >
           <div className="flex flex-col gap-4">
@@ -118,9 +119,17 @@ export default function Page() {
           </div>
           <TabsContent
             value="upcoming"
-            className="border-none p-0 outline-none"
+            className="h-full border-none p-0 outline-none"
           >
-            <div className="flex flex-col gap-4">
+            <div className="h-full flex flex-col gap-4">
+              {events.length === 0 && (
+                <div className="h-full flex flex-col justify-center items-center">
+                  <Image width={150} height={150} src="/svgs/no-event.svg" alt="No event" />
+                  <div className="h2-bold flex items-center justify-center text-medium">
+                    No Event
+                  </div>
+                </div>
+              )}
               {events.map((event) => {
                 return (
                   <Card
@@ -143,7 +152,15 @@ export default function Page() {
             value="completed"
             className="h-full flex-col border-none p-0 data-[state=active]:flex"
           >
-            <div className="flex flex-col gap-4">
+            <div className="h-full flex flex-col gap-4">
+              {events.length === 0 && (
+                  <div className="h-full flex flex-col justify-center items-center">
+                    <Image width={150} height={150} src="/svgs/no-event.svg" alt="No event" />
+                    <div className="h2-bold flex items-center justify-center text-medium">
+                      No Event
+                    </div>
+                  </div>
+                )}
               {events.map((event) => {
                 return (
                   <Card
