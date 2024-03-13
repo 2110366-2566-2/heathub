@@ -14,7 +14,6 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ChatDialog } from "@/app/discover/_components/chat";
 import { cn } from "@/utils/tailwind-merge";
 import { Toggle } from "@/components/ui/toggle";
 
@@ -39,7 +38,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
           <div className="flex h-full w-full flex-row gap-4">
             <div className="relative h-[100px] w-[100px] flex-none rounded-full">
               <Image
-                className="items-center justify-center rounded-full"
+                className="h-full items-center justify-center rounded-full"
                 src={image}
                 width={100}
                 height={100}
