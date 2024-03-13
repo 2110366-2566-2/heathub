@@ -50,7 +50,7 @@ const ToggleGroupItem = React.forwardRef<
       )}
       {...props}
     >
-      {icon && <FontAwesomeIcon icon={icon} className="mr-2 h-3 w-3" />}
+      {icon && <FontAwesomeIcon icon={icon} className="mr-2" size="sm" />}
       {children}
     </ToggleGroupPrimitive.Item>
   );
