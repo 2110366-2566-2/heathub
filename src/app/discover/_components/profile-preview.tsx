@@ -189,7 +189,7 @@ function ReviewChat(props: ReviewChatProps) {
       className={cn(
         " flex flex-row gap-3 self-end",
         props.role === "participant" ? "w-[300px]" : "w-[150px]",
-        isMobile ? "" : "absolute bottom-0",
+        isMobile ? "mb-20" : "absolute bottom-0",
       )}
     >
       <Button
