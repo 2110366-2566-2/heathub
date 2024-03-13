@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/trpc/react";
-import { faChevronLeft, faLock, faUnlockKeyhole } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faLock,
+  faUnlockKeyhole,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -13,17 +17,16 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-const validationSchema = z
-  .object({
-    password: z
-      .string()
-      .min(8, { message: "Password must be atleast 8 characters" }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm Password is required" }),
-  })
-  
-  type ValidationSchema = z.infer<typeof validationSchema>;
+const validationSchema = z.object({
+  password: z
+    .string()
+    .min(8, { message: "Password must be atleast 8 characters" }),
+  confirmPassword: z
+    .string()
+    .min(1, { message: "Confirm Password is required" }),
+});
+
+type ValidationSchema = z.infer<typeof validationSchema>;
 
 export default function ResetPassword({
   params,
@@ -102,7 +105,10 @@ export default function ResetPassword({
   const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
 
   return (
-    <main className="flex h-screen bg-white p-6 lg:p-14" onSubmit={handleSubmit(onSubmit)}>
+    <main
+      className="flex h-screen bg-white p-6 lg:p-14"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="flex h-full w-full flex-1 flex-col gap-2">
         {criticalError ? (
           <></>
@@ -136,11 +142,7 @@ export default function ResetPassword({
                     link
                   </div>
                 </div>
-                <Button
-                  variant={"secondary"}
-                  disabled={isDataLoading}
-                  asChild
-                >
+                <Button variant={"secondary"} disabled={isDataLoading} asChild>
                   <Link href="/reset-password">Forgot password</Link>
                 </Button>
               </div>
@@ -178,7 +180,7 @@ export default function ResetPassword({
                           {...register("password")}
                         />
                         {errors.password && (
-                          <p className="text-xs text-red-500 mt-2">
+                          <p className="mt-2 text-xs text-red-500">
                             {errors.password?.message}
                           </p>
                         )}
@@ -195,7 +197,7 @@ export default function ResetPassword({
                           {...register("confirmPassword")}
                         />
                         {errors.confirmPassword && (
-                          <p className="text-xs text-red-500 mt-2">
+                          <p className="mt-2 text-xs text-red-500">
                             {errors.confirmPassword?.message}
                           </p>
                         )}
