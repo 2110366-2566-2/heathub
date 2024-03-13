@@ -9,7 +9,18 @@ import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
+const validationSchema = z
+  .object({
+    email: z.string().min(1, { message: "Email is required" }).email({
+      message: "Must be a valid email",
+    }),
+  })
+  
+  type ValidationSchema = z.infer<typeof validationSchema>;
 
 export default function ForgetPassword() {
   const { data: user } = api.auth.me.useQuery();
@@ -28,7 +39,7 @@ export default function ForgetPassword() {
   }, []);
 
   const mutate = api.auth.resetPasswordByEmail.useMutation({});
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handlesubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("loading");
     if (!url) {
@@ -66,8 +77,19 @@ export default function ForgetPassword() {
     }
   };
   const { toast } = useToast();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ValidationSchema>({
+    resolver: zodResolver(validationSchema),
+  });
+
+  const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
+
   return (
-    <main className="flex h-screen bg-white p-6 lg:p-14">
+    <main className="flex h-screen bg-white p-6 lg:p-14" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex h-full w-full flex-1 flex-col gap-2">
         <Link href="/" className="absolute">
           <button className="absolute flex h-6 w-6 flex-row items-center justify-center">
@@ -97,7 +119,7 @@ export default function ForgetPassword() {
               </div>
               <div className="flex w-full flex-1 flex-col items-center gap-2 lg:gap-9">
                 <form
-                  onSubmit={handleSubmit}
+                  onSubmit={handlesubmit}
                   className="flex h-full w-full flex-col justify-between gap-9 text-black lg:h-fit lg:justify-normal"
                 >
                   <div className="flex w-full flex-col gap-1">
@@ -107,9 +129,15 @@ export default function ForgetPassword() {
                     <Input
                       className="w-full"
                       type="email"
-                      name="email"
+                      id="email"
                       placeholder="Enter your email"
+                      {...register("email")}
                     />
+                    {errors.email && (
+                      <p className="text-xs italic text-red-500 mt-2">
+                        {errors.email?.message}
+                      </p>
+                    )}
                   </div>
                   <Button
                     type="submit"
