@@ -28,7 +28,8 @@ export default function ConfirmEventPaymet(props: ConfirmEventPaymetProps) {
         <DialogHeader className="flex w-full flex-col items-center">
           <FontAwesomeIcon
             icon={faMoneyCheckDollar}
-            className="h-8 w-8 text-primary-500 "
+            className="text-primary-500"
+            size="1x"
           />
           <DialogTitle className="text-center">Confirm Payment</DialogTitle>
         </DialogHeader>

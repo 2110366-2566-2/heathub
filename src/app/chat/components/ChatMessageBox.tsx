@@ -101,7 +101,7 @@ export default function ChatMessageBox({
             disabled={sendMessage.isLoading}
           >
             {!sendMessage.isLoading ? (
-              <FontAwesomeIcon icon={faPaperPlane} className="h-4 w-4" />
+              <FontAwesomeIcon icon={faPaperPlane} size="1x" />
             ) : (
               <LoadingSVG />
             )}

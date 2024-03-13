@@ -179,7 +179,8 @@ export function Card(prop: EventProps) {
                   {prop.isVerified && (
                     <FontAwesomeIcon
                       icon={faCheckCircle}
-                      className="h-4 w-4 text-secondary-500"
+                      className="text-secondary-500"
+                      size="1x"
                     />
                   )}
                   <StatusTag status={prop.status} size="sm" />
@@ -188,7 +189,8 @@ export function Card(prop: EventProps) {
                   <DropdownMenuTrigger>
                     <FontAwesomeIcon
                       icon={faEllipsisVertical}
-                      className="h-4 w-4 text-medium lg:hidden"
+                      className="text-medium lg:hidden"
+                      size="1x"
                     />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="mr-12 bg-white">
@@ -206,7 +208,8 @@ export function Card(prop: EventProps) {
               <div className="flex flex-row items-center gap-1">
                 <FontAwesomeIcon
                   icon={faLocationDot}
-                  className="h-3 w-3 text-primary-500"
+                  className="text-primary-500"
+                  size="1x"
                 />
                 <h6 className="h6 line-clamp-1 text-primary-900">
                   {prop.location}
@@ -215,7 +218,8 @@ export function Card(prop: EventProps) {
               <div className="flex w-fit flex-row items-center gap-1">
                 <FontAwesomeIcon
                   icon={faCalendar}
-                  className="h-3 w-3 text-medium"
+                  className="text-medium"
+                  size="1x"
                 />
                 <h6 className="h6 font-normal text-medium">
                   {formatDate(prop.date)}

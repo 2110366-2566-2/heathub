@@ -65,7 +65,8 @@ export default function Page() {
                 <div className="flex w-full items-center gap-3">
                   <FontAwesomeIcon
                     icon={faCalendar}
-                    className="h-7 w-7 text-secondary-500"
+                    className="text-secondary-500"
+                    size="2x"
                   />
                   <TabsContent value="upcoming">
                     <div className="h2 font-extrabold text-primary-900">

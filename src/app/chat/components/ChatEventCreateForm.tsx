@@ -192,7 +192,7 @@ export default function ChatEventForm({
                         {field.value ? (
                           format(field.value, "LLL dd, y")
                         ) : (
-                          <span>Pick a end date</span>
+                          <span>Pick an end date</span>
                         )}
                       </Button>
                     </PopoverTrigger>

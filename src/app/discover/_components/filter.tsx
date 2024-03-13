@@ -174,10 +174,7 @@ export default function Filter(props: FilterProps) {
       <div className="flex flex-row items-center gap-2">
         <Input
           type="number"
-          className={cn(
-            "rounded-3xl border-none",
-            isMobile && "bg-neutral-100",
-          )}
+          className={cn("rounded-3xl border-none", isMobile ? "" : "bg-white")}
           placeholder="Min"
           min={0}
           max={99}
@@ -196,10 +193,7 @@ export default function Filter(props: FilterProps) {
         <div className="body6 text-medium">To</div>
         <Input
           type="number"
-          className={cn(
-            "rounded-3xl border-none",
-            isMobile && "bg-neutral-100",
-          )}
+          className={cn("rounded-3xl border-none", isMobile ? "" : "bg-white")}
           placeholder="Max"
           min={values.age.min}
           max={99}
@@ -268,7 +262,7 @@ export default function Filter(props: FilterProps) {
               {AllFiltersMobile}
               <DrawerClose
                 type="submit"
-                className="border-t-1 absolute bottom-0 w-full self-center border border-solid border-neutral-200 p-4"
+                className="border-t-1 absolute bottom-0 mb-20 w-full self-center border border-b-0  border-solid border-neutral-200 p-4"
               >
                 <Button className="w-full" size="lg">
                   Apply Filters
@@ -301,7 +295,8 @@ function FilterButton() {
     <div className="flex h-12 w-14 items-center justify-center rounded-lg bg-primary-500 p-2">
       <FontAwesomeIcon
         icon={isMobile ? faSearch : faFilter}
-        className="h-6 w-6 text-white"
+        className="text-white"
+        size="lg"
       />
     </div>
   );

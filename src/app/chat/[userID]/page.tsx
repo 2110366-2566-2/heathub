@@ -17,7 +17,8 @@ export default async function Chat({ params }: { params: { userID: string } }) {
             <button className="flex h-6 w-6 flex-row items-center justify-center">
               <FontAwesomeIcon
                 icon={faChevronLeft}
-                className="h-4 w-4 text-high"
+                className="text-high"
+                size="sm"
               />
             </button>
           </Link>

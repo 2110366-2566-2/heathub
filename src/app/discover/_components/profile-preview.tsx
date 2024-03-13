@@ -36,7 +36,7 @@ export function ProfilePreview({
   if (isMobile) {
     return (
       <Drawer>
-        <DrawerTrigger className="m-auto aspect-[0.76] min-h-[424px] max-w-[323px]">
+        <DrawerTrigger className="aspect-[0.76] min-h-[424px] max-w-[323px]">
           <Card {...props} />
         </DrawerTrigger>
         <DrawerOverlay
@@ -52,7 +52,7 @@ export function ProfilePreview({
 
   return (
     <Dialog>
-      <DialogTrigger className="m-auto aspect-[0.76] min-h-[424px] max-w-[323px]">
+      <DialogTrigger className="aspect-[0.76] min-h-[424px] max-w-[323px]">
         <Card {...props} />
       </DialogTrigger>
       <DialogProfile props={props} role={role} />
@@ -121,7 +121,8 @@ function Name(props: ProfilePreviewProps) {
       </div>
       <FontAwesomeIcon
         icon={faCheckCircle}
-        className="h-6 w-6 self-center text-secondary-500"
+        className="self-center text-secondary-500"
+        size="xl"
       />
     </div>
   );
@@ -188,15 +189,15 @@ function ReviewChat(props: ReviewChatProps) {
       className={cn(
         " flex flex-row gap-3 self-end",
         props.role === "participant" ? "w-[300px]" : "w-[150px]",
-        isMobile ? "" : "absolute bottom-0",
+        isMobile ? "mb-20" : "absolute bottom-0",
       )}
     >
       <Button
         variant="outline"
         size="md"
-        className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-400"
+        className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-300"
       >
-        <FontAwesomeIcon icon={faHeart} className="mr-2" />
+        <FontAwesomeIcon icon={faHeart} className="mr-2" size="1x" />
         {reviews} Reviews
       </Button>
       {props.role === "participant" && (
@@ -205,7 +206,11 @@ function ReviewChat(props: ReviewChatProps) {
             size="md"
             className="w-full bg-secondary-500 hover:bg-secondary-400"
           >
-            <FontAwesomeIcon icon={faComment} className="mr-2 text-white" />
+            <FontAwesomeIcon
+              icon={faComment}
+              className="mr-2 text-white"
+              size="1x"
+            />
             Go to Chat
           </Button>
         </Link>
