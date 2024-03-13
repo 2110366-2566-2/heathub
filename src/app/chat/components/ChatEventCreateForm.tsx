@@ -62,7 +62,7 @@ export default function ChatEventForm({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     //parse price to float
-;    const [startHours, startMinutes] = values.startTime
+    const [startHours, startMinutes] = values.startTime
       .split(":")
       .map((e) => parseInt(e));
     const [endHours, endMinutes] = values.endTime
@@ -91,7 +91,7 @@ export default function ChatEventForm({
       >
         <div className="flex w-full flex-col gap-4">
           <div className=" flex flex-col">
-            <div className="h3 text-primary-800 font-bold">Create Event</div>
+            <div className="h3 font-bold text-primary-800">Create Event</div>
             <div className="small text-medium">
               Fill the following details to create an event and this event will
               be show in your chat room.
@@ -124,7 +124,7 @@ export default function ChatEventForm({
                       <Button
                         id="date"
                         className={cn(
-                          "justify-start-100 border-primary-300 w-full bg-neutral-100 text-left font-normal hover:bg-neutral-200",
+                          "justify-start-100 w-full border-primary-300 bg-neutral-100 text-left font-normal hover:bg-neutral-200",
                           !field?.value
                             ? "text-placeholder"
                             : "text-primary-500",
@@ -163,7 +163,7 @@ export default function ChatEventForm({
                     <Input
                       onChange={field.onChange}
                       type="time"
-                      className="text-primary-500 w-fit appearance-none border-0 bg-neutral-100 hover:cursor-pointer"
+                      className="w-fit appearance-none border-0 bg-neutral-100 text-primary-500 hover:cursor-pointer"
                     />
                   </FormControl>
                   <FormMessage className="text-red-500" />
@@ -182,7 +182,7 @@ export default function ChatEventForm({
                       <Button
                         id="date"
                         className={cn(
-                          "justify-start-100 border-primary-300 w-full bg-neutral-100 text-left font-normal hover:bg-neutral-200",
+                          "justify-start-100 w-full border-primary-300 bg-neutral-100 text-left font-normal hover:bg-neutral-200",
                           !field?.value
                             ? "text-placeholder"
                             : "text-primary-500",
@@ -221,7 +221,7 @@ export default function ChatEventForm({
                     <Input
                       onChange={field.onChange}
                       type="time"
-                      className="text-primary-500 w-fit appearance-none border-0 bg-neutral-100 hover:cursor-pointer"
+                      className="w-fit appearance-none border-0 bg-neutral-100 text-primary-500 hover:cursor-pointer"
                     />
                   </FormControl>
                   <FormMessage className="text-red-500" />
@@ -240,7 +240,7 @@ export default function ChatEventForm({
                     {...field}
                     type="number"
                     autoComplete="off"
-                    className="order-0 text-primary-500 appearance-none border-0 bg-neutral-100"
+                    className="order-0 appearance-none border-0 bg-neutral-100 text-primary-500"
                     min={0}
                     value={field.value ?? ""}
                   />
