@@ -78,10 +78,10 @@ function Header({ setFilters }: { setFilters: (filters: filters) => void }) {
         </div>
         <div className="flex flex-col md:flex-row md:gap-2">
           <div className="text-[28px] font-extrabold text-primary-800 lg:text-4xl">
-            {mobileText}
-          </div>
-          <div className="text-[28px] font-extrabold italic text-secondary-500 lg:text-4xl">
-            HeatHub!
+            {mobileText}{" "}
+            <span className="text-[28px] font-extrabold italic text-secondary-500 lg:text-4xl">
+              HeatHub!
+            </span>
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@ type CardContainerProps = {
 
 function CardContainer(props: CardContainerProps) {
   return (
-    <div className="grid w-full grid-cols-1 items-start justify-between gap-y-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+    <div className="flex w-full flex-row flex-wrap justify-center gap-8">
       {props.users.map((profile: ProfilePreviewProps) => (
         <ProfilePreview key={profile.aka} props={profile} role={props.role} />
       ))}
