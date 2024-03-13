@@ -1,10 +1,10 @@
 "use client";
-import { type MessageCardProps } from "./type";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import { Dayjs } from "@/utils/dayjs";
 import { cn } from "@/utils/tailwind-merge";
+import { useRouter } from "next/navigation";
+import { type MessageCardProps } from "./type";
 export function MessageCard(props: MessageCardProps) {
   const router = useRouter();
 
@@ -27,7 +27,7 @@ export function MessageCard(props: MessageCardProps) {
       <div className="flex h-full w-full flex-1 flex-row content-center items-center justify-between gap-2 p-2">
         <div className="flex w-fit  flex-row gap-2">
           <Avatar className="h-[52px] w-[52px]">
-            {props.imageUrl && <AvatarImage src={props.imageUrl} />}
+            {<AvatarImage src={props.imageUrl} />}
             <AvatarFallback>{props.discourserAka}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col justify-start">

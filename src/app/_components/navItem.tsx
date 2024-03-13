@@ -19,7 +19,7 @@ export function NavItem(prop: NavItemProp) {
       <FontAwesomeIcon
         icon={prop.icon}
         className={cn(
-          "h-7 w-7 rounded-lg p-2 text-invert hover:bg-secondary-300",
+          "rounded-lg p-2 text-[1.75rem] text-invert hover:bg-secondary-300",
           prop.isSelected && "bg-secondary-500",
         )}
       />

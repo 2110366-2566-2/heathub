@@ -1,16 +1,16 @@
 "use client";
-import { ProfilePreview } from "./_components/profile-preview";
 import { api } from "@/trpc/react";
-import { useEffect, useState } from "react";
-import type {
-  userProps,
-  userApiProps,
-  filters,
-  ProfilePreviewProps,
-} from "./types";
 import type { TagList } from "@/utils/icon-mapping";
-import Filter from "./_components/filter";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import Filter from "./_components/filter";
+import { ProfilePreview } from "./_components/profile-preview";
+import type {
+  ProfilePreviewProps,
+  filters,
+  userApiProps,
+  userProps,
+} from "./types";
 
 export default function DiscoverPage() {
   const [users, setUsers] = useState<userProps[]>([]);
@@ -121,7 +121,7 @@ type CardContainerProps = {
 
 function CardContainer(props: CardContainerProps) {
   return (
-    <div className="grid min-h-screen w-full grid-cols-1 items-start justify-between gap-y-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+    <div className="grid w-full grid-cols-1 items-start justify-between gap-y-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {props.users.map((profile: ProfilePreviewProps) => (
         <ProfilePreview key={profile.aka} props={profile} role={props.role} />
       ))}
