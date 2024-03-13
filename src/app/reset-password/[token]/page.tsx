@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api } from "@/trpc/react";
-import { faChevronLeft, faLock, faUnlockKeyhole } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faCircleInfo,
+  faLock,
+  faUnlockKeyhole,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -48,18 +53,22 @@ export default function ResetPassword({
   const mutate = api.auth.changePasswordByEmailToken.useMutation({});
 
   const submitHandler = async (e: FormData) => {
-    let valid = true;
+    let _valid = true;
     const password = e.get("password") as string;
     const confirm_password = e.get("confirm_password") as string;
     if (password && password.length < 8) {
       setPasswordNotice("Password must be at least 8 characters");
-      valid = false;
+      _valid = false;
       return;
+    } else {
+      setPasswordNotice(null);
     }
 
     if (password !== confirm_password) {
       setError("Passwords do not match");
       return;
+    } else {
+      setError(null);
     }
     try {
       await mutate.mutateAsync({
@@ -75,7 +84,6 @@ export default function ResetPassword({
     }
     redirect("/signin");
   };
-
 
   return (
     <main className="flex h-screen bg-white p-6 lg:p-14">
@@ -107,16 +115,12 @@ export default function ResetPassword({
                     {criticalError}
                   </div>
                   <div className="h6 text-medium">
-                    Oops! It seems the link you're trying to use has expired.
-                    Please return to the reset password page to generate a fresh
-                    link
+                    Oops! It seems the link you&apos;re trying to use has
+                    expired. Please return to the reset password page to
+                    generate a fresh link
                   </div>
                 </div>
-                <Button
-                  variant={"secondary"}
-                  disabled={isDataLoading}
-                  asChild
-                >
+                <Button variant={"secondary"} disabled={isDataLoading} asChild>
                   <Link href="/reset-password">Forgot password</Link>
                 </Button>
               </div>
@@ -152,6 +156,29 @@ export default function ResetPassword({
                           name="password"
                           placeholder="Enter new password"
                         />
+                        {passwordNotice ? (
+                          <div className="flex items-center">
+                            <FontAwesomeIcon
+                              icon={faCircleInfo}
+                              className="text-red-500"
+                              size="xs"
+                            />
+                            <p className="px-1 text-xs text-red-500">
+                              {passwordNotice}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="flex items-center">
+                            <FontAwesomeIcon
+                              icon={faCircleInfo}
+                              className="text-medium"
+                              size="xs"
+                            />
+                            <p className="px-1 text-xs text-medium">
+                              {"The password must be at least 8 characters"}
+                            </p>
+                          </div>
+                        )}
                       </div>
                       <div className="flex w-full flex-col gap-1">
                         <Label htmlFor="email" className="body5">
@@ -163,9 +190,18 @@ export default function ResetPassword({
                           name="confirm_password"
                           placeholder="Confirm password"
                         />
+                        {error && (
+                          <div className="flex items-center">
+                            <FontAwesomeIcon
+                              icon={faCircleInfo}
+                              className="text-red-500"
+                              size="xs"
+                            />
+                            <p className="px-1 text-xs text-red-500">{error}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
-                    {error && <p className="text-red-500">{error}</p>}
                     <Button
                       variant={"secondary"}
                       type="submit"

@@ -4,7 +4,8 @@ export interface MessageCardProps {
   discourserAka: string;
   lastestMessage: string;
   createdAt: string;
-  imageUrl: string | null;
+  imageUrl: string;
+  isSelected: boolean;
 }
 export interface ChatMessageProps {
   className?: string;
@@ -19,7 +20,7 @@ export interface ChatMessageProps {
 export type MessageType = string;
 export interface EventDetailCardProps {
   className?: string;
-  status: "success" | "pending" | "confirmed" | "denied";
+  status: "pending" | "payment-done" | "completed" | "cancelled" | "rejected";
   date: Date;
   price: number;
 }

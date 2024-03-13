@@ -13,17 +13,23 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoneyCheckDollar } from "@fortawesome/free-solid-svg-icons";
 
-export default function ConfirmEventPayment() {
+interface ConfirmEventPaymetProps {
+  confirmEvent: () => void;
+}
+
+export default function ConfirmEventPaymet(props: ConfirmEventPaymetProps) {
+  const { confirmEvent } = props;
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Confirm</Button>
+        <Button variant="default">Confirm</Button>
       </DialogTrigger>
-      <DialogContent className="rounded-md bg-white sm:max-w-[425px]">
+      <DialogContent className="bg-white sm:max-w-[425px] sm:rounded-md">
         <DialogHeader className="flex w-full flex-col items-center">
           <FontAwesomeIcon
             icon={faMoneyCheckDollar}
-            className="h-8 w-8 text-primary-500 "
+            className="text-primary-500"
+            size="1x"
           />
           <DialogTitle className="text-center">Confirm Payment</DialogTitle>
         </DialogHeader>
@@ -40,7 +46,13 @@ export default function ConfirmEventPayment() {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Confirm</Button>
+          <Button
+            onClick={() => {
+              confirmEvent();
+            }}
+          >
+            Confirm
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

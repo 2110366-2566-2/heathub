@@ -5,7 +5,7 @@ import { cn } from "@/utils/tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
-const toggleVariants = cva(
+const tagVariants = cva(
   "inline-flex items-center rounded-full justify-center text-body6 text-white focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors disabled:pointer-events-none data-[state=on]:bg-primary-700 data-[state=on]:text-invert",
   {
     variants: {
@@ -35,19 +35,33 @@ type TagProps = {
   variant?: "default" | "outline" | "solid" | "ghost";
   size?: "md" | "sm" | "lg";
   icon?: IconDefinition;
+  color?:
+    | "bg-tag-red"
+    | "bg-tag-yellow"
+    | "bg-tag-green"
+    | "bg-tag-blue"
+    | "bg-tag-pink";
   children: React.ReactNode;
 };
 
-function Tag({ className, variant, size, icon, children, ...props }: TagProps) {
+function Tag({
+  className,
+  variant,
+  size,
+  icon,
+  children,
+  color,
+  ...props
+}: TagProps) {
   return (
     <div
-      className={cn(toggleVariants({ variant, size, className }))}
+      className={cn(tagVariants({ variant, size, className }), color)}
       {...props}
     >
-      {icon ? <FontAwesomeIcon icon={icon} className="mr-2 h-3 w-3" /> : ""}
+      {icon ? <FontAwesomeIcon icon={icon} className="mr-2" size="sm" /> : ""}
       {children}
     </div>
   );
 }
 
-export { Tag, toggleVariants };
+export { Tag, tagVariants };

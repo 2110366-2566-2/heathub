@@ -1,12 +1,4 @@
 "use client";
-import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCalendar,
-  faCheckCircle,
-  faEllipsisVertical,
-  faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,15 +6,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EventDetail } from "./EventDetail";
-import { StatusTag } from "./StatusTag";
-import { FinishModal } from "./FinishModal";
-import { CancelModal } from "./CancelModal";
-import { GivereviewModal } from "./GivereviewModal";
-import { ViewreviewModal } from "./ViewreviewModal";
-import { formatDate } from "../utils";
-import { useState } from "react";
+import { api } from "@/trpc/react";
+import {
+  faCalendar,
+  faCheckCircle,
+  faEllipsisVertical,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { formatDate } from "../utils";
+import { CancelModal } from "./CancelModal";
+import { EventDetail } from "./EventDetail";
+import { FinishModal } from "./FinishModal";
+import { GivereviewModal } from "./GivereviewModal";
+import { StatusTag } from "./StatusTag";
+import { ViewreviewModal } from "./ViewreviewModal";
 
 export type EventProps = {
   id: number;
@@ -41,10 +42,17 @@ export enum EventStatus {
   NOTSTARTED = "Not Started",
   WAITINGREVIEW = "Waiting for Review",
   COMPLETED = "Completed",
+  CANCELLED = "Cancelled",
 }
 
 export function Card(prop: EventProps) {
-  const [role, setRole] = useState("host");
+  const [role, setRole] = useState("participant");
+  api.auth.me.useQuery(undefined, {
+    onSuccess: (data) => {
+      if (!data) return;
+      setRole(data.role);
+    },
+  });
 
   const CardButton = () => {
     switch (prop.status) {
@@ -53,7 +61,7 @@ export function Card(prop: EventProps) {
           role == "participant" && (
             <Button
               variant="default"
-              className="z-[100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
+              className="z-100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
             >
               Finish Event
             </Button>
@@ -116,31 +124,28 @@ export function Card(prop: EventProps) {
         );
       case EventStatus.WAITINGREVIEW:
         return (
-          <GivereviewModal
-            id={prop.id}
-            name={prop.name}
-          >
+          <GivereviewModal id={prop.id} name={prop.name}>
             <CardButton />
           </GivereviewModal>
         );
       case EventStatus.COMPLETED:
         return (
           <ViewreviewModal
+            id={prop.id}
             name={prop.name}
             rating={4}
-            review={"You did really great. I’m so happy to have a dinner with you"}
+            review={
+              "You did really great. I’m so happy to have a dinner with you"
+            }
           >
             <CardButton />
           </ViewreviewModal>
         );
       default:
         return (
-          <Button
-            variant="default"
-            className="z-50 !w-full border border-secondary-500 bg-white text-secondary-500 hover:bg-secondary-100"
-          >
-            Cancel Event
-          </Button>
+          <CancelModal id={prop.id}>
+            <CardButton />
+          </CancelModal>
         );
     }
   };
@@ -158,7 +163,13 @@ export function Card(prop: EventProps) {
       >
         <div className="flew-row flex w-full gap-4">
           <div className=" relative h-14 w-14 overflow-hidden rounded-full">
-            <Image src={prop.image ?? ""} fill objectFit="cover" alt="logo" />
+            <Image
+              src={prop.image ?? ""}
+              fill
+              objectFit="cover"
+              alt="logo"
+              unoptimized
+            />
           </div>
           <div className="flex flex-1 flex-col gap-2">
             <div className="flex flex-row gap-1">
@@ -168,7 +179,8 @@ export function Card(prop: EventProps) {
                   {prop.isVerified && (
                     <FontAwesomeIcon
                       icon={faCheckCircle}
-                      className="h-4 w-4 text-secondary-500"
+                      className="text-secondary-500"
+                      size="1x"
                     />
                   )}
                   <StatusTag status={prop.status} size="sm" />
@@ -177,7 +189,8 @@ export function Card(prop: EventProps) {
                   <DropdownMenuTrigger>
                     <FontAwesomeIcon
                       icon={faEllipsisVertical}
-                      className="h-4 w-4 text-medium lg:hidden"
+                      className="text-medium lg:hidden"
+                      size="1x"
                     />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="mr-12 bg-white">
@@ -195,7 +208,8 @@ export function Card(prop: EventProps) {
               <div className="flex flex-row items-center gap-1">
                 <FontAwesomeIcon
                   icon={faLocationDot}
-                  className="h-3 w-3 text-primary-500"
+                  className="text-primary-500"
+                  size="1x"
                 />
                 <h6 className="h6 line-clamp-1 text-primary-900">
                   {prop.location}
@@ -204,7 +218,8 @@ export function Card(prop: EventProps) {
               <div className="flex w-fit flex-row items-center gap-1">
                 <FontAwesomeIcon
                   icon={faCalendar}
-                  className="h-3 w-3 text-medium"
+                  className="text-medium"
+                  size="1x"
                 />
                 <h6 className="h6 font-normal text-medium">
                   {formatDate(prop.date)}
@@ -215,7 +230,7 @@ export function Card(prop: EventProps) {
         </div>
       </EventDetail>
       <div className="flex w-full flex-row items-center gap-1 lg:w-fit">
-          <Modal/>
+        <Modal />
         <DropdownMenu>
           <DropdownMenuTrigger>
             <FontAwesomeIcon

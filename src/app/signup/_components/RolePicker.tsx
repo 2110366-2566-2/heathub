@@ -29,24 +29,26 @@ export default function RolePicker(props: rolePickerProps) {
       </div>
       <div className="flex flex-col gap-y-4">
         <Button
-          className="h-12 w-full rounded-xl px-2 py-4"
+          variant={"default"}
+          className="w-full"
+          size={"lg"}
           onClick={() => {
             setPage("EmailPassword");
             setData(createHost());
           }}
         >
-          <div className="h4-regular text-primary-50">{"I'm a Host"}</div>
+          {"I'm a Host"}
         </Button>
         <Button
-          className="h-12 w-full rounded-xl bg-secondary-200 px-2 py-4 hover:bg-secondary-300"
+          size={"lg"}
+          variant={"secondary"}
+          className="w-full"
           onClick={() => {
             setPage("EmailPassword");
             setData(createParticipant());
           }}
         >
-          <div className="h4-regular text-primary-50">
-            {"I'm a participant"}
-          </div>
+          {"I'm a participant"}
         </Button>
       </div>
       <div className="flex h-6 flex-row justify-center gap-x-2">

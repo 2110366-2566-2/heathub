@@ -1,30 +1,36 @@
 "use client";
-import { faCompass } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProfilePreview } from "./_components/profile-preview";
 import { api } from "@/trpc/react";
+import type { TagList } from "@/utils/icon-mapping";
 import { useEffect, useState } from "react";
-import { type userProps, type userApiProps, type filters } from "./types";
-import { type TagList } from "@/utils/icon-mapping";
-import Filter from "./_components/filter";
 import { useMediaQuery } from "react-responsive";
-import Search from "./_components/search";
+import Filter from "./_components/filter";
+import { ProfilePreview } from "./_components/profile-preview";
+import type {
+  ProfilePreviewProps,
+  filters,
+  userApiProps,
+  userProps,
+} from "./types";
 
 export default function DiscoverPage() {
   const [users, setUsers] = useState<userProps[]>([]);
 
   const [filters, setFilters] = useState<filters>({
+    searchQuery: "",
     interests: new Array<string>(),
     rating: 0,
     age: { min: 0, max: 99 },
     gender: "-",
   });
+
   const { data, isSuccess } = api.user.getHostsByFilter.useQuery({
+    searchQuery: filters.searchQuery ?? undefined,
     interests: filters.interests ?? undefined,
     rating: filters.rating ?? undefined,
     gender: filters.gender === "-" ? undefined : filters.gender,
     ageRange: [filters.age.min ?? 0, filters.age.max ?? 99],
   });
+  const { data: me } = api.auth.me.useQuery();
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -36,19 +42,22 @@ export default function DiscoverPage() {
         reviews: user.reviewCount ? user.reviewCount : 0,
         interests: user.interests as TagList,
         bio: user.bio ? user.bio : "",
+        id: user.id,
       }));
       setUsers(_users);
     }
   }, [isSuccess, data, filters]);
-
+  if (!me) {
+    return <div></div>;
+  }
   return (
     <div className="flex h-full w-full flex-col gap-4 p-6 lg:p-9">
       <div className="flex flex-col gap-4 self-stretch">
         <Header setFilters={setFilters} />
-        <SearchFilter setFilters={setFilters} />
       </div>
-      <div className="flex justify-center rounded-xl border border-solid border-primary-300 bg-white px-4 py-6 lg:p-9">
-        <CardContainer users={users} />
+      <div className="flex flex-col justify-center gap-6 rounded-lg bg-secondary-50 px-4 py-6 lg:p-9">
+        <SearchFilter setFilters={setFilters} />
+        <CardContainer users={users} role={me.role} />
       </div>
     </div>
   );
@@ -57,20 +66,26 @@ export default function DiscoverPage() {
 function Header({ setFilters }: { setFilters: (filters: filters) => void }) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
+  const mobileText = isMobile
+    ? "Find perfect friends on"
+    : "Find perfect partner for your adventure today on";
+
   return (
-    <div className="flex flex-col justify-center gap-2">
-      <div className="relative flex items-center gap-3">
-        <FontAwesomeIcon
-          icon={faCompass}
-          className="h-10 w-10 text-secondary-400"
-        />
-        <div className="h2 font-bold text-primary-900">Discover</div>
-        {isMobile && <SearchFilterMobile setFilters={setFilters} />}
+    <div className="flex flex-row">
+      <div className="flex w-full flex-col justify-center gap-2">
+        <div className="h4 w-full font-bold text-primary-900">
+          Welcome back,
+        </div>
+        <div className="flex flex-col md:flex-row md:gap-2">
+          <div className="text-[28px] font-extrabold text-primary-800 lg:text-4xl">
+            {mobileText}{" "}
+            <span className="text-[28px] font-extrabold italic text-secondary-500 lg:text-4xl">
+              HeatHub!
+            </span>
+          </div>
+        </div>
       </div>
-      <div className="h5 lg:h4 text-primary-700">
-        Unlock a World of Possibilities: Find Friends for Every Adventure on
-        HeatHub!
-      </div>
+      {isMobile && <SearchFilterMobile setFilters={setFilters} />}
     </div>
   );
 }
@@ -81,7 +96,7 @@ function SearchFilterMobile({
   setFilters: (filters: filters) => void;
 }) {
   return (
-    <div className="flex w-full flex-row items-center justify-end gap-4 lg:hidden">
+    <div className="flex flex-row gap-4 self-start lg:hidden">
       <Filter setFilters={setFilters} />
     </div>
   );
@@ -93,18 +108,22 @@ function SearchFilter({
   setFilters: (filters: filters) => void;
 }) {
   return (
-    <div className="hidden flex-row items-center gap-4 self-stretch lg:flex">
-      <Search />
+    <div className="hidden flex-col items-center gap-4 self-stretch lg:flex">
       <Filter setFilters={setFilters} />
     </div>
   );
 }
 
-function CardContainer({ users }: { users: userProps[] }) {
+type CardContainerProps = {
+  users: userProps[];
+  role: string;
+};
+
+function CardContainer(props: CardContainerProps) {
   return (
-    <div className="grid min-h-screen w-full grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
-      {users.map((profile) => (
-        <ProfilePreview {...profile} key={profile.aka} />
+    <div className="flex w-full flex-row flex-wrap justify-center gap-8">
+      {props.users.map((profile: ProfilePreviewProps) => (
+        <ProfilePreview key={profile.aka} props={profile} role={props.role} />
       ))}
     </div>
   );

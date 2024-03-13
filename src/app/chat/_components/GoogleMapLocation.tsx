@@ -2,15 +2,15 @@
 import React from "react";
 import {
   useJsApiLoader,
-  GoogleMap,
-  MarkerF,
+  // GoogleMap,
+  // MarkerF,
   Autocomplete,
 } from "@react-google-maps/api";
-import usePlacesAutoComplete, {
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
-import { useMemo, useRef, useState } from "react";
+// import usePlacesAutoComplete, {
+//   getGeocode,
+//   getLatLng,
+// } from "use-places-autocomplete";
+import { useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { type Library } from "@googlemaps/js-api-loader";
 

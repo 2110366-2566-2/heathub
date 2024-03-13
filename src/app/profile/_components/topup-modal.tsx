@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-
 import { topUp } from "@/action/payment";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +19,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useMediaQuery } from "@/hooks/use-media-query";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
 
 export function TopUpDialog() {
   "use client";
@@ -30,7 +31,20 @@ export function TopUpDialog() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">Edit Profile</Button>
+          <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
+            <div className="relative h-6 w-8">
+              <FontAwesomeIcon
+                className="h-6 w-6 text-secondary-500"
+                icon={faWallet}
+              />
+              <FontAwesomeIcon
+                className="absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-secondary-300 p-[2px] text-white"
+                fontWeight={900}
+                icon={faPlus}
+              />
+            </div>
+            Top Up
+          </button>
         </DialogTrigger>
         <DialogContent className="bg-white sm:max-w-[425px]">
           <DialogHeader>
@@ -50,7 +64,20 @@ export function TopUpDialog() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
+        <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
+          <div className="relative h-6 w-8">
+            <FontAwesomeIcon
+              className="h-6 w-6 text-secondary-500"
+              icon={faWallet}
+            />
+            <FontAwesomeIcon
+              className="absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-secondary-300 p-[2px] text-white"
+              fontWeight={900}
+              icon={faPlus}
+            />
+          </div>
+          Top Up
+        </button>
       </DrawerTrigger>
       <DrawerContent className="bg-white">
         <DrawerHeader>
@@ -67,7 +94,7 @@ export function TopUpDialog() {
   );
 }
 
-function TopUpForm({ className }: React.ComponentProps<"form">) {
+function TopUpForm() {
   return (
     <form action={topUp} className="flex flex-col gap-6 p-4 pt-6">
       <div className="mx-auto flex w-full flex-col gap-1">

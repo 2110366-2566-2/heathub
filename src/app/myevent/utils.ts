@@ -1,4 +1,4 @@
-import { EventStatus } from "./components/Card";
+import { EventStatus } from "./_components/Card";
 
 export function parseTabValue(
   value: string,
@@ -20,10 +20,16 @@ export function parseEventStatus(dateTime: Date, status: string): EventStatus {
     isStarted = true;
   }
 
-  if ((status == "payment-await" || status == "payment-done") && isStarted) {
+  if (status == "payment-done" && isStarted) {
     return EventStatus.STARTED;
   } else if (status == "completed") {
     return EventStatus.COMPLETED;
+  } else if (
+    status == "pending" ||
+    status == "cancelled" ||
+    status == "rejected"
+  ) {
+    return EventStatus.CANCELLED;
   } else {
     return EventStatus.NOTSTARTED;
   }

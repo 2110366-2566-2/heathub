@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -9,21 +10,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-import Image from "next/image";
-import { StatusTag } from "./StatusTag";
-import { type EventStatus } from "./Card";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendar,
   faCircleInfo,
   faComment,
   faLocationDot,
-  faMessage,
 } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@/components/ui/button";
-import { formatDate } from "../utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import Link from "next/link";
+import { formatDate } from "../utils";
+import { type EventStatus } from "./Card";
+import { StatusTag } from "./StatusTag";
 
 interface EventDetailProps {
   userID: string;
@@ -58,7 +56,13 @@ export function EventDetail(props: EventDetailProps) {
         <DialogDescription className="flex flex-col gap-3">
           <div className="flex w-full flex-row items-center gap-3 rounded-md bg-neutral-100 p-3">
             <div className="relative h-9 w-9 overflow-hidden rounded-full">
-              <Image src={props.image} fill objectFit="cover" alt="logo" />
+              <Image
+                src={props.image}
+                unoptimized
+                fill
+                objectFit="cover"
+                alt="logo"
+              />
             </div>
             <h4 className="h4 flex-1 font-bold text-primary-800">
               {props.name}

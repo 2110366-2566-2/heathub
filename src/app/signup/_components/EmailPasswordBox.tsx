@@ -5,20 +5,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/utils/tailwind-merge";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
+import { type User } from "../interfaces";
 
 interface EmailPasswordBoxProps {
   setValid: (valid: boolean) => void;
   formRef: React.RefObject<HTMLFormElement>;
+  data: User;
+  emailNotice: string;
+  setEmailNotice: (emailNotice: string) => void;
 }
 
 const emailSchema = z.string().email();
 
 export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
-  const { setValid, formRef } = props;
-
-  const [emailNotice, setEmailNotice] = useState<string>("");
+  const { setValid, formRef, data, emailNotice, setEmailNotice } = props;
+  const [emailText, setEmailText] = useState(data.Email ? data.Email : "");
+  const [passwordText, setPasswordText] = useState(
+    data.Password ? data.Password : "",
+  );
+  const [cfPasswordText, setCfPasswordText] = useState(
+    data.Password ? data.Password : "",
+  );
 
   const [passwordNotice, setPasswordNotice] = useState<string>("");
 
@@ -26,7 +35,10 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
     useState<string>("");
 
   const formCheck = () => {
-    setEmailNotice("");
+    console.log("formCheck");
+    if (emailNotice != "This Email is already exits.") {
+      setEmailNotice("");
+    }
     setPasswordNotice("");
     setConfirmPasswordNotice("");
     if (!formRef.current) {
@@ -65,6 +77,10 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
     setValid(valid);
   };
 
+  useEffect(() => {
+    formCheck();
+  }, []);
+
   return (
     <Card className="w-fit justify-center rounded-3xl border-solid border-primary-500 bg-white p-12">
       <CardContent className="flex h-full w-full justify-center p-0">
@@ -74,10 +90,14 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               Email
             </Label>
             <Input
+              value={emailText}
               type="text"
               name="Email"
               placeholder="Enter your Email"
               onKeyUp={formCheck}
+              onChange={(e) => {
+                setEmailText(e.currentTarget.value);
+              }}
             />
             <span className="text-sm text-red-500">{emailNotice}</span>
           </div>
@@ -86,13 +106,17 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               Password
             </Label>
             <Input
+              value={passwordText}
               type="password"
               name="Password"
               placeholder="Enter your password"
               onKeyUp={formCheck}
+              onChange={(e) => {
+                setPasswordText(e.currentTarget.value);
+              }}
             />
             <div
-              className={cn("text-sm text-subtle ", {
+              className={cn("text-sm text-placeholder ", {
                 "text-red-500": passwordNotice,
               })}
             >
@@ -104,10 +128,14 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
               Confirm Password
             </Label>
             <Input
+              value={cfPasswordText}
               type="password"
               name="Confirm Password"
               placeholder="Enter your password"
               onKeyUp={formCheck}
+              onChange={(e) => {
+                setCfPasswordText(e.currentTarget.value);
+              }}
             />
             <span className="text-sm text-red-500">
               {confirmPasswordNotice}

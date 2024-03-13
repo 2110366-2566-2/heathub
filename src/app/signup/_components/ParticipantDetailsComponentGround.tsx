@@ -31,50 +31,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     }
   }, [userData]);
 
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const handleButtonClick = async () => {
-    if (!formRef.current) {
-      return;
-    }
-
-    const formData = new FormData(formRef.current);
-    const firstnameInput = formData.get("Firstname") as string | null;
-    const lastnameInput = formData.get("Lastname") as string | null;
-    const AKAInput = formData.get("AKA") as string | null;
-    const DOBInput = formData.get("Date of birth") as string | null;
-    const imageInput = formData.get("Image") as File | null;
-
-    if (
-      !gender ||
-      !firstnameInput ||
-      !lastnameInput ||
-      !AKAInput ||
-      !DOBInput ||
-      gender == "Custom" ||
-      gender == ""
-    ) {
-      setNotice("Please fill in your details.");
-      setModalPop(false);
-      return;
-    }
-    if (!imageInput) {
-      setNotice("Please upload a profile picture.");
-      return;
-    }
-
-    const participant: Participant = {
-      Firstname: firstnameInput,
-      Lastname: lastnameInput,
-      AKA: AKAInput,
-      DOB: new Date(DOBInput),
-      Gender: gender,
-      Email: data.Email,
-      Password: data.Password,
-      Image: imageInput ? imageInput : null,
-    };
-    setData(participant);
-
+  const handleSubmit = async (participant: Participant) => {
     if (!participant.Image) {
       setNotice("Please upload a profile picture.");
       return;
@@ -89,18 +46,64 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       return;
     }
     const imageUrl = res[0]?.url ? res[0].url : "";
+    await signUpPaticipate.mutateAsync({
+      email: participant.Email,
+      password: participant.Password,
+      aka: participant.Username,
+      firstName: participant.Firstname,
+      lastName: participant.Lastname,
+      gender: participant.Gender,
+      bio: "",
+      dateOfBirth: participant.DOB,
+      imageUrl: imageUrl,
+    });
+  };
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleButtonClick = async () => {
+    if (!formRef.current) {
+      return;
+    }
+
+    const formData = new FormData(formRef.current);
+
+    const firstnameInput = formData.get("Firstname") as string | null;
+    const lastnameInput = formData.get("Lastname") as string | null;
+    const usernameInput = formData.get("Username") as string | null;
+    const DOBInput = formData.get("Date of birth") as string | null;
+    const imageInput = formData.get("Image") as File | null;
+
+    if (
+      !gender ||
+      !firstnameInput ||
+      !lastnameInput ||
+      !usernameInput ||
+      !DOBInput ||
+      gender == "Custom" ||
+      gender == ""
+    ) {
+      setNotice("Please fill in your details.");
+      return;
+    }
+    if (!imageInput) {
+      setNotice("Please upload a profile picture.");
+      return;
+    }
+
+    const participant: Participant = {
+      Firstname: firstnameInput,
+      Lastname: lastnameInput,
+      Username: usernameInput,
+      DOB: new Date(DOBInput),
+      Gender: gender,
+      Email: data.Email,
+      Password: data.Password,
+      Image: imageInput,
+    };
+    setData(participant);
     try {
-      await signUpPaticipate.mutateAsync({
-        email: participant.Email,
-        password: participant.Password,
-        aka: participant.AKA,
-        firstName: participant.Firstname,
-        lastName: participant.Lastname,
-        gender: participant.Gender,
-        bio: "",
-        dateOfBirth: participant.DOB,
-        imageUrl: imageUrl,
-      });
+      await handleSubmit(participant);
       setModalPop(true);
     } catch (error) {
       if (error instanceof Error) {
@@ -108,13 +111,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       } else {
         setNotice("Something went wrong. Please try again.");
       }
-      setModalPop(false);
     }
   };
 
   return (
     <div className="flex flex-col items-center gap-y-6 p-6">
-      <div className="h1 text-primary-900">Tell us about yourself</div>
+      <div className="h1 font-bold text-primary-900">
+        Tell us about yourself
+      </div>
 
       <RegisterFormBox formRef={formRef} setGender={setGender} />
       <SuccessButton

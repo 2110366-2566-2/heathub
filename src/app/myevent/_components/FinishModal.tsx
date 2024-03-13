@@ -8,37 +8,35 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { eventRouter } from '@/server/api/routers/event';
 import { api } from "@/trpc/react";
+
 interface EventModalProps {
-  id: number
+  id: number;
   children: React.ReactNode;
 }
 
-export function CancelModal(prop: EventModalProps) {
-
+export function FinishModal(prop: EventModalProps) {
   const { children } = prop;
-  const [error, setError] = useState<string | null>(null);
+  const finishEvent = api.event.finishEvent.useMutation();
+  const utils = api.useUtils();
 
-  const { data: cancelEvent } = eventRouter.cancelEvent.useMutation();
-
-  const handleCancelEvent = async (eventID: number) => {
+  const handleFinishEvent = async (eventID: number) => {
     try {
-      await cancelEvent({ eventID: eventID });
+      await finishEvent.mutateAsync({ eventID: eventID });
+      await utils.event.myEvent.invalidate();
     } catch (error) {
-      setError("Failed to cancel event. Please try again later.");
+      console.error(error);
     }
   };
 
   return (
     <Dialog>
       <DialogTrigger className="flex w-full flex-1">{children}</DialogTrigger>
-      <DialogContent className="bg-white rounded-3xl">
+      <DialogContent className="rounded-3xl bg-white">
         <DialogHeader>
           <DialogTitle className="items-begin flex flex-col gap-1">
             <h3 className="h3 flex flex-1 font-extrabold text-primary-800">
-              Do you want to cancel this event ?
+              Do you want to finish this event ?
             </h3>
             <div className="h6 font-normal text-medium">
               This action will permanently delete the event
@@ -55,8 +53,12 @@ export function CancelModal(prop: EventModalProps) {
             </Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button variant="default" className="bg-primary-500 text-white" onClick={handleCancelEvent}>
-              Cancel Event
+            <Button
+              variant="default"
+              className="bg-primary-500 text-white"
+              onClick={() => handleFinishEvent(prop.id)}
+            >
+              Finish Event
             </Button>
           </DialogClose>
         </DialogFooter>
