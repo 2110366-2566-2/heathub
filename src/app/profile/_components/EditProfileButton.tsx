@@ -17,6 +17,7 @@ import * as React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/utils/tailwind-merge";
 import { api } from "@/trpc/react";
+import { uploadFiles } from "@/components/ui/upload";
 
 interface EditProfileButtonProps {
   cUsername: string;
@@ -31,6 +32,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   const [gender, setGender] = useState(cGender);
   const [usernameText, setUsernameText] = useState(cUsername);
   const [bioText, setBioText] = useState(cBio);
+  const [DOB, setDOB] = useState<Date | undefined>(cDOB);
   const [notice, setNotice] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [isClose, setClose] = useState(false);
@@ -41,6 +43,19 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     setOpen(false);
   }, [isClose]);
 
+  const updateProfile = api.profile.updateProfile.useMutation({
+    onSuccess: (data) => {
+      console.log(data);
+      console.log("success");
+      handleClose();
+      window.location.reload();
+    },
+    onError: (error, variables) => {
+      console.log(error, variables);
+      console.log("error");
+    },
+  });
+  const testUsername = api.auth.isAKAAlreadyExist.useMutation();
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = async () => {
     if (!formRef.current) {
@@ -53,7 +68,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     const bioInput = formData.get("Bio") as string | null;
     const genderInput = gender;
     const DOBInput = new Date();
-    const profileUrl = "";
+    const imageInput = formData.get("Image") as File | null;
 
     if (
       !gender ||
@@ -66,16 +81,48 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       return;
     }
 
-    const testUsername = api.auth.isAKAAlreadyExist.useMutation();
     const isUsernameDup = async () => {
-      return await testUsername.mutateAsync({
-        aka: usernameInput,
-      });
+      return (
+        (await testUsername.mutateAsync({
+          aka: usernameInput,
+        })) && usernameInput != cUsername
+      );
     };
 
     if (await isUsernameDup()) {
       setNotice("This username is already used.");
       return;
+    }
+
+    let imageUrl;
+    if (!!imageInput && imageInput.name != "") {
+      const files = [imageInput];
+      const res = await uploadFiles("signupProfileUploader", {
+        files,
+      });
+      if (res.length !== 1) {
+        setNotice("An error occurred");
+        return;
+      }
+      imageUrl = res[0]?.url ? res[0].url : "";
+    } else {
+      imageUrl = imageInput;
+    }
+    console.log("HEEEE = ",usernameInput)
+    try {
+      updateProfile.mutate({
+        bio: bioInput ? bioInput : "",
+        gender: genderInput,
+        aka: usernameInput,
+        dateOfBirth: DOBInput,
+        // imgURL: imageUrl,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        setNotice(error.message);
+      } else {
+        setNotice("Something went wrong. Please try again.");
+      }
     }
   };
 
@@ -89,10 +136,9 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     setGender(cGender);
     setUsernameText(cUsername);
     setBioText(cBio);
+    setDOB(cDOB);
     return;
   };
-
-  const [date, setDate] = useState(new Date());
 
   return (
     <Dialog
@@ -155,12 +201,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
               <Label className="h5 text-high" htmlFor="Date of birth">
                 Date of birth
               </Label>
-              <DatePicker
-                date={date}
-                setDate={() => {
-                  setDate;
-                }}
-              />
+              <DatePicker date={DOB} setDate={setDOB} />
             </div>
             <GenderSelector gender={gender} setGender={setGender} />
           </div>
