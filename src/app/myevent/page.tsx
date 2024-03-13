@@ -63,15 +63,15 @@ export default function Page() {
                 <div className="relative flex w-full items-center gap-3">
                   <FontAwesomeIcon
                     icon={faCalendar}
-                    className="text-secondary-500 h-7 w-7"
+                    className="h-7 w-7 text-secondary-500"
                   />
                   <TabsContent value="upcoming">
-                    <div className="h2 text-primary-900 font-extrabold">
+                    <div className="h2 font-extrabold text-primary-900">
                       Upcoming Event
                     </div>
                   </TabsContent>
                   <TabsContent value="completed">
-                    <div className="h2 text-primary-900 font-extrabold">
+                    <div className="h2 font-extrabold text-primary-900">
                       Completed Event
                     </div>
                   </TabsContent>
@@ -82,7 +82,7 @@ export default function Page() {
                 >
                   <TabsTrigger
                     value="upcoming"
-                    className="h5 text-medium data-[state=active]:bg-secondary-500  relative data-[state=active]:text-white"
+                    className="h5 relative text-medium  data-[state=active]:bg-secondary-500 data-[state=active]:text-white"
                   >
                     Upcoming
                   </TabsTrigger>
@@ -104,13 +104,13 @@ export default function Page() {
             >
               <TabsTrigger
                 value="upcoming"
-                className="h5 text-medium data-[state=active]:bg-secondary-500 relative  w-full data-[state=active]:text-white"
+                className="h5 relative w-full text-medium  data-[state=active]:bg-secondary-500 data-[state=active]:text-white"
               >
                 Upcoming
               </TabsTrigger>
               <TabsTrigger
                 value="completed"
-                className="h5 text-medium data-[state=active]:bg-secondary-500  w-full data-[state=active]:text-white"
+                className="h5 w-full text-medium  data-[state=active]:bg-secondary-500 data-[state=active]:text-white"
               >
                 Completed
               </TabsTrigger>

@@ -93,9 +93,9 @@ export function MessageList({
       <div className="mb-5 flex flex-row items-center gap-2.5">
         <FontAwesomeIcon
           icon={faComment}
-          className={"text-secondary-500 h-8 w-7"}
+          className={"h-8 w-7 text-secondary-500"}
         />
-        <span className="h2 text-primary-900  font-extrabold">Message</span>
+        <span className="h2 font-extrabold  text-primary-900">Message</span>
       </div>
       <div
         id="scroll"
