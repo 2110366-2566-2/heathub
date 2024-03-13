@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/utils/tailwind-merge";
-import { EventDetailCardProps } from "./type";
+import { type EventDetailCardProps } from "./type";
 import EventTag from "./EventTag";
 import { Dayjs } from "@/utils/dayjs";
 import { Button } from "@/components/ui/button";

@@ -9,10 +9,11 @@ import { useIntersection } from "@mantine/hooks";
 import { type Channel } from "pusher-js";
 import { useEffect, useRef, useState } from "react";
 import { usePusher } from "../../_context/PusherContext";
-import ChatEventForm, { type CreateFormInfo } from "./ChatEventCreateForm";
-import ChatEventInfo from "./ChatEventInfo";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
+import { useIntersection } from "@mantine/hooks";
+import { type CreateFormInfo } from "./ChatEventCreateForm";
 import ChatMessageBox from "./ChatMessageBox";
+import ChatEventInfo from "./ChatEventInfo";
 export function ChatRoom({ withUser }: { withUser: string }) {
   const [messages, setMessages] = useState<RecentMessage[]>([]);
   const [isOpenChatEvent, setOpenChatEvent] = useState<boolean>(false);

@@ -4,14 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faPlus } from "@fortawesome/free-solid-svg-icons";
 import LoadingSVG from "./LoadingSVG";
 import { cn } from "@/utils/tailwind-merge";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerOverlay,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import ChatEventForm from "./ChatEventCreateForm";
-import { CreateFormInfo } from "./ChatEventCreateForm";
+import { type CreateFormInfo } from "./ChatEventCreateForm";
 import { useMediaQuery } from "react-responsive";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogContent, DialogTrigger } from "@/components/ui/dialog";

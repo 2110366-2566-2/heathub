@@ -1,4 +1,4 @@
-import { EventDetailCardProps } from "./type";
+import { type EventDetailCardProps } from "./type";
 import { Tag } from "@/app/_components/tag";
 import { cn } from "@/utils/tailwind-merge";
 

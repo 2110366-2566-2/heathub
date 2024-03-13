@@ -1,11 +1,6 @@
 "use client";
-import { useState, useMemo } from "react";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
-import usePlacesAutocomplete, {
-  type LatLng,
-  getGeocode,
-  getLatLng,
-} from "use-places-autocomplete";
+// import { GoogleMap, Marker } from "@react-google-maps/api";
+import usePlacesAutocomplete, { getGeocode } from "use-places-autocomplete";
 import {
   Combobox,
   ComboboxInput,
@@ -14,31 +9,29 @@ import {
   ComboboxPopover,
 } from "@reach/combobox";
 
-import { Popover, PopoverContent } from "@/components/ui/popover";
+// function Map() {
+//   const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
+//   const [selected, setSelected] = useState<LatLng>(center);
+//   const handleSelected = (location: LatLng) => {
+//     setSelected(location);
+//   };
 
-function Map() {
-  const center = useMemo(() => ({ lat: 43.45, lng: -80.49 }), []);
-  const [selected, setSelected] = useState<LatLng>(center);
-  const handleSelected = (location: LatLng) => {
-    setSelected(location);
-  };
+//   return (
+//     <>
+//       <div className="places-container">
+//         {/* <PlacesAutocomplete setSelected={handleSelected} /> */}
+//       </div>
 
-  return (
-    <>
-      <div className="places-container">
-        {/* <PlacesAutocomplete setSelected={handleSelected} /> */}
-      </div>
-
-      <GoogleMap
-        zoom={10}
-        center={center}
-        mapContainerClassName="map-container"
-      >
-        {selected && <Marker position={selected} />}
-      </GoogleMap>
-    </>
-  );
-}
+//       <GoogleMap
+//         zoom={10}
+//         center={center}
+//         mapContainerClassName="map-container"
+//       >
+//         {selected && <Marker position={selected} />}
+//       </GoogleMap>
+//     </>
+//   );
+// }
 
 export const PlacesAutocomplete = ({
   setSelected,
@@ -59,7 +52,7 @@ export const PlacesAutocomplete = ({
     clearSuggestions();
 
     const results = await getGeocode({ address });
-    const { lat, lng } = getLatLng(results[0]!);
+    // const { lat, lng } = getLatLng(results[0]!);
     setSelected(results[0]?.formatted_address);
   };
 
