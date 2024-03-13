@@ -1,10 +1,6 @@
 "use client";
-import { Dialog, DialogContent} from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerOverlay,
-} from "@/components/ui/drawer";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerOverlay } from "@/components/ui/drawer";
 import { useMediaQuery } from "react-responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

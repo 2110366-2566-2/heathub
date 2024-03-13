@@ -38,9 +38,12 @@ export default function ChatMessageBox({
         <Drawer open={isOpenChatEvent} onOpenChange={setOpenChatEvent}>
           <DrawerTrigger className="cursor-pointer">
             <button
-              className={cn("flex items-center justify-center aspect-square h-8 w-8 rounded-full bg-primary-500", {
-                hidden: !(userRole === "host"),
-              })}
+              className={cn(
+                "flex aspect-square h-8 w-8 items-center justify-center rounded-full bg-primary-500",
+                {
+                  hidden: !(userRole === "host"),
+                },
+              )}
               type="button"
             >
               <FontAwesomeIcon
@@ -58,9 +61,12 @@ export default function ChatMessageBox({
         <Dialog open={isOpenChatEvent} onOpenChange={setOpenChatEvent}>
           <DialogTrigger className="cursor-pointer">
             <button
-              className={cn("flex items-center justify-center aspect-square h-8 w-8 rounded-full bg-primary-500", {
-                hidden: !(userRole === "host"),
-              })}
+              className={cn(
+                "flex aspect-square h-8 w-8 items-center justify-center rounded-full bg-primary-500",
+                {
+                  hidden: !(userRole === "host"),
+                },
+              )}
               type="button"
             >
               <FontAwesomeIcon

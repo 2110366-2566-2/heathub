@@ -17,15 +17,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/utils/tailwind-merge";
 
 export default function ProfileDetails(props: ProfilePreviewProps) {
-  const {
-    interests,
-    image,
-    name,
-    gender,
-    about,
-    dateOfBirth,
-    id,
-  } = props;
+  const { interests, image, name, gender, about, dateOfBirth, id } = props;
   const genderName = gender == "NotToSay" ? "Prefer not to say" : gender;
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   return (

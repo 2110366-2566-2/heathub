@@ -7,11 +7,9 @@ import ProfileContainer, {
 
 export default async function Profile() {
   const user2 = await serverapi.auth.me.query();
-  const user = await serverapi.user.getUserPublicData.query(
-    {
-      userID: user2?.userId ?? "",
-    },
-  );
+  const user = await serverapi.user.getUserPublicData.query({
+    userID: user2?.userId ?? "",
+  });
   if (!user) {
     redirect("/");
   }
@@ -44,7 +42,7 @@ export default async function Profile() {
       lastName: user.lastName,
       gender: user.gender,
       dateOfBirth: user.dateOfBirth ?? new Date(),
-      id : user2?.userId?? ""
+      id: user2?.userId ?? "",
     };
   } else {
     show = {
@@ -61,8 +59,7 @@ export default async function Profile() {
       lastName: user.lastName,
       gender: user.gender,
       dateOfBirth: user.dateOfBirth ?? new Date(),
-      id : user2?.userId?? ""
-
+      id: user2?.userId ?? "",
     };
   }
   console.log(show);

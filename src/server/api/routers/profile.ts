@@ -38,7 +38,7 @@ export const profileRouter = createTRPCRouter({
           profileImageURL: newProfile.imageURL,
         })
         .where(eq(user.id, ctx.session?.user?.userId));
-        
+
       const outDatedUnconfirmedProfileImages =
         await tx.query.unconfirmedUserProfileImage.findMany({
           where: and(
