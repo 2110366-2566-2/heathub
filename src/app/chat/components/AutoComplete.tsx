@@ -62,8 +62,8 @@ export const PlacesAutocomplete = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         disabled={!ready}
-        className="combobox-input w-full rounded-xl border border-primary-200 p-2 text-primary-500 placeholder-primary-400"
-        placeholder="location"
+        className="combobox-input w-full rounded-xl border-primary-200 bg-neutral-100 px-3 py-2 text-primary-500 placeholder-placeholder"
+        placeholder="Location"
       />
       <ComboboxPopover className="z-50" portal={false}>
         <ComboboxList

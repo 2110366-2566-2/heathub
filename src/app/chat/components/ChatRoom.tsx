@@ -61,14 +61,12 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       refetchOnWindowFocus: false,
     },
   );
-  const setChatEvent = () => {
-    setOpenChatEvent((prev) => !prev);
-  };
+
   useEffect(() => {
     chatContainerRef.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [isOpenChatEvent]);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -97,7 +95,6 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const createEvent = api.event.createEvent.useMutation({
     onSuccess: () => {
-      console.log("success create Event");
       setOpenChatEvent(false);
     },
   });
@@ -120,7 +117,6 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   };
 
   const onEventConfirm = (eventData: CreateFormInfo) => {
-    console.log(eventData);
     if (!user) return;
     createEvent.mutate({
       hostUserID: user?.userId,
@@ -144,7 +140,6 @@ export function ChatRoom({ withUser }: { withUser: string }) {
           {messages ? (
             <>
               {reversePost.map((message, i) => {
-                console.log(message.content);
                 let isMine = false;
                 let isShowTop = false;
                 let isShowBot = false;
@@ -218,8 +213,9 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       {user && (
         <ChatMessageBox
           onConfirm={onEventConfirm}
+          isOpenChatEvent={isOpenChatEvent}
           toUserID={withUser}
-          setOpenChatEvent={setChatEvent}
+          setOpenChatEvent={setOpenChatEvent}
           userRole={user.role}
         />
       )}

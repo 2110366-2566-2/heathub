@@ -33,6 +33,7 @@ export interface CreateFormInfo {
   startTime: Date;
   endTime: Date;
 }
+
 export default function ChatEventForm({
   onConfirm,
 }: {
@@ -43,11 +44,10 @@ export default function ChatEventForm({
       message: "location is empty",
     }),
     price: z.coerce.number(),
-    date: z.object({
-      from: z.date(),
-      to: z.date().optional(),
-    }),
-    time: z.string({ required_error: "Should add time" }),
+    beginDate: z.date(),
+    endDate: z.date(),
+    startTime: z.string({ required_error: "Should add start time" }),
+    endTime: z.string({ required_error: "Should add end time" }),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,13 +62,18 @@ export default function ChatEventForm({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     //parse price to float
-    const [hours, minutes] = values.time.split(":").map((e) => parseInt(e));
-    let startTime = values.date.from;
-    let endTime = values.date.to ?? values.date.from;
-    startTime.setHours(hours ?? 0);
-    startTime.setMinutes(minutes ?? 0);
-    endTime.setHours(hours ?? 23);
-    endTime.setMinutes(minutes ?? 59);
+;    const [startHours, startMinutes] = values.startTime
+      .split(":")
+      .map((e) => parseInt(e));
+    const [endHours, endMinutes] = values.endTime
+      .split(":")
+      .map((e) => parseInt(e));
+    let startTime = values.beginDate;
+    let endTime = values.endDate;
+    startTime.setHours(startHours ?? 0);
+    startTime.setMinutes(startMinutes ?? 0);
+    endTime.setHours(endHours ?? 23);
+    endTime.setMinutes(endMinutes ?? 59);
     onConfirm({
       location: values.location,
       price: values.price,
@@ -82,11 +87,11 @@ export default function ChatEventForm({
       {" "}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mt-4 flex h-full w-full flex-col items-center"
+        className="flex h-full w-full flex-col items-center p-2"
       >
-        <div className="flex w-full max-w-[376px] flex-col gap-4">
-          <div className="flex flex-col">
-            <div className="h3 font-bold text-primary-800">Create Event</div>
+        <div className="flex w-full flex-col gap-4">
+          <div className=" flex flex-col">
+            <div className="h3 text-primary-800 font-bold">Create Event</div>
             <div className="small text-medium">
               Fill the following details to create an event and this event will
               be show in your chat room.
@@ -103,7 +108,7 @@ export default function ChatEventForm({
                       setSelected={(e) => field.onChange(e)}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               );
             }}
@@ -111,31 +116,25 @@ export default function ChatEventForm({
           <div className="flex w-full flex-row items-start justify-center gap-3">
             <FormField
               control={form.control}
-              name="date"
+              name="beginDate"
               render={({ field }) => (
                 <FormItem className="flex h-fit flex-1 flex-col">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
                         id="date"
-                        variant={"outline"}
                         className={cn(
-                          "w-full  justify-start border-primary-300 bg-white text-left font-normal hover:bg-white",
-                          !field && "text-muted-foreground",
+                          "justify-start-100 border-primary-300 w-full bg-neutral-100 text-left font-normal hover:bg-neutral-200",
+                          !field?.value
+                            ? "text-placeholder"
+                            : "text-primary-500",
                         )}
                       >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {field?.value?.from ? (
-                          field?.value?.to ? (
-                            <>
-                              {format(field?.value?.from, "LLL dd, y")} -{" "}
-                              {format(field?.value?.to, "LLL dd, y")}
-                            </>
-                          ) : (
-                            format(field.value.from, "LLL dd, y")
-                          )
+                        <CalendarIcon className={cn("mr-2 h-4 w-4 ")} />
+                        {field.value ? (
+                          format(field.value, "LLL dd, y")
                         ) : (
-                          <span>Pick a date</span>
+                          <span>Pick a begin date</span>
                         )}
                       </Button>
                     </PopoverTrigger>
@@ -144,32 +143,88 @@ export default function ChatEventForm({
                       align="start"
                     >
                       <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
                         initialFocus
-                        mode="range"
-                        defaultMonth={field?.value?.from}
-                        selected={field?.value}
-                        onSelect={field?.onChange}
-                        numberOfMonths={1}
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="time"
+              name="startTime"
               render={({ field }) => (
                 <FormItem className="flex h-fit w-fit flex-col ">
                   <FormControl>
                     <Input
                       onChange={field.onChange}
                       type="time"
-                      className="w-fit  appearance-none text-primary-500 hover:cursor-pointer"
+                      className="text-primary-500 w-fit appearance-none border-0 bg-neutral-100 hover:cursor-pointer"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex w-full flex-row items-start justify-center gap-3">
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem className="flex h-fit flex-1 flex-col">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        id="date"
+                        className={cn(
+                          "justify-start-100 border-primary-300 w-full bg-neutral-100 text-left font-normal hover:bg-neutral-200",
+                          !field?.value
+                            ? "text-placeholder"
+                            : "text-primary-500",
+                        )}
+                      >
+                        <CalendarIcon className={cn("mr-2 h-4 w-4 ")} />
+                        {field.value ? (
+                          format(field.value, "LLL dd, y")
+                        ) : (
+                          <span>Pick a end date</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-auto bg-white p-0"
+                      align="start"
+                    >
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="endTime"
+              render={({ field }) => (
+                <FormItem className="flex h-fit w-fit flex-col ">
+                  <FormControl>
+                    <Input
+                      onChange={field.onChange}
+                      type="time"
+                      className="text-primary-500 w-fit appearance-none border-0 bg-neutral-100 hover:cursor-pointer"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500" />
                 </FormItem>
               )}
             />
@@ -185,12 +240,12 @@ export default function ChatEventForm({
                     {...field}
                     type="number"
                     autoComplete="off"
-                    className="appearance-none text-primary-500"
+                    className="order-0 text-primary-500 appearance-none border-0 bg-neutral-100"
                     min={0}
                     value={field.value ?? ""}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
@@ -201,9 +256,7 @@ export default function ChatEventForm({
                 Cancel
               </Button>
             </DialogClose>
-            <DialogClose asChild>
-              <Button type="submit">Create Event</Button>
-            </DialogClose>
+            <Button type="submit">Create Event</Button>
           </div>
         </div>
       </form>
