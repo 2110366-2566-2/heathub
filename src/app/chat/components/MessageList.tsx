@@ -86,16 +86,16 @@ export function MessageList({
   return (
     <div
       className={cn(
-        "flex h-screen flex-col justify-center p-9 md:min-w-[452px]",
+        "flex h-screen flex-col justify-center border-r-2 border-neutral-200 p-9 md:min-w-[452px]",
         className,
       )}
     >
       <div className="mb-5 flex flex-row items-center gap-2.5">
         <FontAwesomeIcon
           icon={faComment}
-          className={"h-8 w-7 text-secondary-500"}
+          className={"text-secondary-500 h-8 w-7"}
         />
-        <span className="h2 font-bold  text-primary-900">Message</span>
+        <span className="h2 text-primary-900  font-extrabold">Message</span>
       </div>
       <div
         id="scroll"
