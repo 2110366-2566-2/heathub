@@ -38,6 +38,7 @@ const config = withUt({
         },
         success: "#52D382",
         pending: "#FFC164",
+        toggle: "#FF80AA",
         primary: {
           50: "#e4edff",
           100: "#c3d7ff",
@@ -80,6 +81,13 @@ const config = withUt({
           800: "#1e293b",
           900: "#0f172a",
           950: "#020617",
+        },
+        tag: {
+          green: "#56C683",
+          blue: "#6189D5",
+          yellow: "#FFB35B",
+          red: "#F84B4B",
+          pink: "#F488A9",
         },
       },
       borderRadius: {

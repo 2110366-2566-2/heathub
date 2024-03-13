@@ -10,9 +10,9 @@ export default async function Chat({ params }: { params: { userID: string } }) {
   });
 
   return (
-    <div className="flex h-screen w-full flex-col items-center bg-white">
-      <div className="sticky top-0 z-10 mt-14 flex w-full flex-col items-start gap-2 bg-white px-14 max-lg:mt-6 max-lg:px-6">
-        <div className="flex w-full flex-row items-center gap-[10px]">
+    <div className="flex h-screen w-full flex-col items-center bg-white py-6">
+      <div className="sticky top-0 z-10 flex w-full flex-col items-start gap-2 bg-white">
+        <div className="mb-8 flex w-full flex-row items-center gap-[10px] px-6">
           <Link href="/chat">
             <button className="flex h-6 w-6 flex-row items-center justify-center">
               <FontAwesomeIcon

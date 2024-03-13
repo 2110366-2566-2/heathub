@@ -1,18 +1,18 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
 import {
   CHAT_MESSAGE_EVENT,
   RECENT_MESSAGE_EVENT,
 } from "@/constants/pusher-events";
 import { api } from "@/trpc/react";
 import { type RecentMessage } from "@/types/pusher";
+import { useIntersection } from "@mantine/hooks";
 import { type Channel } from "pusher-js";
+import { useEffect, useRef, useState } from "react";
 import { usePusher } from "../../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
-import { useIntersection } from "@mantine/hooks";
-import ChatEventForm, { type CreateFormInfo } from "./ChatEventCreateForm";
+import { type CreateFormInfo } from "./ChatEventCreateForm";
 import ChatMessageBox from "./ChatMessageBox";
-import ChatEventInfo, { ChatEventInfoInterface } from "./ChatEventInfo";
+import ChatEventInfo from "./ChatEventInfo";
 export function ChatRoom({ withUser }: { withUser: string }) {
   const [messages, setMessages] = useState<RecentMessage[]>([]);
   const [isOpenChatEvent, setOpenChatEvent] = useState<boolean>(false);
@@ -41,8 +41,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
         });
       });
     },
-    cacheTime: 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 
   const { hasNextPage, fetchNextPage } = api.chat.infiniteChat.useInfiniteQuery(
@@ -59,8 +58,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
         }
       },
 
-      refetchOnWindowFocus: true,
-      cacheTime: 0,
+      refetchOnWindowFocus: false,
     },
   );
   const setChatEvent = () => {
@@ -104,6 +102,23 @@ export function ChatRoom({ withUser }: { withUser: string }) {
     },
   });
 
+  const updateEventStatus = (
+    eventId: number,
+    status: "payment-done" | "rejected" | "cancelled",
+  ) => {
+    const newMessages = [...messages];
+    for (const message of newMessages) {
+      if (
+        message.contentType === "event" &&
+        message.content.eventId === eventId
+      ) {
+        message.content.status = status;
+        break;
+      }
+    }
+    setMessages(newMessages);
+  };
+
   const onEventConfirm = (eventData: CreateFormInfo) => {
     console.log(eventData);
     if (!user) return;
@@ -121,85 +136,88 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const reversePost = [...messages].reverse();
   return (
     <>
-      <div
-        className="relative flex h-full w-full flex-col overflow-y-scroll px-14 max-lg:px-6"
-        ref={containerRef}
-      >
-        {messages ? (
-          <>
-            {reversePost.map((message, i) => {
-              let isMine = false;
-              let isShowTop = false;
-              let isShowBot = false;
-              if (message.senderId === user?.userId) {
-                isMine = true;
-              }
-              if (
-                i === messages.length - 1 ||
-                reversePost[i + 1]?.senderId !== message.senderId
-              )
-                isShowBot = true;
-              if (
-                !isMine &&
-                (i === 0 || reversePost[i - 1]?.senderId !== message.senderId)
-              )
-                isShowTop = true;
+      {user && (
+        <div
+          className="relative flex h-full w-full flex-col overflow-y-scroll px-6"
+          ref={containerRef}
+        >
+          {messages ? (
+            <>
+              {reversePost.map((message, i) => {
+                console.log(message.content);
+                let isMine = false;
+                let isShowTop = false;
+                let isShowBot = false;
+                if (message.senderId === user?.userId) {
+                  isMine = true;
+                }
+                if (
+                  i === messages.length - 1 ||
+                  reversePost[i + 1]?.senderId !== message.senderId
+                )
+                  isShowBot = true;
+                if (
+                  !isMine &&
+                  (i === 0 || reversePost[i - 1]?.senderId !== message.senderId)
+                )
+                  isShowTop = true;
 
-              if (message.contentType === "event")
-                return (
-                  <ChatEventInfo
-                    key={message.id}
-                    location={message.content.location}
-                    price={message.content.price}
-                    startTime={message.content.startTime}
-                    endTime={message.content.endTime}
-                    status="success"
-                  />
-                );
-              if (i === 5) {
-                return (
-                  <div key={"hot"}>
-                    <div ref={ref} key={"hot-fix" + i} />
+                if (message.contentType === "event")
+                  return (
+                    <ChatEventInfo
+                      key={message.id}
+                      isMine={isMine}
+                      location={message.content.location}
+                      price={message.content.price}
+                      startTime={message.content.startTime}
+                      endTime={message.content.endTime}
+                      status={message.content.status}
+                      role={user?.role}
+                      eventID={message.content.eventId}
+                      updateStatus={updateEventStatus}
+                    />
+                  );
+                if (i === 5) {
+                  return (
+                    <div key={"hot"}>
+                      <div ref={ref} key={"hot-fix" + i} />
+                      <ChatMessageComponent
+                        key={message.id}
+                        senderName={message.discourserAka}
+                        isShowBot={isShowBot}
+                        isMine={isMine}
+                        isShowTop={isShowTop}
+                        message={message.content}
+                        createdAt={message.createdAt.toString()}
+                        imageUrl={message.discourserImageURL}
+                      />
+                    </div>
+                  );
+                } else {
+                  return (
                     <ChatMessageComponent
                       key={message.id}
                       senderName={message.discourserAka}
                       isShowBot={isShowBot}
                       isMine={isMine}
                       isShowTop={isShowTop}
-                      message={message.content + message.id}
+                      message={message.content}
                       createdAt={message.createdAt.toString()}
                       imageUrl={message.discourserImageURL}
                     />
-                  </div>
-                );
-              } else {
-                return (
-                  <ChatMessageComponent
-                    key={message.id}
-                    senderName={message.discourserAka}
-                    isShowBot={isShowBot}
-                    isMine={isMine}
-                    isShowTop={isShowTop}
-                    message={message.content + message.id}
-                    createdAt={message.createdAt.toString()}
-                    imageUrl={message.discourserImageURL}
-                  />
-                );
-              }
-            })}
-          </>
-        ) : (
-          <p>You have no posts yet.</p>
-        )}
-        <ChatEventForm
-          key=""
-          isOpen={isOpenChatEvent}
-          onConfirm={onEventConfirm}
-        />
-        <div ref={chatContainerRef} />
-      </div>
+                  );
+                }
+              })}
+            </>
+          ) : (
+            <p>You have no messages yet.</p>
+          )}
+          <div ref={chatContainerRef} />
+        </div>
+      )}
       {user && (
         <ChatMessageBox
+          onConfirm={onEventConfirm}
           toUserID={withUser}
           setOpenChatEvent={setChatEvent}
           userRole={user.role}

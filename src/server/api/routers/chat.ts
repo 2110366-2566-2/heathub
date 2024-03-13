@@ -247,9 +247,11 @@ export const chatRouter = createTRPCRouter({
             senderId: e.sender.id,
             contentType: e.contentType,
             content: {
+              eventId: content.id,
               description: content.description,
               location: content.location,
               price: content.price,
+              status: content.status,
               startTime: content.startTime,
               endTime: content.endTime,
             },

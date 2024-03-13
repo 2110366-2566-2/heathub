@@ -1,16 +1,17 @@
 "use client";
+import { RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
+import { generateAvatar } from "@/lib/avatar";
+import { api } from "@/trpc/react";
+import { type RecentMessage } from "@/types/pusher";
+import { cn } from "@/utils/tailwind-merge";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cn } from "@/utils/tailwind-merge";
-import { api } from "@/trpc/react";
-import { usePusher } from "../../_context/PusherContext";
-import { type RecentMessage } from "@/types/pusher";
-import { useState, useEffect, useRef } from "react";
-import { type Channel } from "pusher-js";
-import { RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
-import { MessageCard } from "./MessageCard";
 import { useIntersection } from "@mantine/hooks";
+import { type Channel } from "pusher-js";
+import { useEffect, useRef, useState } from "react";
+import { usePusher } from "../../_context/PusherContext";
 import LoadingSVG from "./LoadingSVG";
+import { MessageCard } from "./MessageCard";
 
 export function MessageList({
   className,
@@ -85,14 +86,14 @@ export function MessageList({
   return (
     <div
       className={cn(
-        "flex h-screen flex-col justify-center bg-subtle p-9 md:min-w-[452px]",
+        "flex h-screen flex-col justify-center p-9 md:min-w-[452px]",
         className,
       )}
     >
-      <div className="mb-5  flex flex-row items-center gap-2.5 pl-4">
+      <div className="mb-5 flex flex-row items-center gap-2.5">
         <FontAwesomeIcon
           icon={faComment}
-          className={"h-8 w-7 text-secondary-400"}
+          className={"h-8 w-7 text-secondary-500"}
         />
         <span className="h2 font-bold  text-primary-900">Message</span>
       </div>
@@ -106,18 +107,33 @@ export function MessageList({
               data.contentType === "text" ||
               data.contentType === "imageURL"
             ) {
-              const buttonBg = pagePathName.includes(data.discourserId)
-                ? "bg-primary-50 hover:bg-primary-50 hover:cursor-default "
-                : "bg-white hover:bg-white hover:drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]";
               return (
                 <MessageCard
-                  className={buttonBg}
+                  isSelected={pagePathName.includes(data.discourserId)}
                   key={data.id}
                   discourserId={data.discourserId}
                   discourserAka={data.discourserAka}
                   lastestMessage={data.content}
                   createdAt={data.createdAt?.toString()} // Applying optional chaining here
-                  imageUrl={data.discourserImageURL}
+                  imageUrl={
+                    data.discourserImageURL ||
+                    generateAvatar(data.discourserAka)
+                  }
+                />
+              );
+            } else if (data.contentType === "event") {
+              return (
+                <MessageCard
+                  isSelected={pagePathName.includes(data.discourserId)}
+                  key={data.id}
+                  discourserId={data.discourserId}
+                  discourserAka={data.discourserAka}
+                  lastestMessage={"New Event"}
+                  createdAt={data.createdAt?.toString()} // Applying optional chaining here
+                  imageUrl={
+                    data.discourserImageURL ||
+                    generateAvatar(data.discourserAka)
+                  }
                 />
               );
             }
