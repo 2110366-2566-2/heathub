@@ -47,7 +47,7 @@ export enum EventStatus {
 }
 
 export function Card(prop: EventProps) {
-  const role = prop.role
+  const role = prop.role;
   const CardButton = () => {
     switch (prop.status) {
       case EventStatus.STARTED:
