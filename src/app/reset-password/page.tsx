@@ -28,7 +28,7 @@ export default function ForgetPassword() {
   const [url, setUrl] = useState<URL | null>(null);
   useEffect(() => {
     if (user) {
-      redirect("/");
+      redirect("/signin");
     }
   }, [user]);
 
