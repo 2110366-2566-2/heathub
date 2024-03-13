@@ -1,22 +1,17 @@
 "use client";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent} from "@/components/ui/dialog";
 import {
   Drawer,
   DrawerContent,
   DrawerOverlay,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
-import { TagList, tagStyle } from "@/utils/icon-mapping";
 import { useMediaQuery } from "react-responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
-  faStar,
   faKey,
   faCircleInfo,
 } from "@fortawesome/free-solid-svg-icons";
-import { cn } from "@/utils/tailwind-merge";
-import { Toggle } from "@/components/ui/toggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { type ProfilePreviewProps } from "./profile-container";

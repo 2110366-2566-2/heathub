@@ -1,13 +1,11 @@
 "use client";
-import { useMediaQuery } from "react-responsive";
 import { MyAccountPreview } from "./my-account";
 import { type TagList } from "@/utils/icon-mapping";
 import PaymentCard from "./payment-card";
 import ProfileDetails from "./ProfileDetails";
 import MyReview from "./MyReview";
-import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 export type ProfilePreviewProps = {

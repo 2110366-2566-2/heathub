@@ -15,16 +15,12 @@ import {
 } from "@/components/ui/drawer";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/utils/tailwind-merge";
-import { Toggle } from "@/components/ui/toggle";
 
 export default function ProfileDetails(props: ProfilePreviewProps) {
   const {
     interests,
     image,
     name,
-    age,
-    firstName,
-    lastName,
     gender,
     about,
     dateOfBirth,
