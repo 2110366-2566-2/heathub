@@ -25,21 +25,14 @@ export default function Card(props: ProfilePreviewProps) {
       </div>
 
       <div className="aspect-9/10 relative h-full max-h-[264px] overflow-hidden rounded-lg">
-        {image ? (
-          <Image
-            src={image}
-            alt="card"
-            fill
-            className="object-cover object-top"
-            draggable="false"
-          />
-        ) : (
-          <img
-            className="object-cover object-top"
-            src={generateAvatar(aka)}
-            alt={`Avatar of ${aka}`}
-          ></img>
-        )}
+        <Image
+          src={image || generateAvatar(aka)}
+          alt="card"
+          fill
+          className="object-cover object-top"
+          draggable="false"
+          unoptimized={!image}
+        />
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex flex-row gap-2">

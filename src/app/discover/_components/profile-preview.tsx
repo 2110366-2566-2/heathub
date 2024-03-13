@@ -74,20 +74,13 @@ function DialogProfile(props: ProfileProps) {
     >
       <div className="relative ">
         <div className="h-full min-w-[400px] overflow-hidden rounded-md">
-          {image ? (
-            <Image
-              src={image}
-              alt="card"
-              className="rounded-md object-cover object-top"
-              fill
-            />
-          ) : (
-            <img
-              src={generateAvatar(props.props.aka)}
-              className="h-full rounded-md object-cover object-top"
-              alt={`Avatar of ${props.props.aka}`}
-            ></img>
-          )}
+          <Image
+            src={image || generateAvatar(props.props.aka)}
+            alt="card"
+            className="rounded-md object-cover object-top"
+            unoptimized={!image}
+            fill
+          />
         </div>
         <div className="absolute right-[-28px] top-[-20px] z-30 h-16 w-24 text-[#FFC661]">
           <RatingIcon rating={rating} />
