@@ -3,16 +3,17 @@ import {
   CHAT_MESSAGE_EVENT,
   RECENT_MESSAGE_EVENT,
 } from "@/constants/pusher-events";
+import { generateAvatar } from "@/lib/avatar";
 import { api } from "@/trpc/react";
 import { type RecentMessage } from "@/types/pusher";
 import { useIntersection } from "@mantine/hooks";
 import { type Channel } from "pusher-js";
 import { useEffect, useRef, useState } from "react";
 import { usePusher } from "../../_context/PusherContext";
-import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
 import { type CreateFormInfo } from "./ChatEventCreateForm";
-import ChatMessageBox from "./ChatMessageBox";
 import ChatEventInfo from "./ChatEventInfo";
+import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
+import ChatMessageBox from "./ChatMessageBox";
 export function ChatRoom({ withUser }: { withUser: string }) {
   const [messages, setMessages] = useState<RecentMessage[]>([]);
   const [isOpenChatEvent, setOpenChatEvent] = useState<boolean>(false);
@@ -184,7 +185,10 @@ export function ChatRoom({ withUser }: { withUser: string }) {
                         isShowTop={isShowTop}
                         message={message.content}
                         createdAt={message.createdAt.toString()}
-                        imageUrl={message.discourserImageURL}
+                        imageUrl={
+                          message.discourserImageURL ||
+                          generateAvatar(message.discourserAka)
+                        }
                       />
                     </div>
                   );
@@ -198,7 +202,10 @@ export function ChatRoom({ withUser }: { withUser: string }) {
                       isShowTop={isShowTop}
                       message={message.content}
                       createdAt={message.createdAt.toString()}
-                      imageUrl={message.discourserImageURL}
+                      imageUrl={
+                        message.discourserImageURL ||
+                        generateAvatar(message.discourserAka)
+                      }
                     />
                   );
                 }

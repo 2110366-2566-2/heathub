@@ -8,7 +8,7 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useIntersection } from "@mantine/hooks";
 import { type Channel } from "pusher-js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { usePusher } from "../../_context/PusherContext";
 import LoadingSVG from "./LoadingSVG";
 import { MessageCard } from "./MessageCard";
@@ -23,7 +23,7 @@ export function MessageList({
   "use client";
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
-  const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
+  // const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
@@ -35,34 +35,29 @@ export function MessageList({
           message.discourserId !== data.userId
         )
           return;
-        setRecentMessages((prev) => {
-          const newRecentMessages = prev.filter((e) => {
-            return e.discourserId !== message.discourserId;
-          });
-          const newm = [message, ...newRecentMessages];
-          return newm;
-        });
+        // setRecentMessages((prev) => {
+        //   const newRecentMessages = prev.filter((e) => {
+        //     return e.discourserId !== message.discourserId;
+        //   });
+        //   const newm = [message, ...newRecentMessages];
+        //   return newm;
+        // });
       });
     },
     refetchOnWindowFocus: false,
   });
 
-  const { hasNextPage, fetchNextPage } = api.chat.recentChats.useInfiniteQuery(
-    {
-      limit: 10,
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      onSuccess: (data) => {
-        const lastestPage = data.pages.at(-1)?.messages;
-        if (lastestPage) {
-          setRecentMessages((prev) => [...prev, ...lastestPage]);
-        }
+  const { hasNextPage, fetchNextPage, data } =
+    api.chat.recentChats.useInfiniteQuery(
+      {
+        limit: 10,
       },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
 
-      refetchOnWindowFocus: false,
-    },
-  );
+        refetchOnWindowFocus: false,
+      },
+    );
   const lastPostRef = useRef<HTMLElement>(null);
   const { ref, entry } = useIntersection({
     root: lastPostRef.current,
@@ -103,42 +98,44 @@ export function MessageList({
         className="scrollbar-hide m-0 flex h-full flex-col items-center gap-4 overflow-y-auto  rounded-lg bg-none"
       >
         {user &&
-          recentMessages?.map((data) => {
-            if (
-              data.contentType === "text" ||
-              data.contentType === "imageURL"
-            ) {
-              return (
-                <MessageCard
-                  isSelected={pagePathName.includes(data.discourserId)}
-                  key={data.id}
-                  discourserId={data.discourserId}
-                  discourserAka={data.discourserAka}
-                  lastestMessage={data.content}
-                  createdAt={data.createdAt?.toString()} // Applying optional chaining here
-                  imageUrl={
-                    data.discourserImageURL ||
-                    generateAvatar(data.discourserAka)
-                  }
-                />
-              );
-            } else if (data.contentType === "event") {
-              return (
-                <MessageCard
-                  isSelected={pagePathName.includes(data.discourserId)}
-                  key={data.id}
-                  discourserId={data.discourserId}
-                  discourserAka={data.discourserAka}
-                  lastestMessage={"New Event"}
-                  createdAt={data.createdAt?.toString()} // Applying optional chaining here
-                  imageUrl={
-                    data.discourserImageURL ||
-                    generateAvatar(data.discourserAka)
-                  }
-                />
-              );
-            }
-          })}
+          data?.pages.map((page) =>
+            page.messages.map((data) => {
+              if (
+                data.contentType === "text" ||
+                data.contentType === "imageURL"
+              ) {
+                return (
+                  <MessageCard
+                    isSelected={pagePathName.includes(data.discourserId)}
+                    key={data.id}
+                    discourserId={data.discourserId}
+                    discourserAka={data.discourserAka}
+                    lastestMessage={data.content}
+                    createdAt={data.createdAt?.toString()} // Applying optional chaining here
+                    imageUrl={
+                      data.discourserImageURL ||
+                      generateAvatar(data.discourserAka)
+                    }
+                  />
+                );
+              } else if (data.contentType === "event") {
+                return (
+                  <MessageCard
+                    isSelected={pagePathName.includes(data.discourserId)}
+                    key={data.id}
+                    discourserId={data.discourserId}
+                    discourserAka={data.discourserAka}
+                    lastestMessage={"New Event"}
+                    createdAt={data.createdAt?.toString()} // Applying optional chaining here
+                    imageUrl={
+                      data.discourserImageURL ||
+                      generateAvatar(data.discourserAka)
+                    }
+                  />
+                );
+              }
+            }),
+          )}
         {hasNextPage && (
           <div ref={ref}>
             <LoadingSVG color="#F55B8E" />
