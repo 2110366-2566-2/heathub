@@ -6,7 +6,7 @@ import { Dayjs } from "@/utils/dayjs";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 import ConfirmEventPayment from "./ConfirmEventPayment";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 export interface ChatEventInfoInterface {
   eventID: number;
@@ -76,31 +76,31 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
             </div>
             <EventTag type={status} />
           </div>
-          <div className="text-mediumesdium text-sm">
+          <div className="text-sm text-medium">
             Please check the details before confirming the event
           </div>
         </div>
         <div className="flex flex-col gap-2">
           <div className="flex flex-row justify-between">
-            <div className="h6  flex-1 text-medium">Location</div>
-            <div className="h6 font-high text-bold text-right text-high">
+            <div className="h6 flex-1 text-medium">Location</div>
+            <div className="h6 text-right font-bold text-high">
               {info.location}
             </div>
           </div>
           <div className="flex flex-row justify-between">
-            <div className="h6  flex-1 text-medium">Price</div>
-            <div className="h6 font- font-boldold text-high">{price} Baht</div>
+            <div className="h6 flex-1 text-medium">Price</div>
+            <div className="h6 font-bold text-high">{price} Baht</div>
           </div>
           <div className="flex flex-row justify-between">
-            <div className="h6 flex-11 flex text-medium">Start Date</div>
+            <div className="h6 flex-1 text-medium">Start Date</div>
             <div className="h6 text-right font-bold text-high">
-              {Dayjs(startTime).format("	dddd, MMMM D, YYYY [ at ] HH:mm")}
+              {Dayjs(startTime).format("	dddd, MMMM D, YYYY [ at ] hh:mm")}
             </div>
           </div>
           <div className="flex flex-row justify-between">
-            <div className="h6  flex-1 text-medium">End Date</div>
+            <div className="h6 flex-1 text-medium">End Date</div>
             <div className="h6 text-right font-bold text-high">
-              {Dayjs(endTime).format("	dddd, MMMM D, YYYY [ at ] HH:mm")}
+              {Dayjs(endTime).format("	dddd, MMMM D, YYYY [ at ] hh:mm")}
             </div>
           </div>
           {status === "pending" &&
