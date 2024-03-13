@@ -8,6 +8,7 @@ import {
   faChevronLeft,
   faLock,
   faUnlockKeyhole,
+  faCircleInfo
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -117,7 +118,8 @@ export default function ResetPassword({
             <button className="absolute flex h-6 w-6 items-center justify-center">
               <FontAwesomeIcon
                 icon={faChevronLeft}
-                className="absolute h-4 text-high"
+                className="absolute text-high"
+                size="lg"
               />
             </button>
           </Link>
@@ -128,7 +130,8 @@ export default function ResetPassword({
               <div className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faLock}
-                  className="h-12 text-white lg:h-8"
+                  className=" text-white lg:text-[32px]"
+                  size="3x"
                 />
               </div>
               <div className="flex h-full w-full flex-col justify-between gap-8 lg:h-fit lg:gap-9 ">
@@ -152,7 +155,8 @@ export default function ResetPassword({
               <div className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faUnlockKeyhole}
-                  className="h-12 text-white lg:h-8"
+                  className="text-white lg:text-[32px]"
+                  size="3x"
                 />
               </div>
               <div className="flex h-full w-full flex-col gap-8 lg:gap-9">
@@ -179,10 +183,20 @@ export default function ResetPassword({
                           placeholder="Enter new password"
                           {...register("password")}
                         />
-                        {errors.password && (
-                          <p className="mt-2 text-xs text-red-500">
-                            {errors.password?.message}
-                          </p>
+                        {errors.password ? (
+                          <div className="flex items-center">
+                            <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
+                            <p className="px-1 text-xs text-red-500">
+                              {errors.password.message}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="flex items-center">
+                            <FontAwesomeIcon icon={faCircleInfo} className="text-medium" size="xs" />
+                            <p className="px-1 text-xs text-medium">
+                              {"Password must be at least 8 characters"}
+                            </p>
+                          </div>
                         )}
                       </div>
                       <div className="flex w-full flex-col gap-1">
@@ -197,9 +211,12 @@ export default function ResetPassword({
                           {...register("confirmPassword")}
                         />
                         {errors.confirmPassword && (
-                          <p className="mt-2 text-xs text-red-500">
-                            {errors.confirmPassword?.message}
+                          <div className="flex items-center">
+                          <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
+                          <p className="px-1 text-xs text-red-500">
+                            {errors.confirmPassword.message}
                           </p>
+                        </div>
                         )}
                       </div>
                     </div>

@@ -4,7 +4,7 @@ import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faCircleInfo, faKey } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -72,11 +72,12 @@ export default function ForgetPassword() {
           timer(--x);
         }, 1000);
       };
-      timer(5);
+      timer(30);
     } catch (e) {
       setStatus("idle");
     }
   };
+
   const { toast } = useToast();
 
   const {
@@ -99,7 +100,8 @@ export default function ForgetPassword() {
           <button className="absolute flex h-6 w-6 flex-row items-center justify-center">
             <FontAwesomeIcon
               icon={faChevronLeft}
-              className="absolute h-4 text-high"
+              className="absolute text-high"
+              size="lg"
             />
           </button>
         </Link>
@@ -109,7 +111,8 @@ export default function ForgetPassword() {
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faKey}
-                  className="h-12 text-neutral-0 lg:h-8"
+                  className="text-neutral-0 lg:text-[32px]"
+                  size="3x"
                 />
               </div>
               <div className="flex flex-col items-center gap-3">
@@ -138,9 +141,12 @@ export default function ForgetPassword() {
                       {...register("email")}
                     />
                     {errors.email && (
-                      <p className="mt-2 text-xs italic text-red-500">
-                        {errors.email?.message}
+                      <div className="flex items-center">
+                      <FontAwesomeIcon icon={faCircleInfo} className="text-red-500" size="xs" />
+                      <p className="px-1 text-xs text-red-500">
+                        {errors.email.message}
                       </p>
+                    </div>
                     )}
                   </div>
                   <Button
