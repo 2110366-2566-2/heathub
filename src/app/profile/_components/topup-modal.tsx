@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-
 import { topUp } from "@/action/payment";
 import { Button } from "@/components/ui/button";
 import {
@@ -67,7 +66,7 @@ export function TopUpDialog() {
   );
 }
 
-function TopUpForm({ className }: React.ComponentProps<"form">) {
+function TopUpForm() {
   return (
     <form action={topUp} className="flex flex-col gap-6 p-4 pt-6">
       <div className="mx-auto flex w-full flex-col gap-1">

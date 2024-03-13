@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import Image from "next/image";
 import { StatusTag } from "./StatusTag";
 import { type EventStatus } from "./Card";
@@ -19,7 +18,6 @@ import {
   faCircleInfo,
   faComment,
   faLocationDot,
-  faMessage,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "../utils";
