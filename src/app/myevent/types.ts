@@ -1,7 +1,7 @@
 "use client";
 
 export type myEventProps = {
-  status: "payment-await" | "payment-done" | "completed" | "canceled";
+  status: "pending" | "payment-done" | "completed" | "cancelled" | "rejected";
   description: string | null;
   location: string;
   id: number;

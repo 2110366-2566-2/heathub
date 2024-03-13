@@ -17,11 +17,11 @@ export default async function Chat({ params }: { params: { userID: string } }) {
             <button className="flex h-6 w-6 flex-row items-center justify-center">
               <FontAwesomeIcon
                 icon={faChevronLeft}
-                className="text-high h-4 w-4"
+                className="h-4 w-4 text-high"
               />
             </button>
           </Link>
-          <div className="h3 text-high font-bold">{pairUser?.aka}</div>
+          <div className="h3 font-bold text-high">{pairUser?.aka}</div>
         </div>
       </div>
       <ChatRoom withUser={params.userID} />
