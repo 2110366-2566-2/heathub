@@ -1,6 +1,6 @@
 import { Tag } from "@/app/_components/tag";
 import { CardContent, Card } from "@/components/ui/card";
-import { tagIcon } from "@/utils/icon-mapping";
+import { tagStyle } from "@/utils/icon-mapping";
 import { faEye, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditProfileButton from "./EditProfileButton";
@@ -102,8 +102,14 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
         <div className="flex h-fit min-h-[94px] w-full flex-col gap-y-3">
           <div className="h6 font-bold text-medium">Interest</div>
           <div className="flex h-fit w-full flex-row flex-wrap gap-2">
-            {interests.map((tag) => (
-              <Tag key={tag} variant="outline" icon={tagIcon[tag]} size="md">
+            {interests.map((tag, index) => (
+              <Tag
+                key={index}
+                variant="solid"
+                icon={tagStyle[tag].icon}
+                size="md"
+                color={tagStyle[tag].color}
+              >
                 {tag}
               </Tag>
             ))}
@@ -215,15 +221,15 @@ function Interests({
       <div className="flex flex-row flex-wrap items-center justify-start gap-2 self-stretch">
         {interests.map((tag, index) => {
           return (
-            <Toggle
+            <Tag
               key={index}
-              variant="outline"
-              icon={tagIcon[tag]}
+              variant="solid"
+              icon={tagStyle[tag].icon}
               size="md"
-              disabled
+              color={tagStyle[tag].color}
             >
               {tag}
-            </Toggle>
+            </Tag>
           );
         })}
       </div>

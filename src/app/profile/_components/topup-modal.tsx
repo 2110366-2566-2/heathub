@@ -31,14 +31,14 @@ export function TopUpDialog() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-primary-50 md:py-2">
+          <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
             <div className="relative h-6 w-8">
               <FontAwesomeIcon
-                className="h-6 w-6 text-primary-500"
+                className="h-6 w-6 text-secondary-500"
                 icon={faWallet}
               />
               <FontAwesomeIcon
-                className="absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-primary-300 p-[2px] text-white"
+                className="absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-secondary-300 p-[2px] text-white"
                 fontWeight={900}
                 icon={faPlus}
               />
@@ -64,14 +64,14 @@ export function TopUpDialog() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-primary-50 md:py-2">
+        <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
           <div className="relative h-6 w-8">
             <FontAwesomeIcon
-              className="h-6 w-6 text-primary-500"
+              className="h-6 w-6 text-secondary-500"
               icon={faWallet}
             />
             <FontAwesomeIcon
-              className="absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-primary-300 p-[2px] text-white"
+              className="absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-secondary-300 p-[2px] text-white"
               fontWeight={900}
               icon={faPlus}
             />

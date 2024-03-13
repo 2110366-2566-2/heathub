@@ -1,18 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { CardContent, Card } from "@/components/ui/card";
-import { faComments, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type ProfilePreviewProps } from "./profile-container";
 
 export default function MyReview(props: ProfilePreviewProps) {
   const { rating } = props;
   return (
-    <Card className="h-[256px] w-full justify-center rounded-lg border-solid border-primary-300 bg-white p-4 lg:h-full lg:w-[360px] ">
+    <Card className="h-[256px] w-full justify-center rounded-lg border-none bg-neutral-50 p-4 lg:h-full lg:w-[360px] ">
       <CardContent className="flex h-full w-full flex-col items-center justify-between gap-y-4 p-0">
         <div className="flex h-6 w-full flex-row gap-x-2">
           <FontAwesomeIcon
-            icon={faComments}
-            className="h-6 w-6 text-primary-500"
+            icon={faHeart}
+            className="h-6 w-6 text-secondary-500"
           />
           <div className="h4 font-bold text-high">My Review</div>
         </div>
@@ -20,8 +20,11 @@ export default function MyReview(props: ProfilePreviewProps) {
           <div className="h2 font-bold text-high">{rating}</div>
           <StarMaker Rating={rating} />
         </div>
-        <Button variant={"outline"} className="w-full">
-          See All Previews
+        <Button
+          variant={"outline"}
+          className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-100"
+        >
+          See All Reviews
         </Button>
       </CardContent>
     </Card>

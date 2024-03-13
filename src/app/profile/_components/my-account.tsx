@@ -6,7 +6,7 @@ import {
   DrawerOverlay,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { TagList, tagIcon } from "@/utils/icon-mapping";
+import { TagList, tagStyle } from "@/utils/icon-mapping";
 import { useMediaQuery } from "react-responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -31,7 +31,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
             <div className="flex items-center gap-3">
               <FontAwesomeIcon
                 icon={faUserCircle}
-                className="h-6 w-6 text-primary-500"
+                className="h-6 w-6 text-secondary-500"
               />
               <div className="h4 font-bold text-high">My Account</div>
             </div>
@@ -61,12 +61,12 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
 
   return (
     <Dialog>
-      <div className="flex h-full w-full flex-col lg:justify-between gap-4">
+      <div className="flex h-full w-full flex-col gap-4 lg:justify-between ">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <FontAwesomeIcon
               icon={faUserCircle}
-              className="h-6 w-6 text-primary-500"
+              className="h-6 w-6 text-secondary-500"
             />
             <div className="h4 font-bold text-high">My Account</div>
           </div>
