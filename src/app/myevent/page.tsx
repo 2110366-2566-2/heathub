@@ -24,32 +24,29 @@ export default function Page() {
     },
   });
 
-  const {data}= api.event.myEvent.useQuery(
-    {
-      status: tabValue,
-    }
-  );
+  const { data } = api.event.myEvent.useQuery({
+    status: tabValue,
+  });
 
   useEffect(() => {
-      if (!data) return;
-      const _events: EventProps[] = data.map((event: myEventProps) => ({
-        role: role,
-        id: event.id,
-        userID: role == "participant" ? event.host.id : event.participant.id,
-        name: role == "participant" ? event.host.aka : event.participant.aka,
-        location: event.location,
-        date: event.startTime,
-        status: parseEventStatus(event.startTime, event.status),
-        image:
-          role == "participant"
-            ? event.host.profileImageURL || generateAvatar(event.host.aka)
-            : event.participant.profileImageURL ||
-              generateAvatar(event.participant.aka),
-        detail: event.description,
-      }));
-      setEvents(_events);
-    },
-    [data]);
+    if (!data) return;
+    const _events: EventProps[] = data.map((event: myEventProps) => ({
+      role: role,
+      id: event.id,
+      userID: role == "participant" ? event.host.id : event.participant.id,
+      name: role == "participant" ? event.host.aka : event.participant.aka,
+      location: event.location,
+      date: event.startTime,
+      status: parseEventStatus(event.startTime, event.status),
+      image:
+        role == "participant"
+          ? event.host.profileImageURL || generateAvatar(event.host.aka)
+          : event.participant.profileImageURL ||
+            generateAvatar(event.participant.aka),
+      detail: event.description,
+    }));
+    setEvents(_events);
+  }, [data]);
 
   return (
     <div className="w-screen grow flex-col items-center gap-6 p-9 lg:flex xl:flex">
@@ -180,7 +177,7 @@ export default function Page() {
                 return (
                   event.status != EventStatus.CANCELLED && (
                     <Card
-                    role={role}
+                      role={role}
                       key={event.id}
                       id={event.id}
                       userID={event.userID}
