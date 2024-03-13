@@ -25,7 +25,8 @@ export default function Search(props: searchProps) {
     <div className="relative h-12 w-full">
       <FontAwesomeIcon
         icon={faSearch}
-        className="absolute left-3 top-[14px] h-5 w-5 self-center text-placeholder"
+        className="absolute left-3 top-[14px] self-center text-placeholder"
+        size="lg"
       />
       <Input
         className={cn("border-none p-3 pl-9", isMobile ? "bg-neutral-100" : "")}

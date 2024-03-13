@@ -41,7 +41,8 @@ export default function Card(props: ProfilePreviewProps) {
           </div>
           <FontAwesomeIcon
             icon={faCheckCircle}
-            className="self-center text-[1.5rem] text-secondary-500"
+            className="self-center  text-secondary-500"
+            size="xl"
           />
         </div>
         <div className="flex flex-row flex-wrap items-center justify-start gap-2 self-stretch">

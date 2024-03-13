@@ -121,7 +121,8 @@ function Name(props: ProfilePreviewProps) {
       </div>
       <FontAwesomeIcon
         icon={faCheckCircle}
-        className="h-6 w-6 self-center text-secondary-500"
+        className="self-center text-secondary-500"
+        size="xl"
       />
     </div>
   );
@@ -194,9 +195,9 @@ function ReviewChat(props: ReviewChatProps) {
       <Button
         variant="outline"
         size="md"
-        className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-400"
+        className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-300"
       >
-        <FontAwesomeIcon icon={faHeart} className="mr-2" />
+        <FontAwesomeIcon icon={faHeart} className="mr-2" size="1x" />
         {reviews} Reviews
       </Button>
       {props.role === "participant" && (
@@ -205,7 +206,11 @@ function ReviewChat(props: ReviewChatProps) {
             size="md"
             className="w-full bg-secondary-500 hover:bg-secondary-400"
           >
-            <FontAwesomeIcon icon={faComment} className="mr-2 text-white" />
+            <FontAwesomeIcon
+              icon={faComment}
+              className="mr-2 text-white"
+              size="1x"
+            />
             Go to Chat
           </Button>
         </Link>

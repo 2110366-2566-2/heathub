@@ -301,7 +301,8 @@ function FilterButton() {
     <div className="flex h-12 w-14 items-center justify-center rounded-lg bg-primary-500 p-2">
       <FontAwesomeIcon
         icon={isMobile ? faSearch : faFilter}
-        className="h-6 w-6 text-white"
+        className="text-white"
+        size="lg"
       />
     </div>
   );
