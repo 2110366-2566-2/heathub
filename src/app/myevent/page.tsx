@@ -60,8 +60,8 @@ export default function Page() {
         >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <div className="flex flex-row">
-                <div className="relative flex w-full items-center gap-3">
+              <div className="flex flex-row h-fit">
+                <div className="flex w-full items-center gap-3">
                   <FontAwesomeIcon
                     icon={faCalendar}
                     className="h-7 w-7 text-secondary-500"
