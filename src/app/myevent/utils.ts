@@ -24,10 +24,13 @@ export function parseEventStatus(dateTime: Date, status: string): EventStatus {
     return EventStatus.STARTED;
   } else if (status == "completed") {
     return EventStatus.COMPLETED;
-  } else if (status == "pending" || status == "cancelled" || status == "rejected"){
+  } else if (
+    status == "pending" ||
+    status == "cancelled" ||
+    status == "rejected"
+  ) {
     return EventStatus.CANCELLED;
-  }
-  else {
+  } else {
     return EventStatus.NOTSTARTED;
   }
 }

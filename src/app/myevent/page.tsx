@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Card, EventStatus, type EventProps } from "./components/Card";
 import { type myEventProps } from "./types";
-import { parseEventStatus, parseTabValue} from "./utils";
+import { parseEventStatus, parseTabValue } from "./utils";
 
 export default function Page() {
   const [events, setEvents] = useState<EventProps[]>([]);
@@ -17,7 +17,7 @@ export default function Page() {
   >("upcoming");
 
   const [role, setRole] = useState("host");
-  const {isSuccess } = api.auth.me.useQuery(undefined, {
+  const { isSuccess } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
       if (!data) return;
       setRole(data.role);
@@ -49,9 +49,7 @@ export default function Page() {
         setEvents(_events);
       },
     },
-    
   );
-
 
   return (
     <div className="w-screen grow flex-col items-center gap-6 p-9 lg:flex xl:flex">
@@ -179,19 +177,20 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
-                  event.status != EventStatus.CANCELLED &&
-                  <Card
-                    key={event.id}
-                    id={event.id}
-                    userID={event.userID}
-                    name={event.name}
-                    image={event.image}
-                    location={event.location}
-                    date={event.date}
-                    status={event.status}
-                    detail={event.detail}
-                    isVerified
-                  />
+                  event.status != EventStatus.CANCELLED && (
+                    <Card
+                      key={event.id}
+                      id={event.id}
+                      userID={event.userID}
+                      name={event.name}
+                      image={event.image}
+                      location={event.location}
+                      date={event.date}
+                      status={event.status}
+                      detail={event.detail}
+                      isVerified
+                    />
+                  )
                 );
               })}
             </div>
