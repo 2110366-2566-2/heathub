@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
 import { faCircleInfo, faKey } from "@fortawesome/free-solid-svg-icons";
@@ -7,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
 
 export default function ChangePasswordButton() {
   const router = useRouter();
@@ -72,8 +72,10 @@ export default function ChangePasswordButton() {
         newPassword: password,
       });
       handleClose();
-      toast("Password changed", {
+      toast({
+        title: "Password Changed",
         description: "Your password has been changed successfully.",
+        duration: 3000,
       });
     } catch (e: unknown) {
       if (e instanceof Error) {
@@ -90,6 +92,8 @@ export default function ChangePasswordButton() {
     setNoticeColor("text-placeholder");
     return;
   };
+
+  const { toast } = useToast();
 
   return criticalError ? (
     <>{router.push("/")}</>

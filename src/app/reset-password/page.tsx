@@ -30,7 +30,7 @@ export default function ForgetPassword() {
     refetchOnWindowFocus: false,
   });
   const [status, setStatus] = useState<"idle" | "loading" | "done">("loading");
-  const [buttonText, setButtonText] = useState<string>("send");
+  const [buttonText, setButtonText] = useState<string>("Send");
   const [url, setUrl] = useState<URL | null>(null);
   useEffect(() => {
     if (user) {
@@ -95,7 +95,6 @@ export default function ForgetPassword() {
   });
 
   const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
-
   return (
     <main
       className="flex h-screen bg-white p-6 lg:p-14"
@@ -117,7 +116,7 @@ export default function ForgetPassword() {
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faKey}
-                  className="text-neutral-0 lg:text-[32px]"
+                  className="text-neutral-0 lg:h-8"
                   size="3x"
                 />
               </div>

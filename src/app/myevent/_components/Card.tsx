@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { api } from "@/trpc/react";
+
 import {
   faCalendar,
   faCheckCircle,
@@ -16,7 +16,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import { formatDate } from "../utils";
 import { CancelModal } from "./CancelModal";
 import { EventDetail } from "./EventDetail";

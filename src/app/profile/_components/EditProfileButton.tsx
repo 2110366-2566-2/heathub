@@ -31,7 +31,7 @@ interface EditProfileButtonProps {
 
 export default function EditProfileButton(props: EditProfileButtonProps) {
   const router = useRouter();
-  const util = api.useUtils();
+  const _util = api.useUtils();
   const { id, cUsername } = props;
   const [gender, setGender] = useState("");
   const [usernameText, setUsernameText] = useState("");
@@ -109,7 +109,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       return;
     }
 
-    let imageUrl;
+    let _imageUrl;
     if (!!imageInput && imageInput.name != "") {
       const files = [imageInput];
       const res = await uploadFiles("profileUploader", {
@@ -119,10 +119,12 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
         setNotice("An error occurred");
         return;
       }
-      imageUrl = res[0]?.url ? res[0].url : "";
+
+      _imageUrl = res[0]?.url ? res[0].url : "";
+
       uploadConfirm.mutate();
     } else {
-      imageUrl = profileURL;
+      _imageUrl = profileURL;
     }
 
     try {

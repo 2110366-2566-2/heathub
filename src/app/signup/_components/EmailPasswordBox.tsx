@@ -79,7 +79,7 @@ export default function EmailPasswordBox(props: EmailPasswordBoxProps) {
 
   useEffect(() => {
     formCheck();
-  }, []);
+  });
 
   return (
     <Card className="w-fit justify-center rounded-3xl border-solid border-primary-500 bg-white p-12">

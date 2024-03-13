@@ -30,7 +30,7 @@ export default function Search(props: searchProps) {
       />
       <Input
         className={cn("border-none p-3 pl-9", isMobile ? "" : "bg-white")}
-        placeholder="Search For partner"
+        placeholder="Search host name"
         size="lg"
         onChange={(e) => {
           props.setValues("searchQuery", e.target.value);
