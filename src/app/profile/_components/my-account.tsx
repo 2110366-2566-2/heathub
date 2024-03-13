@@ -20,6 +20,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { type ProfilePreviewProps } from "./profile-container";
+import ChangePasswordButton from "@/app/change-password/_component/ChangePasswordButton";
 
 export function MyAccountPreview(props: ProfilePreviewProps) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
@@ -44,11 +45,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
               </div>
             </div>
           </div>
-          <DrawerTrigger>
-            <div className="bg-background h-10 rounded-xl border border-secondary-500 px-4 py-2 text-secondary-500 hover:bg-secondary-100 disabled:border-secondary-100 disabled:text-secondary-100">
-              Change Password
-            </div>
-          </DrawerTrigger>
+          <ChangePasswordButton />
         </div>
         <DrawerOverlay
           className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
@@ -79,11 +76,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
             </div>
           </div>
         </div>
-        <DialogTrigger>
-          <div className="bg-background h-10 rounded-xl border border-secondary-500 px-4 py-2 text-secondary-500 hover:bg-secondary-100 disabled:border-secondary-100 disabled:text-secondary-100">
-            Change Password
-          </div>
-        </DialogTrigger>
+        <ChangePasswordButton />
       </div>
 
       <DialogProfile {...props} />

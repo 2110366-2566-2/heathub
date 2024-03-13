@@ -45,15 +45,14 @@ export default function ChangePasswordButton() {
     const currentPassword = formData.get("Current Password") as string;
     const password = formData.get("New Password") as string;
     const confirmPassword = formData.get("Confirm Password") as string;
-    if (password !== confirmPassword) {
-      setError("Password do not match.");
-      password.length < 8 ? {} : setNoticeColor("text-placeholder");
-      return;
-    }
-
     if (!!password && password.length < 8) {
       setNoticeColor("text-red-500");
       setError("");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Password do not match.");
+      password.length < 8 ? {} : setNoticeColor("text-placeholder");
       return;
     }
 
@@ -76,7 +75,6 @@ export default function ChangePasswordButton() {
       toast("Password changed", {
         description: "Your password has been changed successfully.",
       });
-      console.log(`password change to ${password}`);
     } catch (e: unknown) {
       if (e instanceof Error) {
         setError(`Error: ${e.message}`);
@@ -104,7 +102,7 @@ export default function ChangePasswordButton() {
     >
       <DialogTrigger>
         <span
-          className="inline-flex h-12 w-[168px] items-center justify-center rounded-xl bg-primary-500 text-white hover:bg-primary-600 disabled:bg-primary-100"
+          className="text-h4 ring-offset-background focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl border border-secondary-500 bg-white font-medium text-secondary-500 transition-colors hover:bg-secondary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-secondary-100"
           onClick={handlePop}
         >
           Change Password

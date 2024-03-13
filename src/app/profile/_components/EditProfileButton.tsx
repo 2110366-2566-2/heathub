@@ -18,7 +18,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/utils/tailwind-merge";
 import { api } from "@/trpc/react";
 import { uploadFiles } from "@/components/ui/upload";
-import { serverapi } from "@/trpc/server";
+import Image from "next/image";
 
 interface EditProfileButtonProps {
   cUsername: string;
@@ -30,7 +30,7 @@ interface EditProfileButtonProps {
 }
 
 export default function EditProfileButton(props: EditProfileButtonProps) {
-  const { id } = props;
+  const { id, cUsername } = props;
   const [gender, setGender] = useState("");
   const [usernameText, setUsernameText] = useState("");
   const [bioText, setBioText] = useState("");
@@ -38,6 +38,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   const [notice, setNotice] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [isClose, setClose] = useState(false);
+  const [profileURL, setProfileURL] = useState(props.cProfileURL);
   api.user.getUserPublicData.useQuery(
     {
       userID: id,
@@ -49,6 +50,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
         setGender(data.gender);
         setBioText(data.bio ?? "");
         setDOB(data.dateOfBirth ?? undefined);
+        setProfileURL(data.profileImageURL ?? "");
       },
     },
   );
@@ -79,7 +81,6 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       return;
     }
     console.log("...");
-
     const formData = new FormData(formRef.current);
     const usernameInput = formData.get("Username") as string | null;
     const bioInput = formData.get("Bio") as string | null;
@@ -96,10 +97,10 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       return (
         (await testUsername.mutateAsync({
           aka: usernameInput,
-        })) && usernameInput != usernameText
+        })) && usernameInput != cUsername
       );
     };
-
+    console.log(usernameInput, cUsername);
     if (await isUsernameDup()) {
       setNotice("This username is already used.");
       return;
@@ -117,8 +118,9 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       }
       imageUrl = res[0]?.url ? res[0].url : "";
     } else {
-      imageUrl = imageInput;
+      imageUrl = profileURL;
     }
+
     try {
       updateProfile.mutate({
         bio: bioInput ? bioInput : "",
@@ -147,6 +149,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     setUsernameText(usernameText);
     setBioText(bioText);
     setDOB(DOB);
+    setProfileURL(profileURL);
     return;
   };
 
@@ -169,14 +172,34 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
         <div className="h3 w-full text-center font-bold text-black">
           Edit Profile
         </div>
-        <div className="flex h-fit w-full justify-center">
-          <div className="relative h-[155px] w-[155px] rounded-full bg-slate-200">
-            <div className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
-              <FontAwesomeIcon icon={faCamera} />
+        <form ref={formRef}>
+          <div className="flex h-fit w-full justify-center pb-4">
+            <div className="relative h-[155px] w-[155px] rounded-full">
+              <Image
+                className="items-center justify-center rounded-full"
+                src={profileURL}
+                fill
+                alt="Profie"
+              />
+              <div className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
+                <FontAwesomeIcon icon={faCamera} />
+                <Input
+                  type="file"
+                  name="Image"
+                  className="absolute h-7 w-7 rounded-full opacity-0"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      const file = e.target.files[0];
+                      if (!file) return;
+                      const url = URL.createObjectURL(file);
+                      setProfileURL(url);
+                    }
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <form ref={formRef}>
+
           <div className="flex flex-col gap-y-4">
             <div className="flex w-full flex-col gap-y-1">
               <Label className="h5 text-high" htmlFor="Username">
