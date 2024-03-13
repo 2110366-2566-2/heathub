@@ -41,7 +41,9 @@ export function ProfilePreview({
         </DrawerTrigger>
         <DrawerOverlay
           className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${props.image})` }}
+          style={{
+            backgroundImage: `url(${props.image || generateAvatar(props.aka)})`,
+          }}
         />
         <DrawerProfile props={props} role={role} />
       </Drawer>
@@ -70,20 +72,22 @@ function DialogProfile(props: ProfileProps) {
       className="flex min-h-[568px] min-w-[845px] gap-6 rounded-2xl border-2 border-solid
     border-neutral-300 bg-white p-6"
     >
-      <div className="relative min-w-[400px] overflow-hidden rounded-md">
-        {image ? (
-          <Image
-            src={image}
-            alt="card"
-            className="rounded-md object-cover object-top"
-            fill
-          />
-        ) : (
-          <img
-            src={generateAvatar(props.props.aka)}
-            className="h-full rounded-md object-cover object-top"
-          ></img>
-        )}
+      <div className="relative ">
+        <div className="h-full min-w-[400px] overflow-hidden rounded-md">
+          {image ? (
+            <Image
+              src={image}
+              alt="card"
+              className="rounded-md object-cover object-top"
+              fill
+            />
+          ) : (
+            <img
+              src={generateAvatar(props.props.aka)}
+              className="h-full rounded-md object-cover object-top"
+            ></img>
+          )}
+        </div>
         <div className="absolute right-[-28px] top-[-20px] z-30 h-16 w-24 text-[#FFC661]">
           <RatingIcon rating={rating} />
         </div>
