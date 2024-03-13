@@ -23,8 +23,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const signUpHost = api.auth.signupHost.useMutation();
 
-  const { data: userData } = api.auth.me.useQuery();
-
+  const { data: userData } = api.auth.me.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
   useEffect(() => {
     if (userData) {
       redirect("/");

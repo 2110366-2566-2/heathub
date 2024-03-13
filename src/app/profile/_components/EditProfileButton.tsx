@@ -18,6 +18,7 @@ import { cn } from "@/utils/tailwind-merge";
 import { api } from "@/trpc/react";
 import { uploadFiles } from "@/components/ui/upload";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface EditProfileButtonProps {
   cUsername: string;
@@ -29,6 +30,8 @@ interface EditProfileButtonProps {
 }
 
 export default function EditProfileButton(props: EditProfileButtonProps) {
+  const router = useRouter();
+  const util = api.useUtils();
   const { id, cUsername } = props;
   const [gender, setGender] = useState("");
   const [usernameText, setUsernameText] = useState("");
@@ -66,13 +69,14 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       console.log(data);
       console.log("success");
       handleClose();
-      window.location.reload();
     },
     onError: (error, variables) => {
       console.log(error, variables);
       console.log("error");
     },
   });
+  const uploadConfirm = api.profile.confirmNewProfileImage.useMutation();
+
   const testUsername = api.auth.isAKAAlreadyExist.useMutation();
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = async () => {
@@ -108,26 +112,32 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     let _imageUrl;
     if (!!imageInput && imageInput.name != "") {
       const files = [imageInput];
-      const res = await uploadFiles("signupProfileUploader", {
+      const res = await uploadFiles("profileUploader", {
         files,
       });
       if (res.length !== 1) {
         setNotice("An error occurred");
         return;
       }
-      _imageUrl = res[0]?.url ? res[0].url : "";
+      imageUrl = res[0]?.url ? res[0].url : "";
+      uploadConfirm.mutate();
     } else {
       _imageUrl = profileURL;
     }
 
     try {
-      updateProfile.mutate({
-        bio: bioInput ? bioInput : "",
-        gender: gender,
-        aka: usernameInput,
-        dateOfBirth: DOB,
-        // imgURL: imageUrl,
-      });
+      const promise = Promise.all([
+        uploadConfirm.mutateAsync(),
+        updateProfile.mutateAsync({
+          bio: bioInput ? bioInput : "",
+          gender: gender,
+          aka: usernameInput,
+          dateOfBirth: DOB,
+          // imgURL: imageUrl,
+        }),
+      ]);
+      await promise;
+      router.refresh();
     } catch (error) {
       if (error instanceof Error) {
         setNotice(error.message);
@@ -162,12 +172,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       <DialogTrigger className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-secondary-400 text-white hover:bg-secondary-500 disabled:bg-secondary-100 lg:w-[126px]">
         Edit Profile
       </DialogTrigger>
-      <DialogContent
-        className="scrollbar-hide h-fit max-h-[90vh] w-full max-w-[95vw] gap-y-6 overflow-y-scroll rounded-md bg-white p-6 md:max-w-[644px]"
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <DialogContent className="scrollbar-hide h-fit max-h-[90vh] w-full max-w-[95vw] gap-y-6 overflow-y-scroll rounded-md bg-white p-6 md:max-w-[644px]">
         <div className="h3 w-full text-center font-bold text-black">
           Edit Profile
         </div>
@@ -368,7 +373,6 @@ function GenderSelector(props: GenderSelectorProps) {
           ref={customGenderRef}
           placeholder="Custom your gender"
           onChange={(e) => {
-            e.preventDefault();
             setGender(e.target.value);
             setGenderText(e.target.value);
           }}

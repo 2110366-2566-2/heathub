@@ -23,7 +23,7 @@ export function MessageList({
   "use client";
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
-  // const [recentMessages, setRecentMessages] = useState<RecentMessage[]>([]);
+  const utils = api.useUtils();
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
@@ -35,13 +35,29 @@ export function MessageList({
           message.discourserId !== data.userId
         )
           return;
-        // setRecentMessages((prev) => {
-        //   const newRecentMessages = prev.filter((e) => {
-        //     return e.discourserId !== message.discourserId;
-        //   });
-        //   const newm = [message, ...newRecentMessages];
-        //   return newm;
-        // });
+
+        utils.chat.recentChats.setInfiniteData({ limit: 10 }, (oldData) => {
+          if (!oldData) return oldData;
+          const pages = oldData.pages;
+          if (!pages) {
+            return oldData;
+          }
+          const newPages = pages.map((p) => ({
+            ...p,
+            messages: p.messages.filter((m) => {
+              return m.discourserId !== message.discourserId;
+            }),
+          }));
+
+          if (newPages.length === 0) {
+            return oldData;
+          }
+          newPages[0]!.messages.unshift(message);
+          return {
+            ...oldData,
+            pages: newPages,
+          };
+        });
       });
     },
     refetchOnWindowFocus: false,

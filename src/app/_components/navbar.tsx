@@ -1,4 +1,6 @@
 "use client";
+import { generateAvatar } from "@/lib/avatar";
+import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
 import {
   faCalendarCheck,
@@ -6,11 +8,9 @@ import {
   faCompass,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavItem } from "./navItem";
-import Link from "next/link";
-import { api } from "@/trpc/react";
-import { generateAvatar } from "@/lib/avatar";
 
 export function NavBar() {
   const pathName = usePathname();
@@ -18,7 +18,9 @@ export function NavBar() {
   const isEvent = pathName.startsWith("/myevent");
   const isChat = pathName.startsWith("/chat");
 
-  const { data: me } = api.auth.me.useQuery();
+  const { data: me } = api.auth.me.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[80px] min-w-[80px] flex-col justify-between gap-3 bg-secondary-400 py-9 shadow-sm lg:flex">
@@ -48,7 +50,9 @@ export function NavBarMobile({ className }: { className?: string }) {
   const isEvent = usePathname().startsWith("/myevent");
   const isChat = usePathname().startsWith("/chat");
 
-  const { data: me } = api.auth.me.useQuery();
+  const { data: me } = api.auth.me.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <nav

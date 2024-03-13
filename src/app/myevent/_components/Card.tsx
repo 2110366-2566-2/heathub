@@ -28,6 +28,7 @@ import { ViewreviewModal } from "./ViewreviewModal";
 export type EventProps = {
   id: number;
   userID: string;
+  role: string;
   name: string;
   location: string;
   date: Date;
@@ -46,14 +47,7 @@ export enum EventStatus {
 }
 
 export function Card(prop: EventProps) {
-  const [role, setRole] = useState("participant");
-  api.auth.me.useQuery(undefined, {
-    onSuccess: (data) => {
-      if (!data) return;
-      setRole(data.role);
-    },
-  });
-
+  const role = prop.role;
   const CardButton = () => {
     switch (prop.status) {
       case EventStatus.STARTED:

@@ -30,7 +30,9 @@ export default function DiscoverPage() {
     gender: filters.gender === "-" ? undefined : filters.gender,
     ageRange: [filters.age.min ?? 0, filters.age.max ?? 99],
   });
-  const { data: me } = api.auth.me.useQuery();
+  const { data: me } = api.auth.me.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     if (isSuccess && data) {

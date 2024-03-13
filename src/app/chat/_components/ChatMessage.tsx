@@ -35,7 +35,7 @@ export function ChatMessage(props: ChatMessageProps) {
         </div>
         <div
           className={cn(
-            "max-w-[240px] break-words bg-primary-400 p-2",
+            "w-fit max-w-[240px] break-words bg-primary-400 p-2",
             messageBg,
             messageColor,
             roundedSide,
