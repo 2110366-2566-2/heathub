@@ -1,11 +1,12 @@
 "use client";
+import { Tag } from "@/app/_components/tag";
+import { generateAvatar } from "@/lib/avatar";
+import { tagStyle } from "@/utils/icon-mapping";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 import { type ProfilePreviewProps } from "../types";
-import { tagStyle } from "@/utils/icon-mapping";
-import { Tag } from "@/app/_components/tag";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { RatingIcon } from "./rating-icon";
 
 export default function Card(props: ProfilePreviewProps) {
@@ -19,28 +20,25 @@ export default function Card(props: ProfilePreviewProps) {
 
   return (
     <div className="relative flex aspect-[0.76] min-h-[424px] max-w-[323px] flex-col gap-3 rounded-3xl border-2 border-solid border-neutral-300 bg-white p-4">
-      {/* <FontAwesomeIcon
-        icon={faCertificate}
-        className="absolute right-[-28px] top-[-24px] z-40 h-16 w-24 text-[#FFC661]"
-      />
-      <div className="h3 absolute right-0 top-[-12px] z-50 rotate-12 flex-col font-extrabold text-white">
-        {rating.toFixed(1)}
-      </div>
-      <div className="absolute right-[11px] top-[14px] z-50 rotate-12 flex-col text-[8px] font-extrabold text-white">
-        rating
-      </div> */}
       <div className="absolute right-[-28px] top-[-24px] z-40 rotate-12">
         <RatingIcon rating={rating} />
       </div>
 
-      <div className="aspect-9/10 relative h-full max-h-[264px]">
-        <Image
-          src={image}
-          alt="card"
-          fill
-          className="rounded-lg object-cover object-top"
-          draggable="false"
-        />
+      <div className="aspect-9/10 relative h-full max-h-[264px] overflow-hidden rounded-lg">
+        {image ? (
+          <Image
+            src={image}
+            alt="card"
+            fill
+            className="object-cover object-top"
+            draggable="false"
+          />
+        ) : (
+          <img
+            className="object-cover object-top"
+            src={generateAvatar(aka)}
+          ></img>
+        )}
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex flex-row gap-2">
@@ -49,7 +47,7 @@ export default function Card(props: ProfilePreviewProps) {
           </div>
           <FontAwesomeIcon
             icon={faCheckCircle}
-            className="h-6 w-6 self-center text-secondary-500"
+            className="self-center text-[1.5rem] text-secondary-500"
           />
         </div>
         <div className="flex flex-row flex-wrap items-center justify-start gap-2 self-stretch">

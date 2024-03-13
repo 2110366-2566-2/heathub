@@ -4,7 +4,7 @@ export interface MessageCardProps {
   discourserAka: string;
   lastestMessage: string;
   createdAt: string;
-  imageUrl: string | null;
+  imageUrl: string;
   isSelected: boolean;
 }
 export interface ChatMessageProps {

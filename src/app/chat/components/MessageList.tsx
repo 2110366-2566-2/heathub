@@ -1,16 +1,17 @@
 "use client";
+import { RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
+import { generateAvatar } from "@/lib/avatar";
+import { api } from "@/trpc/react";
+import { type RecentMessage } from "@/types/pusher";
+import { cn } from "@/utils/tailwind-merge";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cn } from "@/utils/tailwind-merge";
-import { api } from "@/trpc/react";
-import { usePusher } from "../../_context/PusherContext";
-import { type RecentMessage } from "@/types/pusher";
-import { useState, useEffect, useRef } from "react";
-import { type Channel } from "pusher-js";
-import { RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
-import { MessageCard } from "./MessageCard";
 import { useIntersection } from "@mantine/hooks";
+import { type Channel } from "pusher-js";
+import { useEffect, useRef, useState } from "react";
+import { usePusher } from "../../_context/PusherContext";
 import LoadingSVG from "./LoadingSVG";
+import { MessageCard } from "./MessageCard";
 
 export function MessageList({
   className,
@@ -114,7 +115,10 @@ export function MessageList({
                   discourserAka={data.discourserAka}
                   lastestMessage={data.content}
                   createdAt={data.createdAt?.toString()} // Applying optional chaining here
-                  imageUrl={data.discourserImageURL}
+                  imageUrl={
+                    data.discourserImageURL ||
+                    generateAvatar(data.discourserAka)
+                  }
                 />
               );
             } else if (data.contentType === "event") {

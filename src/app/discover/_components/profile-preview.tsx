@@ -1,4 +1,6 @@
 "use client";
+import { Tag } from "@/app/_components/tag";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Drawer,
@@ -6,6 +8,7 @@ import {
   DrawerOverlay,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { generateAvatar } from "@/lib/avatar";
 import { cn } from "@/utils/tailwind-merge";
 import {
   faCheckCircle,
@@ -14,14 +17,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
+import Link from "next/link";
 import { useMediaQuery } from "react-responsive";
 import { tagStyle } from "../../../utils/icon-mapping";
-import Card from "./card";
-import { Tag } from "@/app/_components/tag";
 import { type ProfilePreviewProps } from "../types";
-import { Button } from "@/components/ui/button";
+import Card from "./card";
 import { RatingIcon } from "./rating-icon";
-import Link from "next/link";
 
 export function ProfilePreview({
   props,
@@ -69,13 +70,20 @@ function DialogProfile(props: ProfileProps) {
       className="flex min-h-[568px] min-w-[845px] gap-6 rounded-2xl border-2 border-solid
     border-neutral-300 bg-white p-6"
     >
-      <div className="relative min-w-[400px]">
-        <Image
-          src={image}
-          alt="card"
-          className="rounded-md object-cover object-top"
-          fill
-        />
+      <div className="relative min-w-[400px] overflow-hidden rounded-md">
+        {image ? (
+          <Image
+            src={image}
+            alt="card"
+            className="rounded-md object-cover object-top"
+            fill
+          />
+        ) : (
+          <img
+            src={generateAvatar(props.props.aka)}
+            className="h-full rounded-md object-cover object-top"
+          ></img>
+        )}
         <div className="absolute right-[-28px] top-[-20px] z-30 h-16 w-24 text-[#FFC661]">
           <RatingIcon rating={rating} />
         </div>
