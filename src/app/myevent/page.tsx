@@ -6,7 +6,7 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useState } from "react";
-import { Card, EventStatus, type EventProps } from "./components/Card";
+import { Card, EventStatus, type EventProps } from "./_components/Card";
 import { type myEventProps } from "./types";
 import { parseEventStatus, parseTabValue } from "./utils";
 

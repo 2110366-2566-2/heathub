@@ -18,11 +18,11 @@ interface EventModalProps {
 export function FinishModal(prop: EventModalProps) {
   const { children } = prop;
   const finishEvent = api.event.finishEvent.useMutation();
+  const utils = api.useUtils();
 
   const handleFinishEvent = async (eventID: number) => {
     try {
       await finishEvent.mutateAsync({ eventID: eventID });
-      const utils = api.useUtils();
       await utils.event.myEvent.invalidate();
     } catch (error) {
       console.error(error);

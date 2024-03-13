@@ -17,10 +17,11 @@ interface EventModalProps {
 export function CancelModal(prop: EventModalProps) {
   const { children } = prop;
   const cancelEvent = api.event.cancelEvent.useMutation();
+  const utils = api.useUtils();
+
   const handleCancelEvent = async (eventID: number) => {
     try {
       await cancelEvent.mutateAsync({ eventID: eventID });
-      const utils = api.useUtils();
       await utils.event.myEvent.invalidate();
     } catch (error) {
       console.error(error);

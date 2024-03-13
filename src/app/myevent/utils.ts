@@ -1,4 +1,4 @@
-import { EventStatus } from "./components/Card";
+import { EventStatus } from "./_components/Card";
 
 export function parseTabValue(
   value: string,
