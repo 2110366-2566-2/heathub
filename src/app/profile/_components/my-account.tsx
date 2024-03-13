@@ -45,7 +45,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
             </div>
           </div>
           <DrawerTrigger>
-            <div className="bg-background h-10 rounded-xl border border-primary-500 px-4 py-2 text-primary-500 hover:bg-primary-100 disabled:border-primary-100 disabled:text-primary-100">
+            <div className="bg-background h-10 rounded-xl border border-secondary-500 px-4 py-2 text-secondary-500 hover:bg-secondary-100 disabled:border-secondary-100 disabled:text-secondary-100">
               Change Password
             </div>
           </DrawerTrigger>
@@ -80,7 +80,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
           </div>
         </div>
         <DialogTrigger>
-          <div className="bg-background h-10 rounded-xl border border-primary-500 px-4 py-2 text-primary-500 hover:bg-primary-100 disabled:border-primary-100 disabled:text-primary-100">
+          <div className="bg-background h-10 rounded-xl border border-secondary-500 px-4 py-2 text-secondary-500 hover:bg-secondary-100 disabled:border-secondary-100 disabled:text-secondary-100">
             Change Password
           </div>
         </DialogTrigger>
