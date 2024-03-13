@@ -65,7 +65,7 @@ type ProfileProps = {
   role: string;
 };
 
-function DialogProfile(props: ProfileProps) {
+export function DialogProfile(props: ProfileProps) {
   const { image, rating } = props.props;
   return (
     <DialogContent
@@ -96,7 +96,7 @@ function DialogProfile(props: ProfileProps) {
   );
 }
 
-function DrawerProfile(props: ProfileProps) {
+export function DrawerProfile(props: ProfileProps) {
   return (
     <DrawerContent className="flex flex-col gap-2 bg-white p-4">
       <div className="absolute right-3 top-7">

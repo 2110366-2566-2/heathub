@@ -30,7 +30,7 @@ export const profileRouter = createTRPCRouter({
         orderBy: (img, { desc }) => [desc(img.id)],
       });
       if (!newProfile) {
-        throw new Error("No new profile image found");
+        return;
       }
       await tx
         .update(user)

@@ -1,9 +1,9 @@
 "use client";
 
-import SuccessButton from "@/app/signup/_components/SuccessButton";
-import { uploadFiles } from "@/components/ui/upload";
 import { api } from "@/trpc/react";
 import { redirect, useRouter } from "next/navigation";
+import { uploadFiles } from "@/components/ui/upload";
+import SuccessButton from "@/app/signup/_components/SuccessButton";
 import { useEffect, useState } from "react";
 import { type Host, type User } from "../interfaces";
 import InterestPickerBox from "./InterestPickerBox";
@@ -26,7 +26,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const { data: userData } = api.auth.me.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
-
   useEffect(() => {
     if (userData) {
       redirect("/");
