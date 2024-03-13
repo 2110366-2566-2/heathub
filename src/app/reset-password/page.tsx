@@ -4,7 +4,7 @@ import { api } from "@/trpc/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faKey} from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faKey } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -13,19 +13,18 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-const validationSchema = z
-  .object({
-    email: z.string().min(1, { message: "Email is required" }).email({
-      message: "Must be a valid email",
-    }),
-  })
-  
-  type ValidationSchema = z.infer<typeof validationSchema>;
+const validationSchema = z.object({
+  email: z.string().min(1, { message: "Email is required" }).email({
+    message: "Must be a valid email",
+  }),
+});
+
+type ValidationSchema = z.infer<typeof validationSchema>;
 
 export default function ForgetPassword() {
   const { data: user } = api.auth.me.useQuery();
   const [status, setStatus] = useState<"idle" | "loading" | "done">("loading");
-  const [buttonText,setButtonText] = useState<string>("send");
+  const [buttonText, setButtonText] = useState<string>("send");
   const [url, setUrl] = useState<URL | null>(null);
   useEffect(() => {
     if (user) {
@@ -56,21 +55,23 @@ export default function ForgetPassword() {
         email: email,
         url: url.origin,
       });
-        toast({
-          title: "Verify link sent",
-          description: "Verify link is already sent to your email.",
-          duration: 3000,
-        });
+      toast({
+        title: "Verify link sent",
+        description: "Verify link is already sent to your email.",
+        duration: 3000,
+      });
       setStatus("done");
-      const timer = (x: number) =>{
-      if(x === 0) {
-        setStatus("idle");
-        setButtonText('Send');
-        return ;
-      }
-      setButtonText(`Resend (${x})`);
-      return setTimeout(() => {timer(--x)}, 1000)
-      }
+      const timer = (x: number) => {
+        if (x === 0) {
+          setStatus("idle");
+          setButtonText("Send");
+          return;
+        }
+        setButtonText(`Resend (${x})`);
+        return setTimeout(() => {
+          timer(--x);
+        }, 1000);
+      };
       timer(5);
     } catch (e) {
       setStatus("idle");
@@ -89,7 +90,10 @@ export default function ForgetPassword() {
   const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
 
   return (
-    <main className="flex h-screen bg-white p-6 lg:p-14" onSubmit={handleSubmit(onSubmit)}>
+    <main
+      className="flex h-screen bg-white p-6 lg:p-14"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="flex h-full w-full flex-1 flex-col gap-2">
         <Link href="/" className="absolute">
           <button className="absolute flex h-6 w-6 flex-row items-center justify-center">
@@ -134,7 +138,7 @@ export default function ForgetPassword() {
                       {...register("email")}
                     />
                     {errors.email && (
-                      <p className="text-xs italic text-red-500 mt-2">
+                      <p className="mt-2 text-xs italic text-red-500">
                         {errors.email?.message}
                       </p>
                     )}
