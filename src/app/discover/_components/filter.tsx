@@ -268,7 +268,7 @@ export default function Filter(props: FilterProps) {
               {AllFiltersMobile}
               <DrawerClose
                 type="submit"
-                className="border-t-1 absolute bottom-0 w-full self-center border border-solid border-neutral-200 p-4"
+                className="border-t-1 absolute bottom-0 mb-20 w-full self-center border border-b-0  border-solid border-neutral-200 p-4"
               >
                 <Button className="w-full" size="lg">
                   Apply Filters
