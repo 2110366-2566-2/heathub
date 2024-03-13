@@ -13,6 +13,7 @@ export default async function Profile() {
   if (!user) {
     redirect("/");
   }
+  const balance = await serverapi.profile.balance.query();
   const nowDate = new Date();
   const birthDate = user.dateOfBirth ?? new Date();
   const userAge =
@@ -61,9 +62,6 @@ export default async function Profile() {
   }
   console.log(show);
   return (
-    <div className="flex min-h-screen w-full flex-col gap-4 p-6 lg:p-9">
-      <ProfileContainer {...show} />
-    </div>
     <div className="flex min-h-screen w-full flex-col gap-4 p-6 lg:p-9">
       <ProfileContainer {...show} />
     </div>

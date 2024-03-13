@@ -5,7 +5,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup } from "@/components/ui/toggle-group";
 import {
   tagList as allInterestList,
-  tagIcon,
+  tagStyle,
 } from "../../../utils/icon-mapping";
 
 interface InterestPickerBoxProps {
@@ -39,7 +39,7 @@ export default function InterestPickerBox(props: InterestPickerBoxProps) {
               <Toggle
                 key={index}
                 variant="outline"
-                icon={tagIcon[interestItem]}
+                icon={tagStyle[interestItem].icon}
                 size="md"
                 onClick={() => {
                   handleSelectedInterestList(interestItem);
