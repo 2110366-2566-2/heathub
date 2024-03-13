@@ -1,14 +1,14 @@
 "use client";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { generateAvatar } from "@/lib/avatar";
+import { api } from "@/trpc/react";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "./components/Card";
-import { api } from "@/trpc/react";
-import { useState } from "react";
-import { type myEventProps } from "./types";
-import { type EventProps } from "./components/Card";
-import { parseEventStatus, parseTabValue } from "./utils";
 import Image from "next/image";
+import { useState } from "react";
+import { Card, type EventProps } from "./components/Card";
+import { type myEventProps } from "./types";
+import { parseEventStatus, parseTabValue } from "./utils";
 
 export default function Page() {
   const [events, setEvents] = useState<EventProps[]>([]);
@@ -32,8 +32,9 @@ export default function Page() {
           status: parseEventStatus(event.startTime, event.status),
           image:
             role == "participant"
-              ? event.host.profileImageURL
-              : event.participant.profileImageURL,
+              ? event.host.profileImageURL || generateAvatar(event.host.aka)
+              : event.participant.profileImageURL ||
+                generateAvatar(event.participant.aka),
           detail: event.description,
         }));
         setEvents(_events);
@@ -142,7 +143,7 @@ export default function Page() {
                     id={event.id}
                     userID={event.userID}
                     name={event.name}
-                    image={event.image ?? ""}
+                    image={event.image}
                     location={event.location}
                     date={event.date}
                     status={event.status}
