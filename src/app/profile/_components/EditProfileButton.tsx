@@ -17,6 +17,8 @@ import * as React from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/utils/tailwind-merge";
 import { api } from "@/trpc/react";
+import Image from "next/image";
+import { uploadFiles } from "@/components/ui/upload";
 
 interface EditProfileButtonProps {
   cUsername: string;
@@ -35,6 +37,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   const [notice, setNotice] = useState("");
   const [isOpen, setOpen] = useState(false);
   const [isClose, setClose] = useState(false);
+  const [profileURL, setProfileURL] = useState(cProfileURL);
   useEffect(() => {
     setClose(false);
   }, [isOpen]);
@@ -60,14 +63,13 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     if (!formRef.current) {
       return;
     }
-    console.log("...");
 
     const formData = new FormData(formRef.current);
     const usernameInput = formData.get("Username") as string | null;
     const bioInput = formData.get("Bio") as string | null;
     const genderInput = gender;
-    const DOBInput = new Date();
-    const profileUrl = "";
+    const DOBInput = DOB;
+    const imageInput = formData.get("Image") as File | null;
 
     if (
       !gender ||
@@ -80,7 +82,6 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       return;
     }
 
-    const testUsername = api.auth.isAKAAlreadyExist.useMutation();
     const isUsernameDup = async () => {
       return (
         (await testUsername.mutateAsync({
@@ -137,6 +138,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
     setUsernameText(cUsername);
     setBioText(cBio);
     setDOB(cDOB);
+    setProfileURL(cProfileURL);
     return;
   };
 
@@ -147,82 +149,101 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       }}
       open={isOpen && !isClose}
     >
-      <DialogTrigger className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-primary-500 text-white hover:bg-primary-600 disabled:bg-primary-100 lg:w-[126px]">
+      <DialogTrigger className="text-h4 ring-offset-background focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl bg-primary-500 font-medium text-white transition-colors hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-primary-100 lg:w-[126px]">
         Edit Profile
       </DialogTrigger>
-      <DialogContent
-        className="h-fit max-h-[90vh] w-full max-w-[95vw] gap-y-6 overflow-y-scroll rounded-md bg-white p-6 md:max-w-[644px]"
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-      >
-        <div className="h3 w-full text-center font-bold text-black">
-          Edit Profile
-        </div>
-        <div className="flex h-fit w-full justify-center">
-          <div className="relative h-[155px] w-[155px] rounded-full bg-slate-200">
-            <div className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
-              <FontAwesomeIcon icon={faCamera} />
+      <DialogContent className="h-fit max-h-[90vh] w-full max-w-[95vw] overflow-y-scroll rounded-md bg-white p-0 md:max-w-[644px]">
+        <form
+          ref={formRef}
+          className="flex w-full flex-col gap-y-6 rounded-md bg-white p-6 md:max-w-[644px]"
+        >
+          <div className="h3 w-full text-center font-bold text-black">
+            Edit Profile
+          </div>
+          <div className="flex h-fit w-full justify-center">
+            <div className="relative h-[155px] w-[155px] rounded-full">
+              <Image
+                className="items-center justify-center rounded-full"
+                src={profileURL}
+                fill
+                alt="Profie"
+              />
+              <div className="absolute bottom-2 right-2 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
+                <FontAwesomeIcon icon={faCamera} />
+                <Input
+                  type="file"
+                  name="Image"
+                  className="absolute h-7 w-7 rounded-full opacity-0"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      const file = e.target.files[0];
+                      if (!file) return;
+                      const url = URL.createObjectURL(file);
+                      setProfileURL(url);
+                    }
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <form ref={formRef}>
-          <div className="flex flex-col gap-y-4">
-            <div className="flex w-full flex-col gap-y-1">
-              <Label className="h5 text-high" htmlFor="Username">
-                Username
-              </Label>
-              <Input
-                value={usernameText}
-                type="text"
-                className="h-9"
-                name="Username"
-                placeholder="Enter your username"
-                onChange={(e) => {
-                  setUsernameText(e.target.value);
-                }}
-              />
+          <div>
+            <div className="flex flex-col gap-y-4">
+              <div className="flex w-full flex-col gap-y-1">
+                <Label className="h5 text-high" htmlFor="Username">
+                  Username
+                </Label>
+                <Input
+                  value={usernameText}
+                  type="text"
+                  className="h-9"
+                  name="Username"
+                  placeholder="Enter your username"
+                  onChange={(e) => {
+                    setUsernameText(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="flex w-full flex-col gap-y-1">
+                <Label className="h5 text-high" htmlFor="Bio">
+                  Bio
+                </Label>
+                <Textarea
+                  value={bioText}
+                  className="h-9 resize-none"
+                  name="Bio"
+                  placeholder="Enter your bio"
+                  onChange={(e) => {
+                    setBioText(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="flex w-full flex-col gap-y-1">
+                <Label className="h5 text-high" htmlFor="Date of birth">
+                  Date of birth
+                </Label>
+                <DatePicker date={DOB} setDate={setDOB} />
+              </div>
+              <GenderSelector gender={gender} setGender={setGender} />
             </div>
-            <div className="flex w-full flex-col gap-y-1">
-              <Label className="h5 text-high" htmlFor="Bio">
-                Bio
-              </Label>
-              <Textarea
-                value={bioText}
-                className="h-9 resize-none"
-                name="Bio"
-                placeholder="Enter your bio"
-                onChange={(e) => {
-                  setBioText(e.target.value);
-                }}
-              />
+            <div className="flex flex-row-reverse">
+              {notice && <p className="h-0 text-sm text-red-500">{notice}</p>}
             </div>
-            <div className="flex w-full flex-col gap-y-1">
-              <Label className="h5 text-high" htmlFor="Date of birth">
-                Date of birth
-              </Label>
-              <DatePicker date={DOB} setDate={setDOB} />
-            </div>
-            <GenderSelector gender={gender} setGender={setGender} />
           </div>
-          <div className="flex flex-row-reverse">
-            {notice && <p className="h-0 text-sm text-red-500">{notice}</p>}
+          <div className="flex h-fit w-full flex-row-reverse gap-x-3">
+            <span
+              className="inline-flex h-10 w-24 items-center justify-center rounded-xl bg-primary-500 text-white hover:cursor-pointer hover:bg-primary-600 disabled:bg-primary-100"
+              onClick={handleSubmit}
+            >
+              Confirm
+            </span>
+            <span
+              className="inline-flex h-10 w-20 items-center justify-center rounded-xl border border-primary-500 bg-white text-primary-500 hover:cursor-pointer hover:border-primary-600 hover:text-primary-600 disabled:bg-primary-100"
+              onClick={handleClose}
+            >
+              Cancel
+            </span>
           </div>
         </form>
-        <div className="flex h-fit w-full flex-row-reverse gap-x-3">
-          <span
-            className="inline-flex h-10 w-24 items-center justify-center rounded-xl bg-primary-500 text-white hover:cursor-pointer hover:bg-primary-600 disabled:bg-primary-100"
-            onClick={handleSubmit}
-          >
-            Confirm
-          </span>
-          <span
-            className="inline-flex h-10 w-20 items-center justify-center rounded-xl border border-primary-500 bg-white text-primary-500 hover:cursor-pointer hover:border-primary-600 hover:text-primary-600 disabled:bg-primary-100"
-            onClick={handleClose}
-          >
-            Cancel
-          </span>
-        </div>
       </DialogContent>
     </Dialog>
   );

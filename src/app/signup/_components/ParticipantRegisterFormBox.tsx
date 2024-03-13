@@ -7,18 +7,24 @@ import { Label } from "@/components/ui/label";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { DatePicker } from "@/app/_components/DatePicker";
 
 interface RegisterFormBoxProps {
   setGender: (gender: string) => void;
   formRef: React.RefObject<HTMLFormElement>;
+  setDOB: (DOB: Date | undefined) => void;
 }
 
 export default function RegisterFormBox(props: RegisterFormBoxProps) {
-  const { setGender, formRef } = props;
+  const { setGender, formRef, setDOB } = props;
   const [firsttext, setFirstText] = useState("");
   const [lasttext, setLastText] = useState("");
+  const [DOBText, setDOBText] = useState<Date | undefined>(undefined);
+  useEffect(() => {
+    setDOB(DOBText);
+  }, [DOBText, setDOB]);
   const [imageUrl, setimageUrl] = useState("");
 
   return (
@@ -101,11 +107,7 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Date of birth">Date of birth</Label>
-                <Input
-                  type="date"
-                  name="Date of birth"
-                  placeholder="Select date"
-                />
+                <DatePicker date={DOBText} setDate={setDOBText} />
               </div>
             </div>
           </div>

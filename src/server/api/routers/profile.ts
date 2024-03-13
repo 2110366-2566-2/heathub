@@ -89,6 +89,7 @@ export const profileRouter = createTRPCRouter({
         email: z.string().optional(),
         aka: z.string().optional(),
         dateOfBirth: z.date().optional(),
+        imgURL: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -113,6 +114,7 @@ export const profileRouter = createTRPCRouter({
         dateOfBirth: input.dateOfBirth,
         email: input.email,
         gender: input.gender,
+        profileImageURL: input.imgURL,
       });
     }),
 

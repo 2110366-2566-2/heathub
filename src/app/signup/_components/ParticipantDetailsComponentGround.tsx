@@ -20,6 +20,15 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const [isModalPop, setModalPop] = useState(false);
   const [gender, setGender] = useState<string>();
   const [notice, setNotice] = useState<string>("");
+  const [DOB, setDOB] = useState<Date | undefined>(data.DOB);
+
+  const testUsername = api.auth.isAKAAlreadyExist.useMutation();
+
+  const isUsernameDup = async (username: string) => {
+    return await testUsername.mutateAsync({
+      aka: username,
+    });
+  };
 
   const signUpPaticipate = api.auth.signupPaticipate.useMutation();
 
@@ -30,34 +39,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       redirect("/");
     }
   }, [userData]);
-
-  const handleSubmit = async (participant: Participant) => {
-    if (!participant.Image) {
-      setNotice("Please upload a profile picture.");
-      return;
-    }
-
-    const files = [participant.Image];
-    const res = await uploadFiles("signupProfileUploader", {
-      files,
-    });
-    if (res.length !== 1) {
-      setNotice("An error occurred");
-      return;
-    }
-    const imageUrl = res[0]?.url ? res[0].url : "";
-    await signUpPaticipate.mutateAsync({
-      email: participant.Email,
-      password: participant.Password,
-      aka: participant.Username,
-      firstName: participant.Firstname,
-      lastName: participant.Lastname,
-      gender: participant.Gender,
-      bio: "",
-      dateOfBirth: participant.DOB,
-      imageUrl: imageUrl,
-    });
-  };
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -70,7 +51,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const firstnameInput = formData.get("Firstname") as string | null;
     const lastnameInput = formData.get("Lastname") as string | null;
     const usernameInput = formData.get("Username") as string | null;
-    const DOBInput = formData.get("Date of birth") as string | null;
+    const DOBInput = DOB;
     const imageInput = formData.get("Image") as File | null;
 
     if (
@@ -85,8 +66,17 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       setNotice("Please fill in your details.");
       return;
     }
-    if (!imageInput) {
-      setNotice("Please upload a profile picture.");
+    try {
+      if (await isUsernameDup(usernameInput ? usernameInput : "")) {
+        setNotice("This username is already exits.");
+        return;
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setNotice(error.message);
+      } else {
+        setNotice("Something went wrong. Please try again.");
+      }
       return;
     }
 
@@ -94,15 +84,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Firstname: firstnameInput,
       Lastname: lastnameInput,
       Username: usernameInput,
-      DOB: new Date(DOBInput),
+      DOB: DOB,
       Gender: gender,
       Email: data.Email,
       Password: data.Password,
       Image: imageInput,
     };
-    setData(participant);
 
-    if (!participant.Image) {
+    if (!participant.Image || participant.Image.name == "") {
       setNotice("Please upload a profile picture.");
       return;
     }
@@ -120,7 +109,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       await signUpPaticipate.mutateAsync({
         email: participant.Email,
         password: participant.Password,
-        aka: participant.AKA,
+        aka: participant.Username,
         firstName: participant.Firstname,
         lastName: participant.Lastname,
         gender: participant.Gender,
@@ -144,7 +133,11 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         Tell us about yourself
       </div>
 
-      <RegisterFormBox formRef={formRef} setGender={setGender} />
+      <RegisterFormBox
+        setDOB={setDOB}
+        formRef={formRef}
+        setGender={setGender}
+      />
       <SuccessButton
         router={router}
         setModalPop={setModalPop}

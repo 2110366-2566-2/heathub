@@ -7,14 +7,14 @@ import ProfileContainer, {
 
 export default async function Profile() {
   const user2 = await serverapi.auth.me.query();
-  const user = await serverapi.auth.getUserPublicData.query({
+  const user = await serverapi.user.getUserPublicData.query({
     userID: user2?.userId ?? "",
   });
   if (!user) {
     redirect("/");
   }
   const nowDate = new Date();
-  const birthDate = user.dateOfBirth ?? new Date();
+  const birthDate = new Date();
   const userAge =
     nowDate.getFullYear() -
     birthDate.getFullYear() -
@@ -24,7 +24,7 @@ export default async function Profile() {
       : 0);
   let show: ProfilePreviewProps;
   if (user.role == "host") {
-    const hostData = await serverapi.auth.getHostData.query({
+    const hostData = await serverapi.user.getHostsByFilter.query({
       hostID: user2?.userId ?? "",
     });
     show = {
@@ -37,10 +37,10 @@ export default async function Profile() {
       email: user.email,
       about: user.bio ?? "",
       balance: 9999,
-      firstName : user.firstName,
-      lastName : user.lastName,
-      gender : user.gender,
-      dateOfBirth : user.dateOfBirth ?? new Date(),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      gender: user.gender,
+      dateOfBirth: new Date(),
     };
   } else {
     show = {
@@ -53,10 +53,10 @@ export default async function Profile() {
       email: user.email,
       about: user.bio ?? "",
       balance: 9999,
-      firstName : user.firstName,
-      lastName : user.lastName,
-      gender : user.gender,
-      dateOfBirth : user.dateOfBirth ?? new Date(),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      gender: user.gender,
+      dateOfBirth: new Date(),
     };
   }
   console.log(show);

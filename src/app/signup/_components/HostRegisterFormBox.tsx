@@ -7,17 +7,20 @@ import { Label } from "@/components/ui/label";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type Host, type User } from "../interfaces";
+import Image from "next/image";
+import { DatePicker } from "@/app/_components/DatePicker";
 
 interface RegisterFormBoxProps {
   setGender: (gender: string) => void;
+  setDOB: (date: Date | undefined) => void;
   formRef: React.RefObject<HTMLFormElement>;
   data: User;
 }
 
 export default function RegisterFormBox(props: RegisterFormBoxProps) {
-  const { setGender, formRef, data } = props;
+  const { setGender, setDOB, formRef, data } = props;
   const host = data as Host;
   const condition = !!host.Firstname;
   const [firstText, setFirstText] = useState(condition ? host.Firstname : "");
@@ -26,12 +29,18 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
     condition ? host.Username : "",
   );
   const [bioText, setBioText] = useState(condition ? host.Bio : "");
-  const [DOBText, setDOBText] = useState(
-    condition ? host.DOB.toISOString().slice(0, 10) : "",
+  const [DOBText, setDOBText] = useState<Date | undefined>(
+    condition ? host.DOB : undefined,
+  );
+  useEffect(() => {
+    setDOB(DOBText);
+  }, [DOBText, setDOB]);
+  const [imageUrl, setimageUrl] = useState(
+    condition && host.Image ? URL.createObjectURL(host.Image) : "",
   );
 
   return (
-    <Card className=" w-full min-w-[256px] max-w-[600px] justify-center self-center rounded-3xl border-solid border-primary-500 bg-white md:max-w-[844px]">
+    <Card className="w-full min-w-[256px] max-w-[600px] justify-center self-center rounded-3xl border-solid border-primary-500 bg-white md:max-w-[844px]">
       <CardContent className="flex h-full w-full p-0">
         <form
           className="flex h-full w-full flex-col content-center items-stretch gap-y-4 p-8 md:flex-row md:gap-x-8 md:gap-y-0 md:px-4 md:py-6 lg:w-auto"
@@ -135,15 +144,7 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
                 <Label htmlFor="Date of birth">Date of birth</Label>
-                <Input
-                  value={DOBText}
-                  type="date"
-                  name="Date of birth"
-                  placeholder="Select date"
-                  onChange={(e) => {
-                    setDOBText(e.target.value);
-                  }}
-                />
+                <DatePicker date={DOBText} setDate={setDOBText} />
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import RegisterFormBox from "./HostRegisterFormBox";
 import { api } from "@/trpc/react";
+import { uploadFiles } from "@/components/ui/upload";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
@@ -25,6 +26,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const [gender, setGender] = useState<string>(data.Gender);
   const [notice, setNotice] = useState<string>("");
+  const [DOB, setDOB] = useState<Date | undefined>(data.DOB);
 
   const testUsername = api.auth.isAKAAlreadyExist.useMutation();
 
@@ -47,7 +49,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const lastnameInput = formData.get("Lastname") as string | null;
     const usernameInput = formData.get("Username") as string | null;
     const bioInput = formData.get("Bio") as string | null;
-    const DOBInput = formData.get("Date of birth") as string | null;
+    const DOBInput = DOB;
+    const imageInput = formData.get("Image") as File | null;
     if (
       !gender ||
       !firstnameInput ||
@@ -80,13 +83,27 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Lastname: lastnameInput,
       Username: usernameInput,
       Bio: bioInput ? bioInput : "",
-      DOB: new Date(DOBInput),
+      DOB: DOB,
       Gender: gender,
       Email: data.Email,
       Password: data.Password,
       Interest: [],
-      Image: imageInput ? imageInput : null,
+      Image: imageInput,
     };
+
+    if (!host.Image || host.Image?.name == "") {
+      setNotice("Please upload a profile picture.");
+      return;
+    }
+
+    const files = [host.Image];
+    const res = await uploadFiles("signupProfileUploader", {
+      files,
+    });
+    if (res.length !== 1) {
+      setNotice("An error occurred");
+      return;
+    }
     setData(host);
     setPage("HostInterest");
   };
@@ -97,7 +114,12 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         Tell us about yourself
       </div>
 
-      <RegisterFormBox data={data} formRef={formRef} setGender={setGender} />
+      <RegisterFormBox
+        data={data}
+        formRef={formRef}
+        setGender={setGender}
+        setDOB={setDOB}
+      />
       <Button
         className="h-12 w-[108px] bg-primary-500 text-white"
         variant="default"
