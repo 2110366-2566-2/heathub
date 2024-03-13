@@ -36,7 +36,13 @@ export function ProfilePreview({
   if (isMobile) {
     return (
       <Drawer>
+<<<<<<< HEAD
         <DrawerTrigger className="m-auto aspect-[0.76] min-h-[424px] max-w-[323px]">
+||||||| merged common ancestors
+        <DrawerTrigger>
+=======
+        <DrawerTrigger className="aspect-[0.76] min-h-[424px] max-w-[323px]">
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
           <Card {...props} />
         </DrawerTrigger>
         <DrawerOverlay
@@ -52,7 +58,13 @@ export function ProfilePreview({
 
   return (
     <Dialog>
+<<<<<<< HEAD
       <DialogTrigger className="m-auto aspect-[0.76] min-h-[424px] max-w-[323px]">
+||||||| merged common ancestors
+      <DialogTrigger>
+=======
+      <DialogTrigger className="aspect-[0.76] min-h-[424px] max-w-[323px]">
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
         <Card {...props} />
       </DialogTrigger>
       <DialogProfile props={props} role={role} />
@@ -68,6 +80,7 @@ type ProfileProps = {
 function DialogProfile(props: ProfileProps) {
   const { image, rating } = props.props;
   return (
+<<<<<<< HEAD
     <DialogContent
       className="flex min-h-[568px] min-w-[845px] gap-6 rounded-2xl border-2 border-solid
     border-neutral-300 bg-white p-6"
@@ -88,6 +101,37 @@ function DialogProfile(props: ProfileProps) {
               alt={`Avatar of ${props.props.aka}`}
             ></Image>
           )}
+||||||| merged common ancestors
+    <DialogContent className="flex gap-6 bg-white p-0 md:min-h-[568px] md:min-w-[720px] lg:min-w-[845px]">
+      <div className="relative w-[460px]">
+        <Image
+          src={image}
+          alt="card"
+          className="rounded-l-3xl object-cover object-top"
+          fill
+        />
+      </div>
+      <div className="flex min-w-[336px] flex-col gap-3 rounded-r-3xl py-6">
+        <NameReview {...props} />
+        <About props={props} />
+        <Interests props={props} />
+        <div className="absolute bottom-6 self-center">
+          <ChatDialog />
+=======
+    <DialogContent
+      className="flex min-h-[568px] min-w-[845px] gap-6 rounded-2xl border-2 border-solid
+    border-neutral-300 bg-white p-6"
+    >
+      <div className="relative ">
+        <div className="h-full min-w-[400px] overflow-hidden rounded-md">
+          <Image
+            src={image || generateAvatar(props.props.aka)}
+            alt="card"
+            className="rounded-md object-cover object-top"
+            unoptimized={!image}
+            fill
+          />
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
         </div>
         <div className="absolute right-[-28px] top-[-20px] z-30 h-16 w-24 text-[#FFC661]">
           <RatingIcon rating={rating} />
@@ -126,10 +170,19 @@ function Name(props: ProfilePreviewProps) {
       <div className="h2 font-bold text-high">
         {aka}, {age}
       </div>
+<<<<<<< HEAD
       <FontAwesomeIcon
         icon={faCheckCircle}
         className="h-6 w-6 self-center text-secondary-500"
       />
+||||||| merged common ancestors
+=======
+      <FontAwesomeIcon
+        icon={faCheckCircle}
+        className="self-center text-secondary-500"
+        size="xl"
+      />
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
     </div>
   );
 }
@@ -181,6 +234,7 @@ function Interests({
     </div>
   );
 }
+<<<<<<< HEAD
 
 type ReviewChatProps = {
   props: ProfilePreviewProps;
@@ -220,3 +274,49 @@ function ReviewChat(props: ReviewChatProps) {
     </div>
   );
 }
+||||||| merged common ancestors
+=======
+
+type ReviewChatProps = {
+  props: ProfilePreviewProps;
+  role: string;
+};
+
+function ReviewChat(props: ReviewChatProps) {
+  const { reviews, id } = props.props;
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
+  return (
+    <div
+      className={cn(
+        " flex flex-row gap-3 self-end",
+        props.role === "participant" ? "w-[300px]" : "w-[150px]",
+        isMobile ? "mb-20" : "absolute bottom-0",
+      )}
+    >
+      <Button
+        variant="outline"
+        size="md"
+        className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-300"
+      >
+        <FontAwesomeIcon icon={faHeart} className="mr-2" size="1x" />
+        {reviews} Reviews
+      </Button>
+      {props.role === "participant" && (
+        <Link href={`/chat/${id}`}>
+          <Button
+            size="md"
+            className="w-full bg-secondary-500 hover:bg-secondary-400"
+          >
+            <FontAwesomeIcon
+              icon={faComment}
+              className="mr-2 text-white"
+              size="1x"
+            />
+            Go to Chat
+          </Button>
+        </Link>
+      )}
+    </div>
+  );
+}
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674

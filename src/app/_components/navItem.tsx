@@ -13,13 +13,12 @@ type NavItemProp = {
 export function NavItem(prop: NavItemProp) {
   return (
     <Link
-      className="group relative items-center self-center hover:cursor-pointer"
       href={prop.link}
     >
       <FontAwesomeIcon
         icon={prop.icon}
         className={cn(
-          "rounded-lg p-2 text-[1.75rem] text-invert hover:bg-secondary-300",
+          "h-7 w-7 rounded-lg p-2 text-invert hover:bg-secondary-300",
           prop.isSelected && "bg-secondary-500",
         )}
       />

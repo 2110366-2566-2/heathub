@@ -3,16 +3,38 @@ import {
   CHAT_MESSAGE_EVENT,
   RECENT_MESSAGE_EVENT,
 } from "@/constants/pusher-events";
+import { generateAvatar } from "@/lib/avatar";
 import { api } from "@/trpc/react";
 import { type RecentMessage } from "@/types/pusher";
+<<<<<<< HEAD:src/app/chat/components/ChatRoom.tsx
 import { useIntersection } from "@mantine/hooks";
 import { type Channel } from "pusher-js";
 import { useEffect, useRef, useState } from "react";
 import { usePusher } from "../../_context/PusherContext";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
 import { type CreateFormInfo } from "./ChatEventCreateForm";
-import ChatMessageBox from "./ChatMessageBox";
+||||||| merged common ancestors:src/app/chat/components/ChatRoom.tsx
+import { type Channel } from "pusher-js";
+import { usePusher } from "../../_context/PusherContext";
+import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
+import { useIntersection } from "@mantine/hooks";
+import ChatEventForm, { type CreateFormInfo } from "./ChatEventCreateForm";
+=======
+import { useIntersection } from "@mantine/hooks";
+import { type Channel } from "pusher-js";
+import { useEffect, useRef, useState } from "react";
+import { usePusher } from "../../_context/PusherContext";
+import { type CreateFormInfo } from "./ChatEventCreateForm";
 import ChatEventInfo from "./ChatEventInfo";
+import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674:src/app/chat/_components/ChatRoom.tsx
+import ChatMessageBox from "./ChatMessageBox";
+<<<<<<< HEAD:src/app/chat/components/ChatRoom.tsx
+import ChatEventInfo from "./ChatEventInfo";
+||||||| merged common ancestors:src/app/chat/components/ChatRoom.tsx
+import ChatEventInfo, { ChatEventInfoInterface } from "./ChatEventInfo";
+=======
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674:src/app/chat/_components/ChatRoom.tsx
 export function ChatRoom({ withUser }: { withUser: string }) {
   const [messages, setMessages] = useState<RecentMessage[]>([]);
   const [isOpenChatEvent, setOpenChatEvent] = useState<boolean>(false);
@@ -61,14 +83,12 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       refetchOnWindowFocus: false,
     },
   );
-  const setChatEvent = () => {
-    setOpenChatEvent((prev) => !prev);
-  };
+
   useEffect(() => {
     chatContainerRef.current?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [isOpenChatEvent]);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -97,7 +117,6 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const createEvent = api.event.createEvent.useMutation({
     onSuccess: () => {
-      console.log("success create Event");
       setOpenChatEvent(false);
     },
   });
@@ -120,7 +139,6 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   };
 
   const onEventConfirm = (eventData: CreateFormInfo) => {
-    console.log(eventData);
     if (!user) return;
     createEvent.mutate({
       hostUserID: user?.userId,
@@ -136,6 +154,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
   const reversePost = [...messages].reverse();
   return (
     <>
+<<<<<<< HEAD:src/app/chat/components/ChatRoom.tsx
       {user && (
         <div
           className="relative flex h-full w-full flex-col overflow-y-scroll px-6"
@@ -161,7 +180,58 @@ export function ChatRoom({ withUser }: { withUser: string }) {
                   (i === 0 || reversePost[i - 1]?.senderId !== message.senderId)
                 )
                   isShowTop = true;
+||||||| merged common ancestors:src/app/chat/components/ChatRoom.tsx
+      <div
+        className="relative flex h-full w-full flex-col overflow-y-scroll px-14 max-lg:px-6"
+        ref={containerRef}
+      >
+        {messages ? (
+          <>
+            {reversePost.map((message, i) => {
+              let isMine = false;
+              let isShowTop = false;
+              let isShowBot = false;
+              if (message.senderId === user?.userId) {
+                isMine = true;
+              }
+              if (
+                i === messages.length - 1 ||
+                reversePost[i + 1]?.senderId !== message.senderId
+              )
+                isShowBot = true;
+              if (
+                !isMine &&
+                (i === 0 || reversePost[i - 1]?.senderId !== message.senderId)
+              )
+                isShowTop = true;
+=======
+      {user && (
+        <div
+          className="relative flex h-full w-full flex-col overflow-y-scroll px-6"
+          ref={containerRef}
+        >
+          {messages ? (
+            <>
+              {reversePost.map((message, i) => {
+                let isMine = false;
+                let isShowTop = false;
+                let isShowBot = false;
+                if (message.senderId === user?.userId) {
+                  isMine = true;
+                }
+                if (
+                  i === messages.length - 1 ||
+                  reversePost[i + 1]?.senderId !== message.senderId
+                )
+                  isShowBot = true;
+                if (
+                  !isMine &&
+                  (i === 0 || reversePost[i - 1]?.senderId !== message.senderId)
+                )
+                  isShowTop = true;
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674:src/app/chat/_components/ChatRoom.tsx
 
+<<<<<<< HEAD:src/app/chat/components/ChatRoom.tsx
                 if (message.contentType === "event")
                   return (
                     <ChatEventInfo
@@ -195,6 +265,62 @@ export function ChatRoom({ withUser }: { withUser: string }) {
                   );
                 } else {
                   return (
+||||||| merged common ancestors:src/app/chat/components/ChatRoom.tsx
+              if (message.contentType === "event")
+                return (
+                  <ChatEventInfo
+                    key={message.id}
+                    location={message.content.location}
+                    price={message.content.price}
+                    startTime={message.content.startTime}
+                    endTime={message.content.endTime}
+                    status="success"
+                  />
+                );
+              if (i === 5) {
+                return (
+                  <div key={"hot"}>
+                    <div ref={ref} key={"hot-fix" + i} />
+=======
+                if (message.contentType === "event")
+                  return (
+                    <ChatEventInfo
+                      key={message.id}
+                      isMine={isMine}
+                      location={message.content.location}
+                      price={message.content.price}
+                      startTime={message.content.startTime}
+                      endTime={message.content.endTime}
+                      status={message.content.status}
+                      role={user?.role}
+                      eventID={message.content.eventId}
+                      updateStatus={updateEventStatus}
+                      imageUrl={message.discourserImageURL}
+                      senderName={message.discourserAka}
+                    />
+                  );
+                if (i === 5) {
+                  return (
+                    <div key={"hot"}>
+                      <div ref={ref} key={"hot-fix" + i} />
+                      <ChatMessageComponent
+                        key={message.id}
+                        senderName={message.discourserAka}
+                        isShowBot={isShowBot}
+                        isMine={isMine}
+                        isShowTop={isShowTop}
+                        message={message.content}
+                        createdAt={message.createdAt.toString()}
+                        imageUrl={
+                          message.discourserImageURL ||
+                          generateAvatar(message.discourserAka)
+                        }
+                      />
+                    </div>
+                  );
+                } else {
+                  return (
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674:src/app/chat/_components/ChatRoom.tsx
                     <ChatMessageComponent
                       key={message.id}
                       senderName={message.discourserAka}
@@ -203,7 +329,10 @@ export function ChatRoom({ withUser }: { withUser: string }) {
                       isShowTop={isShowTop}
                       message={message.content}
                       createdAt={message.createdAt.toString()}
-                      imageUrl={message.discourserImageURL}
+                      imageUrl={
+                        message.discourserImageURL ||
+                        generateAvatar(message.discourserAka)
+                      }
                     />
                   );
                 }
@@ -217,9 +346,15 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       )}
       {user && (
         <ChatMessageBox
+<<<<<<< HEAD:src/app/chat/components/ChatRoom.tsx
           onConfirm={onEventConfirm}
+||||||| merged common ancestors:src/app/chat/components/ChatRoom.tsx
+=======
+          onConfirm={onEventConfirm}
+          isOpenChatEvent={isOpenChatEvent}
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674:src/app/chat/_components/ChatRoom.tsx
           toUserID={withUser}
-          setOpenChatEvent={setChatEvent}
+          setOpenChatEvent={setOpenChatEvent}
           userRole={user.role}
         />
       )}

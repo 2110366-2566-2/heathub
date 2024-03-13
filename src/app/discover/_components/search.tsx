@@ -25,8 +25,18 @@ export default function Search(props: searchProps) {
     <div className="relative h-12 w-full">
       <FontAwesomeIcon
         icon={faSearch}
-        className="absolute left-3 top-[14px] h-5 w-5 self-center text-placeholder"
+        className="absolute left-3 top-[14px] self-center text-placeholder"
+        size="lg"
       />
+      <Input
+        className={cn("border-none p-3 pl-9", isMobile ? "" : "bg-white")}
+        placeholder="Search For partner"
+        size="lg"
+        onChange={(e) => {
+          props.setValues("searchQuery", e.target.value);
+        }}
+      />
+<<<<<<< HEAD
       <Input
         className={cn("border-none p-3 pl-9", isMobile ? "bg-neutral-100" : "")}
         placeholder="Search For partner"
@@ -35,6 +45,10 @@ export default function Search(props: searchProps) {
           props.setValues("searchQuery", e.target.value);
         }}
       />
+||||||| merged common ancestors
+      <Input className="p-3 pl-9" placeholder="Search AKA" size="lg" />
+=======
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
     </div>
   );
 }

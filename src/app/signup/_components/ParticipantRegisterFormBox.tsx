@@ -91,12 +91,12 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
-                <Label htmlFor="AKA">AKA</Label>
+                <Label htmlFor="Username">Username</Label>
                 <Input
                   type="text"
                   className="h-9"
-                  name="AKA"
-                  placeholder="Enter your aka"
+                  name="Username"
+                  placeholder="Enter your username"
                 />
               </div>
               <div className="flex w-full flex-col gap-y-1.5">
@@ -111,7 +111,7 @@ export default function RegisterFormBox(props: RegisterFormBoxProps) {
           </div>
           <div className="h-[0.5px] bg-primary-500 md:h-auto md:w-[0.5px]"></div>
           <div className="h-full">
-            <GenderSelector setGender={setGender} />
+            <GenderSelector gender="" setGender={setGender} />
           </div>
         </form>
       </CardContent>

@@ -17,6 +17,7 @@ interface EventModalProps {
 
 export function FinishModal(prop: EventModalProps) {
   const { children } = prop;
+<<<<<<< HEAD:src/app/myevent/components/FinishModal.tsx
   const finishEvent = api.event.finishEvent.useMutation();
 
   const handleFinishEvent = async (eventID: number) => {
@@ -26,6 +27,20 @@ export function FinishModal(prop: EventModalProps) {
       console.error(error);
     }
   };
+||||||| merged common ancestors:src/app/myevent/components/FinishModal.tsx
+=======
+  const finishEvent = api.event.finishEvent.useMutation();
+  const utils = api.useUtils();
+
+  const handleFinishEvent = async (eventID: number) => {
+    try {
+      await finishEvent.mutateAsync({ eventID: eventID });
+      await utils.event.myEvent.invalidate();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674:src/app/myevent/_components/FinishModal.tsx
 
   return (
     <Dialog>

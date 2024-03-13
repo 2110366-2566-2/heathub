@@ -14,7 +14,13 @@ const toggleVariants = cva(
         default:
           "bg-primary-50 text-primary-500 data-[state=on]:bg-primary-100 data-[state=on]:border data-[state=on]:border-primary-500 data-[state=on]:text-primary-500 hover:bg-primary-200 hover:text-invert",
         outline:
+<<<<<<< HEAD
           "border border-primary-500 text-primary-500 bg-transparent hover:bg-toggle hover:text-invert data-[state=on]:bg-toggle data-[state=on]:text-invert hover:border-toggle data-[state=on]:border-toggle",
+||||||| merged common ancestors
+          "border border-primary-500 text-primary-500 bg-transparent hover:bg-primary-300 hover:text-invert data-[state=on]:bg-primary-400 data-[state=on]:text-invert",
+=======
+          "border border-primary-500 text-primary-500 bg-transparent hover:bg-secondary-300 hover:text-invert data-[state=on]:bg-toggle data-[state=on]:text-invert hover:border-toggle data-[state=on]:border-toggle",
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
         solid: "bg-primary-500",
         ghost:
           "bg-white bg-opacity-50 text-white hover:bg-primary-300 hover:text-invert",

@@ -3,16 +3,18 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup } from "@/components/ui/toggle-group";
+import {
+  tagList as allInterestList,
+  tagStyle,
+} from "../../../utils/icon-mapping";
 
 interface InterestPickerBoxProps {
   selectedInterestList: string[];
   setSelectedInterestList: (list: string[]) => void;
-  allInterestList: string[];
 }
 
 export default function InterestPickerBox(props: InterestPickerBoxProps) {
-  const { selectedInterestList, setSelectedInterestList, allInterestList } =
-    props;
+  const { selectedInterestList, setSelectedInterestList } = props;
   const handleSelectedInterestList = (handleItem: string) => {
     // add if don't have, remove is have
     const handledList = selectedInterestList;
@@ -32,16 +34,18 @@ export default function InterestPickerBox(props: InterestPickerBoxProps) {
           className="gap flex w-full flex-wrap gap-2"
           type="multiple"
         >
-          {allInterestList.map((val) => {
+          {allInterestList.map((interestItem, index) => {
             return (
               <Toggle
+                key={index}
+                variant="outline"
+                icon={tagStyle[interestItem].icon}
+                size="md"
                 onClick={() => {
-                  handleSelectedInterestList(val);
+                  handleSelectedInterestList(interestItem);
                 }}
-                value={val}
-                key={val}
               >
-                {val}
+                {interestItem}
               </Toggle>
             );
           })}

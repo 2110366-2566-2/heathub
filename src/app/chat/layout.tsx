@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { MessageList } from "./components/MessageList";
+import { MessageList } from "./_components/MessageList";
 import { NavBar, NavBarMobile } from "../_components/navbar";
 
 import { cn } from "@/utils/tailwind-merge";

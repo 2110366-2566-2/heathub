@@ -22,13 +22,14 @@ export default function ConfirmEventPaymet(props: ConfirmEventPaymetProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Confirm</Button>
+        <Button variant="default">Confirm</Button>
       </DialogTrigger>
       <DialogContent className="bg-white sm:max-w-[425px] sm:rounded-md">
         <DialogHeader className="flex w-full flex-col items-center">
           <FontAwesomeIcon
             icon={faMoneyCheckDollar}
-            className="h-8 w-8 text-primary-500 "
+            className="text-primary-500"
+            size="1x"
           />
           <DialogTitle className="text-center">Confirm Payment</DialogTitle>
         </DialogHeader>

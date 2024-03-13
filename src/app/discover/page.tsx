@@ -71,6 +71,7 @@ function Header({ setFilters }: { setFilters: (filters: filters) => void }) {
     : "Find perfect partner for your adventure today on";
 
   return (
+<<<<<<< HEAD
     <div className="flex flex-row">
       <div className="flex w-full flex-col justify-center gap-2">
         <div className="h4 w-full font-bold text-primary-900">
@@ -84,6 +85,34 @@ function Header({ setFilters }: { setFilters: (filters: filters) => void }) {
             HeatHub!
           </div>
         </div>
+||||||| merged common ancestors
+    <div className="flex flex-col justify-center gap-2">
+      <div className="relative flex items-center gap-3">
+        <FontAwesomeIcon
+          icon={faCompass}
+          className="h-10 w-10 text-secondary-400"
+        />
+        <div className="h2 font-bold text-primary-900">Discover</div>
+        {isMobile && <SearchFilterMobile setFilters={setFilters} />}
+      </div>
+      <div className="h5 lg:h4 text-primary-700">
+        Unlock a World of Possibilities: Find Friends for Every Adventure on
+        HeatHub!
+=======
+    <div className="flex flex-row">
+      <div className="flex w-full flex-col justify-center gap-2">
+        <div className="h4 w-full font-bold text-primary-900">
+          Welcome back,
+        </div>
+        <div className="flex flex-col md:flex-row md:gap-2">
+          <div className="text-[28px] font-extrabold text-primary-800 lg:text-4xl">
+            {mobileText}{" "}
+            <span className="text-[28px] font-extrabold italic text-secondary-500 lg:text-4xl">
+              HeatHub!
+            </span>
+          </div>
+        </div>
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
       </div>
       {isMobile && <SearchFilterMobile setFilters={setFilters} />}
     </div>
@@ -121,9 +150,19 @@ type CardContainerProps = {
 
 function CardContainer(props: CardContainerProps) {
   return (
+<<<<<<< HEAD
     <div className="grid w-full grid-cols-1 items-start justify-between gap-y-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
       {props.users.map((profile: ProfilePreviewProps) => (
         <ProfilePreview key={profile.aka} props={profile} role={props.role} />
+||||||| merged common ancestors
+    <div className="grid min-h-screen w-full grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-9 2xl:grid-cols-4">
+      {users.map((profile) => (
+        <ProfilePreview {...profile} key={profile.aka} />
+=======
+    <div className="flex w-full flex-row flex-wrap justify-center gap-8">
+      {props.users.map((profile: ProfilePreviewProps) => (
+        <ProfilePreview key={profile.aka} props={profile} role={props.role} />
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
       ))}
     </div>
   );

@@ -6,7 +6,12 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useState } from "react";
+<<<<<<< HEAD
 import { Card, type EventProps } from "./components/Card";
+||||||| merged common ancestors
+=======
+import { Card, EventStatus, type EventProps } from "./_components/Card";
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
 import { type myEventProps } from "./types";
 import { parseEventStatus, parseTabValue } from "./utils";
 
@@ -16,11 +21,20 @@ export default function Page() {
     "upcoming" | "completed" | undefined
   >("upcoming");
 
+  const [role, setRole] = useState("host");
+  const { isSuccess } = api.auth.me.useQuery(undefined, {
+    onSuccess: (data) => {
+      if (!data) return;
+      setRole(data.role);
+    },
+  });
+
   api.event.myEvent.useQuery(
     {
       status: tabValue,
     },
     {
+      enabled: isSuccess,
       onSuccess: (data) => {
         if (!data) return;
         const _events: EventProps[] = data.map((event: myEventProps) => ({
@@ -38,18 +52,9 @@ export default function Page() {
           detail: event.description,
         }));
         setEvents(_events);
-        console.log(_events);
       },
     },
   );
-
-  const [role, setRole] = useState("host");
-  api.auth.me.useQuery(undefined, {
-    onSuccess: (data) => {
-      if (!data) return;
-      setRole(data.role);
-    },
-  });
 
   return (
     <div className="w-screen grow flex-col items-center gap-6 p-9 lg:flex xl:flex">
@@ -65,7 +70,8 @@ export default function Page() {
                 <div className="flex w-full items-center gap-3">
                   <FontAwesomeIcon
                     icon={faCalendar}
-                    className="h-7 w-7 text-secondary-500"
+                    className="text-secondary-500"
+                    size="2x"
                   />
                   <TabsContent value="upcoming">
                     <div className="h2 font-extrabold text-primary-900">
@@ -138,6 +144,7 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
+<<<<<<< HEAD
                   <Card
                     key={event.id}
                     id={event.id}
@@ -150,6 +157,35 @@ export default function Page() {
                     detail={event.detail ?? ""}
                     isVerified
                   />
+||||||| merged common ancestors
+                  <Card
+                    key={event.id}
+                    id={event.id}
+                    userID={event.userID}
+                    name={event.name}
+                    image={event.image ?? ""}
+                    location={event.location}
+                    date={event.date}
+                    status={event.status}
+                    detail={event.detail ?? ""}
+                    isVerified
+                  />
+=======
+                  event.status != EventStatus.CANCELLED && (
+                    <Card
+                      key={event.id}
+                      id={event.id}
+                      userID={event.userID}
+                      name={event.name}
+                      image={event.image}
+                      location={event.location}
+                      date={event.date}
+                      status={event.status}
+                      detail={event.detail ?? ""}
+                      isVerified
+                    />
+                  )
+>>>>>>> f7efe98aeefd92d65e12f97a2f186b9599129674
                 );
               })}
             </div>
@@ -174,18 +210,20 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
-                  <Card
-                    key={event.id}
-                    id={event.id}
-                    userID={event.userID}
-                    name={event.name}
-                    image={event.image}
-                    location={event.location}
-                    date={event.date}
-                    status={event.status}
-                    detail={event.detail}
-                    isVerified
-                  />
+                  event.status != EventStatus.CANCELLED && (
+                    <Card
+                      key={event.id}
+                      id={event.id}
+                      userID={event.userID}
+                      name={event.name}
+                      image={event.image}
+                      location={event.location}
+                      date={event.date}
+                      status={event.status}
+                      detail={event.detail}
+                      isVerified
+                    />
+                  )
                 );
               })}
             </div>
