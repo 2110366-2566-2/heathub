@@ -1,10 +1,8 @@
 import { Tag } from "@/app/_components/tag";
 import { CardContent, Card } from "@/components/ui/card";
-import { TagList, tagStyle } from "@/utils/icon-mapping";
+import { type TagList, tagStyle } from "@/utils/icon-mapping";
 import {
-  faCheckCircle,
   faEye,
-  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EditProfileButton from "./EditProfileButton";

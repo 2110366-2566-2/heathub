@@ -31,7 +31,7 @@ interface EditProfileButtonProps {
 
 export default function EditProfileButton(props: EditProfileButtonProps) {
   const router = useRouter();
-  const util = api.useUtils();
+  const _util = api.useUtils();
   const { id, cUsername } = props;
   const [gender, setGender] = useState("");
   const [usernameText, setUsernameText] = useState("");
@@ -119,7 +119,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
         setNotice("An error occurred");
         return;
       }
-      
+
       _imageUrl = res[0]?.url ? res[0].url : "";
 
       uploadConfirm.mutate();

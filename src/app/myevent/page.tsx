@@ -46,7 +46,7 @@ export default function Page() {
       detail: event.description,
     }));
     setEvents(_events);
-  }, [data]);
+  }, [data, role]);
 
   return (
     <div className="w-screen grow flex-col items-center gap-6 p-9 lg:flex xl:flex">
