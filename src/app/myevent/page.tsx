@@ -6,9 +6,9 @@ import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useState } from "react";
-import { Card, type EventProps } from "./components/Card";
+import { Card, EventStatus, type EventProps } from "./components/Card";
 import { type myEventProps } from "./types";
-import { parseEventStatus, parseTabValue, shouldShowEvent } from "./utils";
+import { parseEventStatus, parseTabValue} from "./utils";
 
 export default function Page() {
   const [events, setEvents] = useState<EventProps[]>([]);
@@ -16,11 +16,20 @@ export default function Page() {
     "upcoming" | "completed" | undefined
   >("upcoming");
 
+  const [role, setRole] = useState("host");
+  const {isSuccess } = api.auth.me.useQuery(undefined, {
+    onSuccess: (data) => {
+      if (!data) return;
+      setRole(data.role);
+    },
+  });
+
   api.event.myEvent.useQuery(
     {
       status: tabValue,
     },
     {
+      enabled: isSuccess,
       onSuccess: (data) => {
         if (!data) return;
         const _events: EventProps[] = data.map((event: myEventProps) => ({
@@ -38,18 +47,11 @@ export default function Page() {
           detail: event.description,
         }));
         setEvents(_events);
-        console.log(_events);
       },
     },
+    
   );
 
-  const [role, setRole] = useState("host");
-  api.auth.me.useQuery(undefined, {
-    onSuccess: (data) => {
-      if (!data) return;
-      setRole(data.role);
-    },
-  });
 
   return (
     <div className="w-screen grow flex-col items-center gap-6 p-9 lg:flex xl:flex">
@@ -139,7 +141,7 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
-                  shouldShowEvent(event.status) && (
+                  event.status != EventStatus.CANCELLED && (
                     <Card
                       key={event.id}
                       id={event.id}
@@ -177,6 +179,7 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
+                  event.status != EventStatus.CANCELLED &&
                   <Card
                     key={event.id}
                     id={event.id}

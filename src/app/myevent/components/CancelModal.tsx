@@ -20,6 +20,8 @@ export function CancelModal(prop: EventModalProps) {
   const handleCancelEvent = async (eventID: number) => {
     try {
       await cancelEvent.mutateAsync({ eventID: eventID });
+      const utils = api.useUtils();
+      utils.event.myEvent.invalidate();
     } catch (error) {
       console.error(error);
     }
