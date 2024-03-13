@@ -105,7 +105,7 @@ export const profileRouter = createTRPCRouter({
         where: and(or(...duplicateCheck), ne(user.id, ctx.session.user.userId)),
       });
 
-      if (found) {
+      if (found && duplicateCheck.length > 0) {
         throw new Error("Duplicate email or aka");
       }
 
