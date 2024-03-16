@@ -411,9 +411,6 @@ export const verifiedRequest = mysqlTable("verified_request", {
     length: 64,
   }).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  nationalIDCardNumber: bigint("national_id_card_number", {
-    mode: "number",
-  }).notNull(),
   nationalIDCardImageURL: varchar("national_id_card_image_url", {
     length: 256,
   }).default(""),
