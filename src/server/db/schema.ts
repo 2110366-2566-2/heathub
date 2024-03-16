@@ -401,7 +401,7 @@ export const eventRelation = relations(event, ({ one }) => ({
   }),
 }));
 
-export const verifiedRequest = mysqlTable("verifiedRequest", {
+export const verifiedRequest = mysqlTable("verified_request", {
   id: bigint("id", {
     mode: "number",
   })
