@@ -58,6 +58,10 @@ export const hostUser = mysqlTable("host_user", {
   }).primaryKey(),
   avgRating: float("rating").default(0),
   reviewCount: int("review_count").default(0),
+  verifiedStatus: varchar("verified_status", {
+    length: 32,
+    enum: ["unverified", "pending", "verified", "rejected"],
+  }).default("unverified"),
 });
 
 export const hostRelation = relations(hostUser, ({ one, many }) => ({
@@ -396,3 +400,31 @@ export const eventRelation = relations(event, ({ one }) => ({
     references: [user.id],
   }),
 }));
+
+export const verifiedRequest = mysqlTable("verifiedRequest", {
+  id: bigint("id", {
+    mode: "number",
+  })
+    .primaryKey()
+    .autoincrement(),
+  hostID: varchar("host_id", {
+    length: 64,
+  }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  nationalIDCardNumber: bigint("national_id_card_number", {
+    mode: "number",
+  }).notNull(),
+  nationalIDCardImageURL: varchar("national_id_card_image_url", {
+    length: 256,
+  }).default(""),
+});
+
+export const verifiedRequestRelation = relations(
+  verifiedRequest,
+  ({ one }) => ({
+    host: one(user, {
+      fields: [verifiedRequest.hostID],
+      references: [user.id],
+    }),
+  }),
+);
