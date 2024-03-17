@@ -1,9 +1,9 @@
 import { env } from "@/env";
-import { ResultSet, createClient } from "@libsql/client";
+import { createClient, type ResultSet } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 
 import { libsql } from "@lucia-auth/adapter-sqlite";
-import { ExtractTablesWithRelations } from "drizzle-orm";
+import { type ExtractTablesWithRelations } from "drizzle-orm";
 import { type BaseSQLiteDatabase } from "drizzle-orm/sqlite-core";
 import * as schema from "./schema";
 
@@ -20,13 +20,13 @@ if (env.USE_LOCAL_DB) {
   });
 }
 
-export const luciaAdapter = libsql(tursoClient!, {
+export const luciaAdapter = libsql(tursoClient, {
   user: "user",
   key: "user_key",
   session: "user_session",
 });
 
-export const db = drizzle(tursoClient!, {
+export const db = drizzle(tursoClient, {
   schema,
 });
 
