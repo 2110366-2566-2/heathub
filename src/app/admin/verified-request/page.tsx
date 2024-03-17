@@ -29,7 +29,7 @@ export default function Page() {
       onSuccess: (data) => {
         if (!data) return;
         const formattedData = data.items.map((e) => {
-          const d: VerifiedRequest = {
+          const req: VerifiedRequest = {
             requestDate: e.createdAt,
             requestId: e.id,
             hostId: e.hostID,
@@ -39,7 +39,7 @@ export default function Page() {
             profileImageURL: e.host.profileImageURL!,
             nationalIdCardImageURL: e.nationalIDCardImageURL,
           };
-          return d;
+          return req;
         });
         setRecentData(formattedData);
       },
