@@ -13,7 +13,7 @@ export type VerifiedRequest = {
   lastName: string;
   userName: string;
   profileImageURL: string;
-  nationalIdCardImageURL: string;
+  nationalIdCardImageURL: string | null;
 };
 
 export const requestVerifiedDataTableColumns: ColumnDef<VerifiedRequest>[] = [

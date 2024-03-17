@@ -1,11 +1,9 @@
 "use client";
-
 import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  type Row,
 } from "@tanstack/react-table";
 
 import {
@@ -17,10 +15,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { faCheck, faBan } from "@fortawesome/free-solid-svg-icons";
-
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { api } from "@/trpc/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import RejectedRequestModal from "./RejectedRequestModal";
+import { useToast } from "@/components/ui/use-toast";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -37,20 +37,49 @@ export function RequestVerifiedDataTable<TData, TValue>({
   hasNext: boolean;
   setPage: (action: "next" | "previous") => void;
 }) {
+  const { toast } = useToast();
   const updateVerifiedRequestStatus =
     api.admin.updateVerifiedRequestStatus.useMutation();
 
   const utils = api.useUtils();
-  const handleUpdateVerifiedRequestStatus = async (
+  const handleVerifiedRequestStatus = async (
     hostId: string,
-    status: "verified" | "rejected",
+    requestId: number,
   ) => {
     try {
       await updateVerifiedRequestStatus.mutateAsync({
         hostID: hostId,
-        updateStatus: status,
+        requestID: requestId,
+        updateStatus: "verified",
       });
       await utils.admin.getVerifiedRequest.invalidate();
+      toast({
+        title: "Request id " + requestId + "verified Success",
+        description: "host id" + hostId + "is verified",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleRejectRequestStatus = async (
+    hostId: string,
+    details: string,
+    requestId: number,
+  ) => {
+    try {
+      await updateVerifiedRequestStatus.mutateAsync({
+        hostID: hostId,
+        requestID: requestId,
+        updateStatus: "rejected",
+        details: details,
+      });
+      await utils.admin.getVerifiedRequest.invalidate();
+
+      toast({
+        title: "Request id " + requestId + "verified failed",
+        description: "host id" + hostId + "is rejected because" + details,
+        variant: "error",
+      });
     } catch (error) {
       console.error(error);
     }
@@ -60,32 +89,21 @@ export function RequestVerifiedDataTable<TData, TValue>({
     accessorKey: "action",
     header: "Actions",
     cell: ({ row }) => {
+      const hostId: string = row.getValue("hostId");
+      const requestId: number = row.getValue("requestId");
+      const handleReject = async (details: string) => {
+        await handleRejectRequestStatus(hostId, details, requestId);
+      };
       return (
-        <div className="flex w-fit flex-row">
+        <div className="flex w-fit flex-row items-center justify-center">
           <Button
-            onClick={() =>
-              handleUpdateVerifiedRequestStatus(
-                row.getValue("hostId"),
-                "verified",
-              )
-            }
-            className="space-x h-fit w-fit space-x-1 bg-transparent text-success hover:bg-transparent"
+            onClick={() => handleVerifiedRequestStatus(hostId, requestId)}
+            className="h5 space-x h-fit w-fit space-x-1 bg-transparent text-success hover:bg-transparent"
           >
             <FontAwesomeIcon icon={faCheck} width={20} height={20} />
             <span>Approve</span>
           </Button>
-          <Button
-            onClick={() =>
-              handleUpdateVerifiedRequestStatus(
-                row.getValue("hostId"),
-                "rejected",
-              )
-            }
-            className="h-fit w-fit space-x-1 bg-transparent text-neutral-500 hover:bg-transparent"
-          >
-            <FontAwesomeIcon icon={faBan} width={20} height={20} />
-            <span>Reject</span>
-          </Button>
+          <RejectedRequestModal rejectOnClick={handleReject} />
         </div>
       );
     },
