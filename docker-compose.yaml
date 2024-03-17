@@ -12,3 +12,5 @@ services:
       - "3306"
     volumes:
       - ./volumes/database:/var/lib/mysql
+  libsql:
+    image: libsql

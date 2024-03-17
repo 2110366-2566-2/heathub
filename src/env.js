@@ -9,9 +9,7 @@ export const env = createEnv({
 
   server: {
     DATABASE_HOST: z.string(),
-    DATABASE_USERNAME: z.string(),
     DATABASE_PASSWORD: z.string(),
-    DATABASE_NAME: z.string(),
     USE_LOCAL_DB: z
       .string()
       .toLowerCase()
@@ -46,8 +44,6 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_HOST: process.env.DATABASE_HOST,
     DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-    DATABASE_USERNAME: process.env.DATABASE_USERNAME,
-    DATABASE_NAME: process.env.DATABASE_NAME,
     NODE_ENV: process.env.NODE_ENV,
     USE_LOCAL_DB: process.env.USE_LOCAL_DB,
     PUSHER_SECRET: process.env.PUSHER_SECRET,
