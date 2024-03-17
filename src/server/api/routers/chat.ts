@@ -6,16 +6,16 @@ import {
   participantProcedure,
   userProcedure,
 } from "@/server/api/trpc";
-import type { DB } from "@/server/db";
+import type { DBQuery } from "@/server/db";
 import { chatInbox, chatMessage, user } from "@/server/db/schema";
 import {
-  type RecentNormalMessage,
-  type RecentMessage,
   type RecentEventMessage,
+  type RecentMessage,
+  type RecentNormalMessage,
 } from "@/types/pusher";
 import { and, desc, eq, lte, or, sql } from "drizzle-orm";
 export async function createInbox(
-  db: DB,
+  db: DBQuery,
   userID1: string,
   userID2: string,
 ): Promise<void> {
@@ -32,13 +32,7 @@ export async function createInbox(
       userID2: userID2,
       lastestMessageId: null,
     })
-    .onDuplicateKeyUpdate({
-      set: {
-        userID1: userID1,
-        userID2: userID2,
-        lastestMessageId: null,
-      },
-    });
+    .onConflictDoNothing();
 }
 export const chatRouter = createTRPCRouter({
   createInbox: participantProcedure
