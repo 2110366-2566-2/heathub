@@ -450,7 +450,7 @@ export const verifiedRequest = sqliteTable("verified_request", {
     .notNull(),
   nationalIDCardImageURL: text("national_id_card_image_url", {
     length: 256,
-  }).default(""),
+  }).notNull(),
 });
 
 export const verifiedRequestRelation = relations(
