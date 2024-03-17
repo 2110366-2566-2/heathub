@@ -7,6 +7,7 @@ import MyReview from "./MyReview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import Verify from "./verify";
 
 export type ProfilePreviewProps = {
   email: string;
@@ -45,6 +46,7 @@ export default function ProfileContainer(props: ProfilePreviewProps) {
         </div>
         <PaymentCard {...balance} />
       </div>
+      <Verify />
       <div className="flex justify-end">
         <Link
           className="text-h4 ring-offset-background focus-visible:ring-ring flex h-12 w-[109px] items-center justify-center whitespace-nowrap rounded-xl bg-primary-700 font-medium text-white transition-colors hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-primary-100"
