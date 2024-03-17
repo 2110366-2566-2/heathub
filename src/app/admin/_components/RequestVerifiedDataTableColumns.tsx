@@ -19,7 +19,7 @@ export type VerifiedRequest = {
 export const requestVerifiedDataTableColumns: ColumnDef<VerifiedRequest>[] = [
   {
     accessorKey: "requestId",
-    header: "Id",
+    header: "ID",
   },
   {
     accessorKey: "requestDate",
@@ -28,6 +28,10 @@ export const requestVerifiedDataTableColumns: ColumnDef<VerifiedRequest>[] = [
       const dayFormat = Dayjs(row.getValue("requestDate")).format("DD/MM/YYYY");
       return dayFormat;
     },
+  },
+  {
+    accessorKey: "hostId",
+    header: "Host Id",
   },
   {
     accessorKey: "firstName",
