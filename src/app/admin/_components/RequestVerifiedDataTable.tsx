@@ -5,7 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getPaginationRowModel,
+  type Row,
 } from "@tanstack/react-table";
 
 import {
@@ -40,6 +40,22 @@ export function RequestVerifiedDataTable<TData, TValue>({
   const updateVerifiedRequestStatus =
     api.admin.updateVerifiedRequestStatus.useMutation();
 
+  const utils = api.useUtils();
+  const handleUpdateVerifiedRequestStatus = async (
+    hostId: string,
+    status: "verified" | "rejected",
+  ) => {
+    try {
+      await updateVerifiedRequestStatus.mutateAsync({
+        hostID: hostId,
+        updateStatus: status,
+      });
+      await utils.admin.getVerifiedRequest.invalidate();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const actionCols: ColumnDef<TData, TValue> = {
     accessorKey: "action",
     header: "Actions",
@@ -47,24 +63,24 @@ export function RequestVerifiedDataTable<TData, TValue>({
       return (
         <div className="flex w-fit flex-row">
           <Button
-            onClick={() => {
-              updateVerifiedRequestStatus.mutate({
-                hostID: row.getValue("hostID"),
-                updateStatus: "verified",
-              });
-            }}
+            onClick={() =>
+              handleUpdateVerifiedRequestStatus(
+                row.getValue("hostId"),
+                "verified",
+              )
+            }
             className="space-x h-fit w-fit space-x-1 bg-transparent text-success hover:bg-transparent"
           >
             <FontAwesomeIcon icon={faCheck} width={20} height={20} />
             <span>Approve</span>
           </Button>
           <Button
-            onClick={() => {
-              updateVerifiedRequestStatus.mutate({
-                hostID: row.getValue("hostID"),
-                updateStatus: "rejected",
-              });
-            }}
+            onClick={() =>
+              handleUpdateVerifiedRequestStatus(
+                row.getValue("hostId"),
+                "rejected",
+              )
+            }
             className="h-fit w-fit space-x-1 bg-transparent text-neutral-500 hover:bg-transparent"
           >
             <FontAwesomeIcon icon={faBan} width={20} height={20} />
@@ -80,7 +96,6 @@ export function RequestVerifiedDataTable<TData, TValue>({
     data,
     columns: allCols,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
