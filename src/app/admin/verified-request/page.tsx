@@ -9,69 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { api } from "@/trpc/react";
 import { useState } from "react";
 
-// const mockData: VerifiedRequest[] = [
-//   {
-//     requestDate: new Date(),
-//     requestId: 1,
-//     firstName: "Bruce",
-//     lastName: "nun",
-//     hostId: "123",
-//     userName: "Bruce",
-//     profileImageURL: "https://google.com/",
-//     nationalIdCardImageURL: "http://facebook.com/",
-//   },
-//   {
-//     requestDate: new Date(),
-//     requestId: 2,
-//     firstName: "Bruce",
-//     hostId: "123",
-//     lastName: "nun",
-//     userName: "Bruce",
-//     profileImageURL: "https://google.com/",
-//     nationalIdCardImageURL: "http://facebook.com/",
-//   },
-//   {
-//     requestDate: new Date(),
-//     requestId: 3,
-//     firstName: "Bruce",
-//     lastName: "nun",
-//     hostId: "123",
-//     userName: "Bruce",
-//     profileImageURL: "https://google.com",
-//     nationalIdCardImageURL: "http://facebook.com",
-//   },
-//
-//   {
-//     requestDate: new Date(),
-//     requestId: 1,
-//     hostId: "123",
-//     firstName: "Bruce",
-//     lastName: "nun",
-//     userName: "Bruce",
-//     profileImageURL: "https://google.com",
-//     nationalIdCardImageURL: "http://facebook.com",
-//   },
-//   {
-//     requestDate: new Date(),
-//     requestId: 2,
-//     firstName: "Bruce",
-//     lastName: "nun",
-//     hostId: "123",
-//     userName: "Bruce",
-//     profileImageURL: "https://google.com",
-//     nationalIdCardImageURL: "http://facebook.com",
-//   },
-//   {
-//     requestDate: new Date(),
-//     requestId: 3,
-//     firstName: "Bruce",
-//     lastName: "nun",
-//     userName: "Bruce",
-//     profileImageURL: "https://google.com",
-//     hostId: "123",
-//     nationalIdCardImageURL: "http://facebook.com",
-//   },
-// ];
 export default function Page() {
   const [page, setPage] = useState<number>(0);
   const [recentData, setRecentData] = useState<VerifiedRequest[]>([]);
