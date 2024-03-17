@@ -449,9 +449,7 @@ export const eventReport = mysqlTable("event_report", {
   title: varchar("title", {
     length: 64,
   }).notNull(),
-  detail: varchar("description", {
-    length: 64,
-  }),
+  detail: text("detail"),
   status: varchar("status", {
     length: 32,
     enum: ["pending", "resolved", "rejected"],
