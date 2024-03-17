@@ -21,12 +21,12 @@ export function Toaster() {
         return (
           <Toast key={id} {...props}>
             <div className="flex flex-row gap-2">
-              <div className="flex h-6 w-6 items-center justify-center ">
-                <FontAwesomeIcon
-                  icon={faCircleCheck}
-                  className="h-5 text-[#22C55E]"
-                />
-              </div>
+              {/* <div className="flex h-6 w-6 items-center justify-center "> */}
+              {/*   <FontAwesomeIcon */}
+              {/*     icon={faCircleCheck} */}
+              {/*     className="h-5 text-[#22C55E]" */}
+              {/*   /> */}
+              {/* </div> */}
               <div className="grid gap-1">
                 {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (

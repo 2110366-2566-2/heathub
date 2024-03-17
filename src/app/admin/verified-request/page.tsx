@@ -37,7 +37,7 @@ export default function Page() {
             lastName: e.host.lastName,
             userName: e.host.aka,
             profileImageURL: e.host.profileImageURL!,
-            nationalIdCardImageURL: e.nationalIDCardImageURL,
+            nationalIdCardImageURL: e.nationalIDCardImageURL ?? "",
           };
           return req;
         });

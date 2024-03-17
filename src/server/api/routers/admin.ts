@@ -1,7 +1,7 @@
 import { createTRPCRouter, adminProcedure } from "@/server/api/trpc";
 
 import { hostUser, verifiedRequest } from "@/server/db/schema";
-import { eq, lte, gte } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { z } from "zod";
 
 export const adminRouter = createTRPCRouter({
@@ -10,6 +10,8 @@ export const adminRouter = createTRPCRouter({
       z.object({
         hostID: z.string(),
         updateStatus: z.enum(["verified", "rejected"]),
+        requestID: z.number(),
+        details: z.string().nullish(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -21,8 +23,18 @@ export const adminRouter = createTRPCRouter({
           })
           .where(eq(hostUser.userID, input.hostID));
         await tx
-          .delete(verifiedRequest)
-          .where(eq(verifiedRequest.hostID, input.hostID));
+          .update(verifiedRequest)
+          .set({
+            status: input.updateStatus,
+            requestDetails: input.details ?? "",
+            nationalIDCardImageURL: null,
+          })
+          .where(
+            and(
+              eq(verifiedRequest.hostID, input.hostID),
+              eq(verifiedRequest.id, input.requestID),
+            ),
+          );
       });
     }),
 
@@ -41,6 +53,7 @@ export const adminRouter = createTRPCRouter({
           host: true,
         },
         offset: limit * input.page,
+        where: eq(verifiedRequest.status, "pending"),
         orderBy: (verifiedRequest, { asc }) => [asc(verifiedRequest.id)],
       });
 
