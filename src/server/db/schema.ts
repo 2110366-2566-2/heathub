@@ -451,13 +451,13 @@ export const verifiedRequest = sqliteTable("verified_request", {
   nationalIDCardImageURL: text("national_id_card_image_url", {
     length: 256,
   }),
-  status: varchar("status", {
+  status: text("status", {
     length: 32,
     enum: ["pending", "verified", "rejected"],
   })
     .default("pending")
     .notNull(),
-  requestDetails: varchar("request_details", {
+  requestDetails: text("request_details", {
     length: 256,
   }).default(""),
 });
