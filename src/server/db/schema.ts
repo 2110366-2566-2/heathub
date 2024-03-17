@@ -71,6 +71,7 @@ export const hostRelation = relations(hostUser, ({ one, many }) => ({
   }),
   interests: many(hostInterest),
   reviews: many(ratingAndReview),
+  reports: many(eventReport),
 }));
 
 export const ratingAndReview = mysqlTable("rating_review", {
@@ -106,12 +107,16 @@ export const participantUser = mysqlTable("participant_user", {
   }).primaryKey(),
 });
 
-export const participantRelation = relations(participantUser, ({ one }) => ({
-  onUser: one(user, {
-    fields: [participantUser.userID],
-    references: [user.id],
+export const participantRelation = relations(
+  participantUser,
+  ({ one, many }) => ({
+    onUser: one(user, {
+      fields: [participantUser.userID],
+      references: [user.id],
+    }),
+    reports: many(eventReport),
   }),
-}));
+);
 
 export const hostInterest = mysqlTable(
   "host_interest",
@@ -425,3 +430,47 @@ export const verifiedRequestRelation = relations(
     }),
   }),
 );
+
+export const eventReport = mysqlTable("event_report", {
+  id: bigint("id", {
+    mode: "number",
+  })
+    .primaryKey()
+    .autoincrement(),
+  eventID: bigint("event_id", {
+    mode: "number",
+  }).notNull(),
+  participantID: varchar("participant_id", {
+    length: 64,
+  }).notNull(),
+  hostID: varchar("host_id", {
+    length: 64,
+  }).notNull(),
+  title: varchar("title", {
+    length: 64,
+  }).notNull(),
+  detail: varchar("description", {
+    length: 64,
+  }),
+  status: varchar("status", {
+    length: 32,
+    enum: ["pending", "resolved", "rejected"],
+  })
+    .default("pending")
+    .notNull(),
+});
+
+export const eventReportRelation = relations(eventReport, ({ one }) => ({
+  event: one(event, {
+    fields: [eventReport.eventID],
+    references: [event.id],
+  }),
+  host: one(hostUser, {
+    fields: [eventReport.hostID],
+    references: [hostUser.userID],
+  }),
+  participant: one(participantUser, {
+    fields: [eventReport.participantID],
+    references: [participantUser.userID],
+  }),
+}));
