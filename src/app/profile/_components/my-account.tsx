@@ -7,6 +7,9 @@ import {
   faUserCircle,
   faKey,
   faCircleInfo,
+  faClock,
+  faCheckCircle,
+  faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -16,6 +19,50 @@ import VerificationButton from "./VerificationButton";
 
 export function MyAccountPreview(props: ProfilePreviewProps) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
+  const verifiedStatusText = () =>{
+  const status = props.verifiedStatus;
+  // "unverified", "pending", "verified", "rejected"
+  if(status=== "Verified"){
+    return (
+      <div className="flex flex-row items-center gap-1 text-[#34B463]">
+        <FontAwesomeIcon icon={faCheckCircle} size={"1x"} />
+        Verified
+      </div>
+    );
+  }
+  else if(status === "pending"){
+    return (
+      <div className="flex flex-row items-center gap-1 text-status-pending">
+        <FontAwesomeIcon icon={faClock} size={"1x"} />
+        Pending
+      </div>
+    );
+  }
+  else if(status === "unverified"){
+    return (
+      <div className="text-medium flex flex-row items-center gap-1">
+        <FontAwesomeIcon icon={faCircleInfo} size={"1x"} />
+        Not Verified
+      </div>
+    );
+  }
+    else if(status === "rejected"){
+    return (
+      <div className="small flex flex-col gap-1 text-medium">
+        <div className="text-status-error-default flex flex-row items-center gap-1">
+          <FontAwesomeIcon icon={faCircleXmark} size={"1x"} />
+          Rejected
+        </div>
+        Your request has been rejected with the following reason: [Reason
+        provided by the admin]. Please review the provided details and make
+        necessary corrections before resubmitting.
+      </div>
+    );
+  }
+  else{
+    return(<div>Error</div>)
+  }
+}
   if (isMobile) {
     return (
       <Drawer>
@@ -75,8 +122,8 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
               <div className="placeholder flex justify-center text-medium">
                 Verification Status
               </div>
-              <div className="h5 flex justify-center font-bold text-high">
-                status...
+              <div className="h5 flex justify-center font-bold text-high flex-1">
+                {verifiedStatusText()}
               </div>
             </div>
             <VerificationButton />
