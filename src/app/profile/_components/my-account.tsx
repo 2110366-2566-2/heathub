@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { type ProfilePreviewProps } from "./profile-container";
 import ChangePasswordButton from "@/app/change-password/_component/ChangePasswordButton";
+import VerificationButton from "./VerificationButton";
 
 export function MyAccountPreview(props: ProfilePreviewProps) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
@@ -58,16 +59,29 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
             />
             <div className="h4 font-bold text-high">My Account</div>
           </div>
-          <div className="flex flex-col items-start rounded-xl bg-invert px-6 py-6 lg:p-4">
-            <div className="placeholder flex justify-center text-medium">
-              Email
+          <div className="flex flex-row items-start rounded-xl bg-invert px-6 py-6 lg:justify-between">
+            <div className="flex flex-col items-start">
+              <div className="placeholder flex justify-center text-medium">
+                Email
+              </div>
+              <div className="h5 flex justify-center font-bold text-high">
+                {props.email}
+              </div>
             </div>
-            <div className="h5 flex justify-center font-bold text-high">
-              {props.email}
+            <ChangePasswordButton />
+          </div>
+          <div className="flex flex-row items-start rounded-xl bg-invert  px-6 py-6 lg:justify-between">
+            <div className="flex flex-col items-start">
+              <div className="placeholder flex justify-center text-medium">
+                Verification Status
+              </div>
+              <div className="h5 flex justify-center font-bold text-high">
+                status...
+              </div>
             </div>
+            <VerificationButton />
           </div>
         </div>
-        <ChangePasswordButton />
       </div>
 
       <DialogProfile {...props} />

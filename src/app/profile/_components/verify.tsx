@@ -1,14 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useUploadThing } from "@/components/ui/upload";
-import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUpFromBracket, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "@uploadthing/react";
 import { generateClientDropzoneAccept } from "uploadthing/client";
 import Image from "next/image";
 
-export default function Verify() {
+export default function Verify({onCloseHandler}:{onCloseHandler:Function}) {
   const [url, setUrl] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -19,7 +19,7 @@ export default function Verify() {
     "verifiedUploader",
     {
       onClientUploadComplete: () => {
-        alert("uploaded successfully!");
+        onCloseHandler();
       },
       onUploadError: () => {
         alert("error occurred while uploading");
@@ -38,16 +38,22 @@ export default function Verify() {
 
   useEffect(() => {
     const file = files[0];
-    if (!file) {
+    if (!file||files.length === 0) {
       return;
     }
     const url = URL.createObjectURL(file);
     setUrl(url);
   }, [files]);
   return (
-    <div>
+    <div className="flex w-full flex-col gap-3">
+      <div className="flex flex-col gap-2">
+        <div className="h3 font-bold text-high">Identical Verification</div>
+        <div className="h6 text-medium">
+          Your ID Card photo will use to compare with your profile photo.
+        </div>
+      </div>
       <div
-        className=" flex h-32 w-full rounded-xl border-2 border-dashed border-medium hover:cursor-pointer"
+        className=" flex h-[129px] w-full rounded-xl border-2 border-dashed border-primary-500 hover:cursor-pointer"
         {...getRootProps()}
       >
         <input {...getInputProps()} />
@@ -55,22 +61,14 @@ export default function Verify() {
           <FontAwesomeIcon
             icon={faArrowUpFromBracket}
             className="text-secondary-500"
-            size="2x"
+            size={"2x"}
           />
           <div className="h6 text-medium hover:text-secondary-300">
             Upload ID Card
           </div>
         </div>
       </div>
-      <div className="flex flex-row gap-2">
-        <Button variant="outline" className="border-medium text-medium">
-          Back to Profile
-        </Button>
-        <Button variant="secondary" onClick={() => startUpload(files)}>
-          Submit
-        </Button>
-      </div>
-      {url ? (
+      {url && (
         <Image
           src={url}
           width={200}
@@ -78,9 +76,28 @@ export default function Verify() {
           className="rounded-lg object-cover"
           alt="New Profile Image"
         />
-      ) : (
-        <div className="h-[200px] w-[200px] bg-slate-300"></div>
       )}
+      <div className="flex flex-row gap-1">
+        <FontAwesomeIcon icon={faCircleInfo} size={"1x"} className="text-medium"/>
+        <span className="small text-medium">
+          Your uploaded ID card photo is used solely for verification and will
+          be promptly deleted after the process for your privacy.
+        </span>
+      </div>
+      <div className="flex flex-row gap-3 justify-end">
+        <Button
+          variant="secondaryOutline"
+          className="border-medium text-medium"
+          onClick={() => {
+            onCloseHandler();
+          }}
+        >
+          Cancel
+        </Button>
+        <Button variant="secondary" onClick={() => startUpload(files)}>
+          Submit
+        </Button>
+      </div>
     </div>
   );
 }
