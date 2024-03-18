@@ -1,9 +1,10 @@
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
-import { faCircleInfo, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faKey, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
@@ -21,9 +22,9 @@ export default function ChangePasswordButton() {
     setOpen(false);
   }, [isClose]);
 
-  const handlePop = () => {
-    return;
-  };
+  // const handlePop = () => {
+  //   return;
+  // };
 
   const [criticalError, _setCriticalError] = useState<string | null>(null);
   const [noticeColor, setNoticeColor] = useState("text-placeholder");
@@ -106,12 +107,10 @@ export default function ChangePasswordButton() {
       open={isOpen && !isClose}
     >
       <DialogTrigger>
-        <span
-          className="text-h4 ring-offset-background focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl border border-secondary-500 bg-white font-medium text-secondary-500 transition-colors hover:bg-secondary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-secondary-100"
-          onClick={handlePop}
-        >
+        <div className="py-2 border flex flex-row gap-[10px] border-secondary-500 bg-neutral-0 px-4 text-secondary-500 hover:border-secondary-700 hover:bg-secondary-50 hover:text-secondary-700 disabled:border-secondary-700 disabled:bg-neutral-0 disabled:text-secondary-700 rounded-xl items-center">
+          <FontAwesomeIcon icon={faLock} size={"1x"} />
           Change Password
-        </span>
+        </div>
       </DialogTrigger>
 
       <DialogContent className="flex h-fit w-full max-w-[422px] flex-col items-center gap-y-4 rounded-md bg-white p-6">
