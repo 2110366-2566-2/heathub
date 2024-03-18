@@ -24,6 +24,7 @@ export type ProfilePreviewProps = {
   gender: string;
   dateOfBirth: Date;
   id: string;
+  verifiedStatus?: string;
 };
 export default function ProfileContainer(props: ProfilePreviewProps) {
   const balance = {
