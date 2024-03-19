@@ -36,7 +36,7 @@ export const user = sqliteTable(
     gender: text("gender", { length: 32 }).notNull(),
     role: text("role", {
       length: 32,
-      enum: ["host", "participant"],
+      enum: ["host", "participant", "admin"],
     })
       .notNull()
       .default("participant"),
