@@ -29,6 +29,9 @@
   .blockquote {
     @apply text-base  italic;
   }
+  .placeholder {
+    @apply text-sm
+  }
 }
 @layer utilities {
   input[type="number"]::-webkit-inner-spin-button,
