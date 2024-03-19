@@ -65,6 +65,7 @@ export default function ForgetPassword() {
         title: "Verify link sent",
         description: "Verify link is already sent to your email.",
         duration: 3000,
+        variant: "success",
       });
       setStatus("done");
       const timer = (x: number) => {

@@ -14,7 +14,7 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      "fixed bottom-0 left-0 z-[100] flex max-h-screen w-[400px] max-w-[600px] flex-col p-4 lg:left-auto lg:right-0",
+      "fixed bottom-0 z-[100] flex max-h-screen  w-full flex-col p-4 right-0 flex flex-row lg:justify-end justify-center gap-4 pointer-events-none transition-transform",
       className,
     )}
     {...props}
@@ -23,13 +23,14 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between px-4 py-3 space-x-4 overflow-hidden rounded-md border shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-bottom-full",
+  "group pointer-events-auto relative flex w-full lg:w-[480px] sm:w-[400px] items-center justify-between px-4 py-3 space-x-4 overflow-hidden rounded-md border shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-bottom-full",
   {
     variants: {
       variant: {
         success:
           "border bg-[#F0FDF4] text-[#22C55E] border-solid border-[#22C55E]",
-        error: "border bg-secondary-400  ",
+        error:
+          "border bg-[#FEF2F2] text-[#EF4444] border-solid border-[#EF4444]",
       },
     },
     defaultVariants: {

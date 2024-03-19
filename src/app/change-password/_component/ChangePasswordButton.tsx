@@ -76,6 +76,7 @@ export default function ChangePasswordButton() {
         title: "Password Changed",
         description: "Your password has been changed successfully.",
         duration: 3000,
+        variant: "success",
       });
     } catch (e: unknown) {
       if (e instanceof Error) {
