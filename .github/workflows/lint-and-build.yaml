@@ -57,6 +57,9 @@ jobs:
       - name: Copy .env.example to .env
         run: cp .env.example .env
 
+      - name: Create local.db
+        run: mkdir libsql && touch libsql/local.db
+
       - name: Run format check
         run: pnpm run format:check
 

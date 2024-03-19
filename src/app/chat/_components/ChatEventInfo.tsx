@@ -15,7 +15,7 @@ export interface ChatEventInfoInterface {
   startTime: Date;
   endTime: Date;
   isMine: boolean;
-  role: "host" | "participant";
+  role: "host" | "participant" | "admin";
   status: EventDetailCardProps["status"];
   updateStatus: (
     eventId: number,

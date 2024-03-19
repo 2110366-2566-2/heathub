@@ -136,7 +136,7 @@ function DialogProfile(props: ProfilePreviewProps) {
   );
 }
 
-function DrawerProfile(props: ProfilePreviewProps) {
+function DrawerProfile(_props: ProfilePreviewProps) {
   return (
     <DrawerContent className="flex flex-col gap-2 bg-white p-4">
       <div className="flex h-full w-full flex-col items-center justify-between gap-4 lg:p-6">

@@ -2,18 +2,15 @@
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
 import { relations, sql } from "drizzle-orm";
+
 import {
-  bigint,
-  date,
-  float,
   index,
   int,
-  mysqlTable,
   primaryKey,
+  real,
+  sqliteTable,
   text,
-  timestamp,
-  varchar,
-} from "drizzle-orm/mysql-core";
+} from "drizzle-orm/sqlite-core";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -22,27 +19,29 @@ import {
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 
-export const user = mysqlTable(
+export const user = sqliteTable(
   "user",
   {
-    id: varchar("id", {
+    id: text("id", {
       length: 64,
     }).primaryKey(),
-    aka: varchar("aka", { length: 128 }).notNull().unique(),
-    email: varchar("email", { length: 128 }).notNull().unique(),
-    firstName: varchar("first_name", { length: 64 }).notNull(),
-    lastName: varchar("last_name", { length: 64 }).notNull(),
-    bio: varchar("bio", { length: 256 }),
-    dateOfBirth: date("date_of_birth"),
-    gender: varchar("gender", { length: 32 }).notNull(),
-    role: varchar("role", {
+    aka: text("aka", { length: 128 }).notNull().unique(),
+    email: text("email", { length: 128 }).notNull().unique(),
+    firstName: text("first_name", { length: 64 }).notNull(),
+    lastName: text("last_name", { length: 64 }).notNull(),
+    bio: text("bio", { length: 256 }),
+    dateOfBirth: int("date_of_birth", {
+      mode: "timestamp",
+    }),
+    gender: text("gender", { length: 32 }).notNull(),
+    role: text("role", {
       length: 32,
-      enum: ["host", "participant"],
+      enum: ["host", "participant", "admin"],
     })
       .notNull()
       .default("participant"),
-    profileImageURL: varchar("profile_image_url", { length: 256 }).default(""),
-    balance: bigint("balance", {
+    profileImageURL: text("profile_image_url", { length: 256 }).default(""),
+    balance: int("balance", {
       mode: "number",
     }).default(0),
   },
@@ -52,12 +51,16 @@ export const user = mysqlTable(
   }),
 );
 
-export const hostUser = mysqlTable("host_user", {
-  userID: varchar("user_id", {
+export const hostUser = sqliteTable("host_user", {
+  userID: text("user_id", {
     length: 64,
   }).primaryKey(),
-  avgRating: float("rating").default(0),
+  avgRating: real("rating").default(0),
   reviewCount: int("review_count").default(0),
+  verifiedStatus: text("verified_status", {
+    length: 32,
+    enum: ["unverified", "pending", "verified", "rejected"],
+  }).default("unverified"),
 });
 
 export const hostRelation = relations(hostUser, ({ one, many }) => ({
@@ -67,19 +70,20 @@ export const hostRelation = relations(hostUser, ({ one, many }) => ({
   }),
   interests: many(hostInterest),
   reviews: many(ratingAndReview),
+  reports: many(eventReport),
 }));
 
-export const ratingAndReview = mysqlTable("rating_review", {
-  reviewID: varchar("review_id", {
+export const ratingAndReview = sqliteTable("rating_review", {
+  reviewID: text("review_id", {
     length: 64,
   }).primaryKey(),
-  appointmentID: varchar("appointment_id", {
+  appointmentID: text("appointment_id", {
     length: 64,
   }),
-  participantID: varchar("participant_id", {
+  participantID: text("participant_id", {
     length: 64,
   }),
-  hostID: varchar("host_id", {
+  hostID: text("host_id", {
     length: 64,
   }),
   ratingScore: int("rating_score").default(0),
@@ -96,24 +100,28 @@ export const ratingAndReviewRelation = relations(
   }),
 );
 
-export const participantUser = mysqlTable("participant_user", {
-  userID: varchar("user_id", {
+export const participantUser = sqliteTable("participant_user", {
+  userID: text("user_id", {
     length: 64,
   }).primaryKey(),
 });
 
-export const participantRelation = relations(participantUser, ({ one }) => ({
-  onUser: one(user, {
-    fields: [participantUser.userID],
-    references: [user.id],
+export const participantRelation = relations(
+  participantUser,
+  ({ one, many }) => ({
+    onUser: one(user, {
+      fields: [participantUser.userID],
+      references: [user.id],
+    }),
+    reports: many(eventReport),
   }),
-}));
+);
 
-export const hostInterest = mysqlTable(
+export const hostInterest = sqliteTable(
   "host_interest",
   {
-    userID: varchar("user_id", { length: 64 }),
-    interest: varchar("interest", { length: 64 }),
+    userID: text("user_id", { length: 64 }),
+    interest: text("interest", { length: 64 }),
   },
   (interest) => ({
     pk: primaryKey({
@@ -129,44 +137,44 @@ export const hostInterestRelation = relations(hostInterest, ({ one }) => ({
   }),
 }));
 
-export const key = mysqlTable("user_key", {
-  id: varchar("id", {
+export const key = sqliteTable("user_key", {
+  id: text("id", {
     length: 255,
   }).primaryKey(),
-  userId: varchar("user_id", {
+  userId: text("user_id", {
     length: 64,
   }).notNull(),
-  hashedPassword: varchar("hashed_password", {
+  hashedPassword: text("hashed_password", {
     length: 255,
   }),
 });
 
-export const session = mysqlTable("user_session", {
-  id: varchar("id", {
+export const session = sqliteTable("user_session", {
+  id: text("id", {
     length: 128,
   }).primaryKey(),
-  userId: varchar("user_id", {
+  userId: text("user_id", {
     length: 15,
   }).notNull(),
-  activeExpires: bigint("active_expires", {
+  activeExpires: int("active_expires", {
     mode: "number",
   }).notNull(),
-  idleExpires: bigint("idle_expires", {
+  idleExpires: int("idle_expires", {
     mode: "number",
   }).notNull(),
 });
 
-export const chatInbox = mysqlTable(
+export const chatInbox = sqliteTable(
   "chat_inbox",
   {
-    userID1: varchar("user_id_1", {
+    userID1: text("user_id_1", {
       length: 64,
     }).notNull(),
 
-    userID2: varchar("user_id_2", {
+    userID2: text("user_id_2", {
       length: 64,
     }).notNull(),
-    lastestMessageId: bigint("lastest_id", {
+    lastestMessageId: int("lastest_id", {
       mode: "number",
     }),
   },
@@ -194,23 +202,28 @@ export const chatInboxRelation = relations(chatInbox, ({ one }) => ({
   }),
 }));
 
-export const chatMessage = mysqlTable(
+export const chatMessage = sqliteTable(
   "chat_message",
   {
-    id: bigint("id", {
+    id: int("id", {
       mode: "number",
-    })
-      .primaryKey()
-      .autoincrement(),
+    }).primaryKey({
+      autoIncrement: true,
+    }),
 
-    senderUserID: varchar("sender_id", { length: 64 }).notNull(),
-    receiverUserID: varchar("receiver_id", { length: 64 }).notNull(),
-    contentType: varchar("content_type", {
+    senderUserID: text("sender_id", { length: 64 }).notNull(),
+    receiverUserID: text("receiver_id", { length: 64 }).notNull(),
+    contentType: text("content_type", {
       length: 32,
       enum: ["text", "imageURL", "event"],
     }).notNull(),
-    content: varchar("content", { length: 256 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
+    content: text("content", { length: 256 }).notNull(),
+    // createdAt: timestamp("created_at").defaultNow().notNull(),
+    createdAt: int("created_at", {
+      mode: "timestamp_ms",
+    })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
   },
   (chatMessage) => ({
     senderUserIDIndex: index("sender_id_idx").on(chatMessage.senderUserID),
@@ -235,18 +248,24 @@ export const chatMessageRelation = relations(chatMessage, ({ one }) => ({
   }),
 }));
 
-export const passwordResetRequest = mysqlTable("password_reset_request", {
-  id: varchar("id", { length: 191 })
+export const passwordResetRequest = sqliteTable("password_reset_request", {
+  id: text("id", { length: 191 })
     .primaryKey()
     .notNull()
     .default(sql`(uuid())`),
-  userID: varchar("user_id", {
+  userID: text("user_id", {
     length: 64,
   }).notNull(),
-  createAt: timestamp("created_at").defaultNow().notNull(),
-  expires: timestamp("expires")
-    .notNull()
-    .default(sql`(now() + interval 1 hour)`),
+  createAt: int("created_at", {
+    mode: "timestamp_ms",
+  })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  expires: int("expires", {
+    mode: "timestamp_ms",
+  })
+    .default(sql`(datetime('now', '+1 hours'))`)
+    .notNull(),
 });
 
 export const passwordResetRequestRelation = relations(
@@ -259,21 +278,23 @@ export const passwordResetRequestRelation = relations(
   }),
 );
 
-export const unconfirmedUserProfileImage = mysqlTable(
+export const unconfirmedUserProfileImage = sqliteTable(
   "unconfirmed_user_profile_image",
   {
-    id: bigint("id", {
+    id: int("id", {
       mode: "number",
-    })
-      .primaryKey()
-      .autoincrement(),
-    userID: varchar("user_id", {
+    }).primaryKey({
+      autoIncrement: true,
+    }),
+    userID: text("user_id", {
       length: 64,
     }).notNull(),
-    imageURL: varchar("image_url", { length: 256 }).notNull(),
+    imageURL: text("image_url", { length: 256 }).notNull(),
   },
   (unconfirmedUserProfileImage) => ({
-    userIDIndex: index("user_id_idx").on(unconfirmedUserProfileImage.userID),
+    userIDIndex: index("unconfirmed_user_id_idx").on(
+      unconfirmedUserProfileImage.userID,
+    ),
   }),
 );
 
@@ -287,26 +308,30 @@ export const unconfirmedUserProfileImageRelation = relations(
   }),
 );
 
-export const externalTransaction = mysqlTable(
+export const externalTransaction = sqliteTable(
   "external_transaction",
   {
-    id: bigint("id", {
+    id: int("id", {
       mode: "number",
-    })
-      .primaryKey()
-      .autoincrement(),
-    userID: varchar("user_id", {
+    }).primaryKey({
+      autoIncrement: true,
+    }),
+    userID: text("user_id", {
       length: 64,
     }).notNull(),
-    amount: bigint("amount", {
+    amount: int("amount", {
       mode: "number",
     }).notNull(),
-    sessionID: varchar("session_id", { length: 128 }).notNull().unique(),
-    type: varchar("type", {
+    sessionID: text("session_id", { length: 128 }).notNull().unique(),
+    type: text("type", {
       length: 16,
       enum: ["topup", "withdraw"],
     }).notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
+    createdAt: int("created_at", {
+      mode: "timestamp_ms",
+    })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
   },
   (externalTransaction) => ({
     userIDIndex: index("user_id_idx").on(externalTransaction.userID),
@@ -324,22 +349,26 @@ export const externalTransactionRelation = relations(
   }),
 );
 
-export const tranferTransaction = mysqlTable("tranfer_transaction", {
-  id: bigint("id", {
+export const tranferTransaction = sqliteTable("tranfer_transaction", {
+  id: int("id", {
     mode: "number",
+  }).primaryKey({
+    autoIncrement: true,
+  }),
+  senderID: text("sender_id", {
+    length: 64,
+  }).notNull(),
+  receiverID: text("receiver_id", {
+    length: 64,
+  }).notNull(),
+  amount: int("amount", {
+    mode: "number",
+  }).notNull(),
+  createdAt: int("created_at", {
+    mode: "timestamp_ms",
   })
-    .primaryKey()
-    .autoincrement(),
-  senderID: varchar("sender_id", {
-    length: 64,
-  }).notNull(),
-  receiverID: varchar("receiver_id", {
-    length: 64,
-  }).notNull(),
-  amount: bigint("amount", {
-    mode: "number",
-  }).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
 });
 
 export const tranferTransactionRelation = relations(
@@ -356,29 +385,37 @@ export const tranferTransactionRelation = relations(
   }),
 );
 
-export const event = mysqlTable("event", {
-  id: bigint("id", {
+export const event = sqliteTable("event", {
+  id: int("id", {
     mode: "number",
-  })
-    .primaryKey()
-    .autoincrement(),
-  hostID: varchar("host_id", {
+  }).primaryKey({
+    autoIncrement: true,
+  }),
+  hostID: text("host_id", {
     length: 64,
   }).notNull(),
-  participantID: varchar("participant_id", {
+  participantID: text("participant_id", {
     length: 64,
   }).notNull(),
-  description: varchar("description", {
+  description: text("description", {
     length: 64,
   }),
-  startTime: timestamp("start_time").notNull(),
-  endTime: timestamp("end_time").notNull(),
-  price: float("price").notNull(),
-  location: varchar("location", {
+  startTime: int("start_time", {
+    mode: "timestamp_ms",
+  }).notNull(),
+  endTime: int("end_time", {
+    mode: "timestamp_ms",
+  }).notNull(),
+  price: real("price").notNull(),
+  location: text("location", {
     length: 128,
   }).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  status: varchar("status", {
+  createdAt: int("created_at", {
+    mode: "timestamp_ms",
+  })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  status: text("status", {
     length: 32,
     enum: ["pending", "payment-done", "completed", "cancelled", "rejected"],
   })
@@ -394,5 +431,85 @@ export const eventRelation = relations(event, ({ one }) => ({
   participant: one(user, {
     fields: [event.participantID],
     references: [user.id],
+  }),
+}));
+
+export const verifiedRequest = sqliteTable("verified_request", {
+  id: int("id", {
+    mode: "number",
+  }).primaryKey({
+    autoIncrement: true,
+  }),
+  hostID: text("host_id", {
+    length: 64,
+  }).notNull(),
+  createdAt: int("created_at", {
+    mode: "timestamp_ms",
+  })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  nationalIDCardImageURL: text("national_id_card_image_url", {
+    length: 256,
+  }),
+  status: text("status", {
+    length: 32,
+    enum: ["pending", "verified", "rejected"],
+  })
+    .default("pending")
+    .notNull(),
+  requestDetails: text("request_details", {
+    length: 256,
+  }).default(""),
+});
+
+export const verifiedRequestRelation = relations(
+  verifiedRequest,
+  ({ one }) => ({
+    host: one(user, {
+      fields: [verifiedRequest.hostID],
+      references: [user.id],
+    }),
+  }),
+);
+
+export const eventReport = sqliteTable("event_report", {
+  id: int("id", {
+    mode: "number",
+  }).primaryKey({
+    autoIncrement: true,
+  }),
+  eventID: int("event_id", {
+    mode: "number",
+  }).notNull(),
+  participantID: text("participant_id", {
+    length: 64,
+  }).notNull(),
+  hostID: text("host_id", {
+    length: 64,
+  }).notNull(),
+  title: text("title", {
+    length: 64,
+  }).notNull(),
+  detail: text("detail"),
+  status: text("status", {
+    length: 32,
+    enum: ["pending", "resolved", "rejected"],
+  })
+    .default("pending")
+    .notNull(),
+});
+
+export const eventReportRelation = relations(eventReport, ({ one }) => ({
+  event: one(event, {
+    fields: [eventReport.eventID],
+    references: [event.id],
+  }),
+  host: one(hostUser, {
+    fields: [eventReport.hostID],
+    references: [hostUser.userID],
+  }),
+  participant: one(participantUser, {
+    fields: [eventReport.participantID],
+    references: [participantUser.userID],
   }),
 }));

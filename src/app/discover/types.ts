@@ -18,7 +18,7 @@ export type userApiProps = {
   email: string;
   firstName: string;
   gender: string;
-  role: "host" | "participant";
+  role: "host" | "participant" | "admin";
   lastName: string;
   dateOfBirth: Date | null;
   profileImageURL: string | null;

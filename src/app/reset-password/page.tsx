@@ -1,20 +1,20 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
-import { redirect } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faCircleInfo,
   faKey,
 } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { useEffect, useState, type FormEvent } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
 const validationSchema = z.object({
@@ -26,9 +26,11 @@ const validationSchema = z.object({
 type ValidationSchema = z.infer<typeof validationSchema>;
 
 export default function ForgetPassword() {
-  const { data: user } = api.auth.me.useQuery();
+  const { data: user } = api.auth.me.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
   const [status, setStatus] = useState<"idle" | "loading" | "done">("loading");
-  const [buttonText, setButtonText] = useState<string>("send");
+  const [buttonText, setButtonText] = useState<string>("Send");
   const [url, setUrl] = useState<URL | null>(null);
   useEffect(() => {
     if (user) {
@@ -63,6 +65,7 @@ export default function ForgetPassword() {
         title: "Verify link sent",
         description: "Verify link is already sent to your email.",
         duration: 3000,
+        variant: "success",
       });
       setStatus("done");
       const timer = (x: number) => {
@@ -93,7 +96,6 @@ export default function ForgetPassword() {
   });
 
   const onSubmit: SubmitHandler<ValidationSchema> = (data) => console.log(data);
-
   return (
     <main
       className="flex h-screen bg-white p-6 lg:p-14"
@@ -115,7 +117,7 @@ export default function ForgetPassword() {
               <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
                 <FontAwesomeIcon
                   icon={faKey}
-                  className="text-neutral-0 lg:text-[32px]"
+                  className="text-neutral-0 lg:h-8"
                   size="3x"
                 />
               </div>
