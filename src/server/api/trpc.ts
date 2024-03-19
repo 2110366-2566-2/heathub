@@ -137,12 +137,12 @@ export const hostProcedure = userProcedure.use(async (opt) => {
 export const adminProcedure = userProcedure.use(async (opt) => {
   // check if user is authenticated
   const session = opt.ctx.session;
-  // if (session.user.role !== "admin") {
-  //   throw new TRPCError({
-  //     code: "UNAUTHORIZED",
-  //     message: "You must be a host to perform this action.",
-  //   });
-  // }
+  if (session.user.role !== "admin") {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You must be a host to perform this action.",
+    });
+  }
 
   return opt.next({
     ctx: {
