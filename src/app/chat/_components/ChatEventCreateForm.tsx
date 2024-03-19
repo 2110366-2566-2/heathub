@@ -24,6 +24,7 @@ import { useLoadScript } from "@react-google-maps/api";
 import { PlacesAutocomplete } from "./AutoComplete";
 import { type Library } from "@googlemaps/js-api-loader";
 import { DialogClose } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 const googlelib = ["places"] as Library[];
 export interface CreateFormInfo {
@@ -46,6 +47,7 @@ export default function ChatEventForm({
     price: z.coerce.number(),
     beginDate: z.date(),
     endDate: z.date(),
+    description: z.string(),
     startTime: z.string({ required_error: "Should add start time" }),
     endTime: z.string({ required_error: "Should add end time" }),
   });
@@ -79,6 +81,7 @@ export default function ChatEventForm({
       price: values.price,
       startTime: startTime,
       endTime: endTime,
+      description: values.description,
     });
   }
 
@@ -118,7 +121,7 @@ export default function ChatEventForm({
               control={form.control}
               name="beginDate"
               render={({ field }) => (
-                <FormItem className="flex h-fit flex-1 flex-col">
+                <FormItem className="flex h-fit w-full flex-1 flex-col">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -176,7 +179,7 @@ export default function ChatEventForm({
               control={form.control}
               name="endDate"
               render={({ field }) => (
-                <FormItem className="flex h-fit flex-1 flex-col">
+                <FormItem className="flex h-fit w-full flex-1 flex-col">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -246,6 +249,23 @@ export default function ChatEventForm({
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    placeholder="Description"
+                    className="scrollbar-hide text-md w-full resize-none text-primary-400 focus-visible:ring-0"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
