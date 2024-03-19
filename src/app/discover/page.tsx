@@ -11,6 +11,7 @@ import type {
   userApiProps,
   userProps,
 } from "./types";
+import Image from "next/image";
 
 export default function DiscoverPage() {
   const [users, setUsers] = useState<userProps[]>([]);
@@ -57,7 +58,14 @@ export default function DiscoverPage() {
       <div className="flex flex-col gap-4 self-stretch">
         <Header setFilters={setFilters} />
       </div>
-      <div className="flex flex-col justify-center gap-6 rounded-lg bg-secondary-50 px-4 py-6 lg:p-9">
+      <Image
+        src="/svgs/curve-discover.svg"
+        alt="Adventure"
+        width={170}
+        height={260}
+        className="absolute right-0 top-0 z-0 opacity-50"
+      />
+      <div className="z-20 flex flex-col justify-center gap-6 rounded-lg bg-secondary-50 px-4 py-6 lg:p-9">
         <SearchFilter setFilters={setFilters} />
         <CardContainer users={users} role={me.role} />
       </div>
@@ -68,7 +76,7 @@ export default function DiscoverPage() {
 function Header({ setFilters }: { setFilters: (filters: filters) => void }) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
-  const mobileText = isMobile
+  const text = isMobile
     ? "Find perfect friends on"
     : "Find perfect partner for your adventure today on";
 
@@ -78,9 +86,9 @@ function Header({ setFilters }: { setFilters: (filters: filters) => void }) {
         <div className="h4 w-full font-bold text-primary-900">
           Welcome back,
         </div>
-        <div className="flex flex-col md:flex-row md:gap-2">
+        <div className="z-[1] flex flex-col md:flex-row md:gap-2">
           <div className="text-[28px] font-extrabold text-primary-800 lg:text-4xl">
-            {mobileText}{" "}
+            {text}{" "}
             <span className="text-[28px] font-extrabold italic text-secondary-500 lg:text-4xl">
               HeatHub!
             </span>
