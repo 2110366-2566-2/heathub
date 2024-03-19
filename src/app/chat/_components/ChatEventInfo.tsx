@@ -23,6 +23,7 @@ export interface ChatEventInfoInterface {
   ) => void;
   imageUrl: string | null;
   senderName: string;
+  description: string | null;
 }
 
 export default function ChatEventInfo(info: ChatEventInfoInterface) {
@@ -37,6 +38,7 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
     updateStatus,
     imageUrl,
     senderName,
+    description,
   } = info;
   const justifyPosition = isMine ? "justify-end" : "justify-start";
 
@@ -103,6 +105,14 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
               {Dayjs(endTime).format("	dddd, MMMM D, YYYY [ at ] HH:mm")}
             </div>
           </div>
+          {description && (
+            <div className="flex flex-row justify-between">
+              <div className="h6  flex-1 text-medium">Description</div>
+              <div className="h6 text-right font-bold text-high">
+                {description}
+              </div>
+            </div>
+          )}
           {status === "pending" &&
             (role === "participant" ? (
               <div className="flex w-full flex-row justify-end gap-3">

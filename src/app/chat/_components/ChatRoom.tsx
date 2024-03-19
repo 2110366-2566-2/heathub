@@ -126,7 +126,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       price: eventData.price,
       location: eventData.location,
       participantUserID: withUser,
-      description: eventData.description ?? "asdjfkl",
+      description: eventData.description ?? "",
     });
   };
 
@@ -168,6 +168,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
                       startTime={message.content.startTime}
                       endTime={message.content.endTime}
                       status={message.content.status}
+                      description={message.content.description}
                       role={user?.role}
                       eventID={message.content.eventId}
                       updateStatus={updateEventStatus}

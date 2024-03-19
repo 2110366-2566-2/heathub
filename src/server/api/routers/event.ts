@@ -33,6 +33,7 @@ export const eventRouter = createTRPCRouter({
             endTime: input.endTime,
             location: input.location,
             price: input.price,
+            description: input.description,
           });
           const lastestEvent = await tx.query.event.findFirst({
             where: and(
