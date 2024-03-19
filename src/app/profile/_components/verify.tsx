@@ -1,28 +1,50 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useUploadThing } from "@/components/ui/upload";
-import { faArrowUpFromBracket, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUpFromBracket,
+  faCircleInfo,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "@uploadthing/react";
 import { generateClientDropzoneAccept } from "uploadthing/client";
 import Image from "next/image";
+import { DialogClose } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { Progress } from "@/components/ui/progress";
 
-export default function Verify({onCloseHandler}:{onCloseHandler:Function}) {
+export default function Verify({ onClose }: { onClose: () => void }) {
   const [url, setUrl] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+  const [progress, setProgress] = useState(-1);
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
   }, []);
-
+  const { toast } = useToast();
   const { startUpload, permittedFileInfo } = useUploadThing(
     "verifiedUploader",
     {
       onClientUploadComplete: () => {
-        onCloseHandler();
+        setProgress(-1);
+        toast({
+          title: "Upload Complete",
+          description: "Your ID card has been uploaded successfully",
+          duration: 3000,
+        });
+        onClose();
       },
       onUploadError: () => {
-        alert("error occurred while uploading");
+        toast({
+          title: "Upload Failed",
+          description: "Your ID card failed to upload",
+          duration: 3000,
+          variant: "error",
+        });
+      },
+      onUploadProgress: (progress) => {
+        console.log("Progress: ", progress);
+        setProgress(progress);
       },
     },
   );
@@ -38,12 +60,13 @@ export default function Verify({onCloseHandler}:{onCloseHandler:Function}) {
 
   useEffect(() => {
     const file = files[0];
-    if (!file||files.length === 0) {
+    if (!file || files.length === 0) {
       return;
     }
     const url = URL.createObjectURL(file);
     setUrl(url);
   }, [files]);
+
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex flex-col gap-2">
@@ -73,75 +96,35 @@ export default function Verify({onCloseHandler}:{onCloseHandler:Function}) {
           src={url}
           width={200}
           height={200}
-          className="rounded-lg object-cover"
-          alt="New Profile Image"
+          className="self-center rounded-lg object-cover"
+          alt="ID Card"
         />
       )}
+      {progress >= 0 && <Progress value={progress} />}
       <div className="flex flex-row gap-1">
-        <FontAwesomeIcon icon={faCircleInfo} size={"1x"} className="text-medium"/>
+        <FontAwesomeIcon
+          icon={faCircleInfo}
+          size={"1x"}
+          className="text-medium"
+        />
         <span className="small text-medium">
           Your uploaded ID card photo is used solely for verification and will
           be promptly deleted after the process for your privacy.
         </span>
       </div>
-      <div className="flex flex-row gap-3 justify-end">
-        <Button
-          variant="secondaryOutline"
-          className="border-medium text-medium"
-          onClick={() => {
-            onCloseHandler();
-          }}
-        >
-          Cancel
-        </Button>
+      <div className="flex flex-row justify-end gap-3">
+        <DialogClose>
+          <Button
+            variant="secondaryOutline"
+            className="border-medium text-medium"
+          >
+            Cancel
+          </Button>
+        </DialogClose>
         <Button variant="secondary" onClick={() => startUpload(files)}>
           Submit
         </Button>
       </div>
     </div>
   );
-}
-
-{
-  /* <UploadDropzone
-config={{
-  appendOnPaste: false,
-}}
-endpoint="verifiedUploader"
-appearance={{
-  allowedContent: "hidden",
-  //   button: "hidden",
-}}
-onBeforeUploadBegin={(files) => {
-  // Do something before upload begins
-  console.log("Uploading");
-  return files;
-}}
-
-onClientUploadComplete={(res) => {
-  // Do something with the response
-  console.log("Files: ", res);
-  alert("Upload Completed yeah");
-  if (res.length > 0) {
-    const file = res[0];
-    if (file?.url) {
-      setUrl(file.url);
-    }
-  }
-}}
-content={{
-  uploadIcon: (
-    <FontAwesomeIcon
-      icon={faArrowUpFromBracket}
-      className="text-secondary-500"
-      size="2x"
-    />
-  ),
-  label: (
-    <div className="h6 text-medium hover:text-secondary-300">
-      Upload ID Card
-    </div>
-  ),
-}}
-/> */
 }

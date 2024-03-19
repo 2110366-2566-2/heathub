@@ -7,7 +7,6 @@ import MyReview from "./MyReview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import Verify from "./verify";
 
 export type ProfilePreviewProps = {
   email: string;
@@ -32,7 +31,7 @@ export default function ProfileContainer(props: ProfilePreviewProps) {
   };
 
   return (
-    <div className="flex flex-col gap-4 h-full">
+    <div className="flex h-full flex-col gap-4">
       <div className="flex h-10 w-full flex-row items-center gap-x-2">
         <FontAwesomeIcon icon={faUser} className="h-7 w-7 text-secondary-500" />
         <div className="h2 font-bold text-high">Profile</div>
@@ -41,8 +40,8 @@ export default function ProfileContainer(props: ProfilePreviewProps) {
         <ProfileDetails {...props} />
         {props.reviews != -1 && <MyReview {...props} />}
       </div>
-      <div className="flex flex-col gap-4 h-full">
-        <div className="flex h-64 w-full justify-center rounded-xl border-none bg-neutral-50 p-6">
+      <div className="flex h-full flex-col gap-4">
+        <div className="flex h-fit w-full justify-center rounded-xl border-none bg-neutral-50 p-6">
           <MyAccountPreview {...props} key={props.name} />
         </div>
         <PaymentCard {...balance} />
