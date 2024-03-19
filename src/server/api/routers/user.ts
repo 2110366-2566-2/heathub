@@ -72,6 +72,7 @@ export const userRouter = createTRPCRouter({
           interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
           avgRating: hostUser.avgRating,
           reviewCount: hostUser.reviewCount,
+          verifiedStatus: hostUser.verifiedStatus,
         })
         .from(hostUser)
         .where(eq(hostUser.userID, input.hostID))
@@ -169,6 +170,7 @@ export const userRouter = createTRPCRouter({
           avgRating: hostUser.avgRating,
           reviewCount: hostUser.reviewCount,
           id: user.id,
+          verifiedStatus: hostUser.verifiedStatus,
         })
         .from(hostUser)
         .where(
