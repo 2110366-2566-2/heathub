@@ -19,7 +19,7 @@ export default function ChatMessageBox({
 }: {
   toUserID: string;
   setOpenChatEvent: (open: boolean) => void;
-  userRole: "participant" | "host";
+  userRole: "participant" | "host" | "admin";
   onConfirm: (form: CreateFormInfo) => void;
   isOpenChatEvent: boolean;
 }) {
