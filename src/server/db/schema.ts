@@ -530,7 +530,8 @@ export const withdrawalRequest = sqliteTable("withdrawal_request", {
   status: text("status", {
     length: 32,
     enum: ["pending", "completed", "rejected"],
-  }).default("pending")
+  })
+    .default("pending")
     .notNull(),
   createdAt: int("created_at", {
     mode: "timestamp_ms",
