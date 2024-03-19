@@ -13,6 +13,8 @@ const buttonVariants = cva(
           "bg-primary-500 text-white hover:bg-primary-600 disabled:bg-primary-100",
         outline:
           "border border-primary-500 text-primary-500 bg-background hover:bg-primary-100 disabled:border-primary-100 disabled:text-primary-100",
+        secondaryOutline:
+          "bg-neutral-0 text-secondary-500 hover:bg-secondary-50 hover:text-secondary-700 hover:border-secondary-700 disabled:bg-neutral-0 disabled:text-secondary-700 disabled:border-secondary-700 border border-secondary-500",
         secondary:
           "bg-secondary-400 text-white hover:bg-secondary-500 disabled:bg-secondary-200 disabled:text-secondary-400",
         ghost: "hover:bg-primary-100",

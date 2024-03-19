@@ -204,13 +204,13 @@ function ReviewChat(props: ReviewChatProps) {
         isMobile ? "" : "absolute bottom-0",
       )}
     >
-      <Button className="bg-secondary-500 hover:bg-secondary-400">
+      <Button variant="secondaryOutline">
         <FontAwesomeIcon icon={faHeart} className="mr-2" size="1x" />
         {reviews} Reviews
       </Button>
       {props.role === "participant" && (
         <Link href={`/chat/${id}`}>
-          <Button>
+          <Button variant="secondary">
             <FontAwesomeIcon
               icon={faComment}
               className="mr-2 text-white"
