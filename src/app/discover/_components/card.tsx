@@ -17,7 +17,7 @@ export default function Card(props: ProfilePreviewProps) {
   const hiddenInterestsCount = interests.length - maxInterestsToDisplay;
 
   return (
-    <div className="relative flex h-[424px] w-[323px] flex-col gap-3 rounded-3xl border-2 border-solid border-neutral-300 bg-white p-4">
+    <div className="relative mx-auto flex h-[380px] w-[289px] flex-col gap-3 rounded-3xl border-2 border-solid border-neutral-300 bg-white p-4 sm:h-[424px] sm:w-[323px]">
       {rating >= 4.0 && (
         <div className="absolute right-[-28px] top-[-24px] z-30 rotate-12">
           <RatingIcon rating={rating} />
