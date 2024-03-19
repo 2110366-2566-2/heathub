@@ -31,6 +31,7 @@ export default function Verify({ onClose }: { onClose: () => void }) {
           title: "Upload Complete",
           description: "Your ID card has been uploaded successfully",
           duration: 3000,
+          variant: "success",
         });
         onClose();
       },
@@ -43,7 +44,6 @@ export default function Verify({ onClose }: { onClose: () => void }) {
         });
       },
       onUploadProgress: (progress) => {
-        console.log("Progress: ", progress);
         setProgress(progress);
       },
     },
@@ -121,7 +121,20 @@ export default function Verify({ onClose }: { onClose: () => void }) {
             Cancel
           </Button>
         </DialogClose>
-        <Button variant="secondary" onClick={() => startUpload(files)}>
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            if (files.length === 0) {
+              toast({
+                title: "No file selected",
+                description: "Please select a file to upload",
+                variant: "error",
+              });
+              return;
+            }
+            await startUpload(files);
+          }}
+        >
           Submit
         </Button>
       </div>
