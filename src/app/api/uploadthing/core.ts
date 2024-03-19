@@ -1,6 +1,9 @@
 import { auth } from "@/server/api/auth";
 import { db } from "@/server/db";
-import { unconfirmedUserProfileImage } from "@/server/db/schema";
+import {
+  unconfirmedUserProfileImage,
+  verifiedRequest,
+} from "@/server/db/schema";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UTApi, UploadThingError } from "uploadthing/server";
 
@@ -54,6 +57,36 @@ export const uploadthingRouter = {
     .onUploadComplete(async ({}) => {
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return {};
+    }),
+  verifiedUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+    // Set permissions and file types for this FileRoute
+    .middleware(async ({ req }) => {
+      // This code runs on your server before upload
+
+      const authRequest = auth.handleRequest(req);
+      const session = await authRequest.validate();
+
+      // If you throw, the user will not be able to upload
+      if (!session) throw new UploadThingError("Unauthorized");
+      if (session.user.role !== "host")
+        throw new UploadThingError("Only hosts can upload");
+      console.log("middleware");
+      // Whatever is returned here is accessible in onUploadComplete as `metadata`
+      return { userId: session.user.userId };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      // This code RUNS ON YOUR SERVER after upload
+      console.log("Upload complete for hostId:", metadata.userId);
+
+      console.log("file url", file.url);
+
+      await db.insert(verifiedRequest).values({
+        hostID: metadata.userId,
+        nationalIDCardImageURL: file.url,
+      });
+
+      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+      return { uploadedBy: metadata.userId };
     }),
 } satisfies FileRouter;
 

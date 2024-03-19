@@ -6,8 +6,10 @@ import {
 } from "@/server/api/trpc";
 import {
   hostInterest,
+  hostUser,
   unconfirmedUserProfileImage,
   user,
+  verifiedRequest,
 } from "@/server/db/schema";
 import { and, eq, ne, or, type SQL } from "drizzle-orm";
 import { z } from "zod";
@@ -146,5 +148,27 @@ export const profileRouter = createTRPCRouter({
     });
 
     return res?.balance ?? 0;
+  }),
+  getHostVerifiedRequest: hostProcedure.query(async ({ ctx }) => {
+    const res = await ctx.db.query.verifiedRequest.findFirst({
+      orderBy: (v, { desc }) => [desc(v.id)],
+      where: eq(verifiedRequest.hostID, ctx.session.user.userId),
+      columns: {
+        id: true,
+        nationalIDCardImageURL: true,
+        status: true,
+        requestDetails: true,
+      },
+    });
+    console.log("res", res);
+    return res;
+  }),
+  updateHostVerifiedToPending: hostProcedure.mutation(async ({ ctx }) => {
+    await ctx.db
+      .update(hostUser)
+      .set({
+        verifiedStatus: "pending",
+      })
+      .where(eq(hostUser.userID, ctx.session.user.userId));
   }),
 });
