@@ -214,7 +214,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
               <Label className="h5 text-high" htmlFor="Bio">
                 Bio
               </Label>
-              <Input
+              <Textarea
                 value={bioText}
                 className="h-9 resize-none"
                 name="Bio"
