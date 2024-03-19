@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavItem } from "./navItem";
+import LoadingCircle from "./loading-circle";
 
 export function NavBar() {
   const pathName = usePathname();
@@ -18,7 +19,7 @@ export function NavBar() {
   const isEvent = pathName.startsWith("/myevent");
   const isChat = pathName.startsWith("/chat");
 
-  const { data: me } = api.auth.me.useQuery(undefined, {
+  const { data: me, isLoading } = api.auth.me.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
 
@@ -31,13 +32,19 @@ export function NavBar() {
       </div>
       <div className="items-center justify-center self-center">
         <Link href="/profile">
-          <div className="relative flex h-10 w-10">
-            <Image
-              src={me?.profileImageURL || generateAvatar("mock-profile")}
-              fill
-              alt="logo"
-              className="self-center rounded-full border-2 border-white	 object-cover"
-            />
+          <div className="relative flex h-10 w-10 justify-center rounded-full border-2 border-white">
+            {isLoading ? (
+              <div className="h-fit w-fit self-center">
+                <LoadingCircle width="32px" height="32px" />
+              </div>
+            ) : (
+              <Image
+                src={me?.profileImageURL || generateAvatar("mock-profile")}
+                fill
+                alt="logo"
+                className="self-center rounded-full object-cover"
+              />
+            )}
           </div>
         </Link>
       </div>
@@ -50,7 +57,7 @@ export function NavBarMobile({ className }: { className?: string }) {
   const isEvent = usePathname().startsWith("/myevent");
   const isChat = usePathname().startsWith("/chat");
 
-  const { data: me } = api.auth.me.useQuery(undefined, {
+  const { data: me, isLoading } = api.auth.me.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
 
@@ -64,13 +71,19 @@ export function NavBarMobile({ className }: { className?: string }) {
         <NavItem link="/chat" icon={faComment} isSelected={isChat} />
         <div className="items-center justify-center self-center">
           <Link href="/profile">
-            <div className="relative flex h-10 w-10">
-              <Image
-                src={me?.profileImageURL || generateAvatar("mock-profile")}
-                fill
-                alt="logo"
-                className="self-center rounded-full border-2 border-white	 object-cover"
-              />
+            <div className="relative flex h-10 w-10 justify-center rounded-full border-2 border-white">
+              {isLoading ? (
+                <div className="h-fit w-fit self-center">
+                  <LoadingCircle width="32px" height="32px" />
+                </div>
+              ) : (
+                <Image
+                  src={me?.profileImageURL || generateAvatar("mock-profile")}
+                  fill
+                  alt="logo"
+                  className="self-center rounded-full object-cover"
+                />
+              )}
             </div>
           </Link>
         </div>
