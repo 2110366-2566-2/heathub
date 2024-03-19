@@ -163,18 +163,12 @@ export const profileRouter = createTRPCRouter({
     console.log("res", res);
     return res;
   }),
-  updateHostVerifiedStatus: hostProcedure
-    .input(
-      z.object({
-        verifiedStatus: z.enum(["unverified", "pending"]),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      await ctx.db
-        .update(hostUser)
-        .set({
-          verifiedStatus: input.verifiedStatus,
-        })
-        .where(eq(hostUser.userID, ctx.session.user.userId));
-    }),
+  updateHostVerifiedToPending: hostProcedure.mutation(async ({ ctx }) => {
+    await ctx.db
+      .update(hostUser)
+      .set({
+        verifiedStatus: "pending",
+      })
+      .where(eq(hostUser.userID, ctx.session.user.userId));
+  }),
 });
