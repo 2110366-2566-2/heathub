@@ -9,8 +9,11 @@ import {
   ToastViewport,
 } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  faCircleCheck,
+  faTriangleExclamation,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 export function Toaster() {
   const { toasts } = useToast();
@@ -21,12 +24,22 @@ export function Toaster() {
         return (
           <Toast key={id} {...props}>
             <div className="flex flex-row gap-2">
-              {/* <div className="flex h-6 w-6 items-center justify-center "> */}
-              {/*   <FontAwesomeIcon */}
-              {/*     icon={faCircleCheck} */}
-              {/*     className="h-5 text-[#22C55E]" */}
-              {/*   /> */}
-              {/* </div> */}
+              {(props.variant === "success" && (
+                <div className="flex h-6 w-6 items-center justify-center ">
+                  <FontAwesomeIcon
+                    icon={faCircleCheck}
+                    className="h-5 text-[#22C55E]"
+                  />
+                </div>
+              )) ||
+                (props.variant === "error" && (
+                  <div className="flex h-6 w-6 items-center justify-center ">
+                    <FontAwesomeIcon
+                      icon={faTriangleExclamation}
+                      className="h-5 text-[#EF4444]"
+                    />
+                  </div>
+                ))}
               <div className="grid gap-1">
                 {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (
