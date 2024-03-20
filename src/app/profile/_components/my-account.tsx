@@ -23,7 +23,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
   const verifiedStatusText = () =>{
   const status = props.verifiedStatus;
   // "unverified", "pending", "verified", "rejected"
-  if(status=== "Verified"){
+  if(status=== "verified"){
     return (
       <div className="flex flex-row items-center gap-1 text-[#34B463]">
         <div className="flex h-5 w-5 items-center justify-center">
@@ -55,16 +55,16 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
   }
     else if(status === "rejected"){
     return (
-      <div className="small flex flex-col gap-1 text-medium">
+      <div className="flex flex-col gap-1">
         <div className="flex flex-row items-center gap-1 text-status-error-default">
-          <div className="flex h-5 w-5 items-center justify-center">
+          <div className="flex h-5 w-5 items-center justify-center ">
             <FontAwesomeIcon icon={faCircleXmark} size={"1x"} />
           </div>
           Rejected
         </div>
-        Your request has been rejected with the following reason: [Reason
-        provided by the admin]. Please review the provided details and make
-        necessary corrections before resubmitting.
+        <div className="small font-normal text-medium">
+          Reason: {props.verifiedDetail}
+        </div>
       </div>
     );
   }
@@ -95,6 +95,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
             </div>
             <ChangePasswordButton />
           </div>
+          {props.verifiedStatus !== "" && (
           <div className="lg:gap-auto flex flex-col items-start gap-4 rounded-xl bg-invert px-6 py-6 lg:flex-row lg:justify-between">
             <div className="flex flex-col items-start gap-2">
               <div className="placeholder flex justify-center text-medium">
@@ -104,8 +105,9 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
                 {verifiedStatusText()}
               </div>
             </div>
-            <VerificationButton />
-          </div>
+            {(props.verifiedStatus === "unverified" ||
+              props.verifiedStatus === "rejected") && <VerificationButton />}
+          </div> )}
         </div>
       </div>
       {isMobile ? (
@@ -117,9 +119,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
           {/* <DrawerProfile {...props} /> */}
         </Drawer>
       ) : (
-        <Dialog>
-          {/* <DialogProfile {...props} /> */}
-        </Dialog>
+        <Dialog>{/* <DialogProfile {...props} /> */}</Dialog>
       )}
     </>
   );

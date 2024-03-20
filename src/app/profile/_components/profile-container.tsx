@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
+
 export type ProfilePreviewProps = {
   email: string;
   name: string;
@@ -23,13 +24,13 @@ export type ProfilePreviewProps = {
   gender: string;
   dateOfBirth: Date;
   id: string;
-  verifiedStatus?: string;
+  verifiedStatus: string;
+  verifiedDetail: string;
 };
 export default function ProfileContainer(props: ProfilePreviewProps) {
   const balance = {
     balance: props.balance,
   };
-
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="flex h-10 w-full flex-row items-center gap-x-2">

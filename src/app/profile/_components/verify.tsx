@@ -13,6 +13,7 @@ import Image from "next/image";
 import { DialogClose } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { Progress } from "@/components/ui/progress";
+import { useRouter } from "next/navigation";
 
 export default function Verify({ onClose }: { onClose: () => void }) {
   const [url, setUrl] = useState("");
@@ -22,6 +23,7 @@ export default function Verify({ onClose }: { onClose: () => void }) {
     setFiles(acceptedFiles);
   }, []);
   const { toast } = useToast();
+  const router = useRouter();
   const { startUpload, permittedFileInfo } = useUploadThing(
     "verifiedUploader",
     {
@@ -33,6 +35,7 @@ export default function Verify({ onClose }: { onClose: () => void }) {
           duration: 3000,
           variant: "success",
         });
+        router.refresh();
         onClose();
       },
       onUploadError: () => {
