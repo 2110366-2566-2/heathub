@@ -122,29 +122,29 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       if (!(await isEmailDup(email ? email : ""))) {
         if (isHost(data)) {
           const host: Host = {
-            Firstname: "",
-            Lastname: "",
-            Username: "",
-            Bio: "",
-            DOB: new Date(),
-            Gender: "",
+            Firstname: data.Firstname ?? "",
+            Lastname: data.Lastname ?? "",
+            Username: data.Username ?? "",
+            Bio: data.Bio ?? "",
+            DOB: data.DOB ?? new Date(),
+            Gender: data.Gender ?? "",
             Email: email ? email : "",
             Password: password ? password : "",
-            Interest: [],
-            Image: null,
+            Interest: data.Interest ?? [],
+            Image: data.Image ?? null,
           };
           setData(host);
           setPage("HostDetails");
         } else {
           const participant: Participant = {
-            Firstname: "",
-            Lastname: "",
-            Username: "",
-            DOB: new Date(),
-            Gender: "",
+            Firstname: data.Firstname ?? "",
+            Lastname: data.Lastname ?? "",
+            Username: data.Username ?? "",
+            DOB: data.DOB ?? new Date(),
+            Gender: data.Gender ?? "",
             Email: email ? email : "",
             Password: password ? password : "",
-            Image: null,
+            Image: data.Image ?? null,
           };
           setData(participant);
           setPage("ParticipantDetails");

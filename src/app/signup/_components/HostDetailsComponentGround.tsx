@@ -3,8 +3,25 @@
 import { type Host, type User } from "@/app/signup/interfaces";
 import { Button } from "@/components/ui/button";
 import { useRef, useState, type Dispatch, type SetStateAction } from "react";
-import RegisterFormBox from "./HostRegisterFormBox";
 import { api } from "@/trpc/react";
+import { uploadFiles } from "@/components/ui/upload";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  faCamera,
+  faMars,
+  faMinus,
+  faSliders,
+  faVenus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as React from "react";
+import { useEffect } from "react";
+import Image from "next/image";
+import { DatePicker } from "@/app/_components/DatePicker";
+import { cn } from "@/utils/tailwind-merge";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ComponentGroundProps {
   setData: (data: User) => void;
@@ -25,6 +42,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   const [gender, setGender] = useState<string>(data.Gender);
   const [notice, setNotice] = useState<string>("");
+  const [DOB, setDOB] = useState<Date | undefined>(data.DOB);
 
   const testUsername = api.auth.isAKAAlreadyExist.useMutation();
 
@@ -47,7 +65,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const lastnameInput = formData.get("Lastname") as string | null;
     const usernameInput = formData.get("Username") as string | null;
     const bioInput = formData.get("Bio") as string | null;
-    const DOBInput = formData.get("Date of birth") as string | null;
+    const DOBInput = DOB;
     const imageInput = formData.get("Image") as File | null;
     if (
       !gender ||
@@ -59,6 +77,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       gender == ""
     ) {
       setNotice("Please fill in your details.");
+      return;
+    } else if (!imageInput || imageInput.name == "") {
+      setNotice("Please upload a profile picture.");
       return;
     } else {
       try {
@@ -81,24 +102,225 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Lastname: lastnameInput,
       Username: usernameInput,
       Bio: bioInput ? bioInput : "",
-      DOB: new Date(DOBInput),
+      DOB: DOB,
       Gender: gender,
       Email: data.Email,
       Password: data.Password,
       Interest: [],
-      Image: imageInput ? imageInput : null,
+      Image: imageInput,
     };
+
+    // if (!host.Image || host.Image?.name == "") {
+    //   setNotice("Please upload a profile picture.");
+    //   return;
+    // }
+
+    // const files = [host.Image];
+    // const res = await uploadFiles("signupProfileUploader", {
+    //   files,
+    // });
+    // if (res.length !== 1) {
+    //   setNotice("An error occurred");
+    //   return;
+    // }
     setData(host);
+    setNotice("");
     setPage("HostInterest");
   };
 
-  return (
-    <div className="flex flex-col items-center gap-y-6 p-6">
-      <div className="h1 font-bold text-primary-900">
-        Tell us about yourself
-      </div>
+  const host = data as Host;
+  const condition = !!host.Firstname;
+  const [firstText, setFirstText] = useState(condition ? host.Firstname : "");
+  const [lastText, setLastText] = useState(condition ? host.Lastname : "");
+  const [usernameText, setUsernameText] = useState(
+    condition ? host.Username : "",
+  );
+  const [bioText, setBioText] = useState(condition ? host.Bio : "");
+  const [DOBText, setDOBText] = useState<Date | undefined>(
+    condition ? host.DOB : undefined,
+  );
+  useEffect(() => {
+    setDOB(DOBText);
+  }, [DOBText, setDOB]);
+  const [imageUrl, setimageUrl] = useState(
+    condition && host.Image ? URL.createObjectURL(host.Image) : "",
+  );
 
-      <RegisterFormBox data={data} formRef={formRef} setGender={setGender} />
+  const autoSave = () => {
+    if (!formRef.current) {
+      return;
+    }
+
+    const formData = new FormData(formRef.current);
+
+    const firstnameInput = formData.get("Firstname") as string | null;
+    const lastnameInput = formData.get("Lastname") as string | null;
+    const usernameInput = formData.get("Username") as string | null;
+    const bioInput = formData.get("Bio") as string | null;
+    const imageInput = formData.get("Image") as File | null;
+
+    const host: Host = {
+      Firstname: firstnameInput ?? "",
+      Lastname: lastnameInput ?? "",
+      Username: usernameInput ?? "",
+      Bio: bioInput ? bioInput : "",
+      DOB: DOB ?? new Date(),
+      Gender: gender,
+      Email: data.Email,
+      Password: data.Password,
+      Interest: (data as Host).Interest ?? [],
+      Image: imageInput,
+    };
+    setData(host);
+  };
+
+  useEffect(() => {
+    autoSave();
+  }, [firstText, lastText, usernameText, bioText, DOBText, gender, imageUrl]);
+
+  const uploadImage = async () => {
+    if (!formRef.current) {
+      return;
+    }
+    const formData = new FormData(formRef.current);
+    const imageInput = formData.get("Image") as File | null;
+
+    if (!imageInput || imageInput?.name == "") {
+      return;
+    }
+
+    const files = [imageInput];
+    const res = await uploadFiles("signupProfileUploader", {
+      files,
+    });
+    if (res.length !== 1) {
+      setNotice("An error occurred");
+      return;
+    }
+  };
+
+  useEffect(() => {
+    void uploadImage();
+  }, [imageUrl]);
+
+  return (
+    <div className="flex w-full flex-col items-center gap-y-8">
+      <form
+        ref={formRef}
+        className="flex w-full max-w-[880px] flex-col items-center gap-y-8 p-6"
+      >
+        <div className="h1 text-center font-bold text-high">
+          Tell us about yourself
+        </div>
+        <div className="flex w-full flex-col gap-y-4 md:flex-row md:gap-x-6">
+          <div className="relative h-40 w-40 self-center rounded-full bg-slate-200 md:self-start">
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt="Profile Picture"
+                fill
+                className="rounded-full"
+              />
+            ) : (
+              ""
+            )}
+            <div className="absolute bottom-2 right-2 flex h-8 w-8 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
+              <FontAwesomeIcon icon={faCamera} />
+              <Input
+                type="file"
+                name="Image"
+                className="absolute h-8 w-8 rounded-full opacity-0"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const url = URL.createObjectURL(file);
+                    setimageUrl(url);
+                  }
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex grow flex-col gap-y-4">
+            <div className="flex w-full flex-col gap-y-1.5">
+              <Label htmlFor="Firstname">Firstname</Label>
+              <Input
+                value={firstText}
+                type="text"
+                className="h-9"
+                name="Firstname"
+                placeholder="Enter your firstname"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setFirstText("");
+                  } else {
+                    setFirstText(
+                      e.target.value.charAt(0).toUpperCase() +
+                        e.target.value.slice(1),
+                    );
+                  }
+                }}
+              />
+            </div>
+            <div className="flex w-full flex-col gap-y-1.5">
+              <Label htmlFor="Lastname">Lastname</Label>
+              <Input
+                value={lastText}
+                type="text"
+                className="h-9"
+                name="Lastname"
+                placeholder="Enter your Lastname"
+                onChange={(e) => {
+                  if (e.target.value.length == 0) {
+                    setLastText("");
+                  } else {
+                    setLastText(
+                      e.target.value.charAt(0).toUpperCase() +
+                        e.target.value.slice(1),
+                    );
+                  }
+                }}
+              />
+            </div>
+            <div className="flex w-full flex-col gap-y-1.5">
+              <Label htmlFor="Username">Username</Label>
+              <Input
+                value={usernameText}
+                type="text"
+                className="h-9"
+                name="Username"
+                placeholder="Enter your username"
+                onChange={(e) => {
+                  setUsernameText(e.target.value);
+                }}
+              />
+            </div>
+            <div className="flex w-full flex-col gap-y-1.5">
+              <Label htmlFor="Bio">Bio</Label>
+              <Textarea
+                value={bioText}
+                className="h-9 resize-none"
+                name="Bio"
+                placeholder="Enter your bio"
+                onChange={(e) => {
+                  setBioText(e.target.value);
+                }}
+              />
+            </div>
+            <div className="flex w-full flex-col gap-y-1.5">
+              <Label htmlFor="Date of birth">Date of birth</Label>
+              <DatePicker date={DOBText} setDate={setDOBText} />
+            </div>
+            <div className="h-[0.5px] bg-primary-500 md:h-auto md:w-[0.5px]"></div>
+            <div className="h-full">
+              <GenderSelector gender={host.Gender} setGender={setGender} />
+            </div>
+          </div>
+        </div>
+      </form>
+      <span className="h5 h-0 overflow-visible text-red-600" id="Notice">
+        {notice}
+      </span>
       <Button
         className="h-12 w-[108px] bg-primary-500 text-white"
         variant="default"
@@ -108,9 +330,123 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       >
         Next
       </Button>
-      <span className="h5 h-0 overflow-visible text-red-600" id="Notice">
-        {notice}
-      </span>
+    </div>
+  );
+}
+
+interface GenderSelectorProps {
+  setGender: (gender: string) => void;
+  gender: string;
+}
+
+function GenderSelector(props: GenderSelectorProps) {
+  const { setGender, gender } = props;
+  const [genderText, setGenderText] = useState(
+    gender == "Male" || gender == "Female" || gender == "NotToSay"
+      ? ""
+      : gender,
+  );
+  const [selectedGender, setSelectedGender] = useState<string>(
+    gender == "Male" ||
+      gender == "Female" ||
+      gender == "NotToSay" ||
+      gender == ""
+      ? gender
+      : "Custom",
+  );
+  const [isCustom, setCustom] = useState<boolean>(false);
+
+  const customGenderRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (selectedGender == "Custom") {
+      setCustom(true);
+    } else {
+      setCustom(false);
+    }
+  }, [selectedGender]);
+
+  const checkToggle = (gender: string): string => {
+    return cn(
+      "flex h-20 w-20 aspect-square flex-col gap-y-1 rounded-xl border border-solid py-2 px-0 border-primary-500 data-[state=on]:bg-secondary-400 data-[state=on]:text-white data-[state=on]:border-none  ",
+      selectedGender == gender ? "bg-white" : "bg-white",
+    );
+  };
+
+  return (
+    <div className="flex w-full flex-col justify-center">
+      <div className="flex w-full flex-col items-center gap-y-1 md:items-start">
+        <Label className="h4 font-bold text-high">Select your Gender</Label>
+        <ToggleGroup
+          className="grid w-fit grid-cols-2 gap-4 p-4 md:flex md:flex-row md:justify-start"
+          type="single"
+          value={selectedGender}
+          onValueChange={(val) => {
+            setSelectedGender(val);
+            const customInput = customGenderRef.current?.value;
+            if (val == "Custom" && customInput) {
+              setGender(customInput);
+              return;
+            }
+            setGender(val);
+          }}
+        >
+          <ToggleGroupItem
+            className={checkToggle("Male")}
+            value="Male"
+            aria-label="Toggle Male"
+          >
+            <FontAwesomeIcon className="h-6 w-6" icon={faMars} />
+            <div className="h6 max-h-4">Male</div>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            className={checkToggle("Female")}
+            value="Female"
+            aria-label="Toggle Female"
+          >
+            <FontAwesomeIcon className="h-6 w-6" icon={faVenus} />
+            <div className="h6 max-h-4">Female</div>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            className={checkToggle("Custom")}
+            value="Custom"
+            aria-label="Toggle Custom"
+          >
+            <FontAwesomeIcon className="h-6 w-6" icon={faSliders} />
+            <div className="h6 max-h-4">Custom</div>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            className={checkToggle("NotToSay")}
+            value="NotToSay"
+            aria-label="Toggle NotToSay"
+          >
+            <FontAwesomeIcon className="h-6 w-6" icon={faMinus} />
+            <div className="h6 max-h-4 overflow-x-visible leading-4">
+              Prefer Not To Say
+            </div>
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+      <div
+        className={cn("flex w-full flex-col space-y-1 transition-all", {
+          "opacity-50": !isCustom,
+        })}
+      >
+        <Label className="body5" htmlFor="Custom Gender">
+          Custom Gender
+        </Label>
+        <Input
+          value={isCustom ? genderText : ""}
+          disabled={!isCustom}
+          className="h-9 w-full md:max-w-[242px]"
+          ref={customGenderRef}
+          placeholder="Custom your gender"
+          onChange={(e) => {
+            setGender(e.target.value);
+            setGenderText(e.target.value);
+          }}
+        />
+      </div>
     </div>
   );
 }

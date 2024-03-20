@@ -11,10 +11,6 @@ export interface User {
 
 export interface Host extends User {
   Bio: string;
-}
-
-export interface Host extends User {
-  Bio: string;
   Interest: string[];
 }
 
