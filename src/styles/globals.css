@@ -30,7 +30,7 @@
     @apply text-base  italic;
   }
   .placeholder {
-    @apply text-sm
+    @apply text-sm;
   }
 }
 @layer utilities {

@@ -20,11 +20,7 @@ export default function MyReview(props: ProfilePreviewProps) {
           <div className="h2 font-bold text-high">{rating}</div>
           <StarMaker Rating={rating} />
         </div>
-        <Button
-          variant={"secondaryOutline"}
-        >
-          See All Reviews
-        </Button>
+        <Button variant={"secondaryOutline"}>See All Reviews</Button>
       </CardContent>
     </Card>
   );

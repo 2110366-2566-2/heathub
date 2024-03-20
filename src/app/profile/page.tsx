@@ -48,7 +48,6 @@ export default async function Profile() {
       verifiedStatus: verifiedData?.status ?? "unverified",
       verifiedDetail: verifiedData?.requestDetails ?? "",
     };
-    
   } else {
     show = {
       name: user.aka,

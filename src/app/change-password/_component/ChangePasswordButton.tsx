@@ -98,7 +98,7 @@ export default function ChangePasswordButton() {
       </DialogTrigger>
 
       <DialogContent className="flex h-fit w-full max-w-[422px] flex-col items-center gap-y-4 rounded-md bg-white p-6">
-        <div className="rounded-full h-[60px] w-[60px] flex items-center justify-center bg-secondary-400">
+        <div className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-secondary-400">
           <FontAwesomeIcon icon={faKey} className={"text-invert"} size={"2x"} />
         </div>
         <div className="flex w-full flex-col items-center gap-y-6">

@@ -113,7 +113,9 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
         </div>
         {props.reviews != -1 && (
           <div className="flex h-fit min-h-[94px] w-full flex-col gap-y-3">
-            <div className="h6 font-bold text-medium lg:h5 lg:font-normal">Interest</div>
+            <div className="h6 lg:h5 font-bold text-medium lg:font-normal">
+              Interest
+            </div>
             <div className="flex h-fit w-full flex-row flex-wrap gap-2">
               {interests.map((tag, index) => (
                 <Tag
