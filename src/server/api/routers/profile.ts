@@ -6,7 +6,6 @@ import {
 } from "@/server/api/trpc";
 import {
   hostInterest,
-  hostUser,
   unconfirmedUserProfileImage,
   user,
   verifiedRequest,

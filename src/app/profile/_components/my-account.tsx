@@ -1,28 +1,19 @@
 "use client";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Drawer, DrawerContent, DrawerOverlay } from "@/components/ui/drawer";
-import { useMediaQuery } from "react-responsive";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
-  faKey,
-  faCircleInfo,
   faClock,
   faCheckCircle,
   faCircleXmark,
   faCircleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { type ProfilePreviewProps } from "./profile-container";
 import ChangePasswordButton from "@/app/change-password/_component/ChangePasswordButton";
 import VerificationButton from "./VerificationButton";
 
 export function MyAccountPreview(props: ProfilePreviewProps) {
-  const isMobile = useMediaQuery({ maxWidth: 1023 });
   const verifiedStatusText = () => {
     const status = props.verifiedStatus;
-    // "unverified", "pending", "verified", "rejected"
     if (status === "verified") {
       return (
         <div className="flex flex-row items-center gap-1 text-[#34B463]">
@@ -107,17 +98,6 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
           )}
         </div>
       </div>
-      {isMobile ? (
-        <Drawer>
-          <DrawerOverlay
-            className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${props.image})` }}
-          />
-          {/* <DrawerProfile {...props} /> */}
-        </Drawer>
-      ) : (
-        <Dialog>{/* <DialogProfile {...props} /> */}</Dialog>
-      )}
     </>
   );
 }
