@@ -10,6 +10,7 @@ export default async function Profile() {
   const user = await serverapi.user.getUserPublicData.query({
     userID: user2?.userId ?? "",
   });
+
   if (!user) {
     redirect("/");
   }
@@ -28,6 +29,7 @@ export default async function Profile() {
     const hostData = await serverapi.user.getHostData.query({
       hostID: user2?.userId ?? "",
     });
+    const verifiedData = await serverapi.profile.getHostVerifiedRequest.query();
     show = {
       name: user.aka,
       age: userAge,
@@ -43,6 +45,8 @@ export default async function Profile() {
       gender: user.gender,
       dateOfBirth: user.dateOfBirth ?? new Date(),
       id: user2?.userId ?? "",
+      verifiedStatus: verifiedData?.status ?? "unverified",
+      verifiedDetail: verifiedData?.requestDetails ?? "",
     };
   } else {
     show = {
@@ -60,6 +64,8 @@ export default async function Profile() {
       gender: user.gender,
       dateOfBirth: user.dateOfBirth ?? new Date(),
       id: user2?.userId ?? "",
+      verifiedStatus: "",
+      verifiedDetail: "",
     };
   }
   console.log(show);

@@ -19,6 +19,7 @@ import { api } from "@/trpc/react";
 import { uploadFiles } from "@/components/ui/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface EditProfileButtonProps {
   cUsername: string;
@@ -39,7 +40,6 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   const [DOB, setDOB] = useState<Date | undefined>();
   const [notice, setNotice] = useState("");
   const [isOpen, setOpen] = useState(false);
-  const [isClose, setClose] = useState(false);
   const [profileURL, setProfileURL] = useState(props.cProfileURL);
   api.user.getUserPublicData.useQuery(
     {
@@ -56,13 +56,6 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
       },
     },
   );
-
-  useEffect(() => {
-    setClose(false);
-  }, [isOpen]);
-  useEffect(() => {
-    setOpen(false);
-  }, [isClose]);
 
   const updateProfile = api.profile.updateProfile.useMutation({
     onSuccess: (data) => {
@@ -154,7 +147,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   }, [notice]);
 
   const handleClose = () => {
-    setClose(true);
+    setOpen(false);
     setNotice("");
     setGender(gender);
     setUsernameText(usernameText);
@@ -165,12 +158,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
   };
 
   return (
-    <Dialog
-      onOpenChange={() => {
-        setOpen(true);
-      }}
-      open={isOpen && !isClose}
-    >
+    <Dialog onOpenChange={setOpen} open={isOpen}>
       <DialogTrigger className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-secondary-400 text-white hover:bg-secondary-500 disabled:bg-secondary-100 lg:w-[126px]">
         Edit Profile
       </DialogTrigger>
@@ -255,12 +243,13 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
           >
             Confirm
           </span>
-          <span
-            className="inline-flex h-10 w-20 items-center justify-center rounded-xl border border-secondary-500 bg-white text-secondary-500 hover:cursor-pointer hover:border-secondary-600 hover:text-secondary-600 disabled:bg-secondary-100"
+          <Button
+            variant="secondaryOutline"
+            className="border-medium text-medium"
             onClick={handleClose}
           >
             Cancel
-          </span>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

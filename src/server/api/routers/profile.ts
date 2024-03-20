@@ -6,7 +6,6 @@ import {
 } from "@/server/api/trpc";
 import {
   hostInterest,
-  hostUser,
   unconfirmedUserProfileImage,
   user,
   verifiedRequest,
@@ -162,13 +161,5 @@ export const profileRouter = createTRPCRouter({
     });
     console.log("res", res);
     return res;
-  }),
-  updateHostVerifiedToPending: hostProcedure.mutation(async ({ ctx }) => {
-    await ctx.db
-      .update(hostUser)
-      .set({
-        verifiedStatus: "pending",
-      })
-      .where(eq(hostUser.userID, ctx.session.user.userId));
   }),
 });
