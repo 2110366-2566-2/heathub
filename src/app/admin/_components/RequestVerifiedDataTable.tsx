@@ -54,12 +54,12 @@ export function RequestVerifiedDataTable<TData, TValue>({
       });
       await utils.admin.getVerifiedRequest.invalidate();
       toast({
-        title: "Success to verified request id " + requestId,
+        title: "Successfully approved request id " + requestId,
         description: "host id" + hostId + "is verified",
       });
     } catch (error) {
       toast({
-        title: "Fail to verified request id " + requestId,
+        title: "Failed to approve request id " + requestId,
         description: "host id" + hostId + "is verified",
         variant: "error",
       });
@@ -80,12 +80,12 @@ export function RequestVerifiedDataTable<TData, TValue>({
       await utils.admin.getVerifiedRequest.invalidate();
 
       toast({
-        title: "Success to reject request id " + requestId,
+        title: "Successfully rejected request id " + requestId,
         description: "host id" + hostId + "is rejected because" + details,
       });
     } catch (error) {
       toast({
-        title: "Fail to reject request id " + requestId,
+        title: "Failed to reject request id " + requestId,
         description: "host id" + hostId + "is rejected because" + details,
         variant: "error",
       });
