@@ -54,11 +54,14 @@ export function RequestVerifiedDataTable<TData, TValue>({
       });
       await utils.admin.getVerifiedRequest.invalidate();
       toast({
-        title: "Request id " + requestId + "verified Success",
+        title: "Request id " + requestId + "verified success",
         description: "host id" + hostId + "is verified",
       });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: "Request id " + requestId + "verified failed",
+        description: "host id" + hostId + "is verified",
+      });
     }
   };
   const handleRejectRequestStatus = async (
@@ -76,12 +79,16 @@ export function RequestVerifiedDataTable<TData, TValue>({
       await utils.admin.getVerifiedRequest.invalidate();
 
       toast({
-        title: "Request id " + requestId + "verified failed",
+        title: "Request id " + requestId + "reject verified success",
         description: "host id" + hostId + "is rejected because" + details,
         variant: "error",
       });
     } catch (error) {
-      console.error(error);
+      toast({
+        title: "Request id " + requestId + "reject verified failed",
+        description: "host id" + hostId + "is rejected because" + details,
+        variant: "error",
+      });
     }
   };
 
