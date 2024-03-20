@@ -47,7 +47,7 @@ export default function RejectedRequestModal({
       </DialogTrigger>
       <DialogContent className="bg-white">
         <DialogHeader>
-          <DialogTitle>Why you reject this request</DialogTitle>
+          <DialogTitle>Why is the request being rejected?</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
