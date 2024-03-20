@@ -43,7 +43,9 @@ export const user = sqliteTable(
     profileImageURL: text("profile_image_url", { length: 256 }).default(""),
     balance: int("balance", {
       mode: "number",
-    }).default(0),
+    })
+      .default(0)
+      .notNull(),
   },
   (user) => ({
     akaIndex: index("aka_idx").on(user.aka),
@@ -350,37 +352,52 @@ export const externalTransactionRelation = relations(
   }),
 );
 
-export const tranferTransaction = sqliteTable("tranfer_transaction", {
-  id: int("id", {
-    mode: "number",
-  }).primaryKey({
-    autoIncrement: true,
+export const internalTransaction = sqliteTable(
+  "internal_transaction",
+  {
+    id: int("id", {
+      mode: "number",
+    }).primaryKey({
+      autoIncrement: true,
+    }),
+    userID: text("user_id", {
+      length: 64,
+    }).notNull(),
+    eventID: int("event_id", {
+      mode: "number",
+    }).notNull(),
+    type: text("type", {
+      enum: ["pay", "recieve", "refund"],
+    }).notNull(),
+    // amount is in สตางค์, positive for recieve, negative for pay
+    amount: int("amount", {
+      mode: "number",
+    }).notNull(),
+    createdAt: int("created_at", {
+      mode: "timestamp_ms",
+    })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (internalTransaction) => ({
+    userIDIndex: index("internal_transaction_user_id_idx").on(
+      internalTransaction.userID,
+    ),
+    eventIDIndex: index("internal_transaction_event_id_idx").on(
+      internalTransaction.eventID,
+    ),
   }),
-  senderID: text("sender_id", {
-    length: 64,
-  }).notNull(),
-  receiverID: text("receiver_id", {
-    length: 64,
-  }).notNull(),
-  amount: int("amount", {
-    mode: "number",
-  }).notNull(),
-  createdAt: int("created_at", {
-    mode: "timestamp_ms",
-  })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-});
+);
 
-export const tranferTransactionRelation = relations(
-  tranferTransaction,
+export const internalTransactionRelation = relations(
+  internalTransaction,
   ({ one }) => ({
-    sender: one(user, {
-      fields: [tranferTransaction.senderID],
+    user: one(user, {
+      fields: [internalTransaction.userID],
       references: [user.id],
     }),
-    receiver: one(user, {
-      fields: [tranferTransaction.receiverID],
+    event: one(user, {
+      fields: [internalTransaction.eventID],
       references: [user.id],
     }),
   }),
