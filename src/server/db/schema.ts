@@ -71,6 +71,7 @@ export const hostRelation = relations(hostUser, ({ one, many }) => ({
   interests: many(hostInterest),
   reviews: many(ratingAndReview),
   reports: many(eventReport),
+  withdrawalRequests: many(withdrawalRequest),
 }));
 
 export const ratingAndReview = sqliteTable("rating_review", {
@@ -513,3 +514,41 @@ export const eventReportRelation = relations(eventReport, ({ one }) => ({
     references: [participantUser.userID],
   }),
 }));
+
+export const withdrawalRequest = sqliteTable("withdrawal_request", {
+  id: int("id", {
+    mode: "number",
+  }).primaryKey({
+    autoIncrement: true,
+  }),
+  userID: text("user_id", {
+    length: 64,
+  }).notNull(),
+  amount: int("amount", {
+    mode: "number",
+  }).notNull(),
+  status: text("status", {
+    length: 32,
+    enum: ["pending", "completed", "rejected"],
+  })
+    .default("pending")
+    .notNull(),
+  createdAt: int("created_at", {
+    mode: "timestamp_ms",
+  })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  completedAt: int("completed_at", {
+    mode: "timestamp_ms",
+  }),
+});
+
+export const withdrawalRequestRelation = relations(
+  withdrawalRequest,
+  ({ one }) => ({
+    hostUser: one(hostUser, {
+      fields: [withdrawalRequest.userID],
+      references: [hostUser.userID],
+    }),
+  }),
+);
