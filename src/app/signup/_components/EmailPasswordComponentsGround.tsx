@@ -1,119 +1,3 @@
-// "use client";
-
-// import {
-//   isHost,
-//   type Host,
-//   type Participant,
-//   type User,
-// } from "@/app/signup/interfaces";
-// import { Button } from "@/components/ui/button";
-// import { useRef, useState, type Dispatch, type SetStateAction } from "react";
-// import EmailPasswordBox from "./EmailPasswordBox";
-// import { api } from "@/trpc/react";
-
-// interface ComponentGroundProps {
-//   setData: (data: User) => void;
-//   setPage: Dispatch<
-//     SetStateAction<
-//       | "ChooseRole"
-//       | "EmailPassword"
-//       | "HostDetails"
-//       | "ParticipantDetails"
-//       | "HostInterest"
-//     >
-//   >;
-//   data: User;
-// }
-
-// export default function ComponentsGround(props: ComponentGroundProps) {
-//   const { setData, setPage, data } = props;
-
-//   const formRef = useRef<HTMLFormElement>(null);
-
-//   const [isValid, setIsValid] = useState<boolean>(false);
-//   const [emailNotice, setEmailNotice] = useState<string>("");
-
-//   const testEmail = api.auth.isEmailAlreadyExist.useMutation();
-
-//   const isEmailDup = async (email: string) => {
-//     return await testEmail.mutateAsync({
-//       email: email,
-//     });
-//   };
-
-//   const handleButtonClick = async () => {
-//     if (!formRef.current || !isValid) {
-//       return;
-//     }
-
-//     const formData = new FormData(formRef.current);
-//     const password = formData.get("Password") as string | null;
-//     const email = formData.get("Email") as string | null;
-
-//     try {
-//       if (!(await isEmailDup(email ? email : ""))) {
-//         if (isHost(data)) {
-//           const host: Host = {
-//             Firstname: "",
-//             Lastname: "",
-//             Username: "",
-//             Bio: "",
-//             DOB: new Date(),
-//             Gender: "",
-//             Email: email ? email : "",
-//             Password: password ? password : "",
-//             Interest: [],
-//             Image: null,
-//           };
-//           setData(host);
-//           setPage("HostDetails");
-//         } else {
-//           const participant: Participant = {
-//             Firstname: "",
-//             Lastname: "",
-//             Username: "",
-//             DOB: new Date(),
-//             Gender: "",
-//             Email: email ? email : "",
-//             Password: password ? password : "",
-//             Image: null,
-//           };
-//           setData(participant);
-//           setPage("ParticipantDetails");
-//         }
-//       } else {
-//         setEmailNotice("This Email is already exits.");
-//       }
-//     } catch (error) {
-//       if (error instanceof Error) {
-//         setEmailNotice(error.message);
-//       } else {
-//         setEmailNotice("Something went wrong. Please try again.");
-//       }
-//     }
-//   };
-
-//   return (
-//     <div className="flex flex-col items-center gap-y-6">
-//       <div className="h1 font-bold text-primary-900">Create your account</div>
-//       <EmailPasswordBox
-//         emailNotice={emailNotice}
-//         setEmailNotice={setEmailNotice}
-//         data={data}
-//         setValid={setIsValid}
-//         formRef={formRef}
-//       />
-//       <Button
-//         className="absolute bottom-6 h-12 w-[108px] bg-primary-500 text-white sm:static"
-//         variant="default"
-//         onClick={handleButtonClick}
-//       >
-//         Next
-//       </Button>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import {
@@ -192,7 +76,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const password = formData.get("Password") as string | null;
     const confirmPassword = formData.get("Confirm Password") as string | null;
 
-    let valid = false;
+    let valid = true;
 
     if (email && !emailSchema.safeParse(email).success) {
       setValid(false);
@@ -282,11 +166,11 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       <div className="h1 text-center font-bold text-primary-900">
         Create your account
       </div>
-      <form
-        ref={formRef}
-        className="flex w-full flex-col items-center gap-y-10"
-      >
-        <div className="flex w-full flex-col items-center gap-y-6">
+      <div className="flex w-full flex-col items-center gap-y-10">
+        <form
+          ref={formRef}
+          className="flex w-full flex-col items-center gap-y-6"
+        >
           <div className="flex w-full flex-col gap-y-1.5">
             <Label htmlFor="Email" className="font-semibold">
               Email
@@ -343,7 +227,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               {confirmPasswordNotice}
             </span>
           </div>
-        </div>
+        </form>
         <Button
           className="h-12 w-full bg-primary-500 text-white sm:static"
           variant="default"
@@ -351,7 +235,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         >
           Next
         </Button>
-      </form>
+      </div>
     </div>
   );
 }
