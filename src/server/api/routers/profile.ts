@@ -148,6 +148,7 @@ export const profileRouter = createTRPCRouter({
 
     return res?.balance ?? 0;
   }),
+
   getHostVerifiedRequest: hostProcedure.query(async ({ ctx }) => {
     const res = await ctx.db.query.verifiedRequest.findFirst({
       orderBy: (v, { desc }) => [desc(v.id)],
