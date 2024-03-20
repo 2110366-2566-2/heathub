@@ -110,7 +110,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Gender: gender,
       Email: data.Email,
       Password: data.Password,
-      Interest: [],
+      Interest: (data as Host).Interest ?? [],
       Image: imageInput,
     };
     setData(host);

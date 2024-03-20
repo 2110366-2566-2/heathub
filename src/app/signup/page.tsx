@@ -51,7 +51,14 @@ export default function Register() {
           />
         );
       case "HostInterest":
-        return <HostInterest setPage={setPage} data={data} page={page} />;
+        return (
+          <HostInterest
+            setData={setData}
+            setPage={setPage}
+            data={data}
+            page={page}
+          />
+        );
     }
   };
 

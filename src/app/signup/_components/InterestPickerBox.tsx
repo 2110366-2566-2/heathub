@@ -15,6 +15,7 @@ interface InterestPickerBoxProps {
 
 export default function InterestPickerBox(props: InterestPickerBoxProps) {
   const { selectedInterestList, setSelectedInterestList } = props;
+
   const handleSelectedInterestList = (handleItem: string) => {
     // add if don't have, remove is have
     const handledList = selectedInterestList;
@@ -35,14 +36,17 @@ export default function InterestPickerBox(props: InterestPickerBoxProps) {
           type="multiple"
         >
           {allInterestList.map((interestItem, index) => {
+            const isSelected = selectedInterestList.includes(interestItem);
             return (
               <Toggle
+                defaultPressed={isSelected}
+                value={interestItem}
                 key={index}
                 variant="outline"
                 icon={tagStyle[interestItem].icon}
                 size="md"
-                onClick={() => {
-                  handleSelectedInterestList(interestItem);
+                onClick={(e) => {
+                  handleSelectedInterestList(e.currentTarget.value);
                 }}
               >
                 {interestItem}
