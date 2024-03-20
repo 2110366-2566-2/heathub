@@ -48,8 +48,8 @@ export default function ChatEventForm({
     beginDate: z.date(),
     endDate: z.date(),
     description: z.string(),
-    startTime: z.string({ required_error: "Should add start time" }),
-    endTime: z.string({ required_error: "Should add end time" }),
+    startTime: z.string({ required_error: "required start time" }),
+    endTime: z.string({ required_error: "required end time" }),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -120,7 +120,7 @@ export default function ChatEventForm({
             <FormField
               control={form.control}
               name="beginDate"
-              render={({ field }) => (
+              render={({ field, formState }) => (
                 <FormItem className="flex h-fit w-full flex-1 flex-col">
                   <Popover>
                     <PopoverTrigger asChild>
@@ -149,6 +149,9 @@ export default function ChatEventForm({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
+                        disabled={(date) =>
+                          date < new Date() || date > form.getValues("endDate")
+                        }
                         initialFocus
                       />
                     </PopoverContent>
@@ -208,6 +211,11 @@ export default function ChatEventForm({
                         selected={field.value}
                         onSelect={field.onChange}
                         initialFocus
+                        disabled={(date) =>
+                          date < new Date() ||
+                          date < form.getValues("beginDate") ||
+                          form.getValues("beginDate") === undefined
+                        }
                       />
                     </PopoverContent>
                   </Popover>
@@ -265,7 +273,7 @@ export default function ChatEventForm({
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />

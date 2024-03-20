@@ -21,8 +21,9 @@ import {
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faWallet } from "@fortawesome/free-solid-svg-icons";
+import { cn } from "@/utils/tailwind-merge";
 
-export function TopUpDialog() {
+export function TopUpDialog(props: { className?: string }) {
   "use client";
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -31,7 +32,12 @@ export function TopUpDialog() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
+          <button
+            className={cn(
+              "flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2",
+              props.className,
+            )}
+          >
             <div className="relative h-6 w-8">
               <FontAwesomeIcon
                 className="h-6 w-6 text-secondary-500"
@@ -64,7 +70,12 @@ export function TopUpDialog() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <button className="flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
+        <button
+          className={cn(
+            "flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2",
+            props.className,
+          )}
+        >
           <div className="relative h-6 w-8">
             <FontAwesomeIcon
               className="h-6 w-6 text-secondary-500"

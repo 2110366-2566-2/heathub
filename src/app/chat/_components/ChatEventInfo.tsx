@@ -91,7 +91,13 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
           </div>
           <div className="flex flex-row justify-between">
             <div className="h6  flex-1 text-medium">Price</div>
-            <div className="h6 font- font-boldold text-high">{price} Baht</div>
+            <div className="h6 font- font-boldold text-high">
+              {price.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              Baht
+            </div>
           </div>
           <div className="flex flex-row justify-between">
             <div className="h6 flex-11 flex text-medium">Start Date</div>
@@ -127,6 +133,7 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
                   Reject Event
                 </Button>
                 <ConfirmEventPayment
+                  totalPrice={price}
                   confirmEvent={() => {
                     confirmEvent.mutate({
                       eventID: eventID,
