@@ -1,6 +1,11 @@
 import { createTRPCRouter, adminProcedure } from "@/server/api/trpc";
 
-import { hostUser, user, verifiedRequest, withdrawalRequest } from "@/server/db/schema";
+import {
+  hostUser,
+  user,
+  verifiedRequest,
+  withdrawalRequest,
+} from "@/server/db/schema";
 import { eq, and } from "drizzle-orm";
 import { z } from "zod";
 
@@ -84,7 +89,9 @@ export const adminRouter = createTRPCRouter({
           hostUser: true,
         },
         offset: limit * input.page,
-        orderBy: (withdrawalRequest, { asc }) => [asc(withdrawalRequest.createdAt)],
+        orderBy: (withdrawalRequest, { asc }) => [
+          asc(withdrawalRequest.createdAt),
+        ],
       });
 
       let hasNextPage = false;
@@ -99,7 +106,7 @@ export const adminRouter = createTRPCRouter({
       };
     }),
 
-    completeWithdrawalRequest: adminProcedure
+  completeWithdrawalRequest: adminProcedure
     .input(
       z.object({
         requestID: z.number(),
@@ -109,8 +116,8 @@ export const adminRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await ctx.db.transaction(async (tx) => {
         const request = await tx.query.withdrawalRequest.findFirst({
-            where: eq(withdrawalRequest.id, input.requestID),
-          });
+          where: eq(withdrawalRequest.id, input.requestID),
+        });
         if (!request) {
           throw new Error("Withdrawal request not found");
         }
@@ -118,7 +125,7 @@ export const adminRouter = createTRPCRouter({
         const userData = await tx.query.user.findFirst({
           where: eq(user.id, request.userID),
         });
-        
+
         if (!userData) {
           throw new Error("User not found");
         }
@@ -136,16 +143,11 @@ export const adminRouter = createTRPCRouter({
             status: "completed",
             completedAt: new Date(),
           })
-          .where(
-            and(
-              eq(withdrawalRequest.id, input.requestID),
-            ),
-          );
+          .where(and(eq(withdrawalRequest.id, input.requestID)));
       });
-    }
-    ),
+    }),
 
-    rejectWithdrawalRequest: adminProcedure
+  rejectWithdrawalRequest: adminProcedure
     .input(
       z.object({
         requestID: z.number(),
@@ -159,12 +161,7 @@ export const adminRouter = createTRPCRouter({
           .set({
             status: "rejected",
           })
-          .where(
-            and(
-              eq(withdrawalRequest.id, input.requestID),
-            ),
-          );
+          .where(and(eq(withdrawalRequest.id, input.requestID)));
       });
-    }
-    ),
+    }),
 });
