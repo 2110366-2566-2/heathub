@@ -163,7 +163,7 @@ function WithdrawForm(props: { setOpen: (open: boolean) => void }) {
       }),
     ]);
 
-    utils.auth.me.invalidate();
+    await utils.auth.me.invalidate();
     router.refresh();
 
     toast({

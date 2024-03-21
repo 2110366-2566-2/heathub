@@ -25,7 +25,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
       );
     } else if (status === "pending") {
       return (
-        <div className="text-status-pending flex flex-row items-center gap-1">
+        <div className="flex flex-row items-center gap-1 text-status-pending">
           <div className="flex h-5 w-5 items-center justify-center">
             <FontAwesomeIcon icon={faClock} size={"1x"} />
           </div>
@@ -44,7 +44,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
     } else if (status === "rejected") {
       return (
         <div className="flex flex-col gap-1">
-          <div className="text-status-error-default flex flex-row items-center gap-1">
+          <div className="flex flex-row items-center gap-1 text-status-error-default">
             <div className="flex h-5 w-5 items-center justify-center ">
               <FontAwesomeIcon icon={faCircleXmark} size={"1x"} />
             </div>
