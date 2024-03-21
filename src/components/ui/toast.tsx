@@ -1,7 +1,7 @@
-import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
+import * as React from "react";
 
 import { cn } from "@/utils/tailwind-merge";
 
@@ -14,7 +14,7 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      "pointer-events-none fixed bottom-0 right-0 z-[100] flex max-h-screen w-full flex-row justify-center gap-4 p-4 transition-transform lg:justify-end",
+      "pointer-events-none fixed top-0 z-[100] flex max-h-screen w-full flex-row justify-center gap-4 self-center p-4 transition-transform md:bottom-0 md:right-0 md:self-end lg:justify-end",
       className,
     )}
     {...props}
@@ -116,13 +116,13 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
 export {
-  type ToastProps,
-  type ToastActionElement,
-  ToastProvider,
-  ToastViewport,
   Toast,
-  ToastTitle,
-  ToastDescription,
-  ToastClose,
   ToastAction,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+  type ToastActionElement,
+  type ToastProps,
 };

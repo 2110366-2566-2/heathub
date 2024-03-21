@@ -4,6 +4,7 @@ import * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
 
 import { cn } from "@/utils/tailwind-merge";
+import { ReactNode } from "react";
 
 const Drawer = ({
   shouldScaleBackground = true,
@@ -28,7 +29,7 @@ const DrawerOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-40", className)}
+    className={cn("fixed inset-0 z-40 bg-black/60", className)}
     {...props}
   />
 ));
@@ -36,14 +37,16 @@ DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
 const DrawerContent = React.forwardRef<
   React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
+  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & {
+    customOverlay?: ReactNode;
+  }
 >(({ className, children, ...props }, ref) => (
   <DrawerPortal>
-    <DrawerOverlay />
+    {props.customOverlay ? props.customOverlay : <DrawerOverlay />}
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "bg-background fixed inset-x-0 bottom-0 z-[60] mt-24 flex h-auto flex-col rounded-t-3xl border pt-3",
+        "bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-3xl border pt-3",
         className,
       )}
       {...props}

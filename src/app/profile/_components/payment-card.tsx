@@ -1,15 +1,15 @@
 import { Separator } from "@/components/ui/separator";
 import {
   faHistory,
-  faMinus,
   faMoneyCheckDollar,
-  faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TopUpDialog } from "./topup-modal";
+import { WitndrawDialog } from "./withdraw-modal";
 
 type PaymentCardProps = {
   balance: number;
+  role: "host" | "participant";
 };
 
 export default function PaymentCard(props: PaymentCardProps) {
@@ -28,22 +28,8 @@ export default function PaymentCard(props: PaymentCardProps) {
           <span className="h2 font-bold">฿{props.balance}</span>
         </p>
         <Separator className="border-t-[1px] border-disable" />
-        <div className="grid grow grid-cols-1 grid-rows-3 place-items-center justify-around md:grid-cols-3 md:grid-rows-1">
-          <TopUpDialog />
-          <button className="h5 flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
-            <div className="relative h-6 w-8">
-              <FontAwesomeIcon
-                className="h-6 w-6 text-secondary-500"
-                icon={faWallet}
-              />
-              <FontAwesomeIcon
-                className="h5 absolute right-0 top-0 h-[12px] w-[12px] rounded-full bg-secondary-300 p-[2px] text-white"
-                fontWeight={900}
-                icon={faMinus}
-              />
-            </div>
-            Withdraw
-          </button>
+        <div className="grid grow grid-cols-1 grid-rows-2 place-items-center justify-around md:grid-cols-2 md:grid-rows-1">
+          {props.role === "host" ? <WitndrawDialog /> : <TopUpDialog />}
 
           <button className="h5 flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
             <FontAwesomeIcon
