@@ -13,7 +13,7 @@ import {
   verifiedRequest,
   withdrawalRequest,
 } from "@/server/db/schema";
-import { and, eq, ne, or, type SQL } from "drizzle-orm";
+import { and, eq, ne, or, sql, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 export const profileRouter = createTRPCRouter({
@@ -184,7 +184,23 @@ export const profileRouter = createTRPCRouter({
       },
     });
 
-    return res;
+    const withdraw_requests_sum = await ctx.db
+      .select({
+        total: sql`sum(${withdrawalRequest.amount})`.mapWith(Number),
+      })
+      .from(withdrawalRequest)
+      .where(
+        and(
+          eq(withdrawalRequest.userID, ctx.session.user.userId),
+          eq(withdrawalRequest.status, "pending"),
+        ),
+      )
+      .execute();
+
+    return {
+      ...res,
+      pendingWithdrawal: withdraw_requests_sum[0]?.total ?? 0,
+    };
   }),
 
   updateHost: hostProcedure
@@ -228,20 +244,11 @@ export const profileRouter = createTRPCRouter({
         throw new Error("Insufficient balance");
       }
 
-      await ctx.db.transaction(async (tx) => {
-        await tx
-          .update(user)
-          .set({
-            balance: userData.balance - input.amountStang,
-          })
-          .where(eq(user.id, ctx.session.user.userId));
-
-        await tx.insert(withdrawalRequest).values({
-          userID: ctx.session.user.userId,
-          bankName: input.bankName,
-          bankAccount: input.bankAccount,
-          amount: input.amountStang,
-        });
+      await ctx.db.insert(withdrawalRequest).values({
+        userID: ctx.session.user.userId,
+        bankName: input.bankName,
+        bankAccount: input.bankAccount,
+        amount: input.amountStang,
       });
     }),
 });

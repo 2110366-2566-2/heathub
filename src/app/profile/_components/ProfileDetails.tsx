@@ -1,3 +1,4 @@
+"use client";
 import { Tag } from "@/app/_components/tag";
 import {
   DialogProfile,

@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { BANK_LIST, BANK_NAME_MAPPER } from "@/constants/payment";
+import { BANK_LIST, BANK_NAME_MAPPER, Bank } from "@/constants/payment";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { api } from "@/trpc/react";
 import {
@@ -42,8 +42,13 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { z } from "zod";
 
-export function WitndrawDialog() {
-  "use client";
+type WithdrawDialongProps = {
+  withdrawalAmount: number;
+  bankName?: Bank;
+  bankAccount?: string;
+};
+
+export function WithdrawDialog(props: WithdrawDialongProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -75,7 +80,7 @@ export function WitndrawDialog() {
               Insert the amount of money you want to withdraw.
             </DialogDescription>
           </DialogHeader>
-          <WithdrawForm setOpen={setOpen} />
+          <WithdrawForm setOpen={setOpen} {...props} />
         </DialogContent>
       </Dialog>
     );
@@ -108,15 +113,21 @@ export function WitndrawDialog() {
             Insert the amount of money you want to withdraw.
           </DrawerDescription>
         </DrawerHeader>
-        <WithdrawForm setOpen={setOpen} />
+        <WithdrawForm setOpen={setOpen} {...props} />
       </DrawerContent>
     </Drawer>
   );
 }
 
-function WithdrawForm(props: { setOpen: (open: boolean) => void }) {
-  const { setOpen } = props;
-  const { data: user } = api.auth.me.useQuery();
+type WithdrawFormProps = {
+  setOpen: (open: boolean) => void;
+  withdrawalAmount: number;
+  bankName?: string;
+  bankAccount?: string;
+};
+
+function WithdrawForm(props: WithdrawFormProps) {
+  const { setOpen, withdrawalAmount, bankName, bankAccount } = props;
   const utils = api.useUtils();
   const router = useRouter();
 
@@ -127,22 +138,12 @@ function WithdrawForm(props: { setOpen: (open: boolean) => void }) {
   const requestWithdrawMutation = api.profile.requestWithdraw.useMutation();
   const { toast } = useToast();
 
-  const { data: bankInfoQuery } = api.profile.getMyBankInfo.useQuery();
-
   const formAction = async (data: FormData) => {
-    if (!user) {
-      toast({
-        title: "Unknown Error",
-        description: `Please try again later.`,
-        variant: "error",
-      });
-      return;
-    }
     const bank = z.enum(BANK_LIST).parse(data.get("bank"));
     const bankNumber = z.string().parse(data.get("bankNumber"));
     const amount = z.coerce.number().parse(data.get("price"));
 
-    if (amount > user.balance) {
+    if (amount > withdrawalAmount) {
       toast({
         title: "Insufficient Balance",
         description: `You don't have enough balance to withdraw.`,
@@ -178,13 +179,8 @@ function WithdrawForm(props: { setOpen: (open: boolean) => void }) {
       <div className="mx-auto flex w-full flex-col gap-4">
         <div className="grid w-full items-center gap-1.5">
           <Label>Bank</Label>
-          {bankInfoQuery ? (
-            <Select
-              required
-              name="bank"
-              defaultValue={bankInfoQuery?.defaultPayoutBankName ?? undefined}
-              disabled={!bankInfoQuery}
-            >
+          {bankName ? (
+            <Select required name="bank" defaultValue={bankName}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select your bank" />
               </SelectTrigger>
@@ -206,14 +202,11 @@ function WithdrawForm(props: { setOpen: (open: boolean) => void }) {
         </div>
         <div className="grid w-full items-center gap-1.5">
           <Label>Bank Number</Label>
-          {bankInfoQuery ? (
+          {bankAccount ? (
             <Input
               required
               name="bankNumber"
-              disabled={!bankInfoQuery}
-              defaultValue={
-                bankInfoQuery?.defaultPayoutBankAccount ?? undefined
-              }
+              defaultValue={bankAccount}
             ></Input>
           ) : (
             <div className="h-10 animate-pulse rounded-lg bg-gray-200 transition-all"></div>
