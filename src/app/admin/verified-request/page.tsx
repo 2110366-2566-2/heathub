@@ -47,7 +47,6 @@ export default function Page() {
   );
   return (
     <div className="flex flex-row">
-      <div className="h-screen w-[200px] min-w-[200px] bg-red-500">hello</div>
       <div className=" flex w-full flex-col gap-4 p-9">
         <div className="flex flex-col">
           <div className="flex flex-row items-center space-x-2">
