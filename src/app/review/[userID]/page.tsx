@@ -95,7 +95,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
             {RatingFilter}
           </div>
         </div>
-        <div>
+        <div className="h-full w-full">
           <ReviewList userID={mockUserId} filter={filter} />
         </div>
       </div>
