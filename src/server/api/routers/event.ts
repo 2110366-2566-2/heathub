@@ -308,9 +308,12 @@ export const eventRouter = createTRPCRouter({
           throw new Error("Insufficient balance");
         }
 
-        await tx.update(user).set({
-          balance: participantData.balance - eventRow.price,
-        });
+        await tx
+          .update(user)
+          .set({
+            balance: participantData.balance - eventRow.price,
+          })
+          .where(eq(user.id, eventRow.participantID));
       });
     }),
 

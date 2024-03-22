@@ -6,11 +6,12 @@ import {
 } from "@/app/discover/_components/profile-preview";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Drawer, DrawerOverlay, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
 import { tagStyle, type TagList } from "@/utils/icon-mapping";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
+import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import EditProfileButton from "./EditProfileButton";
 import { type ProfilePreviewProps } from "./profile-container";
@@ -41,6 +42,8 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
     interests: props.interests,
     id: props.id,
   };
+  const [snap, setSnap] = useState<string | number | null>("322px");
+
   return (
     <Card className="h-full w-full justify-center rounded-none border-none shadow-none lg:rounded-lg lg:bg-neutral-50 lg:p-5">
       <CardContent className="flex h-full w-full flex-col items-center gap-y-4 p-0 lg:gap-0">
@@ -55,18 +58,22 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
                 alt="profilePic"
               />
               {isMobile ? (
-                <Drawer>
-                  <DrawerTrigger>
+                <Drawer
+                  snapPoints={["322px", "500px"]}
+                  activeSnapPoint={snap}
+                  setActiveSnapPoint={setSnap}
+                  fadeFromIndex={
+                    snap === "322px" ? 0 : snap === "500px" ? 1 : undefined
+                  }
+                >
+                  <DrawerTrigger onClick={() => setSnap("322px")}>
                     {props.reviews != -1 && (
                       <div className="z-100 absolute bottom-0 right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
                         <FontAwesomeIcon icon={faEye} />
                       </div>
                     )}
                   </DrawerTrigger>
-                  <DrawerOverlay
-                    className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${image})` }}
-                  />
+
                   <DrawerProfile props={nPop} role={role} />
                 </Drawer>
               ) : (
