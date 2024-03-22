@@ -1,12 +1,11 @@
-"use client";
-import { MyAccountPreview } from "./my-account";
 import { type TagList } from "@/utils/icon-mapping";
-import PaymentCard from "./payment-card";
-import ProfileDetails from "./ProfileDetails";
-import MyReview from "./MyReview";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import MyReview from "./MyReview";
+import ProfileDetails from "./ProfileDetails";
+import { MyAccountPreview } from "./my-account";
+import PaymentCard from "./payment-card";
 
 export type ProfilePreviewProps = {
   email: string;
@@ -25,11 +24,9 @@ export type ProfilePreviewProps = {
   id: string;
   verifiedStatus: string;
   verifiedDetail: string;
+  role: "host" | "participant";
 };
 export default function ProfileContainer(props: ProfilePreviewProps) {
-  const balance = {
-    balance: props.balance,
-  };
   return (
     <div className="flex h-full flex-col gap-4">
       <div className="flex h-10 w-full flex-row items-center gap-x-2">
@@ -44,7 +41,7 @@ export default function ProfileContainer(props: ProfilePreviewProps) {
         <div className="flex h-fit w-full justify-center rounded-xl border-none bg-neutral-50 p-6">
           <MyAccountPreview {...props} key={props.name} />
         </div>
-        <PaymentCard {...balance} />
+        <PaymentCard />
       </div>
       <div className="flex justify-end">
         <Link

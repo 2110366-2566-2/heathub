@@ -1,4 +1,5 @@
 import { removeUploadthingURLPrefix, utapi } from "@/app/api/uploadthing/core";
+import { BANK_LIST } from "@/constants/payment";
 import {
   createTRPCRouter,
   hostProcedure,
@@ -6,11 +7,13 @@ import {
 } from "@/server/api/trpc";
 import {
   hostInterest,
+  hostUser,
   unconfirmedUserProfileImage,
   user,
   verifiedRequest,
+  withdrawalRequest,
 } from "@/server/db/schema";
-import { and, eq, ne, or, type SQL } from "drizzle-orm";
+import { and, eq, ne, or, sql, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 export const profileRouter = createTRPCRouter({
@@ -163,4 +166,105 @@ export const profileRouter = createTRPCRouter({
     console.log("res", res);
     return res;
   }),
+  updateHostVerifiedToPending: hostProcedure.mutation(async ({ ctx }) => {
+    await ctx.db
+      .update(hostUser)
+      .set({
+        verifiedStatus: "pending",
+      })
+      .where(eq(hostUser.userID, ctx.session.user.userId));
+  }),
+
+  getMyBankInfo: hostProcedure.query(async ({ ctx }) => {
+    const res = await ctx.db.query.hostUser.findFirst({
+      where: eq(hostUser.userID, ctx.session.user.userId),
+      columns: {
+        defaultPayoutBankAccount: true,
+        defaultPayoutBankName: true,
+      },
+    });
+
+    const withdraw_requests_sum = await ctx.db
+      .select({
+        total: sql`sum(${withdrawalRequest.amount})`.mapWith(Number),
+      })
+      .from(withdrawalRequest)
+      .where(
+        and(
+          eq(withdrawalRequest.userID, ctx.session.user.userId),
+          eq(withdrawalRequest.status, "pending"),
+        ),
+      )
+      .execute();
+
+    return {
+      ...res,
+      pendingWithdrawal: withdraw_requests_sum[0]?.total ?? 0,
+    };
+  }),
+
+  updateHost: hostProcedure
+    .input(
+      z.object({
+        bankAccount: z.string().optional(),
+        bankName: z.enum(BANK_LIST).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(hostUser)
+        .set({
+          defaultPayoutBankAccount: input.bankAccount,
+          defaultPayoutBankName: input.bankName,
+        })
+        .where(eq(hostUser.userID, ctx.session.user.userId));
+    }),
+
+  requestWithdraw: hostProcedure
+    .input(
+      z.object({
+        amountStang: z.number(),
+        bankName: z.enum(BANK_LIST),
+        bankAccount: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userData = await ctx.db.query.user.findFirst({
+        where: eq(user.id, ctx.session.user.userId),
+        columns: {
+          balance: true,
+        },
+      });
+
+      const withdraw_requests_sum = await ctx.db
+        .select({
+          total: sql`sum(${withdrawalRequest.amount})`.mapWith(Number),
+        })
+        .from(withdrawalRequest)
+        .where(
+          and(
+            eq(withdrawalRequest.userID, ctx.session.user.userId),
+            eq(withdrawalRequest.status, "pending"),
+          ),
+        )
+        .execute();
+
+      if (!userData) {
+        throw new Error("User not found");
+      }
+
+      const withdrawableBalance =
+        userData.balance - (withdraw_requests_sum[0]?.total ?? 0);
+
+      if (withdrawableBalance < input.amountStang) {
+        throw new Error("Insufficient balance");
+      }
+
+      await ctx.db.insert(withdrawalRequest).values({
+        userID: ctx.session.user.userId,
+        bankName: input.bankName,
+        bankAccount: input.bankAccount,
+        amount: input.amountStang,
+      });
+    }),
 });

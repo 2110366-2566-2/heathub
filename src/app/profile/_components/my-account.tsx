@@ -1,15 +1,15 @@
 "use client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserCircle,
-  faClock,
-  faCheckCircle,
-  faCircleXmark,
-  faCircleExclamation,
-} from "@fortawesome/free-solid-svg-icons";
-import { type ProfilePreviewProps } from "./profile-container";
 import ChangePasswordButton from "@/app/change-password/_component/ChangePasswordButton";
+import {
+  faCheckCircle,
+  faCircleExclamation,
+  faCircleXmark,
+  faClock,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import VerificationButton from "./VerificationButton";
+import { type ProfilePreviewProps } from "./profile-container";
 
 export function MyAccountPreview(props: ProfilePreviewProps) {
   const verifiedStatusText = () => {

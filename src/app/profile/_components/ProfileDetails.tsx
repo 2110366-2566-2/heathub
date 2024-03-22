@@ -1,18 +1,19 @@
+"use client";
 import { Tag } from "@/app/_components/tag";
-import { CardContent, Card } from "@/components/ui/card";
-import { type TagList, tagStyle } from "@/utils/icon-mapping";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import EditProfileButton from "./EditProfileButton";
-import { type ProfilePreviewProps } from "./profile-container";
-import Image from "next/image";
-import { useMediaQuery } from "react-responsive";
-import { Drawer, DrawerOverlay, DrawerTrigger } from "@/components/ui/drawer";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
   DialogProfile,
   DrawerProfile,
 } from "@/app/discover/_components/profile-preview";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerOverlay, DrawerTrigger } from "@/components/ui/drawer";
+import { tagStyle, type TagList } from "@/utils/icon-mapping";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
+import { useMediaQuery } from "react-responsive";
+import EditProfileButton from "./EditProfileButton";
+import { type ProfilePreviewProps } from "./profile-container";
 
 type ProfilePreviews = {
   aka: string;
@@ -26,7 +27,8 @@ type ProfilePreviews = {
 };
 
 export default function ProfileDetails(props: ProfilePreviewProps) {
-  const { image, interests, name, gender, about, dateOfBirth, id } = props;
+  const { image, interests, name, gender, about, dateOfBirth, id, role } =
+    props;
   const genderName = gender == "NotToSay" ? "Prefer not to say" : gender;
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   const nPop: ProfilePreviews = {
@@ -65,7 +67,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
                     className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
                     style={{ backgroundImage: `url(${image})` }}
                   />
-                  <DrawerProfile props={nPop} role={"host"} />
+                  <DrawerProfile props={nPop} role={role} />
                 </Drawer>
               ) : (
                 <Dialog>
@@ -76,7 +78,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
                       </div>
                     )}
                   </DialogTrigger>
-                  <DialogProfile props={nPop} role={"host"} />
+                  <DialogProfile props={nPop} role={role} />
                 </Dialog>
               )}
             </div>

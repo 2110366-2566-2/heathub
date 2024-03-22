@@ -18,12 +18,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { tagStyle } from "../../../utils/icon-mapping";
 import { type ProfilePreviewProps } from "../types";
 import Card from "./card";
 import { RatingIcon } from "./rating-icon";
-import { useState } from "react";
 
 export function ProfilePreview({
   props,
@@ -49,12 +49,6 @@ export function ProfilePreview({
         >
           <Card {...props} />
         </DrawerTrigger>
-        <DrawerOverlay
-          className="mb-[290px] bg-opacity-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url(${props.image || generateAvatar(props.aka)})`,
-          }}
-        />
         <DrawerProfile props={props} role={role} snap={snap} />
       </Drawer>
     );
@@ -74,6 +68,17 @@ type ProfileProps = {
   props: ProfilePreviewProps;
   role: string;
   snap?: string | number | null;
+};
+
+const CustomDrawerOverlay = (props: { image: string; aka: string }) => {
+  return (
+    <DrawerOverlay
+      className="mb-[290px] bg-opacity-0 bg-cover bg-center bg-no-repeat transition-all"
+      style={{
+        backgroundImage: `url(${props.image || generateAvatar(props.aka)})`,
+      }}
+    />
+  );
 };
 
 export function DialogProfile(props: ProfileProps) {
@@ -109,7 +114,12 @@ export function DialogProfile(props: ProfileProps) {
 
 export function DrawerProfile(props: ProfileProps) {
   return (
-    <DrawerContent className="flex h-full gap-2 bg-white px-4 py-6">
+    <DrawerContent
+      className="flex h-full gap-2 bg-white px-4 py-6"
+      customOverlay={
+        <CustomDrawerOverlay image={props.props.image} aka={props.props.aka} />
+      }
+    >
       <div className={cn("flex h-full max-h-[448px] flex-col", {})}>
         <div className="h-full">
           <div className="relative flex flex-col gap-2 rounded-r-3xl">

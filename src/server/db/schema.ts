@@ -1,6 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
+import { BANK_LIST } from "@/constants/payment";
 import { relations, sql } from "drizzle-orm";
 
 import {
@@ -63,6 +64,10 @@ export const hostUser = sqliteTable("host_user", {
     length: 32,
     enum: ["unverified", "pending", "verified", "rejected"],
   }).default("unverified"),
+  defaultPayoutBankAccount: text("default_bank_account"),
+  defaultPayoutBankName: text("default_bank_name", {
+    enum: BANK_LIST,
+  }),
 });
 
 export const hostRelation = relations(hostUser, ({ one, many }) => ({
@@ -532,33 +537,43 @@ export const eventReportRelation = relations(eventReport, ({ one }) => ({
   }),
 }));
 
-export const withdrawalRequest = sqliteTable("withdrawal_request", {
-  id: int("id", {
-    mode: "number",
-  }).primaryKey({
-    autoIncrement: true,
+export const withdrawalRequest = sqliteTable(
+  "withdrawal_request",
+  {
+    id: int("id", {
+      mode: "number",
+    }).primaryKey({
+      autoIncrement: true,
+    }),
+    userID: text("user_id", {
+      length: 64,
+    }).notNull(),
+    amount: int("amount", {
+      mode: "number",
+    }).notNull(),
+    status: text("status", {
+      length: 32,
+      enum: ["pending", "completed", "rejected"],
+    })
+      .default("pending")
+      .notNull(),
+    createdAt: int("created_at", {
+      mode: "timestamp_ms",
+    })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    completedAt: int("completed_at", {
+      mode: "timestamp_ms",
+    }),
+    bankName: text("bank_name").notNull(),
+    bankAccount: text("bank_account").notNull(),
+  },
+  (withdrawalRequest) => ({
+    userIDIndex: index("withdrawal_request_user_id_idx").on(
+      withdrawalRequest.userID,
+    ),
   }),
-  userID: text("user_id", {
-    length: 64,
-  }).notNull(),
-  amount: int("amount", {
-    mode: "number",
-  }).notNull(),
-  status: text("status", {
-    length: 32,
-    enum: ["pending", "completed", "rejected"],
-  })
-    .default("pending")
-    .notNull(),
-  createdAt: int("created_at", {
-    mode: "timestamp_ms",
-  })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  completedAt: int("completed_at", {
-    mode: "timestamp_ms",
-  }),
-});
+);
 
 export const withdrawalRequestRelation = relations(
   withdrawalRequest,

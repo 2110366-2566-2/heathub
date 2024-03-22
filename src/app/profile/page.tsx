@@ -1,6 +1,6 @@
 import { serverapi } from "@/trpc/server";
-import { redirect } from "next/navigation";
 import { type TagList } from "@/utils/icon-mapping";
+import { redirect } from "next/navigation";
 import ProfileContainer, {
   type ProfilePreviewProps,
 } from "./_components/profile-container";
@@ -47,6 +47,8 @@ export default async function Profile() {
       id: user2?.userId ?? "",
       verifiedStatus: verifiedData?.status ?? "unverified",
       verifiedDetail: verifiedData?.requestDetails ?? "",
+      role:
+        user2?.role === "admin" ? "participant" : user2?.role ?? "participant",
     };
   } else {
     show = {
@@ -66,6 +68,8 @@ export default async function Profile() {
       id: user2?.userId ?? "",
       verifiedStatus: "",
       verifiedDetail: "",
+      role:
+        user2?.role === "admin" ? "participant" : user2?.role ?? "participant",
     };
   }
   console.log(show);
