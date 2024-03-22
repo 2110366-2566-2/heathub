@@ -1,6 +1,11 @@
 import { createTRPCRouter, adminProcedure } from "@/server/api/trpc";
 
-import { hostUser, verifiedRequest } from "@/server/db/schema";
+import {
+  hostUser,
+  user,
+  verifiedRequest,
+  withdrawalRequest,
+} from "@/server/db/schema";
 import { eq, and } from "drizzle-orm";
 import { z } from "zod";
 
@@ -67,5 +72,96 @@ export const adminRouter = createTRPCRouter({
         items,
         hasNextPage,
       };
+    }),
+
+  getWithdrawalRequest: adminProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        page: z.number().default(0),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 10;
+      const items = await ctx.db.query.withdrawalRequest.findMany({
+        limit: limit + 1,
+        with: {
+          hostUser: true,
+        },
+        offset: limit * input.page,
+        orderBy: (withdrawalRequest, { asc }) => [
+          asc(withdrawalRequest.createdAt),
+        ],
+      });
+
+      let hasNextPage = false;
+
+      if (items.length > limit) {
+        items.pop();
+        hasNextPage = true;
+      }
+      return {
+        items,
+        hasNextPage,
+      };
+    }),
+
+  completeWithdrawalRequest: adminProcedure
+    .input(
+      z.object({
+        requestID: z.number(),
+      }),
+    )
+
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.transaction(async (tx) => {
+        const request = await tx.query.withdrawalRequest.findFirst({
+          where: eq(withdrawalRequest.id, input.requestID),
+        });
+        if (!request) {
+          throw new Error("Withdrawal request not found");
+        }
+
+        const userData = await tx.query.user.findFirst({
+          where: eq(user.id, request.userID),
+        });
+
+        if (!userData) {
+          throw new Error("User not found");
+        }
+
+        await tx
+          .update(user)
+          .set({
+            balance: userData.balance - request.amount,
+          })
+          .where(eq(user.id, request.userID));
+
+        await tx
+          .update(withdrawalRequest)
+          .set({
+            status: "completed",
+            completedAt: new Date(),
+          })
+          .where(and(eq(withdrawalRequest.id, input.requestID)));
+      });
+    }),
+
+  rejectWithdrawalRequest: adminProcedure
+    .input(
+      z.object({
+        requestID: z.number(),
+      }),
+    )
+
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.transaction(async (tx) => {
+        await tx
+          .update(withdrawalRequest)
+          .set({
+            status: "rejected",
+          })
+          .where(and(eq(withdrawalRequest.id, input.requestID)));
+      });
     }),
 });
