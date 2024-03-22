@@ -82,7 +82,7 @@ export const hostRelation = relations(hostUser, ({ one, many }) => ({
 }));
 
 export const ratingAndReview = sqliteTable("rating_review", {
-  rid: int("id", {
+  id: int("id", {
     mode: "number",
   }).primaryKey({
     autoIncrement: true,

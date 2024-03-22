@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { type HostDetail } from "./type";
 import { api } from "@/trpc/react";
+import { cn } from "@/utils/tailwind-merge";
 
 export default function ReviewDetails(props: HostDetail) {
   const { data } = api.review.getReviewsNumber.useQuery({
@@ -127,7 +128,10 @@ function StarMaker(props: { rating: number }) {
             <div key={index}>
               <FontAwesomeIcon
                 icon={faStar}
-                className={`h-6 w-6 pr-1 ${index <= props.rating - 1 ? "text-pending" : "text-neutral-200"}`}
+                className={cn("h-6 w-6 pr-1", {
+                  "text-pending": index <= props.rating - 1,
+                  "text-neutral-200": index > props.rating - 1
+              })}
               />
             </div>
           );

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { type ReviewType } from "./type";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { cn } from "@/utils/tailwind-merge";
 
 export default function ReviewCard(props: ReviewType) {
   const month = [
@@ -67,7 +68,10 @@ function StarMaker(props: { rating: number }) {
             <div key={index}>
               <FontAwesomeIcon
                 icon={faStar}
-                className={`h-4 w-4 pr-1 ${index <= props.rating - 1 ? "text-pending" : "text-neutral-200"}`}
+                className={cn("h-4 w-4 pr-1", {
+                  "text-pending": index <= props.rating - 1,
+                  "text-neutral-200": index > props.rating - 1,
+                })}
               />
             </div>
           );
