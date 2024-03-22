@@ -63,7 +63,7 @@ export function NavBarMobile({ className }: { className?: string }) {
 
   return (
     <nav
-      className={cn("fixed bottom-4 z-50 w-full justify-center ", className)}
+      className={cn("fixed bottom-4 z-30 w-full justify-center ", className)}
     >
       <div className=" z-50 mx-auto flex h-[68px] w-[80%] max-w-[448px] justify-between rounded-full bg-secondary-400 px-9 lg:hidden">
         <NavItem link="/discover" icon={faCompass} isSelected={isDiscover} />
