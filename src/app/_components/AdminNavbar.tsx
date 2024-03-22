@@ -45,11 +45,11 @@ export function AdminNavbar() {
         />
       </div>
       <NavItem
-          icon={faRightFromBracket}
-          link="/signout"
-          isSelected={false}
-          title="Logout"
-        />
+        icon={faRightFromBracket}
+        link="/signout"
+        isSelected={false}
+        title="Logout"
+      />
     </nav>
   );
 }
