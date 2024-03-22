@@ -9,7 +9,7 @@ import {
 import {
   chatInbox,
   chatMessage,
-  event,
+  event, ratingAndReview,
   internalTransaction,
   user,
 } from "@/server/db/schema";
