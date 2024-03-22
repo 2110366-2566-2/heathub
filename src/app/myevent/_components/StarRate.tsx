@@ -1,26 +1,26 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { StarProps } from "../types";
 
-export default function StarRateOnclick() {
-  const [rating, setRating] = useState<number>(0);
-
+export default function StarRateOnclick(props : StarProps) {
+  
   return (
     <div className="flex">
       {Array.from({ length: 5 }).map((_, index) => {
         const currentRate = index + 1;
         return (
-          <div key={index} onClick={() => setRating(currentRate)}>
+          <div key={index} onClick={() => props.setRating(currentRate)}>
             <FontAwesomeIcon
               icon={faStar}
               className={`h-8 w-8 px-1 ${
-                currentRate <= rating ? "text-pending" : "text-neutral-200"
+                currentRate <= props.rating ? "text-pending" : "text-neutral-200"
               }`}
             />
           </div>
         );
       })}
-      <span className="ml-auto">{rating}/5 stars</span>
+      <span className="ml-auto">{props.rating}/5 stars</span>
     </div>
   );
 }

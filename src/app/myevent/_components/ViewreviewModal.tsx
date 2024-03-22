@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { StarRate } from "./StarRate";
+import { api } from "@/trpc/react";
 
 interface EventModalProps {
   id: number;
@@ -23,6 +24,13 @@ interface EventModalProps {
 
 export function ViewreviewModal(prop: EventModalProps) {
   const { children } = prop;
+  const { data } = api.review.getReview.useQuery({
+    eventID: prop.id,
+  });
+  
+  if (!data) {
+    return;
+  }
 
   return (
     <Dialog>
@@ -39,12 +47,12 @@ export function ViewreviewModal(prop: EventModalProps) {
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="flex flex-col gap-3 text-medium">
-          <StarRate Rating={prop.rating} />
+          <StarRate Rating={data.ratingScore} />
           <Label htmlFor="message" className="h5 text-black">
             Review
           </Label>
           <Textarea id="message" disabled>
-            You did really great. I’m so happy to have a dinner with you
+            {data.reviewDesc}
           </Textarea>
         </DialogDescription>
         <DialogFooter className="flex flex-row justify-end">

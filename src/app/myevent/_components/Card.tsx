@@ -27,6 +27,7 @@ import { ViewreviewModal } from "./ViewreviewModal";
 export type EventProps = {
   id: number;
   userID: string;
+  participantID: string;
   role: string;
   name: string;
   location: string;
@@ -81,6 +82,7 @@ export function Card(prop: EventProps) {
           )
         );
       case EventStatus.COMPLETED:
+        console.log("ITS COMPLETE FUCK")
         return (
           <Button
             variant="default"
@@ -116,8 +118,9 @@ export function Card(prop: EventProps) {
           </CancelModal>
         );
       case EventStatus.WAITINGREVIEW:
+        console.log("WAITREVIEW")
         return (
-          <GivereviewModal id={prop.id} name={prop.name}>
+          <GivereviewModal id={prop.id} name={prop.name} participantID={prop.participantID} hostID={prop.userID}>
             <CardButton />
           </GivereviewModal>
         );

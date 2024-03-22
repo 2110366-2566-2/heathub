@@ -87,9 +87,9 @@ export const ratingAndReview = sqliteTable("rating_review", {
   }).primaryKey({
     autoIncrement: true,
   }),
-  eventID: text("event_id", {
-    length: 64,
-  }),
+  eventID: int("event_id", {
+    mode: "number",
+  }).notNull(),
   participantID: text("participant_id", {
     length: 64,
   }),

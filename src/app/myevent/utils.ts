@@ -1,4 +1,5 @@
 import { EventStatus } from "./_components/Card";
+import { ratingAndReview } from "./types";
 
 export function parseTabValue(
   value: string,
@@ -13,7 +14,7 @@ export function parseTabValue(
   }
 }
 
-export function parseEventStatus(dateTime: Date, status: string): EventStatus {
+export function parseEventStatus(dateTime: Date, status: string , review : ratingAndReview | null): EventStatus {
   let isStarted = false;
   const currentDateTime = new Date();
   if (currentDateTime > dateTime) {
@@ -22,6 +23,8 @@ export function parseEventStatus(dateTime: Date, status: string): EventStatus {
 
   if (status == "payment-done" && isStarted) {
     return EventStatus.STARTED;
+  } else if (status == "completed" && !review) {
+    return EventStatus.WAITINGREVIEW;
   } else if (status == "completed") {
     return EventStatus.COMPLETED;
   } else if (

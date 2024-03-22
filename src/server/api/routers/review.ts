@@ -2,13 +2,9 @@ import {
   createTRPCRouter,
   participantProcedure,
   publicProcedure,
+  userProcedure,
 } from "@/server/api/trpc";
-import {
-  event,
-  hostUser,
-  ratingAndReview,
-  user,
-} from "@/server/db/schema";
+import { event, hostUser, ratingAndReview, user } from "@/server/db/schema";
 import { eq, and, gte, desc, avg, count } from "drizzle-orm";
 import { z } from "zod";
 
@@ -48,7 +44,7 @@ export const reviewRouter = createTRPCRouter({
   createReview: participantProcedure
     .input(
       z.object({
-        eventID: z.string(),
+        eventID: z.number(),
         participantID: z.string(),
         hostID: z.string(),
         ratingScore: z.number(),
@@ -106,4 +102,19 @@ export const reviewRouter = createTRPCRouter({
 
       return reviews;
     }),
+  getReview: userProcedure
+  .input(
+    z.object({
+      eventID: z.number(),
+    }),
+  ).query( async ({ctx,input})=>{
+    const result = await ctx.db.query.ratingAndReview.findFirst({
+      where : eq(ratingAndReview.eventID,input.eventID),
+      columns:{
+        ratingScore : true,
+        reviewDesc : true
+      }
+    })
+    return result
+  })
 });

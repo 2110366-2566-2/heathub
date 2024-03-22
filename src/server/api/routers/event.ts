@@ -9,7 +9,7 @@ import {
 import {
   chatInbox,
   chatMessage,
-  event,
+  event, ratingAndReview,
   internalTransaction,
   user,
 } from "@/server/db/schema";
@@ -176,9 +176,9 @@ export const eventRouter = createTRPCRouter({
         with: {
           host: true,
           participant: true,
+          ratingAndReview: true,
         },
       });
-
       return res;
     }),
 
