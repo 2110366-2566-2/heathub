@@ -127,7 +127,12 @@ type WithdrawFormProps = {
 };
 
 function WithdrawForm(props: WithdrawFormProps) {
-  const { setOpen, withdrawalAmount, bankName, bankAccount } = props;
+  const {
+    setOpen,
+    withdrawalAmount: withdrawalAmount,
+    bankName,
+    bankAccount,
+  } = props;
   const utils = api.useUtils();
   const router = useRouter();
 
@@ -141,9 +146,9 @@ function WithdrawForm(props: WithdrawFormProps) {
   const formAction = async (data: FormData) => {
     const bank = z.enum(BANK_LIST).parse(data.get("bank"));
     const bankNumber = z.string().parse(data.get("bankNumber"));
-    const amount = z.coerce.number().parse(data.get("price"));
+    const amountBaht = z.coerce.number().parse(data.get("price"));
 
-    if (amount > withdrawalAmount) {
+    if (amountBaht * 100 > withdrawalAmount) {
       toast({
         title: "Insufficient Balance",
         description: `You don't have enough balance to withdraw.`,
@@ -158,7 +163,7 @@ function WithdrawForm(props: WithdrawFormProps) {
         bankAccount: bankNumber,
       }),
       requestWithdrawMutation.mutateAsync({
-        amountStang: amount * 100,
+        amountStang: amountBaht * 100,
         bankName: bank,
         bankAccount: bankNumber,
       }),

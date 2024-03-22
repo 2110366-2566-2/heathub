@@ -236,11 +236,27 @@ export const profileRouter = createTRPCRouter({
         },
       });
 
+      const withdraw_requests_sum = await ctx.db
+        .select({
+          total: sql`sum(${withdrawalRequest.amount})`.mapWith(Number),
+        })
+        .from(withdrawalRequest)
+        .where(
+          and(
+            eq(withdrawalRequest.userID, ctx.session.user.userId),
+            eq(withdrawalRequest.status, "pending"),
+          ),
+        )
+        .execute();
+
       if (!userData) {
         throw new Error("User not found");
       }
 
-      if (userData.balance < input.amountStang) {
+      const withdrawableBalance =
+        userData.balance - (withdraw_requests_sum[0]?.total ?? 0);
+
+      if (withdrawableBalance < input.amountStang) {
         throw new Error("Insufficient balance");
       }
 
