@@ -5,6 +5,7 @@ import Image from "next/image";
 import {
   faFlag,
   faMoneyBillTransfer,
+  faRightFromBracket,
   faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -43,6 +44,12 @@ export function AdminNavbar() {
           title="Withdrawal Request"
         />
       </div>
+      <NavItem
+          icon={faRightFromBracket}
+          link="/signout"
+          isSelected={false}
+          title="Logout"
+        />
     </nav>
   );
 }
