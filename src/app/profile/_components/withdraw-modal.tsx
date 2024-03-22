@@ -28,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { BANK_LIST, BANK_NAME_MAPPER, Bank } from "@/constants/payment";
+import { BANK_LIST, BANK_NAME_MAPPER, type Bank } from "@/constants/payment";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { api } from "@/trpc/react";
 import {

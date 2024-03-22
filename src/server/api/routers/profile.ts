@@ -96,7 +96,6 @@ export const profileRouter = createTRPCRouter({
       if (input.email) {
         duplicateCheck.push(eq(user.email, input.email));
       }
-      console.log("PASS!!");
 
       let found = await ctx.db.query.user.findFirst({
         where: and(or(...duplicateCheck), eq(user.id, ctx.session.user.userId)),

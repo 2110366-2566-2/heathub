@@ -1,6 +1,6 @@
-import { Bank } from "@/constants/payment";
+import { type Bank } from "@/constants/payment";
 
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import KrungsriIcon from "./banks/bay";
 import BangkokBankIcon from "./banks/bbl";
 import GSBIcon from "./banks/gsb";

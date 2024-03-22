@@ -176,9 +176,9 @@ export const eventRouter = createTRPCRouter({
         with: {
           host: true,
           participant: true,
+          ratingAndReview: true,
         },
       });
-
       return res;
     }),
 

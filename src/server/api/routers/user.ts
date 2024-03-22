@@ -72,11 +72,14 @@ export const userRouter = createTRPCRouter({
           interests: sql`GROUP_CONCAT(${hostInterest.interest}) AS interests`,
           avgRating: hostUser.avgRating,
           reviewCount: hostUser.reviewCount,
+          username: user.aka,
+          image: user.profileImageURL,
           verifiedStatus: hostUser.verifiedStatus,
         })
         .from(hostUser)
         .where(eq(hostUser.userID, input.hostID))
         .leftJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
+        .innerJoin(user, eq(user.id, hostUser.userID))
         .groupBy(hostUser.userID)
         .then((result) => {
           return result.map((row) => {
