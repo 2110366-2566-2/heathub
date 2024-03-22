@@ -82,10 +82,12 @@ export const hostRelation = relations(hostUser, ({ one, many }) => ({
 }));
 
 export const ratingAndReview = sqliteTable("rating_review", {
-  reviewID: text("review_id", {
-    length: 64,
-  }).primaryKey(),
-  appointmentID: text("appointment_id", {
+  rid: int("id", {
+    mode: "number",
+  }).primaryKey({
+    autoIncrement: true,
+  }),
+  eventID: text("event_id", {
     length: 64,
   }),
   participantID: text("participant_id", {
@@ -94,8 +96,11 @@ export const ratingAndReview = sqliteTable("rating_review", {
   hostID: text("host_id", {
     length: 64,
   }),
-  ratingScore: int("rating_score").default(0),
-  reviewDesc: text("review_description"),
+  ratingScore: int("rating_score").default(0).notNull(),
+  reviewDesc: text("review_description", { length: 512 }),
+  createdAt: int("created_at", {
+    mode: "timestamp_ms",
+  }).notNull()
 });
 
 export const ratingAndReviewRelation = relations(
@@ -105,6 +110,14 @@ export const ratingAndReviewRelation = relations(
       fields: [ratingAndReview.hostID],
       references: [hostUser.userID],
     }),
+    participant: one(participantUser,{
+      fields: [ratingAndReview.participantID],
+      references: [participantUser.userID],
+    }),
+    event: one(event,{
+      fields: [ratingAndReview.eventID],
+      references: [event.id]
+    })
   }),
 );
 
@@ -455,6 +468,10 @@ export const eventRelation = relations(event, ({ one }) => ({
     fields: [event.participantID],
     references: [user.id],
   }),
+  ratingAndReview: one(ratingAndReview,{
+    fields: [event.id],
+    references: [ratingAndReview.eventID]
+  })
 }));
 
 export const verifiedRequest = sqliteTable("verified_request", {
