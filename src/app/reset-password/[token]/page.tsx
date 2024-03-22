@@ -84,138 +84,146 @@ export default function ResetPassword({
     }
     redirect("/signin");
   };
-
+  
   return (
-    <main className="flex h-screen bg-white p-6 lg:p-14">
-      <div className="flex h-full w-full flex-1 flex-col gap-2">
-        {criticalError ? (
-          <></>
-        ) : (
-          <Link href="/reset-password" className="absolute">
-            <button className="absolute flex h-6 w-6 items-center justify-center">
-              <FontAwesomeIcon
-                icon={faChevronLeft}
-                className="absolute h-4 text-high"
-              />
-            </button>
-          </Link>
-        )}
-        <div className="flex h-full w-full flex-col items-center p-6 lg:justify-center">
-          {criticalError ? (
-            <div className="flex h-full w-full flex-col items-center gap-8 lg:h-fit lg:w-[415px] lg:gap-3">
-              <div className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
+    !isDataLoading && (
+      <main className="flex h-screen bg-white p-6 lg:p-14">
+        <div className="flex h-full w-full flex-1 flex-col gap-2">
+          {!criticalError && (
+            <Link href="/reset-password" className="absolute">
+              <button className="absolute flex h-6 w-6 items-center justify-center">
                 <FontAwesomeIcon
-                  icon={faLock}
-                  className="h-12 text-white lg:h-8"
+                  icon={faChevronLeft}
+                  className="absolute h-4 text-high"
                 />
-              </div>
-              <div className="flex h-full w-full flex-col justify-between gap-8 lg:h-fit lg:gap-9 ">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="h3 lg:h2 font-extrabold text-primary-900 lg:font-extrabold">
-                    {criticalError}
-                  </div>
-                  <div className="h6 text-medium">
-                    Oops! It seems the link you&apos;re trying to use has
-                    expired. Please return to the reset password page to
-                    generate a fresh link
-                  </div>
-                </div>
-                <Button variant={"secondary"} disabled={isDataLoading} asChild>
-                  <Link href="/reset-password">Forgot password</Link>
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex h-full w-full flex-col items-center gap-8 lg:h-fit lg:w-[415px] lg:gap-3">
-              <div className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
-                <FontAwesomeIcon
-                  icon={faUnlockKeyhole}
-                  className="h-12 text-white lg:h-8"
-                />
-              </div>
-              <div className="flex h-full w-full flex-col gap-8 lg:gap-9">
-                <div className="flex flex-col items-center gap-3">
-                  <div className="h3 lg:h2 font-extrabold text-primary-900 lg:font-extrabold">
-                    New Password
-                  </div>
-                  <div className="h6 text-medium">Please set New Password</div>
-                </div>
-                <div className="flex w-full flex-1 flex-col items-center gap-2 lg:flex-none lg:gap-9">
-                  <form
-                    action={submitHandler}
-                    className="flex h-full w-full flex-col justify-between gap-9 text-black lg:h-fit lg:justify-normal"
-                  >
-                    <div className="flex w-full flex-col gap-3">
-                      <div className="flex w-full flex-col gap-1">
-                        <Label htmlFor="email" className="body5">
-                          Enter New Passoword
-                        </Label>
-                        <Input
-                          className="w-full"
-                          type="password"
-                          name="password"
-                          placeholder="Enter new password"
-                        />
-                        {passwordNotice ? (
-                          <div className="flex items-center">
-                            <FontAwesomeIcon
-                              icon={faCircleInfo}
-                              className="text-red-500"
-                              size="xs"
-                            />
-                            <p className="px-1 text-xs text-red-500">
-                              {passwordNotice}
-                            </p>
-                          </div>
-                        ) : (
-                          <div className="flex items-center">
-                            <FontAwesomeIcon
-                              icon={faCircleInfo}
-                              className="text-medium"
-                              size="xs"
-                            />
-                            <p className="px-1 text-xs text-medium">
-                              {"The password must be at least 8 characters"}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex w-full flex-col gap-1">
-                        <Label htmlFor="email" className="body5">
-                          Enter New Passoword
-                        </Label>
-                        <Input
-                          className="w-full"
-                          type="password"
-                          name="confirm_password"
-                          placeholder="Confirm password"
-                        />
-                        {error && (
-                          <div className="flex items-center">
-                            <FontAwesomeIcon
-                              icon={faCircleInfo}
-                              className="text-red-500"
-                              size="xs"
-                            />
-                            <p className="px-1 text-xs text-red-500">{error}</p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <Button
-                      variant={"secondary"}
-                      type="submit"
-                      disabled={isDataLoading}
-                    >
-                      Login
-                    </Button>
-                  </form>
-                </div>
-              </div>
-            </div>
+              </button>
+            </Link>
           )}
+          <div className="flex h-full w-full flex-col items-center p-6 lg:justify-center">
+            {criticalError ? (
+              <div className="flex h-full w-full flex-col items-center gap-8 lg:h-fit lg:w-[415px] lg:gap-3">
+                <div className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
+                  <FontAwesomeIcon
+                    icon={faLock}
+                    className="h-12 text-white lg:h-8"
+                  />
+                </div>
+                <div className="flex h-full w-full flex-col justify-between gap-8 lg:h-fit lg:gap-9 ">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="h3 lg:h2 font-extrabold text-primary-900 lg:font-extrabold">
+                      {criticalError}
+                    </div>
+                    <div className="h6 font-bold text-medium">
+                      Oops! It seems the link you're trying to use has expired.
+                      Please return to the reset password page to generate a
+                      fresh link
+                    </div>
+                  </div>
+                  <Button
+                    variant={"secondary"}
+                    disabled={isDataLoading}
+                    asChild
+                  >
+                    <Link href="/reset-password">Forgot password</Link>
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex h-full w-full flex-col items-center gap-8 lg:h-fit lg:w-[415px] lg:gap-3">
+                <div className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-secondary-400 lg:h-[60px] lg:w-[60px]">
+                  <FontAwesomeIcon
+                    icon={faUnlockKeyhole}
+                    className="h-12 text-white lg:h-8"
+                  />
+                </div>
+                <div className="flex h-full w-full flex-col gap-8 lg:gap-9">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="h3 lg:h2 font-extrabold text-primary-900 lg:font-extrabold">
+                      New Password
+                    </div>
+                    <div className="h6 font-bold text-medium">
+                      Please set New Password
+                    </div>
+                  </div>
+                  <div className="flex w-full flex-1 flex-col items-center gap-2 lg:flex-none lg:gap-9">
+                    <form
+                      action={submitHandler}
+                      className="flex h-full w-full flex-col justify-between gap-9 text-black lg:h-fit lg:justify-normal"
+                    >
+                      <div className="flex w-full flex-col gap-3">
+                        <div className="flex w-full flex-col gap-1">
+                          <Label htmlFor="email" className="body5">
+                            Enter New Passoword
+                          </Label>
+                          <Input
+                            className="w-full"
+                            type="password"
+                            name="password"
+                            placeholder="Enter new password"
+                          />
+                          {passwordNotice ? (
+                            <div className="flex items-center">
+                              <FontAwesomeIcon
+                                icon={faCircleInfo}
+                                className="text-red-500"
+                                size={"xs"}
+                              />
+                              <p className="px-1 text-xs text-red-500">
+                                {passwordNotice}
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="flex items-center">
+                              <FontAwesomeIcon
+                                icon={faCircleInfo}
+                                className="text-medium"
+                                size={"xs"}
+                              />
+                              <p className="px-1 text-xs text-medium">
+                                {"The password must be at least 8 characters"}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex w-full flex-col gap-1">
+                          <Label htmlFor="email" className="body5">
+                            Confirm Password
+                          </Label>
+                          <Input
+                            className="w-full"
+                            type="password"
+                            name="confirm_password"
+                            placeholder="Confirm password"
+                          />
+                          {error && (
+                            <div className="flex items-center">
+                              <FontAwesomeIcon
+                                icon={faCircleInfo}
+                                className="text-red-500"
+                                size="xs"
+                              />
+                              <p className="px-1 text-xs text-red-500">
+                                {error}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <Button
+                        variant={"secondary"}
+                        type="submit"
+                        disabled={isDataLoading}
+                      >
+                        Login
+                      </Button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    )
   );
 }

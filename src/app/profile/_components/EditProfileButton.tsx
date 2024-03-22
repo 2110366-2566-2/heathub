@@ -237,12 +237,12 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
           </div>
         </form>
         <div className="flex h-fit w-full flex-row-reverse gap-x-3">
-          <span
-            className="inline-flex h-10 w-24 items-center justify-center rounded-xl bg-secondary-500 text-white hover:cursor-pointer hover:bg-secondary-600 disabled:bg-secondary-100"
+          <Button
+            variant={"secondary"}
             onClick={handleSubmit}
           >
             Confirm
-          </span>
+          </Button>
           <Button
             variant="secondaryOutline"
             className="border-medium text-medium"

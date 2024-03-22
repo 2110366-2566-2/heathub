@@ -107,7 +107,7 @@ export default function ForgetPassword() {
             <FontAwesomeIcon
               icon={faChevronLeft}
               className="absolute text-high"
-              size="lg"
+              size={"lg"}
             />
           </button>
         </Link>
@@ -118,7 +118,7 @@ export default function ForgetPassword() {
                 <FontAwesomeIcon
                   icon={faKey}
                   className="text-neutral-0 lg:h-8"
-                  size="3x"
+                  size={"3x"}
                 />
               </div>
               <div className="flex flex-col items-center gap-3">
@@ -151,7 +151,7 @@ export default function ForgetPassword() {
                         <FontAwesomeIcon
                           icon={faCircleInfo}
                           className="text-red-500"
-                          size="xs"
+                          size={"xs"}
                         />
                         <p className="px-1 text-xs text-red-500">
                           {errors.email.message}
