@@ -84,7 +84,7 @@ export default function ResetPassword({
     }
     redirect("/signin");
   };
-  
+
   return (
     !isDataLoading && (
       <main className="flex h-screen bg-white p-6 lg:p-14">

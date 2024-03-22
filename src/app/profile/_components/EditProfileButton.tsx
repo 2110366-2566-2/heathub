@@ -237,10 +237,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
           </div>
         </form>
         <div className="flex h-fit w-full flex-row-reverse gap-x-3">
-          <Button
-            variant={"secondary"}
-            onClick={handleSubmit}
-          >
+          <Button variant={"secondary"} onClick={handleSubmit}>
             Confirm
           </Button>
           <Button

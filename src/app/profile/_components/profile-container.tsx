@@ -33,7 +33,7 @@ export default function ProfileContainer(props: ProfilePreviewProps) {
         <FontAwesomeIcon icon={faUser} className="h-7 w-7 text-secondary-500" />
         <div className="h2 font-bold text-high">Profile</div>
       </div>
-      <div className="flex flex-col lg:flex-row gap-4">
+      <div className="flex flex-col gap-4 lg:flex-row">
         <ProfileDetails {...props} />
         {props.reviews != -1 && <MyReview {...props} />}
       </div>
