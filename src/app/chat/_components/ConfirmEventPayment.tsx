@@ -22,7 +22,7 @@ interface ConfirmEventPaymetProps {
   confirmEvent: () => void;
 }
 
-export default function ConfirmEventPaymet(props: ConfirmEventPaymetProps) {
+export default function ConfirmEventPayment(props: ConfirmEventPaymetProps) {
   const { confirmEvent, totalPrice } = props;
   const { data } = api.profile.balance.useQuery(undefined);
   const decimalBaseMoney = (data ?? 0.0) / 100;
