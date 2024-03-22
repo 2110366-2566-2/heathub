@@ -146,7 +146,7 @@ export default function ChatEventForm({
             <FormField
               control={form.control}
               name="beginDate"
-              render={({ field, formState }) => (
+              render={({ field }) => (
                 <FormItem className="flex h-fit w-full flex-1 flex-col">
                   <Popover>
                     <PopoverTrigger asChild>
