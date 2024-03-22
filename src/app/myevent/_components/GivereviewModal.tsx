@@ -12,14 +12,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import StarRateOnclick from "./StarRate";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { api } from "@/trpc/react"
+import { useState, type ChangeEvent } from "react";
+import { api } from "@/trpc/react";
 interface EventModalProps {
   id: number;
   name: string;
   children: React.ReactNode;
-  participantID : string;
-  hostID : string;
+  participantID: string;
+  hostID: string;
 }
 
 export function GivereviewModal(prop: EventModalProps) {
@@ -33,15 +33,15 @@ export function GivereviewModal(prop: EventModalProps) {
     console.log(message);
   };
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async () => {
     console.log("Submit");
-    createReview.mutateAsync({
-      eventID : prop.id,
-      participantID : prop.participantID,
-      hostID : prop.hostID,
-      ratingScore : rating,
-      reviewDesc : message
-    })
+    await createReview.mutateAsync({
+      eventID: prop.id,
+      participantID: prop.participantID,
+      hostID: prop.hostID,
+      ratingScore: rating,
+      reviewDesc: message,
+    });
   };
   return (
     <Dialog>

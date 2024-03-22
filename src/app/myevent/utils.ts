@@ -1,5 +1,5 @@
 import { EventStatus } from "./_components/Card";
-import { ratingAndReview } from "./types";
+import { type ratingAndReview } from "./types";
 
 export function parseTabValue(
   value: string,

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-import { StarProps } from "../types";
+import { type StarProps } from "../types";
 
 export default function StarRateOnclick(props : StarProps) {
   
