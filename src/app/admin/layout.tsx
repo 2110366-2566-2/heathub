@@ -9,9 +9,9 @@ export default async function AdminLayout({
   const user = await serverapi.auth.me.query();
   if (user?.role !== "admin") redirect("/");
   return (
-    <>
+    <div className="flex h-auto flex-row bg-bgColor">
       <AdminNavbar />
       {children}
-    </>
+    </div>
   );
 }

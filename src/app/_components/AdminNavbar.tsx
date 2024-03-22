@@ -15,7 +15,7 @@ export function AdminNavbar() {
   const isWithdrawalRequest = pathName.startsWith("/admin/withdrawal-request");
 
   return (
-    <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[205px] min-w-[205px] flex-col justify-between gap-8 bg-secondary-400 p-3 py-9 shadow-sm lg:flex">
+    <nav className="sticky left-0 top-0 z-50 flex h-screen w-[205px] min-w-[205px] flex-col justify-between gap-8 bg-secondary-400 p-3 py-9 shadow-sm">
       <Image
         src="/svgs/logo-default.svg"
         alt="logo"
