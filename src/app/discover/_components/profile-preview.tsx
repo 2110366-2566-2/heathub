@@ -215,14 +215,14 @@ function ReviewChat(props: ReviewChatProps) {
       )}
     >
       <Link href={`/review/${id}`}>
-      <Button
-        variant="outline"
-        size="md"
-        className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-300"
-      >
-        <FontAwesomeIcon icon={faHeart} className="mr-2" size="1x" />
-        {reviews} Reviews
-      </Button>
+        <Button
+          variant="outline"
+          size="md"
+          className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-300"
+        >
+          <FontAwesomeIcon icon={faHeart} className="mr-2" size="1x" />
+          {reviews} Reviews
+        </Button>
       </Link>
       {props.role === "participant" && (
         <Link href={`/chat/${id}`}>

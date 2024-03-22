@@ -130,8 +130,8 @@ function StarMaker(props: { rating: number }) {
                 icon={faStar}
                 className={cn("h-6 w-6 pr-1", {
                   "text-pending": index <= props.rating - 1,
-                  "text-neutral-200": index > props.rating - 1
-              })}
+                  "text-neutral-200": index > props.rating - 1,
+                })}
               />
             </div>
           );

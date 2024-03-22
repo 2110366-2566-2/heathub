@@ -27,7 +27,7 @@ export default function Page() {
   const { data } = api.event.myEvent.useQuery({
     status: tabValue,
   });
-  console.log(data)
+  console.log(data);
 
   useEffect(() => {
     if (!data) return;
@@ -35,11 +35,16 @@ export default function Page() {
       role: role,
       id: event.id,
       userID: role == "participant" ? event.host.id : event.participant.id,
-      participantID: role == "participant" ? event.participant.id : event.host.id,
+      participantID:
+        role == "participant" ? event.participant.id : event.host.id,
       name: role == "participant" ? event.host.aka : event.participant.aka,
       location: event.location,
       date: event.startTime,
-      status: parseEventStatus(event.startTime, event.status , event.ratingAndReview),
+      status: parseEventStatus(
+        event.startTime,
+        event.status,
+        event.ratingAndReview,
+      ),
       image:
         role == "participant"
           ? event.host.profileImageURL || generateAvatar(event.host.aka)

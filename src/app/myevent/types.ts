@@ -20,13 +20,13 @@ export type myEventProps = {
     profileImageURL: string | null;
   };
   startTime: Date;
-  ratingAndReview:ratingAndReview | null
+  ratingAndReview: ratingAndReview | null;
 };
 export type ratingAndReview = {
-  id : number
-}
+  id: number;
+};
 
 export type StarProps = {
   rating: number;
   setRating: Dispatch<SetStateAction<number>>;
-}
+};

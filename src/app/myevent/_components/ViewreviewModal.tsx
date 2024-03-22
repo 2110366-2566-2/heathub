@@ -27,7 +27,7 @@ export function ViewreviewModal(prop: EventModalProps) {
   const { data } = api.review.getReview.useQuery({
     eventID: prop.id,
   });
-  
+
   if (!data) {
     return;
   }

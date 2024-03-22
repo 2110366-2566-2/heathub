@@ -29,15 +29,15 @@ export type ReviewType = {
   location: string;
   participantName: string;
   participantPic: string | null;
-  ratingScore: number ;
+  ratingScore: number;
   reviewDesc: string | null;
-  createdAt: Date ;
+  createdAt: Date;
   eventDate: Date;
 };
 
 export type HostDetail = {
-  image : string | null;
-  username : string ;
-  hostID : string;
-  rating : number | null;
-}
+  image: string | null;
+  username: string;
+  hostID: string;
+  rating: number | null;
+};

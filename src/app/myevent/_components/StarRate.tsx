@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { type StarProps } from "../types";
 
-export default function StarRateOnclick(props : StarProps) {
-  
+export default function StarRateOnclick(props: StarProps) {
   return (
     <div className="flex">
       {Array.from({ length: 5 }).map((_, index) => {
@@ -14,7 +13,9 @@ export default function StarRateOnclick(props : StarProps) {
             <FontAwesomeIcon
               icon={faStar}
               className={`h-8 w-8 px-1 ${
-                currentRate <= props.rating ? "text-pending" : "text-neutral-200"
+                currentRate <= props.rating
+                  ? "text-pending"
+                  : "text-neutral-200"
               }`}
             />
           </div>

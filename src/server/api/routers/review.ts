@@ -103,18 +103,19 @@ export const reviewRouter = createTRPCRouter({
       return reviews;
     }),
   getReview: userProcedure
-  .input(
-    z.object({
-      eventID: z.number(),
+    .input(
+      z.object({
+        eventID: z.number(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const result = await ctx.db.query.ratingAndReview.findFirst({
+        where: eq(ratingAndReview.eventID, input.eventID),
+        columns: {
+          ratingScore: true,
+          reviewDesc: true,
+        },
+      });
+      return result;
     }),
-  ).query( async ({ctx,input})=>{
-    const result = await ctx.db.query.ratingAndReview.findFirst({
-      where : eq(ratingAndReview.eventID,input.eventID),
-      columns:{
-        ratingScore : true,
-        reviewDesc : true
-      }
-    })
-    return result
-  })
 });

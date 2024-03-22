@@ -14,19 +14,14 @@ export default function ReviewList({
   if (!isSuccess) {
     console.log("Err");
   }
-  if(data?.length==0){
-    return (
-      <div>
-        No review
-      </div>
-    );
-  }  
+  if (data?.length == 0) {
+    return <div>No review</div>;
+  }
   return (
     <div className="flex flex-col gap-2 rounded-xl bg-neutral-50 p-5">
-      {data?.map((review,index) => {
-          return <ReviewCard key={index} {...review} />;
-        })}
+      {data?.map((review, index) => {
+        return <ReviewCard key={index} {...review} />;
+      })}
     </div>
   );
-
 }

@@ -14,7 +14,11 @@ export function parseTabValue(
   }
 }
 
-export function parseEventStatus(dateTime: Date, status: string , review : ratingAndReview | null): EventStatus {
+export function parseEventStatus(
+  dateTime: Date,
+  status: string,
+  review: ratingAndReview | null,
+): EventStatus {
   let isStarted = false;
   const currentDateTime = new Date();
   if (currentDateTime > dateTime) {

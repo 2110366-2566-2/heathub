@@ -82,7 +82,7 @@ export function Card(prop: EventProps) {
           )
         );
       case EventStatus.COMPLETED:
-        console.log("ITS COMPLETE FUCK")
+        console.log("ITS COMPLETE FUCK");
         return (
           <Button
             variant="default"
@@ -118,9 +118,14 @@ export function Card(prop: EventProps) {
           </CancelModal>
         );
       case EventStatus.WAITINGREVIEW:
-        console.log("WAITREVIEW")
+        console.log("WAITREVIEW");
         return (
-          <GivereviewModal id={prop.id} name={prop.name} participantID={prop.participantID} hostID={prop.userID}>
+          <GivereviewModal
+            id={prop.id}
+            name={prop.name}
+            participantID={prop.participantID}
+            hostID={prop.userID}
+          >
             <CardButton />
           </GivereviewModal>
         );
