@@ -14,7 +14,7 @@ export interface Host extends User {
   Interest: string[];
 }
 
-export interface Participant extends User {}
+export type Participant = User;
 
 export const createHost = () => {
   const user: Host = {
