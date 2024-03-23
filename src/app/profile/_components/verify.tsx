@@ -87,7 +87,7 @@ export default function Verify({ onClose }: { onClose: () => void }) {
           <FontAwesomeIcon
             icon={faArrowUpFromBracket}
             className="text-secondary-500"
-            size={"2x"}
+            size={"lg"}
           />
           <div className="h6 text-medium hover:text-secondary-300">
             Upload ID Card
