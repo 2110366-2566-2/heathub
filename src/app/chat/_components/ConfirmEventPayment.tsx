@@ -4,14 +4,14 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/utils/tailwind-merge";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { TopUpDialog } from "@/app/profile/_components/topup-modal";
 import { api } from "@/trpc/react";
@@ -24,17 +24,16 @@ interface ConfirmEventPaymetProps {
 
 export default function ConfirmEventPayment(props: ConfirmEventPaymetProps) {
   const { confirmEvent, totalPrice } = props;
-  const { data } = api.profile.balance.useQuery(undefined);
-  const decimalBaseMoney = (data ?? 0.0) / 100;
-  const myBalance = decimalBaseMoney.toLocaleString(undefined, {
+  const { data: balance } = api.profile.balance.useQuery(undefined);
+  const myBalance = ((balance ?? 0) / 100).toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-  const formattedTotalPrice = totalPrice.toLocaleString(undefined, {
+  const formattedTotalPrice = (totalPrice / 100).toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-  const isEnoughMoney = decimalBaseMoney > props.totalPrice;
+  const isEnoughMoney = (balance ?? 0) > props.totalPrice;
 
   return (
     <Dialog>

@@ -1,12 +1,12 @@
 "use client";
-import { cn } from "@/utils/tailwind-merge";
-import { type EventDetailCardProps } from "./type";
-import EventTag from "./EventTag";
-import { Dayjs } from "@/utils/dayjs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
+import { Dayjs } from "@/utils/dayjs";
+import { cn } from "@/utils/tailwind-merge";
 import ConfirmEventPayment from "./ConfirmEventPayment";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import EventTag from "./EventTag";
+import { type EventDetailCardProps } from "./type";
 
 export interface ChatEventInfoInterface {
   eventID: number;
@@ -92,7 +92,7 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
           <div className="flex flex-row justify-between">
             <div className="h6  flex-1 text-medium">Price</div>
             <div className="h6 font- font-boldold text-high">
-              {price.toLocaleString(undefined, {
+              {(price / 100).toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}{" "}

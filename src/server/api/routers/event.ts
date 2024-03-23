@@ -27,7 +27,7 @@ export const eventRouter = createTRPCRouter({
         startTime: z.date(),
         endTime: z.date(),
         location: z.string().min(1),
-        price: z.number(),
+        priceStang: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -39,7 +39,7 @@ export const eventRouter = createTRPCRouter({
             startTime: input.startTime,
             endTime: input.endTime,
             location: input.location,
-            price: input.price,
+            price: input.priceStang,
             description: input.description,
           });
           const lastestEvent = await tx.query.event.findFirst({

@@ -123,7 +123,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
       hostUserID: user?.userId,
       startTime: eventData.startTime,
       endTime: eventData.endTime,
-      price: eventData.price,
+      priceStang: eventData.price * 100,
       location: eventData.location,
       participantUserID: withUser,
       description: eventData.description ?? "",
