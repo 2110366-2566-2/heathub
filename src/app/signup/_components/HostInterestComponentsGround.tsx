@@ -123,36 +123,39 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   };
 
   return (
-    <div className="flex flex-col items-center gap-y-8">
-      <div className="h1 font-bold text-primary-900">Interests</div>
-      <Card className="w-full min-w-[256px] max-w-[848px] justify-center overflow-y-auto rounded-3xl border-solid border-primary-500 bg-white p-8">
-        <CardContent className="flex w-full justify-center gap-x-4 gap-y-2">
-          <ToggleGroup
-            className="gap flex w-full flex-wrap gap-2"
-            type="multiple"
-          >
-            {allInterestList.map((interestItem, index) => {
-              const isSelected = selectedInterestList.includes(interestItem);
-              return (
-                <Toggle
-                  defaultPressed={isSelected}
-                  value={interestItem}
-                  key={index}
-                  variant="outline"
-                  icon={tagStyle[interestItem].icon}
-                  size="md"
-                  onClick={(e) => {
-                    handleSelectedInterestList(e.currentTarget.value);
-                  }}
-                >
-                  {interestItem}
-                </Toggle>
-              );
-            })}
-          </ToggleGroup>
-        </CardContent>
-      </Card>
-      <div className="absolute bottom-6 sm:static">
+    <div className="flex h-full w-full flex-1 flex-col items-center gap-y-8">
+      <div className="h1 font-extrabold text-primary-900">Interest</div>
+      <div className="flex h-fit w-full max-w-[848px] flex-col items-center">
+        <ToggleGroup
+          className="gap flex w-full flex-wrap gap-2"
+          type="multiple"
+        >
+          {allInterestList.map((interestItem, index) => {
+            const isSelected = selectedInterestList.includes(interestItem);
+            return (
+              <Toggle
+                defaultPressed={isSelected}
+                value={interestItem}
+                key={index}
+                variant="outline"
+                icon={tagStyle[interestItem].icon}
+                size="md"
+                onClick={(e) => {
+                  handleSelectedInterestList(e.currentTarget.value);
+                }}
+              >
+                {interestItem}
+              </Toggle>
+            );
+          })}
+        </ToggleGroup>
+        <div className="flex w-full flex-row-reverse justify-center">
+          <div className=" h-0 text-red-500">{notice}</div>
+        </div>
+      </div>
+      <div className="flex w-full flex-1 flex-col">
+        <div className="flex grow md:grow-0"></div>
+
         <SuccessButton
           router={router}
           isModalPop={isModalPop}
@@ -160,7 +163,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           handleClick={handleButtonClick}
         />
       </div>
-      <div className="text-red-500">{notice}</div>
     </div>
   );
 }

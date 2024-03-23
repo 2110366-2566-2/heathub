@@ -52,10 +52,10 @@ function Quote() {
         alt="Picture"
       />
       <div className="flex flex-col justify-center text-center">
-        <div className="md:h1 h2 font-bold text-primary-900 md:font-bold">
+        <div className="h1 font-extrabold text-primary-900">
           Find Your Perfect
         </div>
-        <div className="md:h1 h2 font-bold text-primary-900 md:font-bold">
+        <div className="h1 font-extrabold text-primary-900">
           Companion Today!
         </div>
       </div>

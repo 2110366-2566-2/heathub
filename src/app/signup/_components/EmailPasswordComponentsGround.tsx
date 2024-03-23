@@ -163,7 +163,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   return (
     <div className="flex w-full flex-col items-center gap-y-8 md:max-w-[506px]">
-      <div className="h1 text-center font-bold text-primary-900">
+      <div className="h1 text-center font-extrabold text-primary-900">
         Create your account
       </div>
       <div className="flex w-full flex-col items-center gap-y-10">

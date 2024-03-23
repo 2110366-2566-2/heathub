@@ -203,7 +203,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         ref={formRef}
         className="flex w-full max-w-[880px] flex-col items-center gap-y-8 p-6"
       >
-        <div className="h1 text-center font-bold text-high">
+        <div className="h1 text-center font-extrabold text-high">
           Tell us about yourself
         </div>
         <div className="flex w-full flex-col gap-y-4 md:flex-row md:gap-x-6">
@@ -237,7 +237,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           </div>
           <div className="flex grow flex-col gap-y-4">
             <div className="flex w-full flex-col gap-y-1.5">
-              <Label htmlFor="Firstname">Firstname</Label>
+              <Label className="inline-flex" htmlFor="Firstname">
+                Firstname
+                <div className="text-red-600">*</div>
+              </Label>
               <Input
                 value={firstText}
                 type="text"
@@ -257,7 +260,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               />
             </div>
             <div className="flex w-full flex-col gap-y-1.5">
-              <Label htmlFor="Lastname">Lastname</Label>
+              <Label className="inline-flex" htmlFor="Lastname">
+                Lastname
+                <div className="text-red-600">*</div>
+              </Label>
               <Input
                 value={lastText}
                 type="text"
@@ -277,7 +283,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               />
             </div>
             <div className="flex w-full flex-col gap-y-1.5">
-              <Label htmlFor="Username">Username</Label>
+              <Label className="inline-flex" htmlFor="Username">
+                Username
+                <div className="text-red-600">*</div>
+              </Label>
               <Input
                 value={usernameText}
                 type="text"
@@ -302,10 +311,13 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               />
             </div>
             <div className="flex w-full flex-col gap-y-1.5">
-              <Label htmlFor="Date of birth">Date of birth</Label>
+              <Label className="inline-flex" htmlFor="Date of birth">
+                Date of birth
+                <div className="text-red-600">*</div>
+              </Label>
               <DatePicker date={DOBText} setDate={setDOBText} />
             </div>
-            <div className="h-[0.5px] bg-primary-500 md:h-auto md:w-[0.5px]"></div>
+            <div className="h-[0.5px] bg-neutral-300"></div>
             <div className="h-full">
               <GenderSelector gender={host.Gender} setGender={setGender} />
             </div>
@@ -370,7 +382,10 @@ function GenderSelector(props: GenderSelectorProps) {
   return (
     <div className="flex w-full flex-col justify-center">
       <div className="flex w-full flex-col items-center gap-y-1 md:items-start">
-        <Label className="h4 font-bold text-high">Select your Gender</Label>
+        <Label className="h4 inline-flex font-bold text-high">
+          Select your Gender
+          <div className="text-red-600">*</div>
+        </Label>
         <ToggleGroup
           className="grid w-fit grid-cols-2 gap-4 p-4 md:flex md:flex-row md:justify-start"
           type="single"
@@ -426,8 +441,9 @@ function GenderSelector(props: GenderSelectorProps) {
           "opacity-50": !isCustom,
         })}
       >
-        <Label className="body5" htmlFor="Custom Gender">
+        <Label className="body5 inline-flex" htmlFor="Custom Gender">
           Custom Gender
+          {isCustom ? <div className="text-red-600">*</div> : <></>}
         </Label>
         <Input
           value={isCustom ? genderText : ""}
