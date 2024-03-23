@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -7,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 
 interface EventModalProps {
@@ -23,7 +23,9 @@ export function FinishModal(prop: EventModalProps) {
   const handleFinishEvent = async (eventID: number) => {
     try {
       await finishEvent.mutateAsync({ eventID: eventID });
-      await utils.event.myEvent.invalidate();
+      await utils.event.myEvent.invalidate({
+        status: "upcoming",
+      });
     } catch (error) {
       console.error(error);
     }
