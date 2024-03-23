@@ -1,6 +1,8 @@
 import { createTRPCRouter, adminProcedure } from "@/server/api/trpc";
 
 import {
+  eventReport,
+  event,
   hostUser,
   user,
   verifiedRequest,
@@ -162,6 +164,101 @@ export const adminRouter = createTRPCRouter({
             status: "rejected",
           })
           .where(and(eq(withdrawalRequest.id, input.requestID)));
+      });
+    }),
+
+  getEventReports: adminProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(100).nullish(),
+        page: z.number().default(0),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 10;
+      const items = await ctx.db.query.eventReport.findMany({
+        limit: limit + 1,
+        with: {
+          host: true,
+          event: true,
+          participant: true,
+        },
+        offset: limit * input.page,
+        orderBy: (report, { asc }) => [asc(report.createdAt)],
+      });
+
+      let hasNextPage = false;
+
+      if (items.length > limit) {
+        items.pop();
+        hasNextPage = true;
+      }
+      return {
+        items,
+        hasNextPage,
+      };
+    }),
+
+  refundEventReport: adminProcedure
+    .input(
+      z.object({
+        reportID: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.transaction(async (tx) => {
+        const report = await tx.query.eventReport.findFirst({
+          where: eq(eventReport.id, input.reportID),
+        });
+        if (!report) {
+          throw new Error("Event report not found");
+        }
+
+        const userData = await tx.query.user.findFirst({
+          where: eq(user.id, report.participantID),
+        });
+
+        if (!userData) {
+          throw new Error("User not found");
+        }
+
+        const reportedEvent = await tx.query.event.findFirst({
+          where: eq(event.id, report.eventID),
+        });
+        if (!reportedEvent) {
+          throw new Error("Event not found");
+        }
+
+        await tx
+          .update(user)
+          .set({
+            balance: userData.balance + reportedEvent.price,
+          })
+          .where(eq(user.id, report.participantID));
+
+        await tx
+          .update(eventReport)
+          .set({
+            status: "resolved",
+          })
+          .where(and(eq(eventReport.id, input.reportID)));
+      });
+    }),
+
+  rejectEventReport: adminProcedure
+    .input(
+      z.object({
+        reportID: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.transaction(async (tx) => {
+        await tx
+          .update(eventReport)
+          .set({
+            status: "rejected",
+          })
+          .where(and(eq(eventReport.id, input.reportID)));
       });
     }),
 });
