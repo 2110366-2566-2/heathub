@@ -530,12 +530,17 @@ export const eventReport = sqliteTable("event_report", {
   title: text("title", {
     length: 64,
   }).notNull(),
-  detail: text("detail"),
+  details: text("detail"),
   status: text("status", {
     length: 32,
     enum: ["pending", "resolved", "rejected"],
   })
     .default("pending")
+    .notNull(),
+  createdAt: int("created_at", {
+    mode: "timestamp_ms",
+  })
+    .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
 });
 
