@@ -75,7 +75,6 @@ export function GivereviewModal(prop: EventModalProps) {
               <Button
                 variant="outline"
                 className="h5 border-primary-500 text-primary-500"
-                type="submit"
               >
                 Back To Event
               </Button>
