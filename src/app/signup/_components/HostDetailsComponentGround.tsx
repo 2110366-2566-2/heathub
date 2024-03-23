@@ -66,10 +66,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const usernameInput = formData.get("Username") as string | null;
     const bioInput = formData.get("Bio") as string | null;
     const DOBInput = DOB;
-    // const imageInput =
-    //   (data as Host).Image || (data as Host).Image?.name != ""
-    //     ? (data as Host).Image
-    //     : (formData.get("Image") as File | null);
     const imageInput =
       !!(formData.get("Image") as File | null) &&
       (formData.get("Image") as File | null)?.name != ""
@@ -154,10 +150,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const lastnameInput = formData.get("Lastname") as string | null;
     const usernameInput = formData.get("Username") as string | null;
     const bioInput = formData.get("Bio") as string | null;
-    // const imageInput =
-    //   (data as Host).Image || (data as Host).Image?.name != ""
-    //     ? (data as Host).Image
-    //     : (formData.get("Image") as File | null);
     const imageInput =
       !!(formData.get("Image") as File | null) &&
       (formData.get("Image") as File | null)?.name != ""
