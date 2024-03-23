@@ -124,7 +124,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
             Lastname: data.Lastname,
             Username: data.Username,
             Bio: data.Bio,
-            DOB: data.DOB ?? new Date(),
+            DOB: data.DOB,
             Gender: data.Gender,
             Email: email ? email : "",
             Password: password ? password : "",
@@ -138,11 +138,11 @@ export default function ComponentsGround(props: ComponentGroundProps) {
             Firstname: data.Firstname,
             Lastname: data.Lastname,
             Username: data.Username,
-            DOB: data.DOB ?? new Date(),
+            DOB: data.DOB,
             Gender: data.Gender,
             Email: email ? email : "",
             Password: password ? password : "",
-            Image: data.Image ?? null,
+            Image: data.Image,
           };
           setData(participant);
           setPage("ParticipantDetails");

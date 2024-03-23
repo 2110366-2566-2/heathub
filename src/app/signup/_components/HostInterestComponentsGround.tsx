@@ -39,6 +39,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   }, [userData]);
 
   const handleSubmit = async (host: Host) => {
+    if (!host.DOB) {
+      return;
+    }
+
     if (selectedInterestList.length < 3) {
       setNotice("Please select at least 3 Interests.");
       return;

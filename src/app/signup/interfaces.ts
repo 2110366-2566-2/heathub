@@ -4,7 +4,7 @@ export interface User {
   Firstname: string;
   Lastname: string;
   Username: string;
-  DOB: Date;
+  DOB: Date | undefined;
   Image: File | null;
   Gender: string;
 }
@@ -25,7 +25,7 @@ export const createHost = () => {
     Gender: "",
     Email: "",
     Password: "",
-    DOB: new Date(),
+    DOB: undefined,
     Interest: [],
     Image: null,
   };
@@ -40,7 +40,7 @@ export const createParticipant = () => {
     Gender: "",
     Email: "",
     Password: "",
-    DOB: new Date(),
+    DOB: undefined,
     Image: null,
   };
   return user;

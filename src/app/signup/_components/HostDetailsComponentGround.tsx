@@ -122,21 +122,18 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   };
 
   const host = data as Host;
-  const condition = !!host.Firstname;
-  const [firstText, setFirstText] = useState(condition ? host.Firstname : "");
-  const [lastText, setLastText] = useState(condition ? host.Lastname : "");
-  const [usernameText, setUsernameText] = useState(
-    condition ? host.Username : "",
-  );
-  const [bioText, setBioText] = useState(condition ? host.Bio : "");
-  const [DOBText, setDOBText] = useState<Date | undefined>(
-    condition ? host.DOB : undefined,
-  );
+  const [firstText, setFirstText] = useState(host.Firstname ?? "");
+  const [lastText, setLastText] = useState(host.Lastname ?? "");
+  const [usernameText, setUsernameText] = useState(host.Username ?? "");
+  const [bioText, setBioText] = useState(host.Bio ?? "");
+  const [DOBText, setDOBText] = useState<Date | undefined>(host.DOB);
   useEffect(() => {
     setDOB(DOBText);
   }, [DOBText, setDOB]);
   const [imageUrl, setimageUrl] = useState(
-    condition && host.Image ? URL.createObjectURL(host.Image) : "",
+    !!host.Image && host.Image?.name != ""
+      ? URL.createObjectURL(host.Image)
+      : "",
   );
 
   const autoSave = () => {
@@ -163,7 +160,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       Lastname: lastnameInput ?? "",
       Username: usernameInput ?? "",
       Bio: bioInput ? bioInput : "",
-      DOB: DOB ?? new Date(),
+      DOB: DOB,
       Gender: gender,
       Email: data.Email,
       Password: data.Password,
@@ -175,7 +172,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   useEffect(() => {
     autoSave();
-  }, [firstText, lastText, usernameText, bioText, DOBText, gender, imageUrl]);
+  }, [firstText, lastText, usernameText, bioText, DOB, gender, imageUrl]);
 
   const uploadImage = async () => {
     if (!formRef.current) {
