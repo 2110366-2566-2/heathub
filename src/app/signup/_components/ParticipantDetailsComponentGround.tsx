@@ -61,9 +61,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       !!(formData.get("Image") as File | null) &&
       (formData.get("Image") as File | null)?.name != ""
         ? (formData.get("Image") as File)
-        : !!(data as Participant).Image &&
-            (data as Participant).Image?.name != ""
-          ? (data as Participant).Image
+        : !!data.Image && data.Image?.name != ""
+          ? data.Image
           : null;
 
     if (
@@ -120,7 +119,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     }
   };
 
-  const participant = data as Participant;
+  const participant = data;
   const [firstText, setFirstText] = useState(participant.Firstname ?? "");
   const [lastText, setLastText] = useState(participant.Lastname ?? "");
   const [usernameText, setUsernameText] = useState(participant.Username ?? "");
@@ -148,9 +147,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       !!(formData.get("Image") as File | null) &&
       (formData.get("Image") as File | null)?.name != ""
         ? (formData.get("Image") as File)
-        : !!(data as Participant).Image &&
-            (data as Participant).Image?.name != ""
-          ? (data as Participant).Image
+        : !!data.Image && data.Image?.name != ""
+          ? data.Image
           : null;
 
     const participant: Participant = {
