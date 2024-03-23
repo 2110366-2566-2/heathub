@@ -72,10 +72,10 @@ export default function ChatEventForm({
           val.startTime,
           val.endTime,
         );
-        return startTime < endTime;
+        return startTime < endTime && startTime > new Date();
       },
       {
-        message: "starttime over endtime",
+        message: "invalid startTime",
         path: ["endDate"],
       },
     );
