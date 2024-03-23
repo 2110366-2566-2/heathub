@@ -108,7 +108,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   });
 
   const handleButtonClick = async () => {
-    console.log(isValid);
     if (!formRef.current || !isValid) {
       return;
     }
