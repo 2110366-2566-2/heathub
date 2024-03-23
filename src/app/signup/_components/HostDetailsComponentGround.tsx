@@ -70,7 +70,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     //   (data as Host).Image || (data as Host).Image?.name != ""
     //     ? (data as Host).Image
     //     : (formData.get("Image") as File | null);
-    const imageInput = formData.get("Image") as File | null;
+    const imageInput =
+      !!(formData.get("Image") as File | null) &&
+      (formData.get("Image") as File | null)?.name != ""
+        ? (formData.get("Image") as File)
+        : !!(data as Host).Image && (data as Host).Image?.name != ""
+          ? (data as Host).Image
+          : null;
+
     if (
       !gender ||
       !firstnameInput ||
@@ -151,7 +158,13 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     //   (data as Host).Image || (data as Host).Image?.name != ""
     //     ? (data as Host).Image
     //     : (formData.get("Image") as File | null);
-    const imageInput = formData.get("Image") as File | null;
+    const imageInput =
+      !!(formData.get("Image") as File | null) &&
+      (formData.get("Image") as File | null)?.name != ""
+        ? (formData.get("Image") as File)
+        : !!(data as Host).Image && (data as Host).Image?.name != ""
+          ? (data as Host).Image
+          : null;
 
     const host: Host = {
       Firstname: firstnameInput ?? "",
@@ -201,7 +214,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     <div className="flex w-full flex-col items-center gap-y-8">
       <form
         ref={formRef}
-        className="flex w-full max-w-[880px] flex-col items-center gap-y-8 p-6"
+        className="mdp-6 flex w-full max-w-[880px] flex-col items-center gap-y-8"
       >
         <div className="h1 text-center font-extrabold text-high">
           Tell us about yourself

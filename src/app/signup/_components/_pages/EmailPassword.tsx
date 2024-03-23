@@ -29,7 +29,7 @@ export default function EmailPassword(props: EmailPasswordProps) {
 
       <div className="w-full flex-[2_2_725px] bg-bgColor bg-none">
         <main className="flex min-h-screen w-full flex-col">
-          <div className="flex w-full flex-col items-center gap-y-6 p-5 md:gap-y-[140px] md:p-6">
+          <div className="flex w-full flex-col items-center gap-y-6 p-6 md:gap-y-[140px]">
             <div className="flex w-full flex-row">
               <GoBackArrow Page={page} setPage={setPage} />
             </div>

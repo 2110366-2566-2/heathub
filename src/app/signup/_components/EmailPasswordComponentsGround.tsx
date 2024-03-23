@@ -62,7 +62,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     useState<string>("");
 
   const formCheck = () => {
-    console.log("formCheck");
     if (emailNotice != "This Email is already exits.") {
       setEmailNotice("");
     }
@@ -109,7 +108,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   });
 
   const handleButtonClick = async () => {
-    console.log(isValid);
     if (!formRef.current || !isValid) {
       return;
     }
@@ -122,26 +120,26 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       if (!(await isEmailDup(email ? email : ""))) {
         if (isHost(data)) {
           const host: Host = {
-            Firstname: data.Firstname ?? "",
-            Lastname: data.Lastname ?? "",
-            Username: data.Username ?? "",
-            Bio: data.Bio ?? "",
+            Firstname: data.Firstname,
+            Lastname: data.Lastname,
+            Username: data.Username,
+            Bio: data.Bio,
             DOB: data.DOB ?? new Date(),
-            Gender: data.Gender ?? "",
+            Gender: data.Gender,
             Email: email ? email : "",
             Password: password ? password : "",
-            Interest: data.Interest ?? [],
-            Image: data.Image ?? null,
+            Interest: data.Interest,
+            Image: data.Image,
           };
           setData(host);
           setPage("HostDetails");
         } else {
           const participant: Participant = {
-            Firstname: data.Firstname ?? "",
-            Lastname: data.Lastname ?? "",
-            Username: data.Username ?? "",
+            Firstname: data.Firstname,
+            Lastname: data.Lastname,
+            Username: data.Username,
             DOB: data.DOB ?? new Date(),
-            Gender: data.Gender ?? "",
+            Gender: data.Gender,
             Email: email ? email : "",
             Password: password ? password : "",
             Image: data.Image ?? null,

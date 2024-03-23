@@ -6,7 +6,6 @@ import { uploadFiles } from "@/components/ui/upload";
 import SuccessButton from "@/app/signup/_components/SuccessButton";
 import { useEffect, useState } from "react";
 import { type Host, type User } from "../interfaces";
-import { Card, CardContent } from "@/components/ui/card";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup } from "@/components/ui/toggle-group";
 import {
@@ -73,7 +72,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         interests: selectedInterestList,
         imageUrl: imageUrl,
       });
-      console.log(imageUrl);
       setModalPop(true);
     } catch (error) {
       if (error instanceof Error) {
@@ -105,7 +103,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     };
     setData(host);
   };
-  console.log(selectedInterestList);
   useEffect(() => {
     autoSave();
   }, [selectedInterestList]);
