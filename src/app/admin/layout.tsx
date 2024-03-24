@@ -7,7 +7,6 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const user = await serverapi.auth.me.query();
-  console.log("user", user);
   if (!user) return redirect("/signin");
   if (user.role !== "admin") redirect("/");
 
