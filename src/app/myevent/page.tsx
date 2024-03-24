@@ -34,10 +34,10 @@ export default function Page() {
     const _events: EventProps[] = data.map((event: myEventProps) => ({
       role: role,
       id: event.id,
-      userID: role == "participant" ? event.host.id : event.participant.id,
+      userID: role === "participant" ? event.host.id : event.participant.id,
       participantID:
-        role == "participant" ? event.participant.id : event.host.id,
-      name: role == "participant" ? event.host.aka : event.participant.aka,
+        role === "participant" ? event.participant.id : event.host.id,
+      name: role === "participant" ? event.host.aka : event.participant.aka,
       location: event.location,
       date: event.startTime,
       status: parseEventStatus(
@@ -46,7 +46,7 @@ export default function Page() {
         event.ratingAndReview,
       ),
       image:
-        role == "participant"
+        role === "participant"
           ? event.host.profileImageURL || generateAvatar(event.host.aka)
           : event.participant.profileImageURL ||
             generateAvatar(event.participant.aka),
@@ -143,7 +143,7 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
-                  event.status != EventStatus.CANCELLED && (
+                  event.status !== EventStatus.CANCELLED && (
                     <Card
                       key={event.id}
                       id={event.id}
@@ -183,7 +183,7 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
-                  event.status != EventStatus.CANCELLED && (
+                  event.status !== EventStatus.CANCELLED && (
                     <Card
                       role={role}
                       key={event.id}
