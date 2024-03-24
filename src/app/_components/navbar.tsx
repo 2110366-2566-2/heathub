@@ -24,7 +24,7 @@ export function NavBar() {
   });
 
   return (
-    <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[80px] min-w-[80px] flex-col justify-between gap-3 bg-secondary-400 py-9 shadow-sm lg:flex">
+    <nav className="sticky left-0 top-0 z-50 hidden h-screen w-[80px] min-w-[80px] flex-col justify-between gap-3 bg-secondary-400 px-3 py-9 shadow-sm lg:flex">
       <div className="flex h-full flex-col gap-8">
         <NavItem link="/discover" icon={faCompass} isSelected={isDiscover} />
         <NavItem link="/myevent" icon={faCalendarCheck} isSelected={isEvent} />

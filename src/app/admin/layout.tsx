@@ -1,5 +1,6 @@
 import { serverapi } from "@/trpc/server";
 import { redirect } from "next/navigation";
+import { AdminNavbar } from "../_components/AdminNavbar";
 export default async function AdminLayout({
   children,
 }: {
@@ -7,5 +8,10 @@ export default async function AdminLayout({
 }) {
   const user = await serverapi.auth.me.query();
   if (user?.role !== "admin") redirect("/");
-  return <>{children}</>;
+  return (
+    <div className="flex h-auto flex-row bg-bgColor">
+      <AdminNavbar />
+      {children}
+    </div>
+  );
 }
