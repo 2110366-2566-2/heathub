@@ -41,3 +41,8 @@ export type HostDetail = {
   hostID: string;
   rating: number | null;
 };
+
+export interface TextProps {
+  text: string;
+  maxLength: number;
+}
