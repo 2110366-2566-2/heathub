@@ -1,4 +1,5 @@
 "use client";
+import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
 import {
   faAngleLeft,
@@ -8,12 +9,13 @@ import {
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 const mockData: TransactionBoxProps[] = [
   {
     id: 1,
     type: "Topup",
-    dateTime: new Date("2024-03-17T10:00:00"),
+    dateTime: new Date("2023-05-17T11:00:00"),
     amount: 1000,
     aiteiName: "John Doe",
     eventDate: null,
@@ -21,7 +23,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 2,
     type: "Withdraw",
-    dateTime: new Date("2024-03-16T15:30:00"),
+    dateTime: new Date("2024-02-16T15:30:00"),
     amount: -500,
     aiteiName: "Alice Smith",
     eventDate: null,
@@ -29,15 +31,15 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 3,
     type: "Event",
-    dateTime: new Date("2024-03-15T18:00:00"),
-    amount: -1500,
+    dateTime: new Date("2024-03-15T22:00:00"),
+    amount: -400,
     aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-20T14:00:00"),
+    eventDate: new Date("2024-03-15T23:00:00"),
   },
   {
     id: 4,
     type: "Topup",
-    dateTime: new Date("2024-03-17T10:00:00"),
+    dateTime: new Date("2023-11-17T21:00:00"),
     amount: 1000,
     aiteiName: "John Doe",
     eventDate: null,
@@ -45,7 +47,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 5,
     type: "Withdraw",
-    dateTime: new Date("2024-03-16T15:30:00"),
+    dateTime: new Date("2024-03-16T08:30:00"),
     amount: -500,
     aiteiName: "Alice Smith",
     eventDate: null,
@@ -53,31 +55,31 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 6,
     type: "Event",
-    dateTime: new Date("2024-03-15T18:00:00"),
-    amount: -1500,
+    dateTime: new Date("2024-03-05T21:20:00"),
+    amount: -1700,
     aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-20T14:00:00"),
+    eventDate: new Date("2024-03-05T21:30:00"),
   },
   {
     id: 7,
     type: "Topup",
     dateTime: new Date("2024-03-17T10:00:00"),
-    amount: 1000,
+    amount: 1500,
     aiteiName: "John Doe",
     eventDate: null,
   },
   {
     id: 8,
-    type: "Withdraw",
-    dateTime: new Date("2024-03-16T15:30:00"),
-    amount: -500,
+    type: "Topup",
+    dateTime: new Date("2024-01-16T15:30:00"),
+    amount: 5000,
     aiteiName: "Alice Smith",
     eventDate: null,
   },
   {
     id: 9,
     type: "Event",
-    dateTime: new Date("2024-03-15T18:00:00"),
+    dateTime: new Date("2024-03-15T21:00:00"),
     amount: -1500,
     aiteiName: "Alice Smith",
     eventDate: new Date("2024-03-20T14:00:00"),
@@ -85,7 +87,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 10,
     type: "Topup",
-    dateTime: new Date("2024-03-17T10:00:00"),
+    dateTime: new Date("2024-03-15T10:30:00"),
     amount: 1000,
     aiteiName: "John Doe",
     eventDate: null,
@@ -94,23 +96,23 @@ const mockData: TransactionBoxProps[] = [
     id: 11,
     type: "Withdraw",
     dateTime: new Date("2024-03-16T15:30:00"),
-    amount: -500,
+    amount: -1200,
     aiteiName: "Alice Smith",
     eventDate: null,
   },
   {
     id: 12,
     type: "Event",
-    dateTime: new Date("2024-03-15T18:00:00"),
-    amount: -1500,
+    dateTime: new Date("2024-01-15T18:00:00"),
+    amount: -1700,
     aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-20T14:00:00"),
+    eventDate: new Date("2024-01-20T14:00:00"),
   },
   {
     id: 13,
     type: "Topup",
     dateTime: new Date("2024-03-17T10:00:00"),
-    amount: 1000,
+    amount: 3500,
     aiteiName: "John Doe",
     eventDate: null,
   },
@@ -118,32 +120,42 @@ const mockData: TransactionBoxProps[] = [
     id: 14,
     type: "Withdraw",
     dateTime: new Date("2024-03-16T15:30:00"),
-    amount: -500,
+    amount: -250,
     aiteiName: "Alice Smith",
     eventDate: null,
   },
   {
     id: 15,
     type: "Event",
-    dateTime: new Date("2024-03-15T18:00:00"),
+    dateTime: new Date("2024-03-24T20:00:00"),
     amount: -1500,
     aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-20T14:00:00"),
+    eventDate: new Date("2024-03-24T20:00:00"),
+  },
+  {
+    id: 16,
+    type: "Event",
+    dateTime: new Date("2024-03-15T23:30:00"),
+    amount: -400,
+    aiteiName: "Alice Smith",
+    eventDate: new Date("2024-03-15T23:00:00"),
   },
 ];
 
 export default function TransactionHistory() {
+  const { transactions } = api.transaction.getTransactions.useQuery({
+    userID: "",
+  });
+  mockData.sort((a, b) => b.dateTime.getTime() - a.dateTime.getTime());
   return (
     <div className="flex w-full flex-col gap-y-6 p-9">
       <div className="flex w-full flex-row items-center gap-x-3">
-        <FontAwesomeIcon
-          className="h-6 text-high hover:cursor-pointer hover:text-black"
-          onClick={() => {
-            window.history.back();
-            return;
-          }}
-          icon={faAngleLeft}
-        />
+        <Link href={"/profile"}>
+          <FontAwesomeIcon
+            className="h-6 text-high hover:cursor-pointer hover:text-black"
+            icon={faAngleLeft}
+          />
+        </Link>
         <div className="h3 font-bold text-high">Transaction History</div>
       </div>
       <div className="flex w-full flex-col gap-y-4">
