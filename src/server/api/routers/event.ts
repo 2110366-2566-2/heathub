@@ -223,9 +223,12 @@ export const eventRouter = createTRPCRouter({
           eventID: eventRow.id,
           type: "pay",
         });
-        await tx.update(user).set({
-          balance: hostData.balance + hostPayment,
-        });
+        await tx
+          .update(user)
+          .set({
+            balance: hostData.balance + hostPayment,
+          })
+          .where(eq(user.id, eventRow.hostID));
       });
     }),
 
