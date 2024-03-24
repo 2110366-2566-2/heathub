@@ -78,14 +78,14 @@ export const reviewRouter = createTRPCRouter({
       const hostData = await ctx.db.query.hostUser.findFirst({
         where: eq(hostUser.userID, input.hostID),
       });
-      if(!hostData){
+      if (!hostData) {
         return;
       }
       await ctx.db
         .update(hostUser)
         .set({
           avgRating: roundedAvg,
-          reviewCount : (hostData?.reviewCount??0) + 1
+          reviewCount: (hostData?.reviewCount ?? 0) + 1,
         })
         .where(eq(hostUser.userID, input.hostID));
       return;

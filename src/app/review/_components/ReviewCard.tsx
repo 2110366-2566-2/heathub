@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { TextProps, type ReviewType } from "./type";
+import { type TextProps, type ReviewType } from "./type";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/utils/tailwind-merge";
