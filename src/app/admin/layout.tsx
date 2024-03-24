@@ -7,7 +7,10 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const user = await serverapi.auth.me.query();
-  if (user?.role !== "admin") redirect("/");
+  console.log("user", user);
+  if (!user) return redirect("/signin");
+  if (user.role !== "admin") redirect("/");
+
   return (
     <div className="flex h-auto flex-row bg-bgColor">
       <AdminNavbar />

@@ -19,6 +19,7 @@ const handler = async (req: NextRequest) => {
   // for session cookies
   // create blank session cookie
   const sessionCookie = auth.createSessionCookie(null);
+  location.reload();
   return new Response(null, {
     headers: {
       Location: "/signin", // redirect to login page

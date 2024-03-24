@@ -10,5 +10,9 @@ export default async function Home() {
     return redirect("/signin");
   }
 
+  if (user.role === "admin") {
+    return redirect("/admin");
+  }
+
   return redirect("/discover");
 }
