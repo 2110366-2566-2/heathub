@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import { serverapi } from "@/trpc/server";
 import { redirect } from "next/navigation";
-export const dynamic = "force-dynamic";
+
 export default async function SignInLayout({
   children,
 }: {
