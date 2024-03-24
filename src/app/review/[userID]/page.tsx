@@ -74,7 +74,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
 
   return (
     <div className="flex h-screen w-full flex-row items-start justify-center gap-4 p-9">
-      <div className="flex h-full w-full flex-col items-start gap-4">
+      <div className="flex h-full w-full flex-col items-start gap-4 overflow-y-scroll">
         <div className="flex h-9 w-full flex-row justify-between">
           <div className="flex h-9 flex-row  items-center justify-center gap-3">
             <button
@@ -95,7 +95,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
             {RatingFilter}
           </div>
         </div>
-        <div>
+        <div className="h-full w-full">
           <ReviewList userID={mockUserId} filter={filter} />
         </div>
       </div>

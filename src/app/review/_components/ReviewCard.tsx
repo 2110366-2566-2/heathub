@@ -1,10 +1,16 @@
 import Image from "next/image";
-import { type ReviewType } from "./type";
+import { type TextProps, type ReviewType } from "./type";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/utils/tailwind-merge";
+import { useState } from "react";
 
 export default function ReviewCard(props: ReviewType) {
+  const [showFullText, setShowFullText] = useState(false);
+
+  const toggleFullText = () => {
+    setShowFullText(!showFullText);
+  };
   const month = [
     "Jan",
     "Feb",
@@ -19,6 +25,34 @@ export default function ReviewCard(props: ReviewType) {
     "Nov",
     "Dec",
   ];
+  const TruncateText: React.FC<TextProps> = ({ text, maxLength }) => {
+    if (text.length > maxLength && !showFullText) {
+      return (
+        <span>
+          {text.slice(0, maxLength) + "..."}
+          <button
+            onClick={toggleFullText}
+            className="mt-2 text-secondary-500 hover:underline"
+          >
+            Read More
+          </button>
+        </span>
+      );
+    } else if (text.length > maxLength) {
+      return (
+        <span>
+          {text + "..."}
+          <button
+            onClick={toggleFullText}
+            className="mt-2 text-secondary-500 hover:underline"
+          >
+            Show Less
+          </button>
+        </span>
+      );
+    }
+    return <span>{text}</span>;
+  };
   const location = props.location.slice(0, 15);
   const eventDate = props.eventDate.toLocaleDateString().slice(0, -2);
   const reviewDate = props.createdAt.toLocaleString().split("/");
@@ -28,8 +62,9 @@ export default function ReviewCard(props: ReviewType) {
     reviewDate[1]! +
     " " +
     reviewDate[2]!.split(",").join(" at");
+
   return (
-    <div className="flex h-[153px] flex-row gap-2 rounded-xl bg-neutral-0 p-4">
+    <div className="flex  flex-row gap-2 rounded-xl bg-neutral-0 p-4">
       <div className="flex w-[183px] flex-col items-start justify-between">
         <Image
           className="items-center justify-center rounded-full"
@@ -51,8 +86,10 @@ export default function ReviewCard(props: ReviewType) {
         </div>
         <hr className="w-full border" />
 
-        <div className="h5 line-clamp-3 w-full break-all text-neutral-700 ">
-          {props.reviewDesc}
+        <div
+          className={`h5 w-full break-all text-neutral-700 ${showFullText ? "" : "line-clamp-3"}`}
+        >
+          <TruncateText text={props.reviewDesc ?? ""} maxLength={60} />
         </div>
       </div>
     </div>

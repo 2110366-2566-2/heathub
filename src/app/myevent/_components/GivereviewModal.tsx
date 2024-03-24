@@ -24,7 +24,7 @@ interface EventModalProps {
 
 export function GivereviewModal(prop: EventModalProps) {
   const { children } = prop;
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number>(5);
   const [message, setMessage] = useState<string>("");
   const createReview = api.review.createReview.useMutation();
 
@@ -75,20 +75,10 @@ export function GivereviewModal(prop: EventModalProps) {
               <Button
                 variant="outline"
                 className="h5 border-primary-500 text-primary-500"
-                type="submit"
               >
                 Back To Event
               </Button>
             </DialogClose>
-            {/* <DialogClose asChild>
-              <Button
-                onSubmit={handleSubmit}
-                variant="default"
-                className="bg-primary-500 text-white"
-              >
-                Sent a Review
-              </Button>
-            </DialogClose> */}
             <Button
               onSubmit={handleSubmit}
               variant="default"
