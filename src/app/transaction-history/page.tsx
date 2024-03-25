@@ -15,7 +15,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 1,
     type: "Topup",
-    dateTime: new Date("2023-05-17T11:00:00"),
+    createdAt: new Date("2023-05-17T11:00:00"),
     amount: 1000,
     aiteiName: "John Doe",
     eventDate: null,
@@ -23,7 +23,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 2,
     type: "Withdraw",
-    dateTime: new Date("2024-02-16T15:30:00"),
+    createdAt: new Date("2024-02-16T15:30:00"),
     amount: -500,
     aiteiName: "Alice Smith",
     eventDate: null,
@@ -31,7 +31,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 3,
     type: "Event",
-    dateTime: new Date("2024-03-15T22:00:00"),
+    createdAt: new Date("2024-03-15T22:00:00"),
     amount: -400,
     aiteiName: "Alice Smith",
     eventDate: new Date("2024-03-15T23:00:00"),
@@ -39,7 +39,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 4,
     type: "Topup",
-    dateTime: new Date("2023-11-17T21:00:00"),
+    createdAt: new Date("2023-11-17T21:00:00"),
     amount: 1000,
     aiteiName: "John Doe",
     eventDate: null,
@@ -47,7 +47,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 5,
     type: "Withdraw",
-    dateTime: new Date("2024-03-16T08:30:00"),
+    createdAt: new Date("2024-03-16T08:30:00"),
     amount: -500,
     aiteiName: "Alice Smith",
     eventDate: null,
@@ -55,7 +55,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 6,
     type: "Event",
-    dateTime: new Date("2024-03-05T21:20:00"),
+    createdAt: new Date("2024-03-05T21:20:00"),
     amount: -1700,
     aiteiName: "Alice Smith",
     eventDate: new Date("2024-03-05T21:30:00"),
@@ -63,7 +63,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 7,
     type: "Topup",
-    dateTime: new Date("2024-03-17T10:00:00"),
+    createdAt: new Date("2024-03-17T10:00:00"),
     amount: 1500,
     aiteiName: "John Doe",
     eventDate: null,
@@ -71,7 +71,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 8,
     type: "Topup",
-    dateTime: new Date("2024-01-16T15:30:00"),
+    createdAt: new Date("2024-01-16T15:30:00"),
     amount: 5000,
     aiteiName: "Alice Smith",
     eventDate: null,
@@ -79,7 +79,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 9,
     type: "Event",
-    dateTime: new Date("2024-03-15T21:00:00"),
+    createdAt: new Date("2024-03-15T21:00:00"),
     amount: -1500,
     aiteiName: "Alice Smith",
     eventDate: new Date("2024-03-20T14:00:00"),
@@ -87,7 +87,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 10,
     type: "Topup",
-    dateTime: new Date("2024-03-15T10:30:00"),
+    createdAt: new Date("2024-03-15T10:30:00"),
     amount: 1000,
     aiteiName: "John Doe",
     eventDate: null,
@@ -95,7 +95,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 11,
     type: "Withdraw",
-    dateTime: new Date("2024-03-16T15:30:00"),
+    createdAt: new Date("2024-03-16T15:30:00"),
     amount: -1200,
     aiteiName: "Alice Smith",
     eventDate: null,
@@ -103,7 +103,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 12,
     type: "Event",
-    dateTime: new Date("2024-01-15T18:00:00"),
+    createdAt: new Date("2024-01-15T18:00:00"),
     amount: -1700,
     aiteiName: "Alice Smith",
     eventDate: new Date("2024-01-20T14:00:00"),
@@ -111,7 +111,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 13,
     type: "Topup",
-    dateTime: new Date("2024-03-17T10:00:00"),
+    createdAt: new Date("2024-03-17T10:00:00"),
     amount: 3500,
     aiteiName: "John Doe",
     eventDate: null,
@@ -119,7 +119,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 14,
     type: "Withdraw",
-    dateTime: new Date("2024-03-16T15:30:00"),
+    createdAt: new Date("2024-03-16T15:30:00"),
     amount: -250,
     aiteiName: "Alice Smith",
     eventDate: null,
@@ -127,7 +127,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 15,
     type: "Event",
-    dateTime: new Date("2024-03-24T20:00:00"),
+    createdAt: new Date("2024-03-24T20:00:00"),
     amount: -1500,
     aiteiName: "Alice Smith",
     eventDate: new Date("2024-03-24T20:00:00"),
@@ -135,7 +135,7 @@ const mockData: TransactionBoxProps[] = [
   {
     id: 16,
     type: "Event",
-    dateTime: new Date("2024-03-15T23:30:00"),
+    createdAt: new Date("2024-03-15T23:30:00"),
     amount: -400,
     aiteiName: "Alice Smith",
     eventDate: new Date("2024-03-15T23:00:00"),
@@ -143,10 +143,8 @@ const mockData: TransactionBoxProps[] = [
 ];
 
 export default function TransactionHistory() {
-  const { transactions } = api.transaction.getTransactions.useQuery({
-    userID: "",
-  });
-  mockData.sort((a, b) => b.dateTime.getTime() - a.dateTime.getTime());
+  const transactions = api.transaction.getTransactions.useQuery();
+  mockData.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   return (
     <div className="flex w-full flex-col gap-y-6 p-9">
       <div className="flex w-full flex-row items-center gap-x-3">
@@ -163,7 +161,7 @@ export default function TransactionHistory() {
           <TransactionBox
             aiteiName={item.aiteiName}
             amount={item.amount}
-            dateTime={item.dateTime}
+            createdAt={item.createdAt}
             eventDate={item.eventDate}
             type={item.type}
             key={item.id}
@@ -178,14 +176,14 @@ export default function TransactionHistory() {
 interface TransactionBoxProps {
   id: number;
   type: "Topup" | "Withdraw" | "Event";
-  dateTime: Date;
+  createdAt: Date;
   amount: number;
   aiteiName: string | null;
   eventDate: Date | null;
 }
 
 function TransactionBox(props: TransactionBoxProps) {
-  const { type, dateTime, amount, aiteiName, eventDate } = props;
+  const { type, createdAt, amount, aiteiName, eventDate } = props;
 
   const formatDate = (date: Date, options: number) => {
     const options1: Intl.DateTimeFormatOptions = {
@@ -245,7 +243,7 @@ function TransactionBox(props: TransactionBoxProps) {
             })()}
           </div>
           <div className="line-clamp-1 text-xs/[14px] text-medium">
-            {formatDate(dateTime, 2)}
+            {formatDate(createdAt, 2)}
           </div>
         </div>
         <span

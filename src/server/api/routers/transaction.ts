@@ -1,53 +1,56 @@
-import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { string, z } from "zod";
+import { createTRPCRouter, userProcedure } from "../trpc";
 import {
   internalTransaction,
   externalTransaction,
   event,
   user,
+  hostUser,
 } from "@/server/db/schema";
+import { eq, desc, sql, type SQL } from "drizzle-orm";
 
 export const transactionRouter = createTRPCRouter({
-  getTransactions: publicProcedure
-    .input(
-      z.object({
-        userID: z.string(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      //   const transactionWithData = ctx.db
-      //     .select({
-      //       id: internalTransaction.id,
-      //       type: internalTransaction.type,
-      //       dateTime: internalTransaction.createdAt,
-      //       amount: internalTransaction.amount,
-      //       eventDate: event.startTime,
-      //     })
-      //     .from(int);
-      const transactionsWithData = await ctx.db
-        .select({
-          transactionID: externalTransaction.id,
-          typeOfTransaction: externalTransaction.type,
-          createdAt: externalTransaction.createdAt,
-          amount: externalTransaction.amount,
-        })
-        .from(externalTransaction)
-        .where(eq(externalTransaction.userID, input.userID))
-        .unionAll(
-          ctx.db
-            .select({
-              transactionID: internalTransaction.id,
-              typeOfTransaction: internalTransaction.type,
-              createdAt: internalTransaction.createdAt,
-              amount: internalTransaction.amount,
-              eventDate: event.startTime,
-              otherSideName: user.userName,
-            })
-            .from(internalTransaction)
-            .innerJoin(event, eq(event.id, internalTransaction.eventID))
-            .innerJoin(user, eq(user.id, internalTransaction.userID))
-            .where(eq(internalTransaction.userID, input.userID)),
-        )
-        .orderBy(desc(externalTransaction.createdAt));
-    }),
+  getTransactions: userProcedure.query(async ({ ctx }) => {
+    const isHost = !!(await ctx.db.query.hostUser.findFirst({
+      where: eq(hostUser.userID, ctx.session?.user.userId),
+    }));
+
+    const internalTransactionWithData = await ctx.db
+      .select({
+        id: sql`${internalTransaction.id}`.mapWith(Number),
+        type: sql`${internalTransaction.type}`.mapWith(String) as SQL<
+          "pay" | "recieve" | "refund" | "withdraw" | "topup"
+        >,
+        createdAt: sql`${internalTransaction.createdAt}`.mapWith(Date),
+        amount: sql`${internalTransaction.amount}`.mapWith(Number),
+        aiteiName: sql`${user.id}`.mapWith(String),
+        eventDate: sql`${event.startTime}`.mapWith(Date),
+      })
+      .from(internalTransaction)
+      .innerJoin(event, eq(internalTransaction.eventID, event.id))
+      .innerJoin(user, eq(user.id, isHost ? event.participantID : event.hostID))
+      .where(eq(internalTransaction.userID, ctx.session?.user.userId))
+      .orderBy(desc(internalTransaction.createdAt))
+      .execute();
+
+    const externalTransactionWithData = await ctx.db
+      .select({
+        id: sql`${externalTransaction.id}`.mapWith(Number),
+        type: sql`${externalTransaction.type}`.mapWith(String) as SQL<
+          "pay" | "recieve" | "refund" | "withdraw" | "topup"
+        >,
+        createdAt: sql`${externalTransaction.createdAt}`.mapWith(Date),
+        amount: sql`${externalTransaction.amount}`.mapWith(Number),
+        aiteiName: sql`${null}`.mapWith(String),
+        eventDate: sql`${null}`.mapWith(Date),
+      })
+      .from(externalTransaction)
+      .where(eq(externalTransaction.userID, ctx.session?.user.userId))
+      .orderBy(desc(externalTransaction.createdAt))
+      .execute();
+
+    const res = internalTransactionWithData.concat(externalTransactionWithData);
+
+    return res;
+  }),
 });
