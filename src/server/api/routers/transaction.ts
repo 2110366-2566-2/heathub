@@ -21,10 +21,12 @@ export const transactionRouter = createTRPCRouter({
         type: sql`${internalTransaction.type}`.mapWith(String) as SQL<
           "pay" | "recieve" | "refund" | "withdraw" | "topup"
         >,
-        createdAt: sql`${internalTransaction.createdAt}`.mapWith(Date),
+        createdAt: sql`${internalTransaction.createdAt}`.mapWith(
+          internalTransaction.createdAt,
+        ),
         amount: sql`${internalTransaction.amount}`.mapWith(Number),
         aiteiName: sql`${user.id}`.mapWith(String),
-        eventDate: sql`${event.startTime}`.mapWith(Date),
+        eventDate: sql`${event.startTime}`.mapWith(event.startTime),
       })
       .from(internalTransaction)
       .innerJoin(event, eq(internalTransaction.eventID, event.id))
@@ -39,10 +41,12 @@ export const transactionRouter = createTRPCRouter({
         type: sql`${externalTransaction.type}`.mapWith(String) as SQL<
           "pay" | "recieve" | "refund" | "withdraw" | "topup"
         >,
-        createdAt: sql`${externalTransaction.createdAt}`.mapWith(Date),
+        createdAt: sql`${externalTransaction.createdAt}`.mapWith(
+          externalTransaction.createdAt,
+        ),
         amount: sql`${externalTransaction.amount}`.mapWith(Number),
         aiteiName: sql`${null}`.mapWith(String),
-        eventDate: sql`${null}`.mapWith(Date),
+        eventDate: sql`${null}`.mapWith(externalTransaction.createdAt),
       })
       .from(externalTransaction)
       .where(eq(externalTransaction.userID, ctx.session?.user.userId))

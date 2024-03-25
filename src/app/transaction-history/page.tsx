@@ -14,7 +14,7 @@ import Link from "next/link";
 const mockData: TransactionBoxProps[] = [
   {
     id: 1,
-    type: "Topup",
+    type: "topup",
     createdAt: new Date("2023-05-17T11:00:00"),
     amount: 1000,
     aiteiName: "John Doe",
@@ -22,7 +22,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 2,
-    type: "Withdraw",
+    type: "withdraw",
     createdAt: new Date("2024-02-16T15:30:00"),
     amount: -500,
     aiteiName: "Alice Smith",
@@ -30,7 +30,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 3,
-    type: "Event",
+    type: "pay",
     createdAt: new Date("2024-03-15T22:00:00"),
     amount: -400,
     aiteiName: "Alice Smith",
@@ -38,7 +38,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 4,
-    type: "Topup",
+    type: "topup",
     createdAt: new Date("2023-11-17T21:00:00"),
     amount: 1000,
     aiteiName: "John Doe",
@@ -46,7 +46,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 5,
-    type: "Withdraw",
+    type: "withdraw",
     createdAt: new Date("2024-03-16T08:30:00"),
     amount: -500,
     aiteiName: "Alice Smith",
@@ -54,7 +54,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 6,
-    type: "Event",
+    type: "pay",
     createdAt: new Date("2024-03-05T21:20:00"),
     amount: -1700,
     aiteiName: "Alice Smith",
@@ -62,7 +62,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 7,
-    type: "Topup",
+    type: "topup",
     createdAt: new Date("2024-03-17T10:00:00"),
     amount: 1500,
     aiteiName: "John Doe",
@@ -70,7 +70,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 8,
-    type: "Topup",
+    type: "topup",
     createdAt: new Date("2024-01-16T15:30:00"),
     amount: 5000,
     aiteiName: "Alice Smith",
@@ -78,7 +78,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 9,
-    type: "Event",
+    type: "pay",
     createdAt: new Date("2024-03-15T21:00:00"),
     amount: -1500,
     aiteiName: "Alice Smith",
@@ -86,7 +86,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 10,
-    type: "Topup",
+    type: "topup",
     createdAt: new Date("2024-03-15T10:30:00"),
     amount: 1000,
     aiteiName: "John Doe",
@@ -94,7 +94,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 11,
-    type: "Withdraw",
+    type: "withdraw",
     createdAt: new Date("2024-03-16T15:30:00"),
     amount: -1200,
     aiteiName: "Alice Smith",
@@ -102,7 +102,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 12,
-    type: "Event",
+    type: "pay",
     createdAt: new Date("2024-01-15T18:00:00"),
     amount: -1700,
     aiteiName: "Alice Smith",
@@ -110,7 +110,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 13,
-    type: "Topup",
+    type: "topup",
     createdAt: new Date("2024-03-17T10:00:00"),
     amount: 3500,
     aiteiName: "John Doe",
@@ -118,7 +118,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 14,
-    type: "Withdraw",
+    type: "withdraw",
     createdAt: new Date("2024-03-16T15:30:00"),
     amount: -250,
     aiteiName: "Alice Smith",
@@ -126,7 +126,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 15,
-    type: "Event",
+    type: "pay",
     createdAt: new Date("2024-03-24T20:00:00"),
     amount: -1500,
     aiteiName: "Alice Smith",
@@ -134,7 +134,7 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 16,
-    type: "Event",
+    type: "pay",
     createdAt: new Date("2024-03-15T23:30:00"),
     amount: -400,
     aiteiName: "Alice Smith",
@@ -144,7 +144,9 @@ const mockData: TransactionBoxProps[] = [
 
 export default function TransactionHistory() {
   const transactions = api.transaction.getTransactions.useQuery();
-  mockData.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  transactions.data?.sort(
+    (a, b) => b.createdAt?.getTime() - a.createdAt?.getTime(),
+  );
   return (
     <div className="flex w-full flex-col gap-y-6 p-9">
       <div className="flex w-full flex-row items-center gap-x-3">
@@ -157,17 +159,23 @@ export default function TransactionHistory() {
         <div className="h3 font-bold text-high">Transaction History</div>
       </div>
       <div className="flex w-full flex-col gap-y-4">
-        {mockData.map((item: TransactionBoxProps) => (
-          <TransactionBox
-            aiteiName={item.aiteiName}
-            amount={item.amount}
-            createdAt={item.createdAt}
-            eventDate={item.eventDate}
-            type={item.type}
-            key={item.id}
-            id={item.id}
-          />
-        ))}
+        {transactions.data ? (
+          (transactions.data as TransactionBoxProps[]).map(
+            (item: TransactionBoxProps) => (
+              <TransactionBox
+                aiteiName={item.aiteiName}
+                amount={item.amount}
+                createdAt={item.createdAt}
+                eventDate={item.eventDate}
+                type={item.type}
+                key={item.id}
+                id={item.id}
+              />
+            ),
+          )
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
@@ -175,7 +183,7 @@ export default function TransactionHistory() {
 
 interface TransactionBoxProps {
   id: number;
-  type: "Topup" | "Withdraw" | "Event";
+  type: "pay" | "recieve" | "refund" | "withdraw" | "topup";
   createdAt: Date;
   amount: number;
   aiteiName: string | null;
@@ -215,13 +223,15 @@ function TransactionBox(props: TransactionBoxProps) {
         <div className="relative h-7 w-8">
           <FontAwesomeIcon
             className="h-7 w-8 text-secondary-500"
-            icon={type == "Event" ? faMoneyBillWave : faWallet}
+            icon={
+              type == "recieve" || type == "pay" ? faMoneyBillWave : faWallet
+            }
           />
 
-          {type != "Event" ? (
+          {type != "recieve" && type != "pay" ? (
             <FontAwesomeIcon
               className="absolute left-[26px] top-0 h-3 w-3 text-secondary-400"
-              icon={type == "Topup" ? faPlusCircle : faMinusCircle}
+              icon={type == "topup" ? faPlusCircle : faMinusCircle}
             />
           ) : (
             <></>
@@ -233,9 +243,9 @@ function TransactionBox(props: TransactionBoxProps) {
           <div className="h5 line-clamp-1 font-bold">
             {(() => {
               switch (type) {
-                case "Topup":
+                case "topup":
                   return "Topup money";
-                case "Withdraw":
+                case "withdraw":
                   return "Withdraw money";
                 default:
                   return `Event with ${aiteiName} on ${eventDate ? formatDate(eventDate, 1) : ""}`;
