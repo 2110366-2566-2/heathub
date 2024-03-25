@@ -1,4 +1,5 @@
 import { createTRPCRouter, adminProcedure } from "@/server/api/trpc";
+import { removeUploadthingURLPrefix, utapi } from "@/app/api/uploadthing/core";
 
 import {
   eventReport,
@@ -22,6 +23,10 @@ export const adminRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      let verifiedReq = await ctx.db.query.verifiedRequest.findFirst({
+        where: eq(verifiedRequest.id, input.requestID),
+        columns: { id: true, nationalIDCardImageURL: true },
+      });
       await ctx.db.transaction(async (tx) => {
         await tx
           .update(hostUser)
@@ -43,6 +48,14 @@ export const adminRouter = createTRPCRouter({
             ),
           );
       });
+      if (
+        verifiedReq?.nationalIDCardImageURL &&
+        verifiedReq.nationalIDCardImageURL !== ""
+      ) {
+        await utapi.deleteFiles(
+          removeUploadthingURLPrefix(verifiedReq.nationalIDCardImageURL),
+        );
+      }
     }),
 
   getVerifiedRequest: adminProcedure
