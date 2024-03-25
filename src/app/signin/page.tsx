@@ -15,7 +15,7 @@ export default function SignIn() {
     setLoading(true);
     const err = await signIn(e);
     if (!err) {
-      redirect("/discover");
+      redirect("/");
     }
     setError(err);
     setLoading(false);
