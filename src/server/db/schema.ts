@@ -1,6 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
+import { BANK_LIST } from "@/constants/payment";
 import { relations, sql } from "drizzle-orm";
 
 import {
@@ -43,7 +44,9 @@ export const user = sqliteTable(
     profileImageURL: text("profile_image_url", { length: 256 }).default(""),
     balance: int("balance", {
       mode: "number",
-    }).default(0),
+    })
+      .default(0)
+      .notNull(),
   },
   (user) => ({
     akaIndex: index("aka_idx").on(user.aka),
@@ -61,6 +64,10 @@ export const hostUser = sqliteTable("host_user", {
     length: 32,
     enum: ["unverified", "pending", "verified", "rejected"],
   }).default("unverified"),
+  defaultPayoutBankAccount: text("default_bank_account"),
+  defaultPayoutBankName: text("default_bank_name", {
+    enum: BANK_LIST,
+  }),
 });
 
 export const hostRelation = relations(hostUser, ({ one, many }) => ({
@@ -71,23 +78,29 @@ export const hostRelation = relations(hostUser, ({ one, many }) => ({
   interests: many(hostInterest),
   reviews: many(ratingAndReview),
   reports: many(eventReport),
+  withdrawalRequests: many(withdrawalRequest),
 }));
 
 export const ratingAndReview = sqliteTable("rating_review", {
-  reviewID: text("review_id", {
-    length: 64,
-  }).primaryKey(),
-  appointmentID: text("appointment_id", {
-    length: 64,
+  id: int("id", {
+    mode: "number",
+  }).primaryKey({
+    autoIncrement: true,
   }),
+  eventID: int("event_id", {
+    mode: "number",
+  }).notNull(),
   participantID: text("participant_id", {
     length: 64,
   }),
   hostID: text("host_id", {
     length: 64,
   }),
-  ratingScore: int("rating_score").default(0),
-  reviewDesc: text("review_description"),
+  ratingScore: int("rating_score").default(0).notNull(),
+  reviewDesc: text("review_description", { length: 512 }),
+  createdAt: int("created_at", {
+    mode: "timestamp_ms",
+  }).notNull(),
 });
 
 export const ratingAndReviewRelation = relations(
@@ -96,6 +109,14 @@ export const ratingAndReviewRelation = relations(
     host: one(hostUser, {
       fields: [ratingAndReview.hostID],
       references: [hostUser.userID],
+    }),
+    participant: one(participantUser, {
+      fields: [ratingAndReview.participantID],
+      references: [participantUser.userID],
+    }),
+    event: one(event, {
+      fields: [ratingAndReview.eventID],
+      references: [event.id],
     }),
   }),
 );
@@ -349,37 +370,52 @@ export const externalTransactionRelation = relations(
   }),
 );
 
-export const tranferTransaction = sqliteTable("tranfer_transaction", {
-  id: int("id", {
-    mode: "number",
-  }).primaryKey({
-    autoIncrement: true,
+export const internalTransaction = sqliteTable(
+  "internal_transaction",
+  {
+    id: int("id", {
+      mode: "number",
+    }).primaryKey({
+      autoIncrement: true,
+    }),
+    userID: text("user_id", {
+      length: 64,
+    }).notNull(),
+    eventID: int("event_id", {
+      mode: "number",
+    }).notNull(),
+    type: text("type", {
+      enum: ["pay", "recieve", "refund"],
+    }).notNull(),
+    // amount is in สตางค์, positive for recieve, negative for pay
+    amount: int("amount", {
+      mode: "number",
+    }).notNull(),
+    createdAt: int("created_at", {
+      mode: "timestamp_ms",
+    })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (internalTransaction) => ({
+    userIDIndex: index("internal_transaction_user_id_idx").on(
+      internalTransaction.userID,
+    ),
+    eventIDIndex: index("internal_transaction_event_id_idx").on(
+      internalTransaction.eventID,
+    ),
   }),
-  senderID: text("sender_id", {
-    length: 64,
-  }).notNull(),
-  receiverID: text("receiver_id", {
-    length: 64,
-  }).notNull(),
-  amount: int("amount", {
-    mode: "number",
-  }).notNull(),
-  createdAt: int("created_at", {
-    mode: "timestamp_ms",
-  })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-});
+);
 
-export const tranferTransactionRelation = relations(
-  tranferTransaction,
+export const internalTransactionRelation = relations(
+  internalTransaction,
   ({ one }) => ({
-    sender: one(user, {
-      fields: [tranferTransaction.senderID],
+    user: one(user, {
+      fields: [internalTransaction.userID],
       references: [user.id],
     }),
-    receiver: one(user, {
-      fields: [tranferTransaction.receiverID],
+    event: one(user, {
+      fields: [internalTransaction.eventID],
       references: [user.id],
     }),
   }),
@@ -431,6 +467,10 @@ export const eventRelation = relations(event, ({ one }) => ({
   participant: one(user, {
     fields: [event.participantID],
     references: [user.id],
+  }),
+  ratingAndReview: one(ratingAndReview, {
+    fields: [event.id],
+    references: [ratingAndReview.eventID],
   }),
 }));
 
@@ -490,12 +530,17 @@ export const eventReport = sqliteTable("event_report", {
   title: text("title", {
     length: 64,
   }).notNull(),
-  detail: text("detail"),
+  details: text("detail"),
   status: text("status", {
     length: 32,
     enum: ["pending", "resolved", "rejected"],
   })
     .default("pending")
+    .notNull(),
+  createdAt: int("created_at", {
+    mode: "timestamp_ms",
+  })
+    .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
 });
 
@@ -513,3 +558,51 @@ export const eventReportRelation = relations(eventReport, ({ one }) => ({
     references: [participantUser.userID],
   }),
 }));
+
+export const withdrawalRequest = sqliteTable(
+  "withdrawal_request",
+  {
+    id: int("id", {
+      mode: "number",
+    }).primaryKey({
+      autoIncrement: true,
+    }),
+    userID: text("user_id", {
+      length: 64,
+    }).notNull(),
+    amount: int("amount", {
+      mode: "number",
+    }).notNull(),
+    status: text("status", {
+      length: 32,
+      enum: ["pending", "completed", "rejected"],
+    })
+      .default("pending")
+      .notNull(),
+    createdAt: int("created_at", {
+      mode: "timestamp_ms",
+    })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    completedAt: int("completed_at", {
+      mode: "timestamp_ms",
+    }),
+    bankName: text("bank_name").notNull(),
+    bankAccount: text("bank_account").notNull(),
+  },
+  (withdrawalRequest) => ({
+    userIDIndex: index("withdrawal_request_user_id_idx").on(
+      withdrawalRequest.userID,
+    ),
+  }),
+);
+
+export const withdrawalRequestRelation = relations(
+  withdrawalRequest,
+  ({ one }) => ({
+    hostUser: one(hostUser, {
+      fields: [withdrawalRequest.userID],
+      references: [hostUser.userID],
+    }),
+  }),
+);

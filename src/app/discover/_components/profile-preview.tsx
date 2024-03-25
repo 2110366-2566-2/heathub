@@ -18,6 +18,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { tagStyle } from "../../../utils/icon-mapping";
 import { type ProfilePreviewProps } from "../types";
@@ -32,20 +33,23 @@ export function ProfilePreview({
   role: string;
 }) {
   const isMobile = useMediaQuery({ maxWidth: 1023 });
+  const [snap, setSnap] = useState<string | number | null>("322px");
 
   if (isMobile) {
     return (
-      <Drawer>
-        <DrawerTrigger className="aspect-[0.76] min-h-[424px] max-w-[323px]">
+      <Drawer
+        snapPoints={["322px", "500px"]}
+        activeSnapPoint={snap}
+        setActiveSnapPoint={setSnap}
+        fadeFromIndex={snap === "322px" ? 0 : snap === "500px" ? 1 : undefined}
+      >
+        <DrawerTrigger
+          className="aspect-[0.76] min-h-[424px] max-w-[323px]"
+          onClick={() => setSnap("322px")}
+        >
           <Card {...props} />
         </DrawerTrigger>
-        <DrawerOverlay
-          className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `url(${props.image || generateAvatar(props.aka)})`,
-          }}
-        />
-        <DrawerProfile props={props} role={role} />
+        <DrawerProfile props={props} role={role} snap={snap} />
       </Drawer>
     );
   }
@@ -63,6 +67,18 @@ export function ProfilePreview({
 type ProfileProps = {
   props: ProfilePreviewProps;
   role: string;
+  snap?: string | number | null;
+};
+
+const CustomDrawerOverlay = (props: { image: string; aka: string }) => {
+  return (
+    <DrawerOverlay
+      className="mb-[290px] bg-opacity-0 bg-cover bg-center bg-no-repeat transition-all"
+      style={{
+        backgroundImage: `url(${props.image || generateAvatar(props.aka)})`,
+      }}
+    />
+  );
 };
 
 export function DialogProfile(props: ProfileProps) {
@@ -98,14 +114,23 @@ export function DialogProfile(props: ProfileProps) {
 
 export function DrawerProfile(props: ProfileProps) {
   return (
-    <DrawerContent className="flex flex-col gap-2 bg-white p-4">
-      <div className="absolute right-3 top-7">
-        <RatingIcon rating={props.props.rating} />
-      </div>
-      <div className="flex flex-col gap-2 rounded-r-3xl">
-        <Name {...props.props} />
-        <About props={props.props} />
-        <Interests props={props.props} />
+    <DrawerContent
+      className="flex h-full gap-2 bg-white px-4 py-6"
+      customOverlay={
+        <CustomDrawerOverlay image={props.props.image} aka={props.props.aka} />
+      }
+    >
+      <div className={cn("flex h-full max-h-[448px] flex-col", {})}>
+        <div className="h-full">
+          <div className="relative flex flex-col gap-2 rounded-r-3xl">
+            <div className="absolute right-[-16px] top-0">
+              <RatingIcon rating={props.props.rating} />
+            </div>
+            <Name {...props.props} />
+            <About props={props.props} />
+            <Interests props={props.props} />
+          </div>
+        </div>
         <ReviewChat props={props.props} role={props.role} />
       </div>
     </DrawerContent>
@@ -147,15 +172,13 @@ function About({
 
 function Interests({
   props,
-  isDrawer,
 }: {
   props: ProfilePreviewProps;
   isDrawer?: boolean;
 }) {
   const { interests } = props;
-  const size = isDrawer ? "" : "min-h-[260px]";
   return (
-    <div className={cn("flex flex-col gap-3 text-wrap break-words", size)}>
+    <div className="flex flex-col gap-3 text-wrap break-words">
       <div className="h4 text-medium">Interests</div>
       <div className="flex flex-row flex-wrap items-center justify-start gap-2 self-stretch">
         {interests.sort().map((tag, index) => {
@@ -187,25 +210,23 @@ function ReviewChat(props: ReviewChatProps) {
   return (
     <div
       className={cn(
-        " flex flex-row gap-3 self-end",
-        props.role === "participant" ? "w-[300px]" : "w-[150px]",
-        isMobile ? "mb-20" : "absolute bottom-0",
+        "flex w-full flex-row justify-end gap-3",
+        isMobile ? "" : "absolute bottom-0",
       )}
     >
-      <Button
-        variant="outline"
-        size="md"
-        className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-300"
-      >
-        <FontAwesomeIcon icon={faHeart} className="mr-2" size="1x" />
-        {reviews} Reviews
-      </Button>
+      <Link href={`/review/${id}`}>
+        <Button
+          variant="outline"
+          size="md"
+          className="w-full border-secondary-500 text-secondary-500 hover:bg-secondary-300"
+        >
+          <FontAwesomeIcon icon={faHeart} className="mr-2" size="1x" />
+          {reviews} Reviews
+        </Button>
+      </Link>
       {props.role === "participant" && (
         <Link href={`/chat/${id}`}>
-          <Button
-            size="md"
-            className="w-full bg-secondary-500 hover:bg-secondary-400"
-          >
+          <Button variant="secondary">
             <FontAwesomeIcon
               icon={faComment}
               className="mr-2 text-white"

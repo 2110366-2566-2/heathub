@@ -1,12 +1,11 @@
-"use client";
-import { MyAccountPreview } from "./my-account";
 import { type TagList } from "@/utils/icon-mapping";
-import PaymentCard from "./payment-card";
-import ProfileDetails from "./ProfileDetails";
-import MyReview from "./MyReview";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import MyReview from "./MyReview";
+import ProfileDetails from "./ProfileDetails";
+import { MyAccountPreview } from "./my-account";
+import PaymentCard from "./payment-card";
 
 export type ProfilePreviewProps = {
   email: string;
@@ -23,27 +22,26 @@ export type ProfilePreviewProps = {
   gender: string;
   dateOfBirth: Date;
   id: string;
+  verifiedStatus: string;
+  verifiedDetail: string;
+  role: "host" | "participant";
 };
 export default function ProfileContainer(props: ProfilePreviewProps) {
-  const balance = {
-    balance: props.balance,
-  };
-
   return (
-    <div className="flex flex-col gap-4 ">
+    <div className="flex h-full flex-col gap-4">
       <div className="flex h-10 w-full flex-row items-center gap-x-2">
         <FontAwesomeIcon icon={faUser} className="h-7 w-7 text-secondary-500" />
         <div className="h2 font-bold text-high">Profile</div>
       </div>
-      <div className="flex flex-col lg:flex-row lg:gap-4">
+      <div className="flex flex-col gap-4 lg:flex-row">
         <ProfileDetails {...props} />
         {props.reviews != -1 && <MyReview {...props} />}
       </div>
-      <div className="flex flex-col gap-4 lg:flex-row">
-        <div className="flex h-64 w-full justify-center rounded-xl border-none bg-neutral-50 p-6 lg:w-1/3">
+      <div className="flex h-full flex-col gap-4">
+        <div className="flex h-fit w-full justify-center rounded-xl border-none bg-neutral-50 p-6">
           <MyAccountPreview {...props} key={props.name} />
         </div>
-        <PaymentCard {...balance} />
+        <PaymentCard />
       </div>
       <div className="flex justify-end">
         <Link

@@ -1,9 +1,10 @@
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
-import { faCircleInfo, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faCircleInfo, faKey, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Label } from "@radix-ui/react-label";
 import { useRouter } from "next/navigation";
@@ -13,17 +14,6 @@ export default function ChangePasswordButton() {
   const router = useRouter();
 
   const [isOpen, setOpen] = useState(false);
-  const [isClose, setClose] = useState(false);
-  useEffect(() => {
-    setClose(false);
-  }, [isOpen]);
-  useEffect(() => {
-    setOpen(false);
-  }, [isClose]);
-
-  const handlePop = () => {
-    return;
-  };
 
   const [criticalError, _setCriticalError] = useState<string | null>(null);
   const [noticeColor, setNoticeColor] = useState("text-placeholder");
@@ -88,7 +78,7 @@ export default function ChangePasswordButton() {
   };
 
   const handleClose = () => {
-    setClose(true);
+    setOpen(false);
     setError("");
     setNoticeColor("text-placeholder");
     return;
@@ -99,26 +89,18 @@ export default function ChangePasswordButton() {
   return criticalError ? (
     <>{router.push("/")}</>
   ) : (
-    <Dialog
-      onOpenChange={() => {
-        setOpen(true);
-      }}
-      open={isOpen && !isClose}
-    >
+    <Dialog onOpenChange={setOpen} open={isOpen}>
       <DialogTrigger>
-        <span
-          className="text-h4 ring-offset-background focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-xl border border-secondary-500 bg-white font-medium text-secondary-500 transition-colors hover:bg-secondary-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-secondary-100"
-          onClick={handlePop}
-        >
+        <div className="h6 lg:h5 flex h-8 w-fit flex-row items-center gap-[10px] rounded-xl border border-secondary-500 bg-neutral-0 px-4 py-2 font-bold text-secondary-500 hover:border-secondary-700 hover:bg-secondary-50 hover:text-secondary-700 disabled:border-secondary-700 disabled:bg-neutral-0 disabled:text-secondary-700 lg:h-10 lg:font-normal">
+          <FontAwesomeIcon icon={faLock} size={"1x"} />
           Change Password
-        </span>
+        </div>
       </DialogTrigger>
 
       <DialogContent className="flex h-fit w-full max-w-[422px] flex-col items-center gap-y-4 rounded-md bg-white p-6">
-        <FontAwesomeIcon
-          icon={faKey}
-          className={"h-12 w-12 text-primary-500"}
-        />
+        <div className="flex h-[60px] w-[60px] items-center justify-center rounded-full bg-secondary-400">
+          <FontAwesomeIcon icon={faKey} className={"text-invert"} size={"2x"} />
+        </div>
         <div className="flex w-full flex-col items-center gap-y-6">
           <div className="h3 font-bold text-high">Change your password</div>
           <form className="flex w-full flex-col gap-y-3" ref={formRef}>
@@ -164,18 +146,18 @@ export default function ChangePasswordButton() {
           </form>
         </div>
         <div className="flex h-fit w-full flex-row-reverse gap-x-3">
-          <span
-            className="inline-flex h-10 w-24 items-center justify-center rounded-xl bg-secondary-400 text-white hover:cursor-pointer hover:bg-secondary-500 disabled:bg-secondary-100"
-            onClick={handleSubmit}
-          >
+          <Button variant={"secondary"} onClick={handleSubmit}>
             Confirm
-          </span>
-          <span
-            className="inline-flex h-10 w-20 items-center justify-center rounded-xl border border-primary-500 bg-white text-medium hover:cursor-pointer hover:border-primary-600 hover:text-primary-600 disabled:bg-primary-100"
-            onClick={handleClose}
+          </Button>
+          <Button
+            variant={"secondaryOutline"}
+            className="border-medium text-medium"
+            onClick={() => {
+              handleClose();
+            }}
           >
             Cancel
-          </span>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

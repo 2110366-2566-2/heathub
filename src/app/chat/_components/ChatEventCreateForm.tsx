@@ -24,6 +24,7 @@ import { useLoadScript } from "@react-google-maps/api";
 import { PlacesAutocomplete } from "./AutoComplete";
 import { type Library } from "@googlemaps/js-api-loader";
 import { DialogClose } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 const googlelib = ["places"] as Library[];
 export interface CreateFormInfo {
@@ -34,21 +35,54 @@ export interface CreateFormInfo {
   endTime: Date;
 }
 
+function addTimeToDate(d1: Date, d2: Date, t1: string, t2: string) {
+  const [startHours, startMinutes] = t1.split(":").map((e) => parseInt(e));
+  const [endHours, endMinutes] = t2.split(":").map((e) => parseInt(e));
+  let startTime = d1;
+  let endTime = d2;
+  startTime.setHours(startHours ?? 0);
+  startTime.setMinutes(startMinutes ?? 0);
+  endTime.setHours(endHours ?? 23);
+  endTime.setMinutes(endMinutes ?? 59);
+  return { startTime, endTime };
+}
+
 export default function ChatEventForm({
   onConfirm,
 }: {
   onConfirm: (form: CreateFormInfo) => void;
 }) {
-  const formSchema = z.object({
-    location: z.string().min(1, {
-      message: "location is empty",
-    }),
-    price: z.coerce.number(),
-    beginDate: z.date(),
-    endDate: z.date(),
-    startTime: z.string({ required_error: "Should add start time" }),
-    endTime: z.string({ required_error: "Should add end time" }),
-  });
+  const formSchema = z
+    .object({
+      location: z.string().min(1, {
+        message: "location is empty",
+      }),
+      price: z.coerce.number(),
+      beginDate: z.date(),
+      endDate: z.date(),
+      description: z.string(),
+      startTime: z.string({ required_error: "start time" }),
+      endTime: z.string({ required_error: "end time" }),
+    })
+    .refine(
+      (val) => {
+        const { startTime, endTime } = addTimeToDate(
+          val.beginDate,
+          val.endDate,
+          val.startTime,
+          val.endTime,
+        );
+        return startTime < endTime;
+      },
+      {
+        message: "starttime over endtime",
+        path: ["endDate"],
+      },
+    );
+
+  const yesterday = new Date();
+
+  yesterday.setDate(yesterday.getDate() - 1);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -62,23 +96,18 @@ export default function ChatEventForm({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     //parse price to float
-    const [startHours, startMinutes] = values.startTime
-      .split(":")
-      .map((e) => parseInt(e));
-    const [endHours, endMinutes] = values.endTime
-      .split(":")
-      .map((e) => parseInt(e));
-    let startTime = values.beginDate;
-    let endTime = values.endDate;
-    startTime.setHours(startHours ?? 0);
-    startTime.setMinutes(startMinutes ?? 0);
-    endTime.setHours(endHours ?? 23);
-    endTime.setMinutes(endMinutes ?? 59);
+    const { startTime, endTime } = addTimeToDate(
+      values.beginDate,
+      values.endDate,
+      values.startTime,
+      values.endTime,
+    );
     onConfirm({
       location: values.location,
       price: values.price,
       startTime: startTime,
       endTime: endTime,
+      description: values.description,
     });
   }
 
@@ -118,7 +147,7 @@ export default function ChatEventForm({
               control={form.control}
               name="beginDate"
               render={({ field }) => (
-                <FormItem className="flex h-fit flex-1 flex-col">
+                <FormItem className="flex h-fit w-full flex-1 flex-col">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -146,6 +175,9 @@ export default function ChatEventForm({
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
+                        disabled={(date) =>
+                          date < yesterday || date > form.getValues("endDate")
+                        }
                         initialFocus
                       />
                     </PopoverContent>
@@ -176,7 +208,7 @@ export default function ChatEventForm({
               control={form.control}
               name="endDate"
               render={({ field }) => (
-                <FormItem className="flex h-fit flex-1 flex-col">
+                <FormItem className="flex h-fit w-full flex-1 flex-col">
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
@@ -205,6 +237,11 @@ export default function ChatEventForm({
                         selected={field.value}
                         onSelect={field.onChange}
                         initialFocus
+                        disabled={(date) =>
+                          date < yesterday ||
+                          date < form.getValues("beginDate") ||
+                          form.getValues("beginDate") === undefined
+                        }
                       />
                     </PopoverContent>
                   </Popover>
@@ -240,9 +277,26 @@ export default function ChatEventForm({
                     {...field}
                     type="number"
                     autoComplete="off"
-                    className="order-0 appearance-none border-0 bg-neutral-100 text-primary-500"
                     min={0}
+                    className="order-0 appearance-none border-0 bg-neutral-100 text-primary-500"
                     value={field.value ?? ""}
+                  />
+                </FormControl>
+                <FormMessage className="text-red-500" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    placeholder="Description"
+                    className="scrollbar-hide text-md w-full resize-none text-primary-400 focus-visible:ring-0"
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />

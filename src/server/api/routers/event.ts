@@ -1,3 +1,4 @@
+import { EVENT_FEE_RATE } from "@/constants/global";
 import { RECENT_MESSAGE_EVENT } from "@/constants/pusher-events";
 import {
   createTRPCRouter,
@@ -5,9 +6,15 @@ import {
   participantProcedure,
   userProcedure,
 } from "@/server/api/trpc";
-import { chatInbox, chatMessage, event } from "@/server/db/schema";
+import {
+  chatInbox,
+  chatMessage,
+  event,
+  internalTransaction,
+  user,
+} from "@/server/db/schema";
 import { type RecentEventMessage } from "@/types/pusher";
-import { type SQL, and, eq, or } from "drizzle-orm";
+import { and, eq, or, type SQL } from "drizzle-orm";
 import { z } from "zod";
 import { createInbox } from "./chat";
 export const eventRouter = createTRPCRouter({
@@ -20,7 +27,7 @@ export const eventRouter = createTRPCRouter({
         startTime: z.date(),
         endTime: z.date(),
         location: z.string().min(1),
-        price: z.number(),
+        priceStang: z.number(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -32,7 +39,8 @@ export const eventRouter = createTRPCRouter({
             startTime: input.startTime,
             endTime: input.endTime,
             location: input.location,
-            price: input.price,
+            price: input.priceStang,
+            description: input.description,
           });
           const lastestEvent = await tx.query.event.findFirst({
             where: and(
@@ -168,9 +176,9 @@ export const eventRouter = createTRPCRouter({
         with: {
           host: true,
           participant: true,
+          ratingAndReview: true,
         },
       });
-
       return res;
     }),
 
@@ -193,12 +201,35 @@ export const eventRouter = createTRPCRouter({
         throw new Error("Unauthorized");
       }
 
-      await ctx.db
-        .update(event)
-        .set({
-          status: "completed",
-        })
-        .where(eq(event.id, input.eventID));
+      const hostPayment = eventRow.price * (1 - EVENT_FEE_RATE);
+
+      await ctx.db.transaction(async (tx) => {
+        const hostData = await ctx.db.query.user.findFirst({
+          where: eq(user.id, eventRow.hostID),
+        });
+
+        if (!hostData) {
+          throw new Error("Host not found");
+        }
+        await tx
+          .update(event)
+          .set({
+            status: "completed",
+          })
+          .where(eq(event.id, input.eventID));
+        await tx.insert(internalTransaction).values({
+          userID: eventRow.hostID,
+          amount: hostPayment,
+          eventID: eventRow.id,
+          type: "pay",
+        });
+        await tx
+          .update(user)
+          .set({
+            balance: hostData.balance + hostPayment,
+          })
+          .where(eq(user.id, eventRow.hostID));
+      });
     }),
 
   cancelEvent: userProcedure
@@ -261,7 +292,31 @@ export const eventRouter = createTRPCRouter({
             status: "payment-done",
           })
           .where(eq(event.id, input.eventID));
-        // TODO: transfer money and add to transaction history
+        await tx.insert(internalTransaction).values({
+          userID: eventRow.participantID,
+          amount: -eventRow.price,
+          eventID: eventRow.id,
+          type: "pay",
+        });
+
+        const participantData = await tx.query.user.findFirst({
+          where: eq(user.id, eventRow.participantID),
+        });
+
+        if (!participantData) {
+          throw new Error("Participant not found");
+        }
+
+        if (participantData.balance < eventRow.price) {
+          throw new Error("Insufficient balance");
+        }
+
+        await tx
+          .update(user)
+          .set({
+            balance: participantData.balance - eventRow.price,
+          })
+          .where(eq(user.id, eventRow.participantID));
       });
     }),
 

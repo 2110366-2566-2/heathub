@@ -23,10 +23,12 @@ import { FinishModal } from "./FinishModal";
 import { GivereviewModal } from "./GivereviewModal";
 import { StatusTag } from "./StatusTag";
 import { ViewreviewModal } from "./ViewreviewModal";
+import { ReportEventModal } from "./ReportEventModal";
 
 export type EventProps = {
   id: number;
   userID: string;
+  participantID: string;
   role: string;
   name: string;
   location: string;
@@ -51,7 +53,7 @@ export function Card(prop: EventProps) {
     switch (prop.status) {
       case EventStatus.STARTED:
         return (
-          role == "participant" && (
+          role === "participant" && (
             <Button
               variant="default"
               className="z-100 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
@@ -71,7 +73,7 @@ export function Card(prop: EventProps) {
         );
       case EventStatus.WAITINGREVIEW:
         return (
-          role == "participant" && (
+          role === "participant" && (
             <Button
               variant="default"
               className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
@@ -117,7 +119,12 @@ export function Card(prop: EventProps) {
         );
       case EventStatus.WAITINGREVIEW:
         return (
-          <GivereviewModal id={prop.id} name={prop.name}>
+          <GivereviewModal
+            id={prop.id}
+            name={prop.name}
+            participantID={prop.participantID}
+            hostID={prop.userID}
+          >
             <CardButton />
           </GivereviewModal>
         );
@@ -232,9 +239,11 @@ export function Card(prop: EventProps) {
             />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-12 bg-white">
-            <DropdownMenuItem className="hover:bg-neutral-100">
-              Report Event
-            </DropdownMenuItem>
+            <ReportEventModal eventID={prop.id}>
+              <div className="focus:bg-accent focus:text-accent-foreground relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                Report Event
+              </div>
+            </ReportEventModal>
             <DropdownMenuItem className="hover:bg-neutral-100">
               <Link href={"/chat/" + prop.userID}>Go To Chat</Link>
             </DropdownMenuItem>

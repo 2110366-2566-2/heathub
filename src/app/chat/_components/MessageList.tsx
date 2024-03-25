@@ -97,7 +97,7 @@ export function MessageList({
   return (
     <div
       className={cn(
-        "flex h-screen flex-col justify-center border-r-2 border-neutral-200 p-9 md:min-w-[452px]",
+        "flex h-screen flex-col justify-center border-r-2 border-neutral-200 p-9 md:min-w-[452px] md:max-w-[452px]",
         className,
       )}
     >

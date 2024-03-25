@@ -4,21 +4,37 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { cn } from "@/utils/tailwind-merge";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { TopUpDialog } from "@/app/profile/_components/topup-modal";
+import { api } from "@/trpc/react";
 import { faMoneyCheckDollar } from "@fortawesome/free-solid-svg-icons";
 
 interface ConfirmEventPaymetProps {
+  totalPrice: number;
   confirmEvent: () => void;
 }
 
-export default function ConfirmEventPaymet(props: ConfirmEventPaymetProps) {
-  const { confirmEvent } = props;
+export default function ConfirmEventPayment(props: ConfirmEventPaymetProps) {
+  const { confirmEvent, totalPrice } = props;
+  const { data: balance } = api.profile.balance.useQuery(undefined);
+  const myBalance = ((balance ?? 0) / 100).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  const formattedTotalPrice = (totalPrice / 100).toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  const isEnoughMoney = (balance ?? 0) > props.totalPrice;
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,21 +54,37 @@ export default function ConfirmEventPaymet(props: ConfirmEventPaymetProps) {
         </DialogDescription>
         <div className="grid gap-2">
           <div className="flex w-full flex-row text-medium">
-            Your Balance 3500
+            Your Balance:
+            <span
+              className={cn(
+                "ml-2 font-bold",
+                isEnoughMoney ? "text-success" : "text-error-default",
+              )}
+            >
+              {myBalance}
+            </span>
           </div>
           <hr />
           <div className="flex w-full flex-row text-medium">
-            Total Price 3500
+            Total Price:
+            <span className="ml-2 font-bold">{formattedTotalPrice}</span>
           </div>
         </div>
         <DialogFooter>
-          <Button
-            onClick={() => {
-              confirmEvent();
-            }}
-          >
-            Confirm
-          </Button>
+          <DialogTrigger>
+            <Button variant={"outline"}>Close</Button>
+          </DialogTrigger>
+          {isEnoughMoney ? (
+            <Button
+              onClick={() => {
+                confirmEvent();
+              }}
+            >
+              Confirm
+            </Button>
+          ) : (
+            <TopUpDialog className="w-fit grow-0 rounded-xl border border-secondary-400 px-4 text-secondary-400" />
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>

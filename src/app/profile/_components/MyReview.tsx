@@ -3,6 +3,7 @@ import { CardContent, Card } from "@/components/ui/card";
 import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type ProfilePreviewProps } from "./profile-container";
+import Link from "next/link";
 
 export default function MyReview(props: ProfilePreviewProps) {
   const { rating } = props;
@@ -20,12 +21,14 @@ export default function MyReview(props: ProfilePreviewProps) {
           <div className="h2 font-bold text-high">{rating}</div>
           <StarMaker Rating={rating} />
         </div>
-        <Button
-          variant={"outline"}
-          className="w-full border-secondary-500 bg-invert text-secondary-500 hover:bg-secondary-100"
-        >
-          See All Reviews
-        </Button>
+        <Link href={`/review/${props.id}`}>
+          <Button
+            variant={"outline"}
+            className="w-full border-secondary-500 bg-invert text-secondary-500 hover:bg-secondary-100"
+          >
+            See All Reviews
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );

@@ -1,12 +1,12 @@
 "use client";
-import { cn } from "@/utils/tailwind-merge";
-import { type EventDetailCardProps } from "./type";
-import EventTag from "./EventTag";
-import { Dayjs } from "@/utils/dayjs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
+import { Dayjs } from "@/utils/dayjs";
+import { cn } from "@/utils/tailwind-merge";
 import ConfirmEventPayment from "./ConfirmEventPayment";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import EventTag from "./EventTag";
+import { type EventDetailCardProps } from "./type";
 
 export interface ChatEventInfoInterface {
   eventID: number;
@@ -23,6 +23,7 @@ export interface ChatEventInfoInterface {
   ) => void;
   imageUrl: string | null;
   senderName: string;
+  description: string | null;
 }
 
 export default function ChatEventInfo(info: ChatEventInfoInterface) {
@@ -37,6 +38,7 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
     updateStatus,
     imageUrl,
     senderName,
+    description,
   } = info;
   const justifyPosition = isMine ? "justify-end" : "justify-start";
 
@@ -89,7 +91,13 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
           </div>
           <div className="flex flex-row justify-between">
             <div className="h6  flex-1 text-medium">Price</div>
-            <div className="h6 font- font-boldold text-high">{price} Baht</div>
+            <div className="h6 font- font-boldold text-high">
+              {(price / 100).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              Baht
+            </div>
           </div>
           <div className="flex flex-row justify-between">
             <div className="h6 flex-11 flex text-medium">Start Date</div>
@@ -103,6 +111,14 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
               {Dayjs(endTime).format("	dddd, MMMM D, YYYY [ at ] HH:mm")}
             </div>
           </div>
+          {description && (
+            <div className="flex flex-row justify-between">
+              <div className="h6  flex-1 text-medium">Description</div>
+              <div className="h6 text-right font-bold text-high">
+                {description}
+              </div>
+            </div>
+          )}
           {status === "pending" &&
             (role === "participant" ? (
               <div className="flex w-full flex-row justify-end gap-3">
@@ -117,6 +133,7 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
                   Reject Event
                 </Button>
                 <ConfirmEventPayment
+                  totalPrice={price}
                   confirmEvent={() => {
                     confirmEvent.mutate({
                       eventID: eventID,

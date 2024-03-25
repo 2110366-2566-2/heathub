@@ -1,18 +1,20 @@
+"use client";
 import { Tag } from "@/app/_components/tag";
-import { CardContent, Card } from "@/components/ui/card";
-import { type TagList, tagStyle } from "@/utils/icon-mapping";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import EditProfileButton from "./EditProfileButton";
-import { type ProfilePreviewProps } from "./profile-container";
-import Image from "next/image";
-import { useMediaQuery } from "react-responsive";
-import { Drawer, DrawerOverlay, DrawerTrigger } from "@/components/ui/drawer";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
   DialogProfile,
   DrawerProfile,
 } from "@/app/discover/_components/profile-preview";
+import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
+import { tagStyle, type TagList } from "@/utils/icon-mapping";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
+import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import EditProfileButton from "./EditProfileButton";
+import { type ProfilePreviewProps } from "./profile-container";
 
 type ProfilePreviews = {
   aka: string;
@@ -26,7 +28,8 @@ type ProfilePreviews = {
 };
 
 export default function ProfileDetails(props: ProfilePreviewProps) {
-  const { image, interests, name, gender, about, dateOfBirth, id } = props;
+  const { image, interests, name, gender, about, dateOfBirth, id, role } =
+    props;
   const genderName = gender == "NotToSay" ? "Prefer not to say" : gender;
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   const nPop: ProfilePreviews = {
@@ -39,6 +42,8 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
     interests: props.interests,
     id: props.id,
   };
+  const [snap, setSnap] = useState<string | number | null>("322px");
+
   return (
     <Card className="h-full w-full justify-center rounded-none border-none shadow-none lg:rounded-lg lg:bg-neutral-50 lg:p-5">
       <CardContent className="flex h-full w-full flex-col items-center gap-y-4 p-0 lg:gap-0">
@@ -53,19 +58,23 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
                 alt="profilePic"
               />
               {isMobile ? (
-                <Drawer>
-                  <DrawerTrigger>
+                <Drawer
+                  snapPoints={["322px", "500px"]}
+                  activeSnapPoint={snap}
+                  setActiveSnapPoint={setSnap}
+                  fadeFromIndex={
+                    snap === "322px" ? 0 : snap === "500px" ? 1 : undefined
+                  }
+                >
+                  <DrawerTrigger onClick={() => setSnap("322px")}>
                     {props.reviews != -1 && (
                       <div className="z-100 absolute bottom-0 right-1.5 flex h-7 w-7 items-center justify-center rounded-full border-2 border-solid border-neutral-500 bg-neutral-50 p-1 text-neutral-500">
                         <FontAwesomeIcon icon={faEye} />
                       </div>
                     )}
                   </DrawerTrigger>
-                  <DrawerOverlay
-                    className="bg-opacity-0 bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${image})` }}
-                  />
-                  <DrawerProfile props={nPop} role={"host"} />
+
+                  <DrawerProfile props={nPop} role={role} />
                 </Drawer>
               ) : (
                 <Dialog>
@@ -76,7 +85,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
                       </div>
                     )}
                   </DialogTrigger>
-                  <DialogProfile props={nPop} role={"host"} />
+                  <DialogProfile props={nPop} role={role} />
                 </Dialog>
               )}
             </div>
@@ -113,7 +122,9 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
         </div>
         {props.reviews != -1 && (
           <div className="flex h-fit min-h-[94px] w-full flex-col gap-y-3">
-            <div className="h6 font-bold text-medium">Interest</div>
+            <div className="h6 lg:h5 font-bold text-medium lg:font-normal">
+              Interest
+            </div>
             <div className="flex h-fit w-full flex-row flex-wrap gap-2">
               {interests.map((tag, index) => (
                 <Tag
