@@ -4,10 +4,11 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { cn } from "@/utils/tailwind-merge";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 export default function ReviewCard(props: ReviewType) {
   const [showFullText, setShowFullText] = useState(false);
-
+  const isMobile = useMediaQuery({ maxWidth: 1024 });
   const toggleFullText = () => {
     setShowFullText(!showFullText);
   };
@@ -62,9 +63,43 @@ export default function ReviewCard(props: ReviewType) {
     reviewDate[1]! +
     " " +
     reviewDate[2]!.split(",").join(" at");
-
+  if (isMobile) {
+    return (
+      <div className="flex w-full flex-col gap-3 rounded-xl bg-neutral-0 p-4">
+        <div className="flex flex-row gap-2">
+          <Image
+            className="h-[44px] w-[44px] items-start justify-start rounded-full"
+            src={props.participantPic ?? ""}
+            width={44}
+            height={44}
+            alt="profilePic"
+          />
+          <div className="flex w-full flex-col gap-1">
+            <div className="flex w-full flex-row justify-between">
+              <div className="h4">{props.participantName}</div>
+              <StarMaker rating={props.ratingScore} />
+            </div>
+            <div className="flex flex-col">
+              <div className="h6 text-medium">{location}</div>
+              <div className="small text-medium ">Event at {eventDate}</div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <div
+            className={`h5 w-full break-all text-neutral-700 ${showFullText ? "" : "line-clamp-3"}`}
+          >
+            <TruncateText text={props.reviewDesc ?? ""} maxLength={95} />
+          </div>
+          <div className="flex justify-end">
+            <div className="small text-medium">{reviewDateString}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
-    <div className="flex  flex-row gap-2 rounded-xl bg-neutral-0 p-4">
+    <div className="flex flex-row gap-2 rounded-xl bg-neutral-0 p-4">
       <div className="flex w-[183px] flex-col items-start justify-between">
         <Image
           className="items-center justify-center rounded-full"
@@ -89,7 +124,7 @@ export default function ReviewCard(props: ReviewType) {
         <div
           className={`h5 w-full break-all text-neutral-700 ${showFullText ? "" : "line-clamp-3"}`}
         >
-          <TruncateText text={props.reviewDesc ?? ""} maxLength={60} />
+          <TruncateText text={props.reviewDesc ?? ""} maxLength={120} />
         </div>
       </div>
     </div>
