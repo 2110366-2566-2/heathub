@@ -22,7 +22,7 @@ export default function Page() {
 
   const { data } = api.admin.getVerifiedRequest.useQuery(
     {
-      limit: 2,
+      limit: 8,
       page: page,
     },
     {
