@@ -47,8 +47,8 @@ export default async function PaymentCard() {
               withdrawalAmount={
                 (user?.balance ?? 0) - (bankData?.pendingWithdrawal ?? 0)
               }
-              bankName={bankData?.defaultPayoutBankName ?? undefined}
-              bankAccount={bankData?.defaultPayoutBankAccount ?? undefined}
+              bankName={bankData?.defaultPayoutBankName ?? null}
+              bankAccount={bankData?.defaultPayoutBankAccount ?? null}
             />
           ) : (
             <TopUpDialog />

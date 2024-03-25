@@ -44,8 +44,8 @@ import { z } from "zod";
 
 type WithdrawDialongProps = {
   withdrawalAmount: number;
-  bankName?: Bank;
-  bankAccount?: string;
+  bankName?: Bank | null;
+  bankAccount?: string | null;
 };
 
 export function WithdrawDialog(props: WithdrawDialongProps) {
@@ -122,8 +122,8 @@ export function WithdrawDialog(props: WithdrawDialongProps) {
 type WithdrawFormProps = {
   setOpen: (open: boolean) => void;
   withdrawalAmount: number;
-  bankName?: string;
-  bankAccount?: string;
+  bankName?: string | null;
+  bankAccount?: string | null;
 };
 
 function WithdrawForm(props: WithdrawFormProps) {
@@ -184,8 +184,8 @@ function WithdrawForm(props: WithdrawFormProps) {
       <div className="mx-auto flex w-full flex-col gap-4">
         <div className="grid w-full items-center gap-1.5">
           <Label>Bank</Label>
-          {bankName ? (
-            <Select required name="bank" defaultValue={bankName}>
+          {bankName !== undefined ? (
+            <Select required name="bank" defaultValue={bankName ?? undefined}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select your bank" />
               </SelectTrigger>
@@ -207,11 +207,11 @@ function WithdrawForm(props: WithdrawFormProps) {
         </div>
         <div className="grid w-full items-center gap-1.5">
           <Label>Bank Number</Label>
-          {bankAccount ? (
+          {bankAccount !== undefined ? (
             <Input
               required
               name="bankNumber"
-              defaultValue={bankAccount}
+              defaultValue={bankAccount ?? undefined}
             ></Input>
           ) : (
             <div className="h-10 animate-pulse rounded-lg bg-gray-200 transition-all"></div>
