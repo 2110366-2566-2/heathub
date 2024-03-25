@@ -160,7 +160,7 @@ export default function TransactionHistory() {
         <div className="h3 font-bold text-high">Transaction History</div>
       </div>
       <div className="flex w-full flex-col gap-y-4">
-        {/* {transactions.data ? (
+        {transactions.data ? (
           (transactions.data as TransactionBoxProps[]).map(
             (item: TransactionBoxProps) => (
               <TransactionBox
@@ -176,8 +176,8 @@ export default function TransactionHistory() {
           )
         ) : (
           <></>
-        )} */}
-        {mockData.map((item: TransactionBoxProps) => (
+        )}
+        {/* {mockData.map((item: TransactionBoxProps) => (
           <TransactionBox
             aiteiName={item.aiteiName}
             amount={item.amount}
@@ -187,7 +187,7 @@ export default function TransactionHistory() {
             key={item.id}
             id={item.id}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   );
