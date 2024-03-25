@@ -6,6 +6,7 @@ import {
   faMinusCircle,
   faMoneyBillWave,
   faPlusCircle,
+  faRotateLeft,
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -86,11 +87,11 @@ const mockData: TransactionBoxProps[] = [
   },
   {
     id: 10,
-    type: "topup",
+    type: "refund",
     createdAt: new Date("2024-03-15T10:30:00"),
     amount: 1000,
     aiteiName: "John Doe",
-    eventDate: null,
+    eventDate: new Date("2024-03-15T10:30:00"),
   },
   {
     id: 11,
@@ -159,7 +160,7 @@ export default function TransactionHistory() {
         <div className="h3 font-bold text-high">Transaction History</div>
       </div>
       <div className="flex w-full flex-col gap-y-4">
-        {transactions.data ? (
+        {/* {transactions.data ? (
           (transactions.data as TransactionBoxProps[]).map(
             (item: TransactionBoxProps) => (
               <TransactionBox
@@ -175,7 +176,18 @@ export default function TransactionHistory() {
           )
         ) : (
           <></>
-        )}
+        )} */}
+        {mockData.map((item: TransactionBoxProps) => (
+          <TransactionBox
+            aiteiName={item.aiteiName}
+            amount={item.amount}
+            createdAt={item.createdAt}
+            eventDate={item.eventDate}
+            type={item.type}
+            key={item.id}
+            id={item.id}
+          />
+        ))}
       </div>
     </div>
   );
@@ -224,15 +236,24 @@ function TransactionBox(props: TransactionBoxProps) {
           <FontAwesomeIcon
             className="h-7 w-8 text-secondary-500"
             icon={
-              type == "recieve" || type == "pay" ? faMoneyBillWave : faWallet
+              type == "recieve" || type == "pay" || type == "refund"
+                ? faMoneyBillWave
+                : faWallet
             }
           />
 
-          {type != "recieve" && type != "pay" ? (
+          {type != "recieve" && type != "pay" && type != "refund" ? (
             <FontAwesomeIcon
               className="absolute left-[26px] top-0 h-3 w-3 text-secondary-400"
               icon={type == "topup" ? faPlusCircle : faMinusCircle}
             />
+          ) : type == "refund" ? (
+            <div className="absolute left-[26px] top-0 flex h-3 w-3 items-center justify-center rounded-full bg-white">
+              <FontAwesomeIcon
+                className=" h-2 w-2 text-secondary-400"
+                icon={faRotateLeft}
+              />
+            </div>
           ) : (
             <></>
           )}
@@ -247,6 +268,8 @@ function TransactionBox(props: TransactionBoxProps) {
                   return "Topup money";
                 case "withdraw":
                   return "Withdraw money";
+                case "refund":
+                  return `Refund event with ${aiteiName} on ${eventDate ? formatDate(eventDate, 1) : ""}`;
                 default:
                   return `Event with ${aiteiName} on ${eventDate ? formatDate(eventDate, 1) : ""}`;
               }
