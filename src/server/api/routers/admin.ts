@@ -100,8 +100,13 @@ export const adminRouter = createTRPCRouter({
       const limit = input.limit ?? 10;
       const items = await ctx.db.query.withdrawalRequest.findMany({
         limit: limit + 1,
+        where: eq(withdrawalRequest.status, "pending"),
         with: {
-          hostUser: true,
+          hostUser: {
+            with: {
+              onUser: true,
+            },
+          },
         },
         offset: limit * input.page,
         orderBy: (withdrawalRequest, { asc }) => [
