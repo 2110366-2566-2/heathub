@@ -41,7 +41,7 @@ export default function RejectedRequestModal({
 
   return (
     <Dialog>
-      <DialogTrigger className="h5  flex h-full w-full flex-row items-center justify-items-center space-x-1 bg-transparent text-neutral-500 hover:bg-transparent">
+      <DialogTrigger className="h5  flex h-full flex-row items-center justify-items-center space-x-1 bg-transparent text-neutral-500 hover:bg-transparent">
         <FontAwesomeIcon icon={faBan} width={20} height={20} />
         <span>Reject</span>
       </DialogTrigger>
