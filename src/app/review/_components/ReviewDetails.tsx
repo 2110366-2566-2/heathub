@@ -58,7 +58,7 @@ export default function ReviewDetails(props: HostDetail) {
     one.count + two.count + three.count + four.count + five.count;
   if (sumReviews === 0) {
     return (
-      <div className="flex h-full min-w-[323px] flex-col items-center gap-4 rounded-xl bg-neutral-50 px-5 py-10 ">
+      <div className="flex h-full flex-col items-center gap-4 rounded-xl bg-neutral-50 px-5 py-10 lg:min-w-[323px] ">
         <Image
           className="aspect-square items-center justify-center rounded-full"
           src={props.image ?? ""}
@@ -82,13 +82,13 @@ export default function ReviewDetails(props: HostDetail) {
       </div>
     );
   }
-  const w1 = !sumReviews ? 0 : ((one.count * 243) / sumReviews).toString();
-  const w2 = !sumReviews ? 0 : ((two.count * 243) / sumReviews).toString();
-  const w3 = !sumReviews ? 0 : ((three.count * 243) / sumReviews).toString();
-  const w4 = !sumReviews ? 0 : ((four.count * 243) / sumReviews).toString();
-  const w5 = !sumReviews ? 0 : ((five.count * 243) / sumReviews).toString();
+  const w1 = !sumReviews ? 0 : ((one.count / sumReviews) * 100).toString();
+  const w2 = !sumReviews ? 0 : ((two.count / sumReviews) * 100).toString();
+  const w3 = !sumReviews ? 0 : ((three.count / sumReviews) * 100).toString();
+  const w4 = !sumReviews ? 0 : ((four.count / sumReviews) * 100).toString();
+  const w5 = !sumReviews ? 0 : ((five.count / sumReviews) * 100).toString();
   return (
-    <div className="flex h-full min-w-[323px] flex-col items-center gap-4 rounded-xl bg-neutral-50 px-5 py-10 ">
+    <div className="flex h-full flex-col items-center gap-4 rounded-xl bg-neutral-50 px-5 py-10 lg:min-w-[323px]  ">
       <Image
         className="aspect-square items-center justify-center rounded-full"
         src={props.image ?? ""}
@@ -113,7 +113,7 @@ export default function ReviewDetails(props: HostDetail) {
             <div className="h4 text-medium">5</div>
             <div className="flex-grow">
               <hr
-                style={{ width: `${w5}px` }}
+                style={{ width: `${w5}%` }}
                 className={`h-4 justify-self-start rounded-sm bg-pending`}
               />
             </div>
@@ -123,7 +123,7 @@ export default function ReviewDetails(props: HostDetail) {
             <div className="h4 text-medium">4</div>
             <div className="flex-grow">
               <hr
-                style={{ width: `${w4}px` }}
+                style={{ width: `${w4}%` }}
                 className={`h-4 justify-self-start rounded-sm bg-pending`}
               />
             </div>
@@ -133,7 +133,7 @@ export default function ReviewDetails(props: HostDetail) {
             <div className="h4 text-medium">3</div>
             <div className="flex-grow">
               <hr
-                style={{ width: `${w3}px` }}
+                style={{ width: `${w3}%` }}
                 className={`h-4 justify-self-start rounded-sm bg-pending`}
               />
             </div>
@@ -143,7 +143,7 @@ export default function ReviewDetails(props: HostDetail) {
             <div className="h4 text-medium">2</div>
             <div className="flex-grow">
               <hr
-                style={{ width: `${w2}px` }}
+                style={{ width: `${w2}%` }}
                 className={`h-4 justify-self-start rounded-sm bg-pending`}
               />
             </div>
@@ -153,7 +153,7 @@ export default function ReviewDetails(props: HostDetail) {
             <div className="h4 text-medium">1</div>
             <div className="flex-grow">
               <hr
-                style={{ width: `${w1}px` }}
+                style={{ width: `${w1}%` }}
                 className={`h-4 justify-self-start rounded-sm bg-pending`}
               />
             </div>

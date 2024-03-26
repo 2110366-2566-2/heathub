@@ -40,6 +40,7 @@ export type HostDetail = {
   username: string;
   hostID: string;
   rating: number | null;
+  isMobile: boolean;
 };
 
 export interface TextProps {
