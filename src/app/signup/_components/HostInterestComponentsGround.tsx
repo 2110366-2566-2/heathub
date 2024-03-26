@@ -20,7 +20,8 @@ interface ComponentGroundProps {
 
 export default function ComponentsGround(props: ComponentGroundProps) {
   const { setData, data } = props;
-  const [isModalPop, setModalPop] = useState<boolean>(false);
+  const [isSuccessed, setSuccessed] = useState<boolean>(false);
+  const [isPressed, setPressed] = useState<boolean>(false);
   const [notice, setNotice] = useState<string>("");
   const router = useRouter();
   const [selectedInterestList, setSelectedInterestList] = useState<string[]>(
@@ -52,6 +53,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       setNotice("Please upload a profile picture.");
       return;
     }
+    setPressed(true);
 
     const files = [host.Image];
     const res = await uploadFiles("signupProfileUploader", {
@@ -76,8 +78,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         interests: selectedInterestList,
         imageUrl: imageUrl,
       });
-      setModalPop(true);
+      setSuccessed(true);
     } catch (error) {
+      setPressed(false);
+      setSuccessed(false);
       if (error instanceof Error) {
         setNotice(error.message);
         console.error("An error occurred", error.message);
@@ -159,9 +163,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
         <SuccessButton
           router={router}
-          isModalPop={isModalPop}
-          setModalPop={setModalPop}
+          isSuccessed={isSuccessed}
+          setSuccessed={setSuccessed}
           handleClick={handleButtonClick}
+          isPressed={isPressed}
         />
       </div>
     </div>

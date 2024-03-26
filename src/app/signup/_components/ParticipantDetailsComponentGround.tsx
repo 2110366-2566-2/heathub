@@ -34,7 +34,8 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const [gender, setGender] = useState<string>(data.Gender);
   const [notice, setNotice] = useState<string>("");
   const [DOB, setDOB] = useState<Date | undefined>(data.DOB);
-  const [isModalPop, setModalPop] = useState(false);
+  const [isSuccessed, setSuccessed] = useState<boolean>(false);
+  const [isPressed, setPressed] = useState<boolean>(false);
 
   const testUsername = api.auth.isAKAAlreadyExist.useMutation();
 
@@ -80,6 +81,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       setNotice("Please upload a profile picture.");
       return;
     } else {
+      setPressed(true);
       try {
         if (await isUsernameDup(usernameInput ? usernameInput : "")) {
           setNotice("This username is already exits.");
@@ -109,8 +111,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     setNotice("");
     try {
       await handleSubmit(participant);
-      setModalPop(true);
+      setSuccessed(true);
     } catch (error) {
+      setSuccessed(false);
+      setPressed(false);
       if (error instanceof Error) {
         setNotice(error.message);
       } else {
@@ -350,9 +354,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       </span>
       <SuccessButton
         router={router}
-        setModalPop={setModalPop}
-        isModalPop={isModalPop}
+        setSuccessed={setSuccessed}
+        isSuccessed={isSuccessed}
         handleClick={handleButtonClick}
+        isPressed={isPressed}
       />
     </div>
   );
