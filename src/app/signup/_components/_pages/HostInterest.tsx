@@ -4,6 +4,7 @@ import GoBackArrow from "../BackArrow";
 import ComponentsGround from "../HostInterestComponentsGround";
 
 interface HostInterestProps {
+  setData: (data: User) => void;
   setPage: Dispatch<
     SetStateAction<
       | "ChooseRole"
@@ -18,13 +19,13 @@ interface HostInterestProps {
 }
 
 export default function HostInterest(props: HostInterestProps) {
-  const { setPage, page, data } = props;
+  const { setData, setPage, page, data } = props;
   return (
-    <div className="min-w-screen h-full min-h-screen w-full overflow-hidden bg-primary-50 p-6 md:p-9">
-      <GoBackArrow Page={page} setPage={setPage} />
-      <div className="pt-6 sm:p-5 sm:pt-[52px]">
-        <ComponentsGround data={data} />
+    <div className="min-w-screen flex h-full min-h-screen w-full flex-col gap-y-8 overflow-hidden bg-subtle p-6">
+      <div className="flex h-fit w-full flex-row">
+        <GoBackArrow Page={page} setPage={setPage} />
       </div>
+      <ComponentsGround setData={setData} data={data} />
     </div>
   );
 }

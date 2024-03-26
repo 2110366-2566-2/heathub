@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { type Dispatch, type SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { createHost, createParticipant, type User } from "../interfaces";
+import SuccessButton from "./SuccessButton";
 
 interface rolePickerProps {
   setData: (data: User) => void;
@@ -22,9 +23,15 @@ export default function RolePicker(props: rolePickerProps) {
   const { setData, setPage } = props;
   const router = useRouter();
 
+  // function delay(ms: number) {
+  //   return new Promise((resolve) => setTimeout(resolve, ms));
+  // }
+  // const [isSuccessed, setSuccessed] = useState(false);
+  // const [isPressed, setPressed] = useState(false);
+
   return (
-    <div className="flex h-[308px] w-full min-w-[228px] max-w-[360px] flex-col justify-center gap-y-9">
-      <div className="h1 w-full max-w-64 self-center text-center font-bold text-primary-900">
+    <div className="flex h-[308px] w-full min-w-[228px] max-w-[360px] flex-col gap-y-9 md:justify-center">
+      <div className="h1 hidden w-full max-w-64 self-center text-center font-extrabold text-primary-900 md:flex">
         {"Choose \n Your Role"}
       </div>
       <div className="flex flex-col gap-y-4">
@@ -64,6 +71,16 @@ export default function RolePicker(props: rolePickerProps) {
           Login
         </div>
       </div>
+      {/* <SuccessButton
+        handleClick={async () => {
+          setPressed(true);
+          await delay(3000);
+          setSuccessed(true);
+        }}
+        isSuccessed={isSuccessed}
+        router={router}
+        isPressed={isPressed}
+      /> */}
     </div>
   );
 }

@@ -6,19 +6,26 @@ import { uploadFiles } from "@/components/ui/upload";
 import SuccessButton from "@/app/signup/_components/SuccessButton";
 import { useEffect, useState } from "react";
 import { type Host, type User } from "../interfaces";
-import InterestPickerBox from "./InterestPickerBox";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup } from "@/components/ui/toggle-group";
+import {
+  tagList as allInterestList,
+  tagStyle,
+} from "../../../utils/icon-mapping";
 
 interface ComponentGroundProps {
+  setData: (data: User) => void;
   data: User;
 }
 
 export default function ComponentsGround(props: ComponentGroundProps) {
-  const { data } = props;
-  const [isModalPop, setModalPop] = useState<boolean>(false);
+  const { setData, data } = props;
+  const [isSuccessed, setSuccessed] = useState<boolean>(false);
+  const [isPressed, setPressed] = useState<boolean>(false);
   const [notice, setNotice] = useState<string>("");
   const router = useRouter();
   const [selectedInterestList, setSelectedInterestList] = useState<string[]>(
-    [],
+    (data as Host).Interest,
   );
 
   const signUpHost = api.auth.signupHost.useMutation();
@@ -33,6 +40,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   }, [userData]);
 
   const handleSubmit = async (host: Host) => {
+    if (!host.DOB) {
+      return;
+    }
+
     if (selectedInterestList.length < 3) {
       setNotice("Please select at least 3 Interests.");
       return;
@@ -42,6 +53,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       setNotice("Please upload a profile picture.");
       return;
     }
+    setPressed(true);
 
     const files = [host.Image];
     const res = await uploadFiles("signupProfileUploader", {
@@ -66,9 +78,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
         interests: selectedInterestList,
         imageUrl: imageUrl,
       });
-      console.log(imageUrl);
-      setModalPop(true);
+      setSuccessed(true);
     } catch (error) {
+      setPressed(false);
+      setSuccessed(false);
       if (error instanceof Error) {
         setNotice(error.message);
         console.error("An error occurred", error.message);
@@ -83,22 +96,79 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     await handleSubmit(data as Host);
   };
 
+  const autoSave = () => {
+    const host: Host = {
+      Bio: (data as Host).Bio,
+      Interest: selectedInterestList,
+      Email: data.Email,
+      Password: data.Password,
+      Firstname: data.Firstname,
+      Lastname: data.Lastname,
+      Username: data.Username,
+      DOB: data.DOB,
+      Image: data.Image,
+      Gender: data.Gender,
+    };
+    setData(host);
+  };
+  useEffect(() => {
+    autoSave();
+  }, [selectedInterestList]);
+
+  const handleSelectedInterestList = (handleItem: string) => {
+    // add if don't have, remove is have
+    const handledList = selectedInterestList;
+    const index = handledList.indexOf(handleItem);
+    if (index !== -1) {
+      handledList.splice(index, 1);
+    } else {
+      handledList.push(handleItem);
+    }
+    setSelectedInterestList(handledList);
+  };
+
   return (
-    <div className="flex flex-col items-center gap-y-8">
-      <div className="h1 font-bold text-primary-900">Interests</div>
-      <InterestPickerBox
-        selectedInterestList={selectedInterestList}
-        setSelectedInterestList={setSelectedInterestList}
-      />
-      <div className="absolute bottom-6 sm:static">
+    <div className="flex h-full w-full flex-1 flex-col items-center gap-y-8">
+      <div className="h1 font-extrabold text-primary-900">Interest</div>
+      <div className="flex h-fit w-full max-w-[848px] flex-col items-center">
+        <ToggleGroup
+          className="gap flex w-full flex-wrap gap-2"
+          type="multiple"
+        >
+          {allInterestList.map((interestItem, index) => {
+            const isSelected = selectedInterestList.includes(interestItem);
+            return (
+              <Toggle
+                defaultPressed={isSelected}
+                value={interestItem}
+                key={index}
+                variant="outline"
+                icon={tagStyle[interestItem].icon}
+                size="md"
+                onClick={(e) => {
+                  handleSelectedInterestList(e.currentTarget.value);
+                }}
+              >
+                {interestItem}
+              </Toggle>
+            );
+          })}
+        </ToggleGroup>
+        <div className="flex w-full flex-row-reverse justify-center">
+          <div className=" h-0 text-red-500">{notice}</div>
+        </div>
+      </div>
+      <div className="flex w-full flex-1 flex-col">
+        <div className="flex grow md:grow-0"></div>
+
         <SuccessButton
           router={router}
-          isModalPop={isModalPop}
-          setModalPop={setModalPop}
+          isSuccessed={isSuccessed}
+          setSuccessed={setSuccessed}
           handleClick={handleButtonClick}
+          isPressed={isPressed}
         />
       </div>
-      <div className="text-red-500">{notice}</div>
     </div>
   );
 }
