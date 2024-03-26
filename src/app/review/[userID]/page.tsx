@@ -96,7 +96,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
               </div>
             </div>
             <div className="h-full w-full">
-              <ReviewList userID={mockUserId} filter={filter}/>
+              <ReviewList userID={mockUserId} filter={filter} />
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
           </div>
         </div>
         <div className="h-full w-full">
-          <ReviewList userID={mockUserId} filter={filter}/>
+          <ReviewList userID={mockUserId} filter={filter} />
         </div>
       </div>
       <ReviewDetails {...props} />
