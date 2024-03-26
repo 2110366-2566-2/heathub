@@ -245,7 +245,7 @@ export const adminRouter = createTRPCRouter({
         await tx
           .update(user)
           .set({
-            balance: userData.balance + reportedEvent.price,
+            balance: userData.balance + reportedEvent.price * 100,
           })
           .where(eq(user.id, report.participantID));
 
