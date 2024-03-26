@@ -30,8 +30,7 @@ export function NavItem(prop: NavItemProp) {
   );
 }
 
-
-export function  NavItemMobile(prop: NavItemProp) {
+export function NavItemMobile(prop: NavItemProp) {
   return (
     <Link
       href={prop.link}

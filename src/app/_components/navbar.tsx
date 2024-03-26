@@ -66,8 +66,16 @@ export function NavBarMobile({ className }: { className?: string }) {
       className={cn("fixed bottom-4 z-30 w-full justify-center ", className)}
     >
       <div className=" z-50 mx-auto flex h-[68px] w-[80%] max-w-[448px] justify-between rounded-full bg-secondary-400 px-9 lg:hidden">
-        <NavItemMobile link="/discover" icon={faCompass} isSelected={isDiscover} />
-        <NavItemMobile link="/myevent" icon={faCalendarCheck} isSelected={isEvent} />
+        <NavItemMobile
+          link="/discover"
+          icon={faCompass}
+          isSelected={isDiscover}
+        />
+        <NavItemMobile
+          link="/myevent"
+          icon={faCalendarCheck}
+          isSelected={isEvent}
+        />
         <NavItemMobile link="/chat" icon={faComment} isSelected={isChat} />
         <div className="items-center justify-center self-center">
           <Link href="/profile">
