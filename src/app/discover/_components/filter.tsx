@@ -126,7 +126,7 @@ export default function Filter(props: FilterProps) {
         }}
       >
         <SelectTrigger
-          className={cn("w-full", "border-none", isMobile && "bg-neutral-100")}
+          className={cn("w-full", "border-none", isMobile ? "" : "bg-white")}
         >
           <SelectValue placeholder="Rating" />
         </SelectTrigger>
@@ -152,7 +152,7 @@ export default function Filter(props: FilterProps) {
         }}
       >
         <SelectTrigger
-          className={cn("w-full", "border-none", isMobile && "bg-neutral-100")}
+          className={cn("w-full", "border-none", isMobile ? "" : "bg-white")}
         >
           <SelectValue placeholder="Gender" />
         </SelectTrigger>
@@ -178,7 +178,6 @@ export default function Filter(props: FilterProps) {
           placeholder="Min"
           min={0}
           max={99}
-          size="sm"
           onChange={(e) => {
             if (parseInt(e.target.value)) {
               if (parseInt(e.target.value) > values.age.max) {
@@ -197,7 +196,6 @@ export default function Filter(props: FilterProps) {
           placeholder="Max"
           min={values.age.min}
           max={99}
-          size="sm"
           onChange={(e) => {
             if (parseInt(e.target.value)) {
               if (parseInt(e.target.value) < values.age.min) {
@@ -249,7 +247,7 @@ export default function Filter(props: FilterProps) {
   if (isMobile) {
     return (
       <Drawer>
-        <DrawerTrigger>
+        <DrawerTrigger className="z-10">
           <FilterButton />
         </DrawerTrigger>
         <DrawerContent className="h-[90%] flex-col gap-8 bg-white p-4">
