@@ -14,7 +14,6 @@ import Link from "next/link";
 
 const mockData: TransactionBoxProps[] = [
   {
-    id: 1,
     type: "topup",
     createdAt: new Date("2023-05-17T11:00:00"),
     amount: 1000,
@@ -22,7 +21,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 2,
     type: "withdraw",
     createdAt: new Date("2024-02-16T15:30:00"),
     amount: -500,
@@ -30,7 +28,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 3,
     type: "pay",
     createdAt: new Date("2024-03-15T22:00:00"),
     amount: -400,
@@ -38,7 +35,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: new Date("2024-03-15T23:00:00"),
   },
   {
-    id: 4,
     type: "topup",
     createdAt: new Date("2023-11-17T21:00:00"),
     amount: 1000,
@@ -46,7 +42,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 5,
     type: "withdraw",
     createdAt: new Date("2024-03-16T08:30:00"),
     amount: -500,
@@ -54,7 +49,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 6,
     type: "pay",
     createdAt: new Date("2024-03-05T21:20:00"),
     amount: -1700,
@@ -62,7 +56,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: new Date("2024-03-05T21:30:00"),
   },
   {
-    id: 7,
     type: "topup",
     createdAt: new Date("2024-03-17T10:00:00"),
     amount: 1500,
@@ -70,7 +63,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 8,
     type: "topup",
     createdAt: new Date("2024-01-16T15:30:00"),
     amount: 5000,
@@ -78,7 +70,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 9,
     type: "pay",
     createdAt: new Date("2024-03-15T21:00:00"),
     amount: -1500,
@@ -86,7 +77,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: new Date("2024-03-20T14:00:00"),
   },
   {
-    id: 10,
     type: "refund",
     createdAt: new Date("2024-03-15T10:30:00"),
     amount: 1000,
@@ -94,7 +84,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: new Date("2024-03-15T10:30:00"),
   },
   {
-    id: 11,
     type: "withdraw",
     createdAt: new Date("2024-03-16T15:30:00"),
     amount: -1200,
@@ -102,7 +91,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 12,
     type: "pay",
     createdAt: new Date("2024-01-15T18:00:00"),
     amount: -1700,
@@ -110,7 +98,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: new Date("2024-01-20T14:00:00"),
   },
   {
-    id: 13,
     type: "topup",
     createdAt: new Date("2024-03-17T10:00:00"),
     amount: 3500,
@@ -118,7 +105,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 14,
     type: "withdraw",
     createdAt: new Date("2024-03-16T15:30:00"),
     amount: -250,
@@ -126,7 +112,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    id: 15,
     type: "pay",
     createdAt: new Date("2024-03-24T20:00:00"),
     amount: -1500,
@@ -134,7 +119,6 @@ const mockData: TransactionBoxProps[] = [
     eventDate: new Date("2024-03-24T20:00:00"),
   },
   {
-    id: 16,
     type: "pay",
     createdAt: new Date("2024-03-15T23:30:00"),
     amount: -400,
@@ -162,15 +146,14 @@ export default function TransactionHistory() {
       <div className="flex w-full flex-col gap-y-4">
         {transactions.data ? (
           (transactions.data as TransactionBoxProps[]).map(
-            (item: TransactionBoxProps) => (
+            (item: TransactionBoxProps, _index) => (
               <TransactionBox
                 aiteiName={item.aiteiName}
-                amount={item.amount}
+                amount={item.amount / 100}
                 createdAt={item.createdAt}
                 eventDate={item.eventDate}
                 type={item.type}
-                key={item.id}
-                id={item.id}
+                key={_index}
               />
             ),
           )
@@ -194,8 +177,7 @@ export default function TransactionHistory() {
 }
 
 interface TransactionBoxProps {
-  id: number;
-  type: "pay" | "recieve" | "refund" | "withdraw" | "topup";
+  type: "pay" | "recieve" | "refund" | "withdraw" | "topup" | "pending";
   createdAt: Date;
   amount: number;
   aiteiName: string | null;

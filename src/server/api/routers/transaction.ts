@@ -1,4 +1,3 @@
-import { string, z } from "zod";
 import { createTRPCRouter, userProcedure } from "../trpc";
 import {
   internalTransaction,
@@ -6,8 +5,9 @@ import {
   event,
   user,
   hostUser,
+  withdrawalRequest,
 } from "@/server/db/schema";
-import { eq, desc, sql, type SQL } from "drizzle-orm";
+import { eq, desc, sql, type SQL, and } from "drizzle-orm";
 
 export const transactionRouter = createTRPCRouter({
   getTransactions: userProcedure.query(async ({ ctx }) => {
@@ -17,15 +17,14 @@ export const transactionRouter = createTRPCRouter({
 
     const internalTransactionWithData = await ctx.db
       .select({
-        id: sql`${internalTransaction.id}`.mapWith(Number),
         type: sql`${internalTransaction.type}`.mapWith(String) as SQL<
-          "pay" | "recieve" | "refund" | "withdraw" | "topup"
+          "pay" | "recieve" | "refund" | "withdraw" | "topup" | "pending"
         >,
         createdAt: sql`${internalTransaction.createdAt}`.mapWith(
           internalTransaction.createdAt,
         ),
         amount: sql`${internalTransaction.amount}`.mapWith(Number),
-        aiteiName: sql`${user.id}`.mapWith(String),
+        aiteiName: sql`${user.aka}`.mapWith(String),
         eventDate: sql`${event.startTime}`.mapWith(event.startTime),
       })
       .from(internalTransaction)
@@ -37,9 +36,8 @@ export const transactionRouter = createTRPCRouter({
 
     const externalTransactionWithData = await ctx.db
       .select({
-        id: sql`${externalTransaction.id}`.mapWith(Number),
         type: sql`${externalTransaction.type}`.mapWith(String) as SQL<
-          "pay" | "recieve" | "refund" | "withdraw" | "topup"
+          "pay" | "recieve" | "refund" | "withdraw" | "topup" | "pending"
         >,
         createdAt: sql`${externalTransaction.createdAt}`.mapWith(
           externalTransaction.createdAt,
@@ -53,7 +51,31 @@ export const transactionRouter = createTRPCRouter({
       .orderBy(desc(externalTransaction.createdAt))
       .execute();
 
-    const res = internalTransactionWithData.concat(externalTransactionWithData);
+    const withdrawReqWithData = await ctx.db
+      .select({
+        type: sql`${withdrawalRequest.status}`.mapWith(String) as SQL<
+          "pay" | "recieve" | "refund" | "withdraw" | "topup" | "pending"
+        >,
+        createdAt: sql`${withdrawalRequest.createdAt}`.mapWith(
+          withdrawalRequest.createdAt,
+        ),
+        amount: sql`${withdrawalRequest.amount}`.mapWith(Number),
+        aiteiName: sql`${null}`.mapWith(String),
+        eventDate: sql`${null}`.mapWith(externalTransaction.createdAt),
+      })
+      .from(withdrawalRequest)
+      .where(
+        and(
+          eq(withdrawalRequest.userID, ctx.session?.user.userId),
+          eq(withdrawalRequest.status, "pending"),
+        ),
+      )
+      .orderBy(desc(withdrawalRequest.createdAt))
+      .execute();
+
+    const res = internalTransactionWithData
+      .concat(externalTransactionWithData)
+      .concat(withdrawReqWithData);
 
     return res;
   }),
