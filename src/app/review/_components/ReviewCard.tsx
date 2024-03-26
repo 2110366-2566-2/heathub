@@ -33,7 +33,7 @@ export default function ReviewCard(props: ReviewType) {
           {text.slice(0, maxLength) + "..."}
           <button
             onClick={toggleFullText}
-            className="mt-2 text-secondary-500 hover:underline"
+            className="text-secondary-500 hover:underline"
           >
             Read More
           </button>
@@ -45,7 +45,7 @@ export default function ReviewCard(props: ReviewType) {
           {text + "..."}
           <button
             onClick={toggleFullText}
-            className="mt-2 text-secondary-500 hover:underline"
+            className="text-secondary-500 hover:underline"
           >
             Show Less
           </button>
@@ -100,15 +100,18 @@ export default function ReviewCard(props: ReviewType) {
   }
   return (
     <div className="flex flex-row gap-2 rounded-xl bg-neutral-0 p-4">
-      <div className="flex w-[183px] flex-col items-start justify-between">
-        <Image
-          className="items-center justify-center rounded-full"
-          src={props.participantPic ?? ""}
-          width={44}
-          height={44}
-          alt="profilePic"
-        />
-        <div className="h4 font-bold">{props.participantName}</div>
+      <div className="flex w-[183px] flex-col items-start justify-start">
+        <div className="flex flex-col gap-2">
+          <Image
+            className="items-center justify-center rounded-full"
+            src={props.participantPic ?? ""}
+            width={44}
+            height={44}
+            alt="profilePic"
+          />
+          <div className="h4 font-bold">{props.participantName}</div>
+        </div>
+
         <div className="flex flex-col gap-1">
           <div className="h6 text-medium">{location}</div>
           <div className="h6 text-medium ">Event at {eventDate}</div>
