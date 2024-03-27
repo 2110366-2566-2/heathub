@@ -112,7 +112,7 @@ const mockData: TransactionBoxProps[] = [
     eventDate: null,
   },
   {
-    type: "pay",
+    type: "pending",
     createdAt: new Date("2024-03-24T20:00:00"),
     amount: -1500,
     aiteiName: "Alice Smith",
@@ -128,10 +128,8 @@ const mockData: TransactionBoxProps[] = [
 ];
 
 export default function TransactionHistory() {
-  const transactions = api.transaction.getTransactions.useQuery();
-  transactions.data?.sort(
-    (a, b) => b.createdAt?.getTime() - a.createdAt?.getTime(),
-  );
+  const { data } = api.transaction.getTransactions.useQuery();
+  data?.sort((a, b) => b.createdAt?.getTime() - a.createdAt?.getTime());
   return (
     <div className="flex w-full flex-col gap-y-6 p-9">
       <div className="flex w-full flex-row items-center gap-x-3">
@@ -144,8 +142,8 @@ export default function TransactionHistory() {
         <div className="h3 font-bold text-high">Transaction History</div>
       </div>
       <div className="flex w-full flex-col gap-y-4">
-        {transactions.data ? (
-          (transactions.data as TransactionBoxProps[]).map(
+        {data ? (
+          (data as TransactionBoxProps[]).map(
             (item: TransactionBoxProps, _index) => (
               <TransactionBox
                 aiteiName={item.aiteiName}
