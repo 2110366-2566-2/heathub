@@ -40,7 +40,7 @@ export type RecentNormalMessage = {
   contentType: "text" | "imageURL";
   content: string;
   createdAt: Date;
-  isVerified: boolean;
+  isVerified?: boolean;
 };
 
 export type RecentEventMessage = {
@@ -61,7 +61,7 @@ export type RecentEventMessage = {
     endTime: Date;
   };
   createdAt: Date;
-  isVerified: boolean;
+  isVerified?: boolean;
 };
 
 export type RecentMessage = RecentNormalMessage | RecentEventMessage;

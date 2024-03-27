@@ -132,7 +132,7 @@ export function MessageList({
                       data.discourserImageURL ||
                       generateAvatar(data.discourserAka)
                     }
-                    isVerified={data.isVerified}
+                    isVerified={data.isVerified ?? false}
                   />
                 );
               } else if (data.contentType === "event") {
@@ -148,7 +148,7 @@ export function MessageList({
                       data.discourserImageURL ||
                       generateAvatar(data.discourserAka)
                     }
-                    isVerified={data.isVerified}
+                    isVerified={data.isVerified ?? false}
                   />
                 );
               }
