@@ -4,7 +4,13 @@ import { type ColumnDef } from "@tanstack/react-table";
 
 export type Event = {
   id: number;
-  status: "pending" | "rejected" | "completed" | "payment-done" | "cancelled";
+  status:
+    | "pending"
+    | "cancelled-creation"
+    | "rejected"
+    | "completed"
+    | "payment-done"
+    | "cancelled";
   description: string | null;
   participantID: string;
   hostID: string;
