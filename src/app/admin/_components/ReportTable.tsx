@@ -45,6 +45,7 @@ export function ReportTable<TData, TValue>({
       return (
         <div className="relative">
           <SeeMoreModal
+            reportStatus={rowData.reportStatus}
             reportID={rowData.reportId}
             title={rowData.title}
             detail={rowData.detail}

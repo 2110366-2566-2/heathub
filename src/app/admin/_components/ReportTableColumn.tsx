@@ -49,6 +49,7 @@ export type Participant = {
 };
 
 export type ReportRequest = {
+  reportStatus: "pending" | "resolved" | "rejected";
   eventId: number;
   reportId: number;
   participantName: string;
@@ -93,5 +94,6 @@ export const reportTableColumns: ColumnDef<ReportRequest>[] = [
   {
     accessorKey: "event.price",
     header: "Price",
+    cell: ({ row }) => (row.original.event.price / 100).toString(),
   },
 ];
