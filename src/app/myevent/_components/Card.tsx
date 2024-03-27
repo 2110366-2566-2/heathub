@@ -92,17 +92,9 @@ export function Card(prop: EventProps) {
             {role === "participant" ? "My Review" : "Review"}
           </Button>
         );
-      default:
-        return (
-          <Button
-            variant="default"
-            className="z-50 !w-full border border-secondary-500 bg-white text-secondary-500 hover:bg-secondary-100"
-          >
-            Cancel Event
-          </Button>
-        );
-    }
+    
   };
+};
 
   const Modal = () => {
     switch (prop.status) {
@@ -141,12 +133,6 @@ export function Card(prop: EventProps) {
           >
             <CardButton />
           </ViewreviewModal>
-        );
-      default:
-        return (
-          <CancelModal id={prop.id}>
-            <CardButton />
-          </CancelModal>
         );
     }
   };
