@@ -19,6 +19,7 @@ import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SeeMoreModal } from "./SeeMoreModal";
 import { type ReportRequest } from "./ReportTableColumn";
+import { cn } from "@/utils/tailwind-merge";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -83,7 +84,10 @@ export function ReportTable<TData, TValue>({
                   return (
                     <TableHead
                       key={header.id}
-                      className={`text-left text-neutral-500 ${header.id === "action" ? "w-40" : ""}`}
+                      className={cn(
+                        "text-left text-neutral-500",
+                        header.id === "action" ? "w-40" : "",
+                      )}
                     >
                       {header.isPlaceholder
                         ? null

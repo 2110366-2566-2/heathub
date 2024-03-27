@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import type { Event, Host, Participant } from "./ReportTableColumn";
 import { api } from "@/trpc/react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface EventModalProps {
   reportID: number;
@@ -39,19 +40,40 @@ function formatDate(dateTime: Date) {
 
 export function SeeMoreModal(props: EventModalProps) {
   const { reportID, title, detail, event, host, participant, children } = props;
-
   const refund = api.admin.refundEventReport.useMutation();
   const reject = api.admin.rejectEventReport.useMutation();
+  const { toast } = useToast();
+
   const handleRefund = async () => {
     try {
       await refund.mutateAsync({ reportID });
-    } catch (error) {}
+      toast({
+        title: "Successfully refund report id " + reportID,
+        description: "Event id " + event.id + " is refunded",
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to refund report id " + reportID,
+        description: "Event id " + event.id + " is refunded",
+        variant: "error",
+      });
+    }
   };
 
   const handleReject = async () => {
     try {
       await reject.mutateAsync({ reportID });
-    } catch (error) {}
+      toast({
+        title: "Successfully reject report id " + reportID,
+        description: "Event id " + event.id + " is rejected",
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to reject report id " + reportID,
+        description: "Event id " + event.id + " is rejected",
+        variant: "error",
+      });
+    }
   };
 
   return (
@@ -63,41 +85,43 @@ export function SeeMoreModal(props: EventModalProps) {
             <h3 className="h3 flex flex-1 font-extrabold text-primary-800">
               Report Detail
             </h3>
-            <div className="h6 text-High flex flex-col gap-0 font-medium">
-              <div className="flex flex-col gap-0">
+            <div className="h6 text-High flex flex-col gap-2 font-medium">
+              <div className="flex flex-col ">
                 <div className="font-bold text-medium">Title</div>
                 <div>{title}</div>
               </div>
-              <div className="flex flex-col gap-0">
+              <div className="flex flex-col">
                 <div className="font-bold text-medium">Detail</div>
                 <div>{detail || "No detail available"}</div>
               </div>
-              <div className="flex flex-col gap-0">
+              <div className="flex flex-col">
                 <div className="font-bold text-medium">Event</div>
                 <div className="justify-left flex h-fit w-full rounded-xl border-none bg-neutral-50 p-2">
-                  <div className="flex flex-col font-bold text-medium">
+                  <div className="flex flex-col gap-2 font-bold text-medium">
                     <div>EventID</div>
                     <div>Location</div>
                     <div>Date</div>
                     <div>Detail</div>
+                    <div>Price</div>
                   </div>
-                  <div className="flex flex-col px-4">
+                  <div className="flex flex-col gap-2 px-4">
                     <div>{event.id}</div>
                     <div>{event.location}</div>
                     <div>{formatDate(event.startTime)}</div>
                     <div>{event.description}</div>
+                    <div>{event.price}</div>
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-0">
+              <div className="flex flex-col">
                 <div className="font-bold text-medium">Participant</div>
                 <div className="justify-left flex h-fit w-full rounded-xl border-none bg-neutral-50 p-2">
-                  <div className="flex flex-col font-bold text-medium">
+                  <div className="flex flex-col gap-2 font-bold text-medium">
                     <div>Name</div>
                     <div>Username</div>
                     <div>Email</div>
                   </div>
-                  <div className="flex flex-col px-4">
+                  <div className="flex flex-col gap-2 px-4">
                     <div>
                       {participant.firstName + " " + participant.lastName}
                     </div>
@@ -106,15 +130,15 @@ export function SeeMoreModal(props: EventModalProps) {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col gap-0">
+              <div className="flex flex-col">
                 <div className="font-bold text-medium">Host</div>
                 <div className="justify-left flex h-fit w-full rounded-xl border-none bg-neutral-50 p-2">
-                  <div className="flex flex-col font-bold text-medium">
+                  <div className="flex flex-col gap-2 font-bold text-medium">
                     <div>Name</div>
                     <div>Username</div>
                     <div>Email</div>
                   </div>
-                  <div className="flex flex-col px-4">
+                  <div className="flex flex-col gap-2 px-4">
                     <div>{host.firstName + " " + host.lastName}</div>
                     <div>{host.aka}</div>
                     <div>{host.email}</div>

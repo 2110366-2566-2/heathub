@@ -84,4 +84,8 @@ export const reportTableColumns: ColumnDef<ReportRequest>[] = [
       return detail.length > 25 ? `${detail.slice(0, 25)}...` : detail;
     },
   },
+  {
+    accessorKey: "event.price",
+    header: "Price",
+  },
 ];
