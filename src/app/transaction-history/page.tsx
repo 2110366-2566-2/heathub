@@ -3,6 +3,7 @@ import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
 import {
   faAngleLeft,
+  faClock,
   faMinusCircle,
   faMoneyBillWave,
   faPlusCircle,
@@ -88,15 +89,23 @@ function TransactionBox(props: TransactionBoxProps) {
       <div className="flex h-10 w-10 items-center justify-center">
         <div className="relative h-7 w-8">
           <FontAwesomeIcon
-            className="h-7 w-8 text-secondary-500"
+            className={cn(
+              "h-7 w-8",
+              type == "pending" ? "text-placeholder" : "text-secondary-500",
+            )}
             icon={
               type == "recieve" || type == "pay" || type == "refund"
                 ? faMoneyBillWave
-                : faWallet
+                : type == "pending"
+                  ? faClock
+                  : faWallet
             }
           />
 
-          {type != "recieve" && type != "pay" && type != "refund" ? (
+          {type != "recieve" &&
+          type != "pay" &&
+          type != "refund" &&
+          type != "pending" ? (
             <FontAwesomeIcon
               className="absolute left-[26px] top-0 h-3 w-3 text-secondary-400"
               icon={type == "topup" ? faPlusCircle : faMinusCircle}
@@ -122,12 +131,15 @@ function TransactionBox(props: TransactionBoxProps) {
                   return "Topup money";
                 case "withdraw":
                   return "Withdraw money";
+                case "pending":
+                  return "Withdraw money";
                 case "refund":
                   return `Refund event with ${aiteiName} on ${eventDate ? formatDate(eventDate, 1) : ""}`;
                 default:
                   return `Event with ${aiteiName} on ${eventDate ? formatDate(eventDate, 1) : ""}`;
               }
             })()}
+            <span className="h-1.5 w-1.5 rounded-full bg-pending"></span>
           </div>
           <div className="line-clamp-1 text-xs/[14px] text-medium">
             {formatDate(createdAt, 2)}
@@ -136,7 +148,11 @@ function TransactionBox(props: TransactionBoxProps) {
         <span
           className={cn(
             "h4 font-bold",
-            amount > 0 ? "text-success" : "text-error-default",
+            type == "pending"
+              ? "text-placeholder"
+              : amount > 0
+                ? "text-success"
+                : "text-error-default",
           )}
         >
           {amount > 0 ? `+${amount}฿` : `-${-amount}฿`}
