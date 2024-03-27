@@ -45,6 +45,7 @@ export default function Page() {
         if (!data) return;
         const formattedData = data.items.map((e) => {
           const req: ReportRequest = {
+            reportStatus: e.status,
             eventId: e.eventID,
             reportId: e.id,
             participantName:

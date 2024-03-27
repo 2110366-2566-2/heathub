@@ -43,6 +43,7 @@ export type Participant = {
 };
 
 export type ReportRequest = {
+  reportStatus: "pending" | "resolved" | "rejected";
   eventId: number;
   reportId: number;
   participantName: string;

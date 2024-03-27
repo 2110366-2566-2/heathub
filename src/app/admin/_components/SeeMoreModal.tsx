@@ -13,6 +13,7 @@ import { api } from "@/trpc/react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface EventModalProps {
+  reportStatus: "pending" | "resolved" | "rejected";
   reportID: number;
   title: string;
   detail: string | null;
@@ -21,6 +22,7 @@ interface EventModalProps {
   participant: Participant;
   children: React.ReactNode;
 }
+
 function formatDate(dateTime: Date) {
   const date = new Date(dateTime);
   const optionsDate: Intl.DateTimeFormatOptions = {
@@ -39,10 +41,11 @@ function formatDate(dateTime: Date) {
 }
 
 export function SeeMoreModal(props: EventModalProps) {
-  const { reportID, title, detail, event, host, participant, children } = props;
+  const { reportStatus, reportID, title, detail, event, host, participant, children } = props;
   const refund = api.admin.refundEventReport.useMutation();
   const reject = api.admin.rejectEventReport.useMutation();
   const { toast } = useToast();
+
 
   const handleRefund = async () => {
     try {
@@ -149,24 +152,28 @@ export function SeeMoreModal(props: EventModalProps) {
           </DialogTitle>
         </DialogHeader>
         <DialogFooter className="flex flex-row justify-end">
-          <DialogClose asChild>
-            <Button
-              variant="default"
-              className="bg-primary-500 font-normal text-white"
-              onClick={handleRefund}
-            >
-              Refund
-            </Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button
-              variant="outline"
-              className="h5 border-primary-500 font-normal text-primary-500"
-              onClick={handleReject}
-            >
-              Reject
-            </Button>
-          </DialogClose>
+          {reportStatus === "pending" && (
+            <DialogClose asChild>
+              <Button
+                variant="default"
+                className="bg-primary-500 font-normal text-white"
+                onClick={handleRefund}
+              >
+                Refund
+              </Button>
+            </DialogClose>
+          )}
+          {reportStatus === "pending" && (
+            <DialogClose asChild>
+              <Button
+                variant="outline"
+                className="h5 border-primary-500 font-normal text-primary-500"
+                onClick={handleReject}
+              >
+                Reject
+              </Button>
+            </DialogClose>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
