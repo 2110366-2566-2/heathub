@@ -79,6 +79,13 @@ export const chatRouter = createTRPCRouter({
           orderBy: (chatMessage, { desc }) => [desc(chatMessage.createdAt)],
         });
 
+        const verified = await tx.query.hostUser.findFirst({
+          where: or(
+            eq(hostUser.userID, ctx.session.user.userId),
+            eq(hostUser.userID, input.toUserID),
+          ),
+        });
+
         if (!lastestMessage) {
           throw new Error("Failed to send message");
         }
@@ -98,7 +105,7 @@ export const chatRouter = createTRPCRouter({
             ),
           );
 
-        return lastestMessage;
+        return { ...lastestMessage, verified };
       });
       const messageForSender: RecentNormalMessage = {
         id: result.id,
@@ -110,6 +117,9 @@ export const chatRouter = createTRPCRouter({
         contentType: result.contentType as "text" | "imageURL",
         content: result.content,
         createdAt: result.createdAt,
+        isVerified:
+          result.verified?.userID === input.toUserID &&
+          result.verified?.verifiedStatus === "verified",
       };
       const messageForReciever: RecentNormalMessage = {
         id: result.id,
@@ -121,6 +131,9 @@ export const chatRouter = createTRPCRouter({
         contentType: result.contentType as "text" | "imageURL",
         content: result.content,
         createdAt: result.createdAt,
+        isVerified:
+          result.verified?.userID === ctx.session.user.userId &&
+          result.verified?.verifiedStatus === "verified",
       };
 
       await Promise.all([
