@@ -60,7 +60,7 @@ export default function ChatEventForm({
       price: z.coerce.number(),
       beginDate: z.date(),
       endDate: z.date(),
-      description: z.string().max(256),
+      description: z.string().max(256).optional(),
       startTime: z.string({ required_error: "start time" }),
       endTime: z.string({ required_error: "end time" }),
     })
