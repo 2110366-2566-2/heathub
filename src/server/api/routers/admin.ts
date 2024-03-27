@@ -279,6 +279,13 @@ export const adminRouter = createTRPCRouter({
             status: "resolved",
           })
           .where(and(eq(eventReport.id, input.reportID)));
+
+        await tx
+          .update(event)
+          .set({
+            status: "cancelled",
+          })
+          .where(eq(event.id, report.eventID));
       });
     }),
 
