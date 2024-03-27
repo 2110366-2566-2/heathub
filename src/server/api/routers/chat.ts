@@ -7,7 +7,7 @@ import {
   userProcedure,
 } from "@/server/api/trpc";
 import type { DBQuery } from "@/server/db";
-import { chatInbox, chatMessage, user } from "@/server/db/schema";
+import { chatInbox, chatMessage, hostUser, user } from "@/server/db/schema";
 import {
   type RecentEventMessage,
   type RecentMessage,
@@ -79,6 +79,13 @@ export const chatRouter = createTRPCRouter({
           orderBy: (chatMessage, { desc }) => [desc(chatMessage.createdAt)],
         });
 
+        const verified = await tx.query.hostUser.findFirst({
+          where: or(
+            eq(hostUser.userID, ctx.session.user.userId),
+            eq(hostUser.userID, input.toUserID),
+          ),
+        });
+
         if (!lastestMessage) {
           throw new Error("Failed to send message");
         }
@@ -98,7 +105,7 @@ export const chatRouter = createTRPCRouter({
             ),
           );
 
-        return lastestMessage;
+        return { ...lastestMessage, verified };
       });
       const messageForSender: RecentNormalMessage = {
         id: result.id,
@@ -110,6 +117,9 @@ export const chatRouter = createTRPCRouter({
         contentType: result.contentType as "text" | "imageURL",
         content: result.content,
         createdAt: result.createdAt,
+        isVerified:
+          result.verified?.userID === input.toUserID &&
+          result.verified?.verifiedStatus === "verified",
       };
       const messageForReciever: RecentNormalMessage = {
         id: result.id,
@@ -121,6 +131,9 @@ export const chatRouter = createTRPCRouter({
         contentType: result.contentType as "text" | "imageURL",
         content: result.content,
         createdAt: result.createdAt,
+        isVerified:
+          result.verified?.userID === ctx.session.user.userId &&
+          result.verified?.verifiedStatus === "verified",
       };
 
       await Promise.all([
@@ -328,7 +341,8 @@ export const chatRouter = createTRPCRouter({
               eq(chatMessage.receiverUserID, user.id),
             ),
           ),
-        );
+        )
+        .leftJoin(hostUser, eq(user.id, hostUser.userID));
 
       const setMatched = new Set<string>();
       const messages: RecentMessage[] = result
@@ -356,6 +370,7 @@ export const chatRouter = createTRPCRouter({
               createdAt: e.chat_message.createdAt,
               contentType: "text",
               content: "New Event",
+              isVerified: e.host_user?.verifiedStatus === "verified",
             };
           }
           return {
@@ -368,6 +383,8 @@ export const chatRouter = createTRPCRouter({
             createdAt: e.chat_message.createdAt,
             contentType: e.chat_message.contentType,
             content: e.chat_message.content,
+            userRole: e.user.role,
+            isVerified: e.host_user?.verifiedStatus === "verified",
           };
         });
 
