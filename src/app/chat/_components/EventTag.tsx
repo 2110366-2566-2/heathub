@@ -29,6 +29,10 @@ export default function EventTag({
       status = "Rejected";
       color = "bg-error-default";
       break;
+    case "cancelled-creation":
+      status = "Cancelled";
+      color = "bg-error-default";
+      break;
     default:
       status = "Pending";
       color = "bg-pending";

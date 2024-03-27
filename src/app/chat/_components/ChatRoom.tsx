@@ -102,7 +102,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
 
   const updateEventStatus = (
     eventId: number,
-    status: "payment-done" | "rejected" | "cancelled",
+    status: "payment-done" | "rejected" | "cancelled" | "cancelled-creation",
   ) => {
     const newMessages = [...messages];
     for (const message of newMessages) {

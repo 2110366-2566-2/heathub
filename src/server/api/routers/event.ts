@@ -266,6 +266,36 @@ export const eventRouter = createTRPCRouter({
         .where(eq(event.id, input.eventID));
     }),
 
+  cancelCreation: userProcedure
+    .input(
+      z.object({
+        eventID: z.number().int(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const eventRow = await ctx.db.query.event.findFirst({
+        where: eq(event.id, input.eventID),
+      });
+
+      if (!eventRow) {
+        throw new Error("Event not found");
+      }
+
+      if (
+        eventRow.participantID !== ctx.session.user.userId &&
+        eventRow.hostID !== ctx.session.user.userId
+      ) {
+        throw new Error("Unauthorized");
+      }
+
+      await ctx.db
+        .update(event)
+        .set({
+          status: "cancelled-creation",
+        })
+        .where(eq(event.id, input.eventID));
+    }),
+
   payEvent: participantProcedure
     .input(
       z.object({
