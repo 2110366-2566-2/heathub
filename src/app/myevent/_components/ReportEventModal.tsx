@@ -16,6 +16,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { z } from "zod";
 import { api } from "@/trpc/react";
 import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ReportEventModalProps {
   eventID: number;
@@ -25,10 +26,24 @@ interface ReportEventModalProps {
 export function ReportEventModal(props: ReportEventModalProps) {
   const { children, eventID } = props;
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
 
   const createReport = api.report.createReport.useMutation({
     onSuccess: () => {
       setOpen(false);
+      toast({
+        title: "Report submitted",
+        description:
+          "Your report has been submitted and will be reviewed by our team",
+        variant: "success",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "An error occurred",
+        description: error.message,
+        variant: "error",
+      });
     },
   });
 
