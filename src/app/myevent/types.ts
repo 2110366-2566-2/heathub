@@ -3,7 +3,13 @@
 import { type Dispatch, type SetStateAction } from "react";
 
 export type myEventProps = {
-  status: "pending" | "payment-done" | "completed" | "cancelled" | "rejected" | "cancelled-creation";
+  status:
+    | "pending"
+    | "payment-done"
+    | "completed"
+    | "cancelled"
+    | "rejected"
+    | "cancelled-creation";
   description: string | null;
   location: string;
   id: number;

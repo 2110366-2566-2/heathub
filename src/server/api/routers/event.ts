@@ -164,11 +164,11 @@ export const eventRouter = createTRPCRouter({
         )!,
       ];
       if (input.status === "upcoming") {
-        filter.push(
-          or(eq(event.status, "payment-done"))!,
-        );
+        filter.push(or(eq(event.status, "payment-done"))!);
       } else if (input.status === "completed") {
-        filter.push(or(eq(event.status, "completed"), eq(event.status, "cancelled"))!);
+        filter.push(
+          or(eq(event.status, "completed"), eq(event.status, "cancelled"))!,
+        );
       }
 
       const res = await ctx.db.query.event.findMany({

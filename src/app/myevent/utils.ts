@@ -37,7 +37,7 @@ export function parseEventStatus(
     status == "rejected"
   ) {
     return EventStatus.INCOMPLETECREATED;
-  } else if (status == "cancelled"){
+  } else if (status == "cancelled") {
     return EventStatus.CANCELLED;
   } else {
     return EventStatus.NOTSTARTED;
