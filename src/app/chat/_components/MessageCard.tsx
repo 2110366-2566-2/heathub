@@ -5,6 +5,9 @@ import { Dayjs } from "@/utils/dayjs";
 import { cn } from "@/utils/tailwind-merge";
 import { useRouter } from "next/navigation";
 import { type MessageCardProps } from "./type";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+
 export function MessageCard(props: MessageCardProps) {
   const router = useRouter();
 
@@ -31,13 +34,24 @@ export function MessageCard(props: MessageCardProps) {
             <AvatarFallback>{props.discourserAka}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col justify-start">
-            <div
-              className={cn(
-                "h5 w-fit",
-                props.isSelected ? "text-white" : "text-black",
+            <div className="flex flex-row items-center gap-1">
+              <div
+                className={cn(
+                  "h5 w-fit",
+                  props.isSelected ? "text-white" : "text-black",
+                )}
+              >
+                {props.discourserAka}
+              </div>
+              {props.isVerified && (
+                <FontAwesomeIcon
+                  icon={faCheckCircle}
+                  className={cn(
+                    props.isSelected ? "text-white" : "text-secondary-500",
+                  )}
+                  size="xs"
+                />
               )}
-            >
-              {props.discourserAka}
             </div>
             <div
               className={cn(

@@ -6,6 +6,7 @@ export interface MessageCardProps {
   createdAt: string;
   imageUrl: string;
   isSelected: boolean;
+  isVerified: boolean;
 }
 export interface ChatMessageProps {
   className?: string;
