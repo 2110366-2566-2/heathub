@@ -174,7 +174,11 @@ export const eventRouter = createTRPCRouter({
       const res = await ctx.db.query.event.findMany({
         where: and(...filter),
         with: {
-          host: true,
+          host: {
+            with: {
+              onUser: true,
+            },
+          },
           participant: true,
           ratingAndReview: true,
         },

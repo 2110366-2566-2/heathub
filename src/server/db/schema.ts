@@ -460,9 +460,9 @@ export const event = sqliteTable("event", {
 });
 
 export const eventRelation = relations(event, ({ one }) => ({
-  host: one(user, {
+  host: one(hostUser, {
     fields: [event.hostID],
-    references: [user.id],
+    references: [hostUser.userID],
   }),
   participant: one(user, {
     fields: [event.participantID],
