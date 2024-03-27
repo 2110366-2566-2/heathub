@@ -82,8 +82,8 @@ export default function ReviewDetails(props: HostDetail) {
           </div>
           <div className="flex flex-col items-center gap-2">
             <div className="flex flex-row items-center justify-center gap-2">
-              <div className="h3 font-bold">{props.rating ?? 0.0}</div>
-              <div className="h6">/ 5</div>
+              <div className="h4 font-bold">{props.rating ?? 0.0}</div>
+              <div className="h5 flex self-end">/ 5</div>
             </div>
             <StarMaker rating={props.rating ?? 0} />
             <div className="h5 text-medium">No reviews available</div>
@@ -122,7 +122,7 @@ export default function ReviewDetails(props: HostDetail) {
         <div className="flex flex-col items-center gap-2">
           <div className="flex flex-row items-center justify-center gap-2">
             <div className="h3 font-bold">{props.rating ?? 0.0}</div>
-            <div className="h6">/ 5</div>
+            <div className="h4 flex self-end">/ 5</div>
           </div>
           <StarMaker rating={props.rating ?? 0} />
           <div className="h5 text-medium">Base on {sumReviews} reviews</div>
