@@ -40,7 +40,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
     rating: hostData.avgRating,
     image: hostData.image,
     isMobile: isMobile,
-    isVerified : hostData.verifiedStatus || "unverified"
+    isVerified: hostData.verifiedStatus || "unverified",
   };
   const RatingFilter = (
     <div className="flex w-full flex-row items-center gap-2">
