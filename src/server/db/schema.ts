@@ -350,7 +350,7 @@ export const externalTransaction = sqliteTable(
     amount: int("amount", {
       mode: "number",
     }).notNull(),
-    sessionID: text("session_id", { length: 128 }).notNull().unique(),
+    sessionID: text("session_id", { length: 128 }).notNull(),
     type: text("type", {
       length: 16,
       enum: ["topup", "withdraw"],
