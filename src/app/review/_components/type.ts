@@ -41,6 +41,7 @@ export type HostDetail = {
   hostID: string;
   rating: number | null;
   isMobile: boolean;
+  isVerified: string;
 };
 
 export interface TextProps {
