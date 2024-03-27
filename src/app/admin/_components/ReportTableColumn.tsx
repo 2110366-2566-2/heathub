@@ -1,7 +1,6 @@
 "use client";
 
 import { type ColumnDef } from "@tanstack/react-table";
-import { Dayjs } from "@/utils/dayjs";
 
 export type Event = {
   id: number;
@@ -41,7 +40,7 @@ export type Participant = {
   dateOfBirth: Date | null;
   profileImageURL: string | null;
   balance: number;
-}
+};
 
 export type ReportRequest = {
   eventId: number;
@@ -71,16 +70,22 @@ export const reportTableColumns: ColumnDef<ReportRequest>[] = [
   {
     accessorKey: "title",
     header: "Title",
-    cell: ({ row }) => row.original.title.length > 25 ? `${row.original.title.slice(0, 25)}...` : row.original.title,
+    cell: ({ row }) =>
+      row.original.title.length > 25
+        ? `${row.original.title.slice(0, 25)}...`
+        : row.original.title,
   },
   {
     accessorKey: "detail",
     header: "Detail",
-    cell: ({ row }) =>{
+    cell: ({ row }) => {
       const detail = row.original.detail;
       if (detail === null) return null;
       return detail.length > 25 ? `${detail.slice(0, 25)}...` : detail;
-    }
+    },
   },
-  
+  {
+    accessorKey: "event.price",
+    header: "Price",
+  },
 ];

@@ -10,7 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavItem } from "./navItem";
+import { NavItem, NavItemMobile } from "./navItem";
 import LoadingCircle from "./loading-circle";
 
 export function NavBar() {
@@ -66,9 +66,17 @@ export function NavBarMobile({ className }: { className?: string }) {
       className={cn("fixed bottom-4 z-30 w-full justify-center ", className)}
     >
       <div className=" z-50 mx-auto flex h-[68px] w-[80%] max-w-[448px] justify-between rounded-full bg-secondary-400 px-9 lg:hidden">
-        <NavItem link="/discover" icon={faCompass} isSelected={isDiscover} />
-        <NavItem link="/myevent" icon={faCalendarCheck} isSelected={isEvent} />
-        <NavItem link="/chat" icon={faComment} isSelected={isChat} />
+        <NavItemMobile
+          link="/discover"
+          icon={faCompass}
+          isSelected={isDiscover}
+        />
+        <NavItemMobile
+          link="/myevent"
+          icon={faCalendarCheck}
+          isSelected={isEvent}
+        />
+        <NavItemMobile link="/chat" icon={faComment} isSelected={isChat} />
         <div className="items-center justify-center self-center">
           <Link href="/profile">
             <div className="relative flex h-10 w-10 justify-center rounded-full border-2 border-white">

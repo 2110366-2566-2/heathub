@@ -18,7 +18,8 @@ import { Button } from "@/components/ui/button";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SeeMoreModal } from "./SeeMoreModal";
-import { ReportRequest } from "./ReportTableColumn";
+import { type ReportRequest } from "./ReportTableColumn";
+import { cn } from "@/utils/tailwind-merge";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,7 +37,6 @@ export function ReportTable<TData, TValue>({
   hasNext: boolean;
   setPage: (action: "next" | "previous") => void;
 }) {
-
   const actionCols: ColumnDef<TData, TValue> = {
     accessorKey: "action",
     header: "Actions",
@@ -52,7 +52,7 @@ export function ReportTable<TData, TValue>({
             host={rowData.host}
             participant={rowData.participant}
           >
-            <Button variant={'link'} className="h1 text-secondary-500 px-0">
+            <Button variant={"link"} className="h1 px-0 text-secondary-500">
               <FontAwesomeIcon
                 icon={faCircleInfo}
                 className="pr-1 text-secondary-500"
@@ -64,8 +64,6 @@ export function ReportTable<TData, TValue>({
       );
     },
   };
-  
-
 
   const allCols: ColumnDef<TData, TValue>[] = [...columns, actionCols];
 
@@ -86,7 +84,10 @@ export function ReportTable<TData, TValue>({
                   return (
                     <TableHead
                       key={header.id}
-                      className={`text-left text-neutral-500 ${header.id === "action" ? "w-40" : ""}`}
+                      className={cn(
+                        "text-left text-neutral-500",
+                        header.id === "action" ? "w-40" : "",
+                      )}
                     >
                       {header.isPlaceholder
                         ? null

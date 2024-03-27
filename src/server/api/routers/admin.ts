@@ -9,7 +9,7 @@ import {
   verifiedRequest,
   withdrawalRequest,
 } from "@/server/db/schema";
-import { eq, and, SQL } from "drizzle-orm";
+import { eq, and, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 export const adminRouter = createTRPCRouter({
@@ -194,7 +194,7 @@ export const adminRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const {page = 0, status } = input;
+      const { status } = input;
       const limit = input.limit ?? 10;
       let whereClause: SQL<unknown> | undefined;
 
