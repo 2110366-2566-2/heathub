@@ -138,17 +138,19 @@ export function DrawerProfile(props: ProfileProps) {
 }
 
 function Name(props: ProfilePreviewProps) {
-  const { aka, age } = props;
+  const { aka, age, verifiedStatus } = props;
   return (
     <div className="flex flex-row gap-3 py-3">
       <div className="h2 font-bold text-high">
         {aka}, {age}
       </div>
-      <FontAwesomeIcon
-        icon={faCheckCircle}
-        className="self-center text-secondary-500"
-        size="xl"
-      />
+      {verifiedStatus === "verified" && (
+        <FontAwesomeIcon
+          icon={faCheckCircle}
+          className="self-center text-secondary-500"
+          size="xl"
+        />
+      )}
     </div>
   );
 }
