@@ -6,6 +6,7 @@ import {
   eventReport,
   externalTransaction,
   hostUser,
+  internalTransaction,
   user,
   verifiedRequest,
   withdrawalRequest,
@@ -290,6 +291,12 @@ export const adminRouter = createTRPCRouter({
             status: "cancelled",
           })
           .where(eq(event.id, report.eventID));
+        await tx.insert(internalTransaction).values({
+          eventID: report.eventID,
+          userID: report.participantID,
+          amount: reportedEvent.price,
+          type: "refund",
+        });
       });
     }),
 
