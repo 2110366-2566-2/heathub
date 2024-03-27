@@ -7,6 +7,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TopUpDialog } from "./topup-modal";
 import { WithdrawDialog } from "./withdraw-modal";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default async function PaymentCard() {
   const user = await serverapi.auth.me.query();
@@ -54,13 +56,16 @@ export default async function PaymentCard() {
             <TopUpDialog />
           )}
 
-          <button className="h5 flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2">
+          <Link
+            href={"/transaction-history"}
+            className="h5 flex w-full grow items-center justify-center gap-2 rounded-md px-1 py-4 hover:bg-secondary-50 md:py-2"
+          >
             <FontAwesomeIcon
               className="h-6 w-6 text-secondary-500"
               icon={faHistory}
             />
             Transaction History
-          </button>
+          </Link>
         </div>
       </div>
     </div>

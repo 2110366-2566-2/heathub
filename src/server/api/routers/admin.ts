@@ -9,7 +9,7 @@ import {
   verifiedRequest,
   withdrawalRequest,
 } from "@/server/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 export const adminRouter = createTRPCRouter({
@@ -100,8 +100,13 @@ export const adminRouter = createTRPCRouter({
       const limit = input.limit ?? 10;
       const items = await ctx.db.query.withdrawalRequest.findMany({
         limit: limit + 1,
+        where: eq(withdrawalRequest.status, "pending"),
         with: {
-          hostUser: true,
+          hostUser: {
+            with: {
+              onUser: true,
+            },
+          },
         },
         offset: limit * input.page,
         orderBy: (withdrawalRequest, { asc }) => [
@@ -185,10 +190,20 @@ export const adminRouter = createTRPCRouter({
       z.object({
         limit: z.number().min(1).max(100).nullish(),
         page: z.number().default(0),
+        status: z.enum(["all", "pending", "resolved", "rejected"]).nullish(),
       }),
     )
     .query(async ({ ctx, input }) => {
+      const { status } = input;
       const limit = input.limit ?? 10;
+      let whereClause: SQL<unknown> | undefined;
+
+      if (status && status !== "all") {
+        whereClause = eq(eventReport.status, status);
+      } else {
+        whereClause = undefined;
+      }
+
       const items = await ctx.db.query.eventReport.findMany({
         limit: limit + 1,
         with: {
@@ -197,6 +212,7 @@ export const adminRouter = createTRPCRouter({
           participant: true,
         },
         offset: limit * input.page,
+        where: whereClause,
         orderBy: (report, { asc }) => [asc(report.createdAt)],
       });
 

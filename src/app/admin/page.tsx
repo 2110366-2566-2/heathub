@@ -1,7 +1,6 @@
+import { redirect } from "next/navigation";
+
 export default function Page() {
-  return (
-    <>
-      <div>hello</div>
-    </>
-  );
+  redirect("/admin/verified-request");
+  return <></>;
 }
