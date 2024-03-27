@@ -88,5 +88,6 @@ export const reportTableColumns: ColumnDef<ReportRequest>[] = [
   {
     accessorKey: "event.price",
     header: "Price",
+    cell: ({ row }) => (row.original.event.price / 100).toString(),
   },
 ];

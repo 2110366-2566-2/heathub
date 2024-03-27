@@ -41,11 +41,19 @@ function formatDate(dateTime: Date) {
 }
 
 export function SeeMoreModal(props: EventModalProps) {
-  const { reportStatus, reportID, title, detail, event, host, participant, children } = props;
+  const {
+    reportStatus,
+    reportID,
+    title,
+    detail,
+    event,
+    host,
+    participant,
+    children,
+  } = props;
   const refund = api.admin.refundEventReport.useMutation();
   const reject = api.admin.rejectEventReport.useMutation();
   const { toast } = useToast();
-
 
   const handleRefund = async () => {
     try {
@@ -112,7 +120,7 @@ export function SeeMoreModal(props: EventModalProps) {
                     <div>{event.location}</div>
                     <div>{formatDate(event.startTime)}</div>
                     <div>{event.description}</div>
-                    <div>{event.price}</div>
+                    <div>{event.price / 100}</div>
                   </div>
                 </div>
               </div>
