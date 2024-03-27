@@ -34,10 +34,11 @@ export default function Page() {
     const _events: EventProps[] = data.map((event: myEventProps) => ({
       role: role,
       id: event.id,
-      userID: role === "participant" ? event.host.id : event.participant.id,
+      userID: role === "participant" ? event.hostID : event.participantID,
       participantID:
-        role === "participant" ? event.participant.id : event.host.id,
-      name: role === "participant" ? event.host.aka : event.participant.aka,
+        role === "participant" ? event.participantID : event.hostID,
+      name:
+        role === "participant" ? event.host.onUser.aka : event.participant.aka,
       location: event.location,
       date: event.startTime,
       status: parseEventStatus(
@@ -47,10 +48,15 @@ export default function Page() {
       ),
       image:
         role === "participant"
-          ? event.host.profileImageURL || generateAvatar(event.host.aka)
+          ? event.host.onUser.profileImageURL ||
+            generateAvatar(event.host.onUser.aka)
           : event.participant.profileImageURL ||
             generateAvatar(event.participant.aka),
       detail: event.description,
+      isVerified:
+        role === "participant"
+          ? event.host.verifiedStatus === "verified"
+          : false,
     }));
     setEvents(_events);
   }, [data, role]);
@@ -156,7 +162,7 @@ export default function Page() {
                       date={event.date}
                       status={event.status}
                       detail={event.detail ?? ""}
-                      isVerified
+                      isVerified={event.isVerified}
                     />
                   )
                 );
@@ -196,7 +202,7 @@ export default function Page() {
                       date={event.date}
                       status={event.status}
                       detail={event.detail}
-                      isVerified
+                      isVerified={event.isVerified}
                     />
                   )
                 );

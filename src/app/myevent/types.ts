@@ -15,9 +15,12 @@ export type myEventProps = {
   };
   hostID: string;
   host: {
-    id: string;
-    aka: string;
-    profileImageURL: string | null;
+    verifiedStatus: "unverified" | "pending" | "verified" | "rejected" | null;
+    onUser: {
+      id: string;
+      aka: string;
+      profileImageURL: string | null;
+    };
   };
   startTime: Date;
   ratingAndReview: ratingAndReview | null;
