@@ -149,7 +149,7 @@ export default function Page() {
               )}
               {events.map((event) => {
                 return (
-                  event.status !== EventStatus.CANCELLED && (
+                  event.status !== EventStatus.INCOMPLETECREATED && (
                     <Card
                       key={event.id}
                       id={event.id}
