@@ -1,15 +1,16 @@
-import { createTRPCRouter, adminProcedure } from "@/server/api/trpc";
 import { removeUploadthingURLPrefix, utapi } from "@/app/api/uploadthing/core";
+import { adminProcedure, createTRPCRouter } from "@/server/api/trpc";
 
 import {
-  eventReport,
   event,
+  eventReport,
+  externalTransaction,
   hostUser,
   user,
   verifiedRequest,
   withdrawalRequest,
 } from "@/server/db/schema";
-import { eq, and, type SQL } from "drizzle-orm";
+import { and, eq, type SQL } from "drizzle-orm";
 import { z } from "zod";
 
 export const adminRouter = createTRPCRouter({
@@ -164,6 +165,13 @@ export const adminRouter = createTRPCRouter({
             completedAt: new Date(),
           })
           .where(and(eq(withdrawalRequest.id, input.requestID)));
+
+        await tx.insert(externalTransaction).values({
+          amount: request.amount,
+          userID: request.userID,
+          type: "withdraw",
+          sessionID: "",
+        });
       });
     }),
 
@@ -243,6 +251,10 @@ export const adminRouter = createTRPCRouter({
           throw new Error("Event report not found");
         }
 
+        if (report.status !== "pending") {
+          throw new Error("Event report is already resolved");
+        }
+
         const userData = await tx.query.user.findFirst({
           where: eq(user.id, report.participantID),
         });
@@ -271,6 +283,13 @@ export const adminRouter = createTRPCRouter({
             status: "resolved",
           })
           .where(and(eq(eventReport.id, input.reportID)));
+
+        await tx
+          .update(event)
+          .set({
+            status: "cancelled",
+          })
+          .where(eq(event.id, report.eventID));
       });
     }),
 
@@ -281,6 +300,18 @@ export const adminRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const report = await ctx.db.query.eventReport.findFirst({
+        where: eq(eventReport.id, input.reportID),
+      });
+
+      if (!report) {
+        throw new Error("Event report not found");
+      }
+
+      if (report.status !== "pending") {
+        throw new Error("Event report is already resolved");
+      }
+
       await ctx.db.transaction(async (tx) => {
         await tx
           .update(eventReport)

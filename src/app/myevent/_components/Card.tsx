@@ -36,7 +36,7 @@ export type EventProps = {
   status: EventStatus;
   image: string | null;
   detail?: string | null;
-  isVerified?: boolean;
+  isVerified: boolean;
 };
 
 export enum EventStatus {
@@ -44,6 +44,7 @@ export enum EventStatus {
   NOTSTARTED = "Not Started",
   WAITINGREVIEW = "Waiting for Review",
   COMPLETED = "Completed",
+  INCOMPLETECREATED = "Incomplete Created",
   CANCELLED = "Cancelled",
 }
 

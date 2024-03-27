@@ -40,6 +40,7 @@ export type RecentNormalMessage = {
   contentType: "text" | "imageURL";
   content: string;
   createdAt: Date;
+  isVerified?: boolean;
 };
 
 export type RecentEventMessage = {
@@ -55,11 +56,18 @@ export type RecentEventMessage = {
     description: string | null;
     location: string;
     price: number;
-    status: "pending" | "payment-done" | "completed" | "cancelled" | "rejected";
+    status:
+      | "pending"
+      | "cancelled-creation"
+      | "payment-done"
+      | "completed"
+      | "cancelled"
+      | "rejected";
     startTime: Date;
     endTime: Date;
   };
   createdAt: Date;
+  isVerified?: boolean;
 };
 
 export type RecentMessage = RecentNormalMessage | RecentEventMessage;

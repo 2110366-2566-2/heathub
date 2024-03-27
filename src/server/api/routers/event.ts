@@ -164,17 +164,21 @@ export const eventRouter = createTRPCRouter({
         )!,
       ];
       if (input.status === "upcoming") {
-        filter.push(
-          or(eq(event.status, "pending"), eq(event.status, "payment-done"))!,
-        );
+        filter.push(or(eq(event.status, "payment-done"))!);
       } else if (input.status === "completed") {
-        filter.push(or(eq(event.status, "completed"))!);
+        filter.push(
+          or(eq(event.status, "completed"), eq(event.status, "cancelled"))!,
+        );
       }
 
       const res = await ctx.db.query.event.findMany({
         where: and(...filter),
         with: {
-          host: true,
+          host: {
+            with: {
+              onUser: true,
+            },
+          },
           participant: true,
           ratingAndReview: true,
         },
@@ -258,6 +262,36 @@ export const eventRouter = createTRPCRouter({
         .update(event)
         .set({
           status: "cancelled",
+        })
+        .where(eq(event.id, input.eventID));
+    }),
+
+  cancelCreation: userProcedure
+    .input(
+      z.object({
+        eventID: z.number().int(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const eventRow = await ctx.db.query.event.findFirst({
+        where: eq(event.id, input.eventID),
+      });
+
+      if (!eventRow) {
+        throw new Error("Event not found");
+      }
+
+      if (
+        eventRow.participantID !== ctx.session.user.userId &&
+        eventRow.hostID !== ctx.session.user.userId
+      ) {
+        throw new Error("Unauthorized");
+      }
+
+      await ctx.db
+        .update(event)
+        .set({
+          status: "cancelled-creation",
         })
         .where(eq(event.id, input.eventID));
     }),
