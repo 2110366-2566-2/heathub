@@ -283,6 +283,9 @@ export default function ChatEventForm({
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
+                <div className="text-sm text-medium">
+                  The price already includes a 10% service fee.
+                </div>
               </FormItem>
             )}
           />
