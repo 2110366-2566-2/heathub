@@ -58,7 +58,19 @@ interface TransactionBoxProps {
 }
 
 function TransactionBox(props: TransactionBoxProps) {
-  const { type, createdAt, amount, aiteiName, eventDate } = props;
+  let { type, createdAt, amount, aiteiName, eventDate } = props;
+
+  if (type == "pay" || type == "withdraw" || type == "pending") {
+    if (amount > 0) {
+      amount = -amount;
+    }
+  }
+
+  if (type == "recieve" || type == "topup") {
+    if (amount < 0) {
+      amount = -amount;
+    }
+  }
 
   const formatDate = (date: Date, options: number) => {
     const options1: Intl.DateTimeFormatOptions = {
