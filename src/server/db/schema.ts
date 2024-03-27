@@ -549,13 +549,13 @@ export const eventReportRelation = relations(eventReport, ({ one }) => ({
     fields: [eventReport.eventID],
     references: [event.id],
   }),
-  host: one(hostUser, {
+  host: one(user, {
     fields: [eventReport.hostID],
-    references: [hostUser.userID],
+    references: [user.id],
   }),
-  participant: one(participantUser, {
+  participant: one(user, {
     fields: [eventReport.participantID],
-    references: [participantUser.userID],
+    references: [user.id],
   }),
 }));
 
