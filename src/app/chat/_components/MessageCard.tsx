@@ -48,9 +48,8 @@ export function MessageCard(props: MessageCardProps) {
                   icon={faCheckCircle}
                   className={cn(
                     props.isSelected ? "text-white" : "text-secondary-500",
-                    "h-3 w-3",
                   )}
-                  size="1x"
+                  size="xs"
                 />
               )}
             </div>
