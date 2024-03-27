@@ -251,6 +251,10 @@ export const adminRouter = createTRPCRouter({
           throw new Error("Event report not found");
         }
 
+        if (report.status !== "pending") {
+          throw new Error("Event report is already resolved");
+        }
+
         const userData = await tx.query.user.findFirst({
           where: eq(user.id, report.participantID),
         });
@@ -296,6 +300,18 @@ export const adminRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const report = await ctx.db.query.eventReport.findFirst({
+        where: eq(eventReport.id, input.reportID),
+      });
+
+      if (!report) {
+        throw new Error("Event report not found");
+      }
+
+      if (report.status !== "pending") {
+        throw new Error("Event report is already resolved");
+      }
+
       await ctx.db.transaction(async (tx) => {
         await tx
           .update(eventReport)
