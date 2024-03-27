@@ -172,7 +172,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   useEffect(() => {
     autoSave();
-  }, [firstText, lastText, usernameText, bioText, DOB, gender, imageUrl]);
+  }, [firstText, lastText, usernameText, bioText, DOB, gender, imageUrl]);  
 
   const uploadImage = async () => {
     if (!formRef.current) {
