@@ -54,6 +54,15 @@ export const user = sqliteTable(
   }),
 );
 
+export const userRelation = relations(user, ({ many }) => ({
+  reported: many(eventReport, {
+    relationName: "host",
+  }),
+  report: many(eventReport, {
+    relationName: "participant",
+  }),
+}));
+
 export const hostUser = sqliteTable("host_user", {
   userID: text("user_id", {
     length: 64,
@@ -77,7 +86,6 @@ export const hostRelation = relations(hostUser, ({ one, many }) => ({
   }),
   interests: many(hostInterest),
   reviews: many(ratingAndReview),
-  reports: many(eventReport),
   withdrawalRequests: many(withdrawalRequest),
 }));
 
@@ -134,7 +142,6 @@ export const participantRelation = relations(
       fields: [participantUser.userID],
       references: [user.id],
     }),
-    reports: many(eventReport),
   }),
 );
 
@@ -552,10 +559,12 @@ export const eventReportRelation = relations(eventReport, ({ one }) => ({
   host: one(user, {
     fields: [eventReport.hostID],
     references: [user.id],
+    relationName: "host",
   }),
   participant: one(user, {
     fields: [eventReport.participantID],
     references: [user.id],
+    relationName: "participant",
   }),
 }));
 
