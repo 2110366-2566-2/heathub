@@ -18,28 +18,29 @@ import ReviewDetails from "../_components/ReviewDetails";
 import { useMediaQuery } from "react-responsive";
 export default function Reviews({ params }: { params: { userID: string } }) {
   const router = useRouter();
-  const mockUserId = params.userID;
+  const userId = params.userID;
   const [filter, setFilter] = useState(0);
   const isMobile = useMediaQuery({ maxWidth: 1024 });
 
   const { data } = api.user.getHostData.useQuery({
-    hostID: mockUserId,
+    hostID: userId,
   });
   if (!data) {
     console.log("Error can not get host data");
     return;
   }
   if (!data[0]) {
-    console.log(`Do not have hostID: ${mockUserId}`);
+    console.log(`Do not have hostID: ${userId}`);
     return;
   }
   const hostData = data[0];
   const props: HostDetail = {
     username: hostData.username,
-    hostID: mockUserId,
+    hostID: userId,
     rating: hostData.avgRating,
     image: hostData.image,
     isMobile: isMobile,
+    isVerified : hostData.verifiedStatus || "unverified"
   };
   const RatingFilter = (
     <div className="flex w-full flex-row items-center gap-2">
@@ -96,7 +97,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
               </div>
             </div>
             <div className="h-full w-full">
-              <ReviewList userID={mockUserId} filter={filter} />
+              <ReviewList userID={userId} filter={filter} />
             </div>
           </div>
         </div>
@@ -127,7 +128,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
           </div>
         </div>
         <div className="h-full w-full">
-          <ReviewList userID={mockUserId} filter={filter} />
+          <ReviewList userID={userId} filter={filter} />
         </div>
       </div>
       <ReviewDetails {...props} />
