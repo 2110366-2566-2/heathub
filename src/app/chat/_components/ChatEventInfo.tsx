@@ -19,7 +19,7 @@ export interface ChatEventInfoInterface {
   status: EventDetailCardProps["status"];
   updateStatus: (
     eventId: number,
-    status: "payment-done" | "rejected" | "cancelled",
+    status: "payment-done" | "rejected" | "cancelled" | "cancelled-creation",
   ) => void;
   imageUrl: string | null;
   senderName: string;
@@ -42,9 +42,9 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
   } = info;
   const justifyPosition = isMine ? "justify-end" : "justify-start";
 
-  const cancelEvent = api.event.cancelEvent.useMutation({
+  const cancelEvent = api.event.cancelCreation.useMutation({
     onSuccess: () => {
-      updateStatus(eventID, "cancelled");
+      updateStatus(eventID, "cancelled-creation");
     },
   });
 

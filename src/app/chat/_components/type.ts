@@ -21,7 +21,13 @@ export interface ChatMessageProps {
 export type MessageType = string;
 export interface EventDetailCardProps {
   className?: string;
-  status: "pending" | "payment-done" | "completed" | "cancelled" | "rejected";
+  status:
+    | "pending"
+    | "cancelled-creation"
+    | "payment-done"
+    | "completed"
+    | "cancelled"
+    | "rejected";
   date: Date;
   price: number;
 }

@@ -460,7 +460,14 @@ export const event = sqliteTable("event", {
     .notNull(),
   status: text("status", {
     length: 32,
-    enum: ["pending", "payment-done", "completed", "cancelled", "rejected"],
+    enum: [
+      "pending",
+      "cancelled-creation",
+      "payment-done",
+      "completed",
+      "cancelled",
+      "rejected",
+    ],
   })
     .default("pending")
     .notNull(),
