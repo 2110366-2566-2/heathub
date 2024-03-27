@@ -92,9 +92,8 @@ export function Card(prop: EventProps) {
             {role === "participant" ? "My Review" : "Review"}
           </Button>
         );
-    
+    }
   };
-};
 
   const Modal = () => {
     switch (prop.status) {
