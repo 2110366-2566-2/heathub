@@ -13,121 +13,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
-const mockData: TransactionBoxProps[] = [
-  {
-    type: "topup",
-    createdAt: new Date("2023-05-17T11:00:00"),
-    amount: 1000,
-    aiteiName: "John Doe",
-    eventDate: null,
-  },
-  {
-    type: "withdraw",
-    createdAt: new Date("2024-02-16T15:30:00"),
-    amount: -500,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-03-15T22:00:00"),
-    amount: -400,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-15T23:00:00"),
-  },
-  {
-    type: "topup",
-    createdAt: new Date("2023-11-17T21:00:00"),
-    amount: 1000,
-    aiteiName: "John Doe",
-    eventDate: null,
-  },
-  {
-    type: "withdraw",
-    createdAt: new Date("2024-03-16T08:30:00"),
-    amount: -500,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-03-05T21:20:00"),
-    amount: -1700,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-05T21:30:00"),
-  },
-  {
-    type: "topup",
-    createdAt: new Date("2024-03-17T10:00:00"),
-    amount: 1500,
-    aiteiName: "John Doe",
-    eventDate: null,
-  },
-  {
-    type: "topup",
-    createdAt: new Date("2024-01-16T15:30:00"),
-    amount: 5000,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-03-15T21:00:00"),
-    amount: -1500,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-20T14:00:00"),
-  },
-  {
-    type: "refund",
-    createdAt: new Date("2024-03-15T10:30:00"),
-    amount: 1000,
-    aiteiName: "John Doe",
-    eventDate: new Date("2024-03-15T10:30:00"),
-  },
-  {
-    type: "pending",
-    createdAt: new Date("2024-03-16T15:30:00"),
-    amount: -1200,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-01-15T18:00:00"),
-    amount: -1700,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-01-20T14:00:00"),
-  },
-  {
-    type: "topup",
-    createdAt: new Date("2024-03-17T10:00:00"),
-    amount: 3500,
-    aiteiName: "John Doe",
-    eventDate: null,
-  },
-  {
-    type: "withdraw",
-    createdAt: new Date("2024-03-16T15:30:00"),
-    amount: -250,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pending",
-    createdAt: new Date("2024-03-24T20:00:00"),
-    amount: -1500,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-24T20:00:00"),
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-03-15T23:30:00"),
-    amount: -400,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-15T23:00:00"),
-  },
-];
-
 export default function TransactionHistory() {
   const { data } = api.transaction.getTransactions.useQuery();
   data?.sort((a, b) => b.createdAt?.getTime() - a.createdAt?.getTime());
@@ -143,7 +28,7 @@ export default function TransactionHistory() {
         <div className="h3 font-bold text-high">Transaction History</div>
       </div>
       <div className="flex w-full flex-col gap-y-4">
-        {/* {data ? (
+        {data ? (
           (data as TransactionBoxProps[]).map(
             (item: TransactionBoxProps, _index) => (
               <TransactionBox
@@ -158,17 +43,7 @@ export default function TransactionHistory() {
           )
         ) : (
           <></>
-        )} */}
-        {mockData.map((item: TransactionBoxProps, _index) => (
-          <TransactionBox
-            aiteiName={item.aiteiName}
-            amount={item.amount}
-            createdAt={item.createdAt}
-            eventDate={item.eventDate}
-            type={item.type}
-            key={_index}
-          />
-        ))}
+        )}
       </div>
     </div>
   );
