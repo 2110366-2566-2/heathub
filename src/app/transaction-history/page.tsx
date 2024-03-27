@@ -3,6 +3,7 @@ import { api } from "@/trpc/react";
 import { cn } from "@/utils/tailwind-merge";
 import {
   faAngleLeft,
+  faClock,
   faMinusCircle,
   faMoneyBillWave,
   faPlusCircle,
@@ -11,121 +12,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-
-const mockData: TransactionBoxProps[] = [
-  {
-    type: "topup",
-    createdAt: new Date("2023-05-17T11:00:00"),
-    amount: 1000,
-    aiteiName: "John Doe",
-    eventDate: null,
-  },
-  {
-    type: "withdraw",
-    createdAt: new Date("2024-02-16T15:30:00"),
-    amount: -500,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-03-15T22:00:00"),
-    amount: -400,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-15T23:00:00"),
-  },
-  {
-    type: "topup",
-    createdAt: new Date("2023-11-17T21:00:00"),
-    amount: 1000,
-    aiteiName: "John Doe",
-    eventDate: null,
-  },
-  {
-    type: "withdraw",
-    createdAt: new Date("2024-03-16T08:30:00"),
-    amount: -500,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-03-05T21:20:00"),
-    amount: -1700,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-05T21:30:00"),
-  },
-  {
-    type: "topup",
-    createdAt: new Date("2024-03-17T10:00:00"),
-    amount: 1500,
-    aiteiName: "John Doe",
-    eventDate: null,
-  },
-  {
-    type: "topup",
-    createdAt: new Date("2024-01-16T15:30:00"),
-    amount: 5000,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-03-15T21:00:00"),
-    amount: -1500,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-20T14:00:00"),
-  },
-  {
-    type: "refund",
-    createdAt: new Date("2024-03-15T10:30:00"),
-    amount: 1000,
-    aiteiName: "John Doe",
-    eventDate: new Date("2024-03-15T10:30:00"),
-  },
-  {
-    type: "withdraw",
-    createdAt: new Date("2024-03-16T15:30:00"),
-    amount: -1200,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-01-15T18:00:00"),
-    amount: -1700,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-01-20T14:00:00"),
-  },
-  {
-    type: "topup",
-    createdAt: new Date("2024-03-17T10:00:00"),
-    amount: 3500,
-    aiteiName: "John Doe",
-    eventDate: null,
-  },
-  {
-    type: "withdraw",
-    createdAt: new Date("2024-03-16T15:30:00"),
-    amount: -250,
-    aiteiName: "Alice Smith",
-    eventDate: null,
-  },
-  {
-    type: "pending",
-    createdAt: new Date("2024-03-24T20:00:00"),
-    amount: -1500,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-24T20:00:00"),
-  },
-  {
-    type: "pay",
-    createdAt: new Date("2024-03-15T23:30:00"),
-    amount: -400,
-    aiteiName: "Alice Smith",
-    eventDate: new Date("2024-03-15T23:00:00"),
-  },
-];
 
 export default function TransactionHistory() {
   const { data } = api.transaction.getTransactions.useQuery();
@@ -158,17 +44,6 @@ export default function TransactionHistory() {
         ) : (
           <></>
         )}
-        {/* {mockData.map((item: TransactionBoxProps) => (
-          <TransactionBox
-            aiteiName={item.aiteiName}
-            amount={item.amount}
-            createdAt={item.createdAt}
-            eventDate={item.eventDate}
-            type={item.type}
-            key={item.id}
-            id={item.id}
-          />
-        ))} */}
       </div>
     </div>
   );
@@ -214,15 +89,23 @@ function TransactionBox(props: TransactionBoxProps) {
       <div className="flex h-10 w-10 items-center justify-center">
         <div className="relative h-7 w-8">
           <FontAwesomeIcon
-            className="h-7 w-8 text-secondary-500"
+            className={cn(
+              "h-7 w-8",
+              type == "pending" ? "text-placeholder" : "text-secondary-500",
+            )}
             icon={
               type == "recieve" || type == "pay" || type == "refund"
                 ? faMoneyBillWave
-                : faWallet
+                : type == "pending"
+                  ? faClock
+                  : faWallet
             }
           />
 
-          {type != "recieve" && type != "pay" && type != "refund" ? (
+          {type != "recieve" &&
+          type != "pay" &&
+          type != "refund" &&
+          type != "pending" ? (
             <FontAwesomeIcon
               className="absolute left-[26px] top-0 h-3 w-3 text-secondary-400"
               icon={type == "topup" ? faPlusCircle : faMinusCircle}
@@ -248,12 +131,15 @@ function TransactionBox(props: TransactionBoxProps) {
                   return "Topup money";
                 case "withdraw":
                   return "Withdraw money";
+                case "pending":
+                  return "Withdraw money";
                 case "refund":
                   return `Refund event with ${aiteiName} on ${eventDate ? formatDate(eventDate, 1) : ""}`;
                 default:
                   return `Event with ${aiteiName} on ${eventDate ? formatDate(eventDate, 1) : ""}`;
               }
             })()}
+            <span className="h-1.5 w-1.5 rounded-full bg-pending"></span>
           </div>
           <div className="line-clamp-1 text-xs/[14px] text-medium">
             {formatDate(createdAt, 2)}
@@ -262,7 +148,11 @@ function TransactionBox(props: TransactionBoxProps) {
         <span
           className={cn(
             "h4 font-bold",
-            amount > 0 ? "text-success" : "text-error-default",
+            type == "pending"
+              ? "text-placeholder"
+              : amount > 0
+                ? "text-success"
+                : "text-error-default",
           )}
         >
           {amount > 0 ? `+${amount}฿` : `-${-amount}฿`}
