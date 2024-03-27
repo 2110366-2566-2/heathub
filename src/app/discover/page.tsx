@@ -46,6 +46,9 @@ export default function DiscoverPage() {
         interests: user.interests as TagList,
         bio: user.bio ? user.bio : "",
         id: user.id,
+        verifiedStatus: user.verifiedStatus
+          ? user.verifiedStatus
+          : "unverified",
       }));
       setUsers(_users);
     }

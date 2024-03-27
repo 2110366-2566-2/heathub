@@ -22,7 +22,7 @@ export type ProfilePreviewProps = {
   gender: string;
   dateOfBirth: Date;
   id: string;
-  verifiedStatus: string;
+  verifiedStatus: "verified" | "unverified" | "pending" | "rejected" | null;
   verifiedDetail: string;
   role: "host" | "participant";
 };

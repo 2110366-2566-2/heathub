@@ -82,7 +82,7 @@ export function MyAccountPreview(props: ProfilePreviewProps) {
             </div>
             <ChangePasswordButton />
           </div>
-          {props.verifiedStatus !== "" && (
+          {props.verifiedStatus && (
             <div className="lg:gap-auto flex flex-col items-start gap-4 rounded-xl bg-invert px-6 py-6 lg:flex-row lg:justify-between">
               <div className="flex flex-col items-start gap-2">
                 <div className="placeholder flex justify-center text-medium">

@@ -9,7 +9,7 @@ import { type ProfilePreviewProps } from "../types";
 import { RatingIcon } from "./rating-icon";
 
 export default function Card(props: ProfilePreviewProps) {
-  const { aka, age, image, interests, rating } = props;
+  const { aka, age, image, interests, rating, verifiedStatus } = props;
 
   const maxInterestsToDisplay = 3;
 
@@ -38,11 +38,13 @@ export default function Card(props: ProfilePreviewProps) {
           <div className="h2 text-wrap text-start font-bold text-high">
             {aka}, {age}
           </div>
-          <FontAwesomeIcon
-            icon={faCheckCircle}
-            className="self-center  text-secondary-500"
-            size="xl"
-          />
+          {verifiedStatus === "verified" && (
+            <FontAwesomeIcon
+              icon={faCheckCircle}
+              className="self-center  text-secondary-500"
+              size="xl"
+            />
+          )}
         </div>
         <div className="flex flex-row flex-wrap items-center justify-start gap-2">
           {visibleInterests.sort().map((tag, index) => {

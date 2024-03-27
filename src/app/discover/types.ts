@@ -9,6 +9,7 @@ export type userProps = {
   reviews: number;
   interests: TagList;
   bio: string;
+  verifiedStatus: "verified" | "unverified" | "pending" | "rejected" | null;
 };
 
 export type userApiProps = {
@@ -25,6 +26,7 @@ export type userApiProps = {
   avgRating: number | null;
   reviewCount: number | null;
   id: string;
+  verifiedStatus: "verified" | "unverified" | "pending" | "rejected" | null;
 };
 
 export type ProfilePreviewProps = {
@@ -36,6 +38,7 @@ export type ProfilePreviewProps = {
   bio: string;
   interests: TagList;
   id: string;
+  verifiedStatus: "verified" | "unverified" | "pending" | "rejected" | null;
 };
 
 export type filters = {

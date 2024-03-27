@@ -25,22 +25,36 @@ type ProfilePreviews = {
   bio: string;
   interests: TagList;
   id: string;
+  verifiedStatus: "verified" | "unverified" | "pending" | "rejected" | null;
 };
 
 export default function ProfileDetails(props: ProfilePreviewProps) {
-  const { image, interests, name, gender, about, dateOfBirth, id, role } =
-    props;
+  const {
+    image,
+    interests,
+    name,
+    gender,
+    about,
+    dateOfBirth,
+    id,
+    role,
+    age,
+    rating,
+    reviews,
+    verifiedStatus,
+  } = props;
   const genderName = gender == "NotToSay" ? "Prefer not to say" : gender;
   const isMobile = useMediaQuery({ maxWidth: 1023 });
   const nPop: ProfilePreviews = {
-    aka: props.name,
-    age: props.age,
-    image: props.image,
-    rating: props.rating,
-    reviews: props.reviews,
-    bio: props.about,
-    interests: props.interests,
+    aka: name,
+    age: age,
+    image: image,
+    rating: rating,
+    reviews: reviews,
+    bio: about,
+    interests: interests,
     id: props.id,
+    verifiedStatus: verifiedStatus,
   };
   const [snap, setSnap] = useState<string | number | null>("322px");
 
