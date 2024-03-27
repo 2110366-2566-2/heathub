@@ -70,6 +70,15 @@ export default function Verify({ onClose }: { onClose: () => void }) {
     setUrl(url);
   }, [files]);
 
+  function disableButton() {
+    const submitButton = document.getElementById("submit-button");
+    const cancelButton = document.getElementById("cancel-button");
+    if (submitButton && cancelButton) {
+      submitButton.setAttribute("disabled", "true");
+      cancelButton.setAttribute("disabled", "true");
+    }
+  }
+
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex flex-col gap-2">
@@ -116,15 +125,16 @@ export default function Verify({ onClose }: { onClose: () => void }) {
         </span>
       </div>
       <div className="flex flex-row justify-end gap-3">
-        <DialogClose>
-          <Button
-            variant="secondaryOutline"
-            className="border-medium text-medium"
-          >
-            Cancel
-          </Button>
-        </DialogClose>
         <Button
+          id="cancel-button"
+          variant="secondaryOutline"
+          className="border-medium text-medium disabled:border-neutral-300 disabled:text-neutral-300"
+          onClick={onClose}
+        >
+          Cancel
+        </Button>
+        <Button
+          id="submit-button"
           variant="secondary"
           onClick={async () => {
             if (files.length === 0) {
@@ -135,6 +145,7 @@ export default function Verify({ onClose }: { onClose: () => void }) {
               });
               return;
             }
+            disableButton();
             await startUpload(files);
           }}
         >
