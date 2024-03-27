@@ -89,7 +89,7 @@ export function Card(prop: EventProps) {
             variant="default"
             className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
           >
-            {role === 'participant' ? 'My Review' : 'Review'}
+            {role === "participant" ? "My Review" : "Review"}
           </Button>
         );
       default:

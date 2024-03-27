@@ -7,7 +7,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TopUpDialog } from "./topup-modal";
 import { WithdrawDialog } from "./withdraw-modal";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default async function PaymentCard() {
