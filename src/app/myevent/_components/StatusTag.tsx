@@ -28,6 +28,16 @@ export function StatusTag(props: StatusProps) {
           {EventStatus.COMPLETED}
         </Tag>
       );
+    case EventStatus.CANCELLED:
+      return (
+        <Tag
+          className="border-danger text-danger"
+          variant="outline"
+          size={props.size}
+        >
+          {EventStatus.CANCELLED}
+        </Tag>
+      );
     default:
       return (
         <Tag variant="outline" size={props.size}>
