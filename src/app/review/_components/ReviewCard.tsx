@@ -68,7 +68,7 @@ export default function ReviewCard(props: ReviewType) {
       <div className="flex w-full flex-col gap-3 rounded-xl bg-neutral-0 p-4">
         <div className="flex flex-row gap-2">
           <Image
-            className="h-[44px] w-[44px] items-start justify-start rounded-full"
+            className="max-h-[44px] min-h-[44px] min-w-[44px] max-w-[44px] items-start justify-start rounded-full"
             src={props.participantPic ?? ""}
             width={44}
             height={44}
