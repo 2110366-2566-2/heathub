@@ -434,7 +434,7 @@ export const event = sqliteTable("event", {
     length: 64,
   }).notNull(),
   description: text("description", {
-    length: 64,
+    length: 256,
   }),
   startTime: int("start_time", {
     mode: "timestamp_ms",

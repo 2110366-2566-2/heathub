@@ -21,11 +21,11 @@ interface ParticipantDetailsProps {
 export default function ParticipantDetails(props: ParticipantDetailsProps) {
   const { setData, setPage, page, data } = props;
   return (
-    <div className="min-w-screen h-full min-h-screen w-full overflow-hidden bg-primary-50 p-6 md:p-9">
-      <div>
+    <div className="min-w-screen flex h-full min-h-screen w-full flex-col gap-y-8 overflow-hidden bg-invert p-6">
+      <div className="flex w-full flex-row">
         <GoBackArrow Page={page} setPage={setPage} />
-        <ComponentsGround data={data} setData={setData} />
       </div>
+      <ComponentsGround data={data} setData={setData} />
     </div>
   );
 }
