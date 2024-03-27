@@ -44,6 +44,7 @@ export enum EventStatus {
   NOTSTARTED = "Not Started",
   WAITINGREVIEW = "Waiting for Review",
   COMPLETED = "Completed",
+  INCOMPLETECREATED = "Incomplete Created",
   CANCELLED = "Cancelled",
 }
 

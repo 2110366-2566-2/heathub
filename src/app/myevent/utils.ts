@@ -33,9 +33,11 @@ export function parseEventStatus(
     return EventStatus.COMPLETED;
   } else if (
     status == "pending" ||
-    status == "cancelled" ||
+    status == "cancelled-creation" ||
     status == "rejected"
   ) {
+    return EventStatus.INCOMPLETECREATED;
+  } else if (status == "cancelled") {
     return EventStatus.CANCELLED;
   } else {
     return EventStatus.NOTSTARTED;
