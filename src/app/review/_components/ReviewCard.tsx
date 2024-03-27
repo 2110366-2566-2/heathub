@@ -79,7 +79,7 @@ export default function ReviewCard(props: ReviewType) {
               <div className="h4">{props.participantName}</div>
               <StarMaker rating={props.ratingScore} />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-start">
               <div className="h6 text-medium">{location}</div>
               <div className="small text-medium ">Event at {eventDate}</div>
             </div>
@@ -103,7 +103,7 @@ export default function ReviewCard(props: ReviewType) {
       <div className="flex w-[183px] flex-col items-start justify-start">
         <div className="flex flex-col gap-2">
           <Image
-            className="items-center justify-center rounded-full"
+            className="h-[44px] w-[44px] items-center justify-center rounded-full"
             src={props.participantPic ?? ""}
             width={44}
             height={44}

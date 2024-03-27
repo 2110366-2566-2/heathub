@@ -28,8 +28,8 @@ export const reviewRouter = createTRPCRouter({
           eventDate: event.startTime,
         })
         .from(hostUser)
-        .innerJoin(user, eq(user.id, hostUser.userID))
         .innerJoin(ratingAndReview, eq(ratingAndReview.hostID, hostUser.userID))
+        .innerJoin(user, eq(user.id, ratingAndReview.participantID))
         .innerJoin(event, eq(event.id, ratingAndReview.eventID))
         .where(
           and(
