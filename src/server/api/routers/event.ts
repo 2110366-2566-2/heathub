@@ -225,7 +225,7 @@ export const eventRouter = createTRPCRouter({
           userID: eventRow.hostID,
           amount: hostPayment,
           eventID: eventRow.id,
-          type: "pay",
+          type: "recieve",
         });
         await tx
           .update(user)
