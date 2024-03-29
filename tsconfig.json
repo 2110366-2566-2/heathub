@@ -38,6 +38,6 @@
     "**/*.cjs",
     "**/*.js",
     ".next/types/**/*.ts"
-  ],
+, "src/app/api-doc/page.tsx"  ],
   "exclude": ["node_modules"]
 }
