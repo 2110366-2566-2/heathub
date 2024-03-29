@@ -12,14 +12,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { CalendarFilter } from "@/components/ui/calendar-filter";
 
 interface DatePickerProps {
   date: Date | undefined;
   setDate: (date: Date | undefined) => void;
+  isFilter: boolean;
 }
 
 export function DatePicker(props: DatePickerProps) {
-  const { date, setDate } = props;
+  const { date, setDate, isFilter } = props;
 
   return (
     <Popover>
@@ -36,12 +38,24 @@ export function DatePicker(props: DatePickerProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto bg-white p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
+        {isFilter ? (
+          <CalendarFilter
+            mode="single"
+            captionLayout="dropdown-buttons"
+            selected={date}
+            onSelect={setDate}
+            fromYear={new Date().getFullYear() - 120}
+            toDate={new Date()}
+            initialFocus
+          />
+        ) : (
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            initialFocus
+          />
+        )}
       </PopoverContent>
     </Popover>
   );
