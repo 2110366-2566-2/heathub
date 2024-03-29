@@ -16,10 +16,38 @@ import Fuse from "fuse.js";
 import { z } from "zod";
 
 export const userRouter = createTRPCRouter({
-  getAllUsers: publicProcedure.query(async ({ ctx }) => {
-    const users = await ctx.db.query.user.findMany();
-    return users;
-  }),
+  getAllUsers: publicProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/users",
+        description: "Get all users",
+        protect: false,
+        tags: ["users"],
+      },
+    })
+    .input(z.object({}).optional())
+    .output(
+      z.array(
+        z.object({
+          email: z.string(),
+          firstName: z.string(),
+          lastName: z.string(),
+          gender: z.string(),
+          role: z.enum(["host", "participant", "admin"]),
+          id: z.string(),
+          aka: z.string(),
+          bio: z.string().nullable(),
+          dateOfBirth: z.date().nullable(),
+          profileImageURL: z.string().nullable(),
+          balance: z.number(),
+        }),
+      ),
+    )
+    .query(async ({ ctx }) => {
+      const users = await ctx.db.query.user.findMany();
+      return users;
+    }),
 
   getUserPublicData: publicProcedure
     .input(
