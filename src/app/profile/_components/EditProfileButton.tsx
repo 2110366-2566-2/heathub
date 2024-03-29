@@ -229,7 +229,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
               <Label className="h5 text-high" htmlFor="Date of birth">
                 Date of birth
               </Label>
-              <DatePicker date={DOB} setDate={setDOB} />
+              <DatePicker date={DOB} setDate={setDOB} isFilter={true} />
             </div>
             <GenderSelector gender={gender} setGender={setGender} />
           </div>
