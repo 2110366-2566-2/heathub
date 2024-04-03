@@ -12,7 +12,8 @@
     "lint": "next lint",
     "format": "prettier --write . --cache",
     "format:check": "prettier --check . --cache",
-    "start": "next start"
+    "start": "next start",
+    "test": "cypress open"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -95,6 +96,7 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "autoprefixer": "^10.4.17",
+    "cypress": "^13.7.2",
     "drizzle-kit": "^0.20.14",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.1.0",
