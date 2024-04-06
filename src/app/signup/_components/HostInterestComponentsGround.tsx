@@ -129,7 +129,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
   return (
     <div className="flex h-full w-full flex-1 flex-col items-center gap-y-8">
-      <div className="h1 font-extrabold text-primary-900">Interest</div>
+      <div className="h1 font-extrabold text-primary-900">Interests</div>
       <div className="flex h-fit w-full max-w-[848px] flex-col items-center">
         <ToggleGroup
           className="gap flex w-full flex-wrap gap-2"

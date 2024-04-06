@@ -62,7 +62,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     useState<string>("");
 
   const formCheck = () => {
-    if (emailNotice != "This Email is already exits.") {
+    if (emailNotice != "This Email is already exist.") {
       setEmailNotice("");
     }
     setPasswordNotice("");
@@ -85,13 +85,13 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
     if (password && password.length < 8) {
       setValid(false);
-      setPasswordNotice("Password must be at least 8 characters");
+      setPasswordNotice("Password must be at least 8 characters.");
       valid = false;
     }
 
     if (password !== confirmPassword) {
       setValid(false);
-      setConfirmPasswordNotice("Passwords do not match");
+      setConfirmPasswordNotice("Passwords do not match.");
       valid = false;
     }
 
@@ -177,7 +177,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               value={emailText}
               type="text"
               name="Email"
-              placeholder="Enter your Email"
+              placeholder="Enter your email"
               onKeyUp={formCheck}
               onChange={(e) => {
                 setEmailText(e.currentTarget.value);
@@ -204,7 +204,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                 "text-red-500": passwordNotice,
               })}
             >
-              The password must be at least 8 characters
+              The password must be at least 8 characters.
             </div>
           </div>
           <div className="flex w-full flex-col gap-y-1.5">
