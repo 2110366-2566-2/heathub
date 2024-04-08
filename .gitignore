@@ -48,3 +48,4 @@ yarn-error.log*
 !.env.vault
 
 /libsql
+setupTests.ts
