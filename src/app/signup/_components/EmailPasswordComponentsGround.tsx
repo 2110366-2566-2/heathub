@@ -108,6 +108,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   });
 
   const handleButtonClick = async () => {
+    // const handleButtonClick = async (formData: FormData) => {
+    //   if (!isValid) {
+    //     return;
+    //   }
+
+    //   const password = z.string().parse(formData.get("Password"));
+    //   const email = z.string().parse(formData.get("Email"));
+
     if (!formRef.current || !isValid) {
       return;
     }
@@ -166,6 +174,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       </div>
       <div className="flex w-full flex-col items-center gap-y-10">
         <form
+          // action={handleButtonClick}
           ref={formRef}
           className="flex w-full flex-col items-center gap-y-6"
         >
@@ -174,8 +183,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               Email
             </Label>
             <Input
+              // required
               value={emailText}
-              type="text"
+              type="email"
               name="Email"
               placeholder="Enter your email"
               onKeyUp={formCheck}
@@ -190,6 +200,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               Password
             </Label>
             <Input
+              // required
               value={passwordText}
               type="password"
               name="Password"
@@ -212,6 +223,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               Confirm Password
             </Label>
             <Input
+              // required
               value={cfPasswordText}
               type="password"
               name="Confirm Password"
@@ -227,6 +239,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           </div>
         </form>
         <Button
+          type="submit"
           className="h-12 w-full bg-primary-500 text-white sm:static"
           variant="default"
           onClick={handleButtonClick}
