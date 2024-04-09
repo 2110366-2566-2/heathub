@@ -19,6 +19,7 @@ export default function Verify({ onClose }: { onClose: () => void }) {
   const [url, setUrl] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [progress, setProgress] = useState(-1);
+  const [disableButton, setDisableButton] = useState(false);
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
   }, []);
@@ -28,6 +29,7 @@ export default function Verify({ onClose }: { onClose: () => void }) {
     "verifiedUploader",
     {
       onClientUploadComplete: () => {
+        setDisableButton(true);
         setProgress(-1);
         toast({
           title: "Upload Complete",
@@ -39,6 +41,7 @@ export default function Verify({ onClose }: { onClose: () => void }) {
         onClose();
       },
       onUploadError: () => {
+        setDisableButton(false);
         toast({
           title: "Upload Failed",
           description: "Your ID card failed to upload",
@@ -135,8 +138,10 @@ export default function Verify({ onClose }: { onClose: () => void }) {
               });
               return;
             }
+            setDisableButton(true);
             await startUpload(files);
           }}
+          disabled={disableButton}
         >
           Submit
         </Button>
