@@ -7,13 +7,19 @@ import {
   userProcedure,
 } from "@/server/api/trpc";
 import type { DBQuery } from "@/server/db";
-import { chatInbox, chatMessage, hostUser, user } from "@/server/db/schema";
+import {
+  chatInbox,
+  chatMessage,
+  hostUser,
+  user,
+  blockList,
+} from "@/server/db/schema";
 import {
   type RecentEventMessage,
   type RecentMessage,
   type RecentNormalMessage,
 } from "@/types/pusher";
-import { and, desc, eq, lte, or, sql } from "drizzle-orm";
+import { and, desc, eq, lte, or, sql, isNull } from "drizzle-orm";
 export async function createInbox(
   db: DBQuery,
   userID1: string,
@@ -342,7 +348,21 @@ export const chatRouter = createTRPCRouter({
             ),
           ),
         )
-        .leftJoin(hostUser, eq(user.id, hostUser.userID));
+        .leftJoin(hostUser, eq(user.id, hostUser.userID))
+        .leftJoin(
+          blockList,
+          or(
+            and(
+              eq(chatMessage.receiverUserID, blockList.userID),
+              eq(chatMessage.senderUserID, blockList.blockedUserID),
+            ),
+            and(
+              eq(chatMessage.senderUserID, blockList.userID),
+              eq(chatMessage.receiverUserID, blockList.blockedUserID),
+            ),
+          ),
+        )
+        .where(isNull(blockList.blockedUserID));
 
       const setMatched = new Set<string>();
       const messages: RecentMessage[] = result

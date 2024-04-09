@@ -622,3 +622,30 @@ export const withdrawalRequestRelation = relations(
     }),
   }),
 );
+export const blockList = sqliteTable(
+  "block_list",
+  {
+    userID: text("user_id", {
+      length: 64,
+    }).notNull(),
+    blockedUserID: text("blocked_user_id", {
+      length: 64,
+    }).notNull(),
+  },
+  (block) => ({
+    pk: primaryKey({
+      columns: [block.userID, block.blockedUserID],
+    }),
+  }),
+);
+
+export const blockListRelation = relations(blockList, ({ one }) => ({
+  user: one(user, {
+    fields: [blockList.userID],
+    references: [user.id],
+  }),
+  blockUser: one(user, {
+    fields: [blockList.blockedUserID],
+    references: [user.id],
+  }),
+}));
