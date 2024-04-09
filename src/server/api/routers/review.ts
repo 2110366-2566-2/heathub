@@ -5,7 +5,7 @@ import {
   userProcedure,
 } from "@/server/api/trpc";
 import { event, hostUser, ratingAndReview, user } from "@/server/db/schema";
-import { eq, and, gte, desc, avg, count } from "drizzle-orm";
+import { and, avg, count, desc, eq, gte } from "drizzle-orm";
 import { z } from "zod";
 
 export const reviewRouter = createTRPCRouter({
@@ -42,6 +42,14 @@ export const reviewRouter = createTRPCRouter({
       return reviewsWithData;
     }),
   createReview: participantProcedure
+    .meta({
+      openapi: {
+        method: "POST",
+        path: "/api/users/hosts/{hostID}/review/",
+        description: "Create a review for a host",
+        protect: true,
+      },
+    })
     .input(
       z.object({
         eventID: z.number(),
@@ -49,6 +57,11 @@ export const reviewRouter = createTRPCRouter({
         hostID: z.string(),
         ratingScore: z.number(),
         reviewDesc: z.string(),
+      }),
+    )
+    .output(
+      z.object({
+        success: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -70,7 +83,9 @@ export const reviewRouter = createTRPCRouter({
 
       const avgScore = result[0];
       if (!avgScore?.avg) {
-        return;
+        return {
+          success: false,
+        };
       }
 
       const avgF = parseFloat(avgScore.avg);
@@ -79,7 +94,9 @@ export const reviewRouter = createTRPCRouter({
         where: eq(hostUser.userID, input.hostID),
       });
       if (!hostData) {
-        return;
+        return {
+          success: false,
+        };
       }
       await ctx.db
         .update(hostUser)
@@ -88,7 +105,9 @@ export const reviewRouter = createTRPCRouter({
           reviewCount: (hostData?.reviewCount ?? 0) + 1,
         })
         .where(eq(hostUser.userID, input.hostID));
-      return;
+      return {
+        success: true,
+      };
     }),
   getReviewsNumber: publicProcedure
     .input(

@@ -15,38 +15,10 @@ import Fuse from "fuse.js";
 import { z } from "zod";
 
 export const userRouter = createTRPCRouter({
-  getAllUsers: publicProcedure
-    .meta({
-      openapi: {
-        method: "GET",
-        path: "/users",
-        description: "Get all users",
-        protect: false,
-        tags: ["users"],
-      },
-    })
-    .input(z.object({}).optional())
-    .output(
-      z.array(
-        z.object({
-          email: z.string(),
-          firstName: z.string(),
-          lastName: z.string(),
-          gender: z.string(),
-          role: z.enum(["host", "participant", "admin"]),
-          id: z.string(),
-          aka: z.string(),
-          bio: z.string().nullable(),
-          dateOfBirth: z.date().nullable(),
-          profileImageURL: z.string().nullable(),
-          balance: z.number(),
-        }),
-      ),
-    )
-    .query(async ({ ctx }) => {
-      const users = await ctx.db.query.user.findMany();
-      return users;
-    }),
+  getAllUsers: publicProcedure.query(async ({ ctx }) => {
+    const users = await ctx.db.query.user.findMany();
+    return users;
+  }),
 
   getUserPublicData: publicProcedure
     .input(
@@ -89,10 +61,32 @@ export const userRouter = createTRPCRouter({
     return participants;
   }),
   getHostData: publicProcedure
+    .meta({
+      openapi: {
+        method: "GET",
+        path: "/users/hosts/{hostID}",
+        protect: false,
+        summary: "Get hosts by ID",
+      },
+    })
     .input(
       z.object({
         hostID: z.string(),
       }),
+    )
+    .output(
+      z
+        .object({
+          interests: z.array(z.string()),
+          avgRating: z.number().nullable(),
+          reviewCount: z.number().nullable(),
+          username: z.string(),
+          image: z.string().nullable(),
+          verifiedStatus: z
+            .enum(["pending", "rejected", "unverified", "verified"])
+            .nullable(),
+        })
+        .nullable(),
     )
     .query(async ({ ctx, input }) => {
       const res = await ctx.db
@@ -109,6 +103,7 @@ export const userRouter = createTRPCRouter({
         .leftJoin(hostInterest, eq(hostInterest.userID, hostUser.userID))
         .innerJoin(user, eq(user.id, hostUser.userID))
         .groupBy(hostUser.userID)
+        .limit(1)
         .then((result) => {
           return result.map((row) => {
             const arrayInterests = (row.interests as string)
@@ -120,7 +115,10 @@ export const userRouter = createTRPCRouter({
             };
           });
         });
-      return res;
+      if (res.length === 0) {
+        return null;
+      }
+      return res[0]!;
     }),
 
   getHostsByFilter: publicProcedure

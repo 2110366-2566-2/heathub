@@ -2,6 +2,6 @@
 
 import { openApiDocument } from "@/server/api/openapi";
 
-export async function GetSpec(): Promise<Record<string, any>> {
+export async function GetSpec() {
   return openApiDocument;
 }
