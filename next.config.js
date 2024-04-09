@@ -18,6 +18,9 @@ const config = {
       },
     ],
   },
+  experimental: {
+    serverComponentsExternalPackages: ["swagger-ui-react"],
+  },
 };
 
 export default config;

@@ -22,18 +22,14 @@ export default function Reviews({ params }: { params: { userID: string } }) {
   const [filter, setFilter] = useState(0);
   const isMobile = useMediaQuery({ maxWidth: 1024 });
 
-  const { data } = api.user.getHostData.useQuery({
+  const { data:hostData } = api.user.getHostData.useQuery({
     hostID: userId,
   });
-  if (!data) {
-    console.log("Error can not get host data");
-    return;
-  }
-  if (!data[0]) {
+
+  if (!hostData) {
     console.log(`Do not have hostID: ${userId}`);
     return;
   }
-  const hostData = data[0];
   const props: HostDetail = {
     username: hostData.username,
     hostID: userId,

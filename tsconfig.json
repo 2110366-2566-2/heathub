@@ -30,6 +30,7 @@
       "@/*": ["./src/*"]
     }
   },
+
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
@@ -37,7 +38,8 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
-    ".next/types/**/*.ts"
-, "src/app/api-doc/page.tsx"  ],
+    ".next/types/**/*.ts",
+    "src/app/api-doc/page.tsx"
+  ],
   "exclude": ["node_modules"]
 }
