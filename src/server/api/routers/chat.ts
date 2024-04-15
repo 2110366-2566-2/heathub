@@ -19,7 +19,7 @@ import {
   type RecentMessage,
   type RecentNormalMessage,
 } from "@/types/pusher";
-import { and, desc, eq, lte, or, sql, isNull } from "drizzle-orm";
+import { and, desc, eq, lte, or, sql, isNull, ne } from "drizzle-orm";
 export async function createInbox(
   db: DBQuery,
   userID1: string,
@@ -141,6 +141,12 @@ export const chatRouter = createTRPCRouter({
           result.verified?.userID === ctx.session.user.userId &&
           result.verified?.verifiedStatus === "verified",
       };
+      const blockUser = await ctx.db.query.blockList.findFirst({
+        where: and(
+          eq(blockList.userID, input.toUserID),
+          eq(blockList.blockedUserID, ctx.session.user.userId),
+        ),
+      });
 
       await Promise.all([
         ctx.pusher.trigger(
@@ -148,11 +154,12 @@ export const chatRouter = createTRPCRouter({
           RECENT_MESSAGE_EVENT,
           messageForSender,
         ),
-        ctx.pusher.trigger(
-          `private-user-${input.toUserID}`,
-          RECENT_MESSAGE_EVENT,
-          messageForReciever,
-        ),
+        !blockUser &&
+          ctx.pusher.trigger(
+            `private-user-${input.toUserID}`,
+            RECENT_MESSAGE_EVENT,
+            messageForReciever,
+          ),
       ]);
     }),
 
@@ -362,7 +369,12 @@ export const chatRouter = createTRPCRouter({
             ),
           ),
         )
-        .where(isNull(blockList.blockedUserID));
+        .where(
+          or(
+            isNull(blockList.blockedUserID),
+            ne(blockList.userID, ctx.session.user.userId),
+          ),
+        );
 
       const setMatched = new Set<string>();
       const messages: RecentMessage[] = result
