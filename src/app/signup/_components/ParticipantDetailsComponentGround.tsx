@@ -302,7 +302,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                 type="text"
                 className="h-9"
                 name="Lastname"
-                placeholder="Enter your Lastname"
+                placeholder="Enter your lastname"
                 onChange={(e) => {
                   if (e.target.value.length == 0) {
                     setLastText("");
