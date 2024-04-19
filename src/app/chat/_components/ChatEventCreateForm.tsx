@@ -25,6 +25,7 @@ import { PlacesAutocomplete } from "./AutoComplete";
 import { type Library } from "@googlemaps/js-api-loader";
 import { DialogClose } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { env } from "@/env";
 
 const googlelib = ["places"] as Library[];
 export interface CreateFormInfo {
@@ -88,7 +89,7 @@ export default function ChatEventForm({
   });
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBzAKU-lzdnputUmRhYdRF3KrpMoHHmr4g",
+    googleMapsApiKey: env.NEXT_PUBLIC_GOOGLEMAP_API_KEY,
     libraries: googlelib,
   });
 
