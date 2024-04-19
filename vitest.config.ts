@@ -6,7 +6,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   test: {
     // Specify the directory where your test files are located
-    dir: "src",
+    // dir: "src",
 
     // Optionally, you can configure reporters for test results
     reporters: ["default"],
@@ -16,8 +16,7 @@ export default defineConfig({
       enabled: true,
     },
     // Optionally, you can configure test environment setup
-    // setupFiles: ["<rootDir>/setupTests.ts"],
-    include: ["**/*.spec.ts"],
+    include: ["./vitest/*.spec.ts"],
     setupFiles: ["/setupTests.ts"],
   },
   resolve: {

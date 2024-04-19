@@ -13,7 +13,11 @@
     "format": "prettier --write . --cache",
     "format:check": "prettier --check . --cache",
     "start": "next start",
-    "test": "cypress open"
+    "test": "cypress open",
+    "test:cy": "cypress open",
+    "test:unit": "vitest",
+    "coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -117,8 +121,5 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.25.1"
-  },
-  "volta": {
-    "node": "20.12.1"
   }
 }

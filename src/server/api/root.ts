@@ -30,7 +30,6 @@ export const appRouter = createTRPCRouter({
   review: reviewRouter,
   report: reportRouter,
   transaction: transactionRouter,
-  me: meRouter,
 });
 
 export type AppRouter = typeof appRouter;
