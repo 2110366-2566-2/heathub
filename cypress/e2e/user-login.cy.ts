@@ -1,5 +1,3 @@
-import { user } from "@/server/db/schema";
-
 describe("Login Test", () => {
   it("TC2-1 Valid Email and Correct Password", () => {
     cy.visit("https://heathub.vercel.app/signin");
@@ -9,7 +7,7 @@ describe("Login Test", () => {
       cy.get("input[type=password]").type(user.password);
     });
     cy.get("button[type=submit]").click();
-    cy.wait(3000);
+    cy.wait(1000);
     cy.contains("Welcome back").should("exist");
   });
   it("TC2-2 Email is empty", () => {
