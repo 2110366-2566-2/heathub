@@ -18,7 +18,7 @@ export async function signIn(formData: FormData) {
       userId: key.userId,
       attributes: {},
     });
-
+    console.log("Signing in with email", email, password);
     const sessionCookie = auth.createSessionCookie(session);
     cookies().set(sessionCookie);
     return "";

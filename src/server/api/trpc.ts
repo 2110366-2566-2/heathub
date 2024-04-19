@@ -82,6 +82,7 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+export const createCallerFactory = t.createCallerFactory;
 
 export const userProcedure = t.procedure.use(async (opt) => {
   // check if user is authenticated
