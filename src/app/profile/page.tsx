@@ -66,7 +66,7 @@ export default async function Profile() {
       gender: user.gender,
       dateOfBirth: user.dateOfBirth ?? new Date(),
       id: user2?.userId ?? "",
-      verifiedStatus: "",
+      verifiedStatus: null,
       verifiedDetail: "",
       role:
         user2?.role === "admin" ? "participant" : user2?.role ?? "participant",

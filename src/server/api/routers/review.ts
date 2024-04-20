@@ -28,8 +28,8 @@ export const reviewRouter = createTRPCRouter({
           eventDate: event.startTime,
         })
         .from(hostUser)
-        .innerJoin(user, eq(user.id, hostUser.userID))
         .innerJoin(ratingAndReview, eq(ratingAndReview.hostID, hostUser.userID))
+        .innerJoin(user, eq(user.id, ratingAndReview.participantID))
         .innerJoin(event, eq(event.id, ratingAndReview.eventID))
         .where(
           and(
@@ -75,17 +75,14 @@ export const reviewRouter = createTRPCRouter({
 
       const avgF = parseFloat(avgScore.avg);
       const roundedAvg = Math.round(avgF * 10) / 10;
-      const hostData = await ctx.db.query.hostUser.findFirst({
-        where: eq(hostUser.userID, input.hostID),
+      const reviews = await ctx.db.query.ratingAndReview.findMany({
+        where: eq(ratingAndReview.hostID, input.hostID),
       });
-      if (!hostData) {
-        return;
-      }
       await ctx.db
         .update(hostUser)
         .set({
           avgRating: roundedAvg,
-          reviewCount: (hostData?.reviewCount ?? 0) + 1,
+          reviewCount: reviews.length,
         })
         .where(eq(hostUser.userID, input.hostID));
       return;

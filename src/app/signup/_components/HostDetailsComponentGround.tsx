@@ -271,7 +271,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                 type="text"
                 className="h-9"
                 name="Lastname"
-                placeholder="Enter your Lastname"
+                placeholder="Enter your lastname"
                 onChange={(e) => {
                   if (e.target.value.length == 0) {
                     setLastText("");
@@ -317,7 +317,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                 Date of birth
                 <div className="text-red-600">*</div>
               </Label>
-              <DatePicker date={DOBText} setDate={setDOBText} />
+              <DatePicker date={DOBText} setDate={setDOBText} isFilter={true} />
             </div>
             <div className="h-[0.5px] bg-neutral-300"></div>
             <div className="h-full">

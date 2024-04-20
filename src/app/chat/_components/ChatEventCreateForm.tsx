@@ -25,6 +25,7 @@ import { PlacesAutocomplete } from "./AutoComplete";
 import { type Library } from "@googlemaps/js-api-loader";
 import { DialogClose } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { env } from "@/env";
 
 const googlelib = ["places"] as Library[];
 export interface CreateFormInfo {
@@ -60,7 +61,7 @@ export default function ChatEventForm({
       price: z.coerce.number(),
       beginDate: z.date(),
       endDate: z.date(),
-      description: z.string().max(256),
+      description: z.string().max(256).optional(),
       startTime: z.string({ required_error: "start time" }),
       endTime: z.string({ required_error: "end time" }),
     })
@@ -88,7 +89,7 @@ export default function ChatEventForm({
   });
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBzAKU-lzdnputUmRhYdRF3KrpMoHHmr4g",
+    googleMapsApiKey: env.NEXT_PUBLIC_GOOGLEMAP_API_KEY,
     libraries: googlelib,
   });
 
@@ -283,6 +284,9 @@ export default function ChatEventForm({
                   />
                 </FormControl>
                 <FormMessage className="text-red-500" />
+                <div className="text-sm text-medium">
+                  The price already includes a 10% service fee.
+                </div>
               </FormItem>
             )}
           />

@@ -36,7 +36,7 @@ export type EventProps = {
   status: EventStatus;
   image: string | null;
   detail?: string | null;
-  isVerified?: boolean;
+  isVerified: boolean;
 };
 
 export enum EventStatus {
@@ -44,6 +44,7 @@ export enum EventStatus {
   NOTSTARTED = "Not Started",
   WAITINGREVIEW = "Waiting for Review",
   COMPLETED = "Completed",
+  INCOMPLETECREATED = "Incomplete Created",
   CANCELLED = "Cancelled",
 }
 
@@ -88,16 +89,7 @@ export function Card(prop: EventProps) {
             variant="default"
             className="z-50 !w-full bg-secondary-500 text-white hover:bg-secondary-600"
           >
-            My Review
-          </Button>
-        );
-      default:
-        return (
-          <Button
-            variant="default"
-            className="z-50 !w-full border border-secondary-500 bg-white text-secondary-500 hover:bg-secondary-100"
-          >
-            Cancel Event
+            {role === "participant" ? "My Review" : "Review"}
           </Button>
         );
     }
@@ -140,12 +132,6 @@ export function Card(prop: EventProps) {
           >
             <CardButton />
           </ViewreviewModal>
-        );
-      default:
-        return (
-          <CancelModal id={prop.id}>
-            <CardButton />
-          </CancelModal>
         );
     }
   };

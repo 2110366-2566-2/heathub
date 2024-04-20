@@ -20,6 +20,7 @@ import { uploadFiles } from "@/components/ui/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 interface EditProfileButtonProps {
   cUsername: string;
@@ -214,7 +215,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
               <Label className="h5 text-high" htmlFor="Bio">
                 Bio
               </Label>
-              <Input
+              <Textarea
                 value={bioText}
                 className="h-9 resize-none"
                 name="Bio"
@@ -228,7 +229,7 @@ export default function EditProfileButton(props: EditProfileButtonProps) {
               <Label className="h5 text-high" htmlFor="Date of birth">
                 Date of birth
               </Label>
-              <DatePicker date={DOB} setDate={setDOB} />
+              <DatePicker date={DOB} setDate={setDOB} isFilter={true} />
             </div>
             <GenderSelector gender={gender} setGender={setGender} />
           </div>

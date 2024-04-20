@@ -54,6 +54,15 @@ export const user = sqliteTable(
   }),
 );
 
+export const userRelation = relations(user, ({ many }) => ({
+  reported: many(eventReport, {
+    relationName: "host",
+  }),
+  report: many(eventReport, {
+    relationName: "participant",
+  }),
+}));
+
 export const hostUser = sqliteTable("host_user", {
   userID: text("user_id", {
     length: 64,
@@ -77,7 +86,6 @@ export const hostRelation = relations(hostUser, ({ one, many }) => ({
   }),
   interests: many(hostInterest),
   reviews: many(ratingAndReview),
-  reports: many(eventReport),
   withdrawalRequests: many(withdrawalRequest),
 }));
 
@@ -134,7 +142,6 @@ export const participantRelation = relations(
       fields: [participantUser.userID],
       references: [user.id],
     }),
-    reports: many(eventReport),
   }),
 );
 
@@ -343,7 +350,7 @@ export const externalTransaction = sqliteTable(
     amount: int("amount", {
       mode: "number",
     }).notNull(),
-    sessionID: text("session_id", { length: 128 }).notNull().unique(),
+    sessionID: text("session_id", { length: 128 }).notNull(),
     type: text("type", {
       length: 16,
       enum: ["topup", "withdraw"],
@@ -453,16 +460,23 @@ export const event = sqliteTable("event", {
     .notNull(),
   status: text("status", {
     length: 32,
-    enum: ["pending", "payment-done", "completed", "cancelled", "rejected"],
+    enum: [
+      "pending",
+      "cancelled-creation",
+      "payment-done",
+      "completed",
+      "cancelled",
+      "rejected",
+    ],
   })
     .default("pending")
     .notNull(),
 });
 
 export const eventRelation = relations(event, ({ one }) => ({
-  host: one(user, {
+  host: one(hostUser, {
     fields: [event.hostID],
-    references: [user.id],
+    references: [hostUser.userID],
   }),
   participant: one(user, {
     fields: [event.participantID],
@@ -552,10 +566,12 @@ export const eventReportRelation = relations(eventReport, ({ one }) => ({
   host: one(user, {
     fields: [eventReport.hostID],
     references: [user.id],
+    relationName: "host",
   }),
   participant: one(user, {
     fields: [eventReport.participantID],
     references: [user.id],
+    relationName: "participant",
   }),
 }));
 
@@ -606,3 +622,30 @@ export const withdrawalRequestRelation = relations(
     }),
   }),
 );
+export const blockList = sqliteTable(
+  "block_list",
+  {
+    userID: text("user_id", {
+      length: 64,
+    }).notNull(),
+    blockedUserID: text("blocked_user_id", {
+      length: 64,
+    }).notNull(),
+  },
+  (block) => ({
+    pk: primaryKey({
+      columns: [block.userID, block.blockedUserID],
+    }),
+  }),
+);
+
+export const blockListRelation = relations(blockList, ({ one }) => ({
+  user: one(user, {
+    fields: [blockList.userID],
+    references: [user.id],
+  }),
+  blockUser: one(user, {
+    fields: [blockList.blockedUserID],
+    references: [user.id],
+  }),
+}));

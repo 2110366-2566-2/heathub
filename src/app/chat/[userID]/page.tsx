@@ -3,6 +3,7 @@ import { serverapi } from "@/trpc/server";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { BlockUserButton } from "../_components/BlockUserButton";
 
 export default async function Chat({ params }: { params: { userID: string } }) {
   const pairUser = await serverapi.user.getUserPublicData.query({
@@ -14,7 +15,10 @@ export default async function Chat({ params }: { params: { userID: string } }) {
       <div className="sticky top-0 z-10 flex w-full flex-col items-start gap-2 bg-white">
         <div className="mb-8 flex w-full flex-row items-center gap-[10px] px-6">
           <Link href="/chat">
-            <button className="flex h-6 w-6 flex-row items-center justify-center">
+            <button
+              className="flex h-6 w-6 flex-row items-center justify-center"
+              type="button"
+            >
               <FontAwesomeIcon
                 icon={faChevronLeft}
                 className="text-high"
@@ -22,7 +26,10 @@ export default async function Chat({ params }: { params: { userID: string } }) {
               />
             </button>
           </Link>
-          <div className="h3 font-bold text-high">{pairUser?.aka}</div>
+          <div className="flex w-full items-center justify-between">
+            <div className="h3 font-bold text-high">{pairUser?.aka}</div>
+            <BlockUserButton userID={params.userID} />
+          </div>
         </div>
       </div>
       <ChatRoom withUser={params.userID} />

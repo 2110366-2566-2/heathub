@@ -62,7 +62,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     useState<string>("");
 
   const formCheck = () => {
-    if (emailNotice != "This Email is already exits.") {
+    if (emailNotice != "This Email is already exist.") {
       setEmailNotice("");
     }
     setPasswordNotice("");
@@ -85,13 +85,13 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
     if (password && password.length < 8) {
       setValid(false);
-      setPasswordNotice("Password must be at least 8 characters");
+      setPasswordNotice("Password must be at least 8 characters.");
       valid = false;
     }
 
     if (password !== confirmPassword) {
       setValid(false);
-      setConfirmPasswordNotice("Passwords do not match");
+      setConfirmPasswordNotice("Passwords do not match.");
       valid = false;
     }
 
@@ -108,6 +108,14 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   });
 
   const handleButtonClick = async () => {
+    // const handleButtonClick = async (formData: FormData) => {
+    //   if (!isValid) {
+    //     return;
+    //   }
+
+    //   const password = z.string().parse(formData.get("Password"));
+    //   const email = z.string().parse(formData.get("Email"));
+
     if (!formRef.current || !isValid) {
       return;
     }
@@ -166,6 +174,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       </div>
       <div className="flex w-full flex-col items-center gap-y-10">
         <form
+          // action={handleButtonClick}
           ref={formRef}
           className="flex w-full flex-col items-center gap-y-6"
         >
@@ -174,10 +183,11 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               Email
             </Label>
             <Input
+              // required
               value={emailText}
-              type="text"
+              type="email"
               name="Email"
-              placeholder="Enter your Email"
+              placeholder="Enter your email"
               onKeyUp={formCheck}
               onChange={(e) => {
                 setEmailText(e.currentTarget.value);
@@ -190,6 +200,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               Password
             </Label>
             <Input
+              // required
               value={passwordText}
               type="password"
               name="Password"
@@ -204,7 +215,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                 "text-red-500": passwordNotice,
               })}
             >
-              The password must be at least 8 characters
+              The password must be at least 8 characters.
             </div>
           </div>
           <div className="flex w-full flex-col gap-y-1.5">
@@ -212,6 +223,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
               Confirm Password
             </Label>
             <Input
+              // required
               value={cfPasswordText}
               type="password"
               name="Confirm Password"
@@ -227,6 +239,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           </div>
         </form>
         <Button
+          type="submit"
           className="h-12 w-full bg-primary-500 text-white sm:static"
           variant="default"
           onClick={handleButtonClick}

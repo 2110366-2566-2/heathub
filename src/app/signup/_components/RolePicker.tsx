@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { type Dispatch, type SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { createHost, createParticipant, type User } from "../interfaces";
+import SuccessButton from "./SuccessButton";
 
 interface rolePickerProps {
   setData: (data: User) => void;
@@ -54,7 +55,7 @@ export default function RolePicker(props: rolePickerProps) {
             setData(createParticipant());
           }}
         >
-          {"I'm a participant"}
+          {"I'm a Participant"}
         </Button>
       </div>
       <div className="flex h-6 flex-row justify-center gap-x-2">

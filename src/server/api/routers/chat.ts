@@ -7,13 +7,19 @@ import {
   userProcedure,
 } from "@/server/api/trpc";
 import type { DBQuery } from "@/server/db";
-import { chatInbox, chatMessage, user } from "@/server/db/schema";
+import {
+  chatInbox,
+  chatMessage,
+  hostUser,
+  user,
+  blockList,
+} from "@/server/db/schema";
 import {
   type RecentEventMessage,
   type RecentMessage,
   type RecentNormalMessage,
 } from "@/types/pusher";
-import { and, desc, eq, lte, or, sql } from "drizzle-orm";
+import { and, desc, eq, lte, or, sql, isNull, ne } from "drizzle-orm";
 export async function createInbox(
   db: DBQuery,
   userID1: string,
@@ -79,6 +85,13 @@ export const chatRouter = createTRPCRouter({
           orderBy: (chatMessage, { desc }) => [desc(chatMessage.createdAt)],
         });
 
+        const verified = await tx.query.hostUser.findFirst({
+          where: or(
+            eq(hostUser.userID, ctx.session.user.userId),
+            eq(hostUser.userID, input.toUserID),
+          ),
+        });
+
         if (!lastestMessage) {
           throw new Error("Failed to send message");
         }
@@ -98,7 +111,7 @@ export const chatRouter = createTRPCRouter({
             ),
           );
 
-        return lastestMessage;
+        return { ...lastestMessage, verified };
       });
       const messageForSender: RecentNormalMessage = {
         id: result.id,
@@ -110,6 +123,9 @@ export const chatRouter = createTRPCRouter({
         contentType: result.contentType as "text" | "imageURL",
         content: result.content,
         createdAt: result.createdAt,
+        isVerified:
+          result.verified?.userID === input.toUserID &&
+          result.verified?.verifiedStatus === "verified",
       };
       const messageForReciever: RecentNormalMessage = {
         id: result.id,
@@ -121,7 +137,16 @@ export const chatRouter = createTRPCRouter({
         contentType: result.contentType as "text" | "imageURL",
         content: result.content,
         createdAt: result.createdAt,
+        isVerified:
+          result.verified?.userID === ctx.session.user.userId &&
+          result.verified?.verifiedStatus === "verified",
       };
+      const blockUser = await ctx.db.query.blockList.findFirst({
+        where: and(
+          eq(blockList.userID, input.toUserID),
+          eq(blockList.blockedUserID, ctx.session.user.userId),
+        ),
+      });
 
       await Promise.all([
         ctx.pusher.trigger(
@@ -129,11 +154,12 @@ export const chatRouter = createTRPCRouter({
           RECENT_MESSAGE_EVENT,
           messageForSender,
         ),
-        ctx.pusher.trigger(
-          `private-user-${input.toUserID}`,
-          RECENT_MESSAGE_EVENT,
-          messageForReciever,
-        ),
+        !blockUser &&
+          ctx.pusher.trigger(
+            `private-user-${input.toUserID}`,
+            RECENT_MESSAGE_EVENT,
+            messageForReciever,
+          ),
       ]);
     }),
 
@@ -328,6 +354,26 @@ export const chatRouter = createTRPCRouter({
               eq(chatMessage.receiverUserID, user.id),
             ),
           ),
+        )
+        .leftJoin(hostUser, eq(user.id, hostUser.userID))
+        .leftJoin(
+          blockList,
+          or(
+            and(
+              eq(chatMessage.receiverUserID, blockList.userID),
+              eq(chatMessage.senderUserID, blockList.blockedUserID),
+            ),
+            and(
+              eq(chatMessage.senderUserID, blockList.userID),
+              eq(chatMessage.receiverUserID, blockList.blockedUserID),
+            ),
+          ),
+        )
+        .where(
+          or(
+            isNull(blockList.blockedUserID),
+            ne(blockList.userID, ctx.session.user.userId),
+          ),
         );
 
       const setMatched = new Set<string>();
@@ -356,6 +402,7 @@ export const chatRouter = createTRPCRouter({
               createdAt: e.chat_message.createdAt,
               contentType: "text",
               content: "New Event",
+              isVerified: e.host_user?.verifiedStatus === "verified",
             };
           }
           return {
@@ -368,6 +415,8 @@ export const chatRouter = createTRPCRouter({
             createdAt: e.chat_message.createdAt,
             contentType: e.chat_message.contentType,
             content: e.chat_message.content,
+            userRole: e.user.role,
+            isVerified: e.host_user?.verifiedStatus === "verified",
           };
         });
 

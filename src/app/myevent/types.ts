@@ -3,7 +3,13 @@
 import { type Dispatch, type SetStateAction } from "react";
 
 export type myEventProps = {
-  status: "pending" | "payment-done" | "completed" | "cancelled" | "rejected";
+  status:
+    | "pending"
+    | "payment-done"
+    | "completed"
+    | "cancelled"
+    | "rejected"
+    | "cancelled-creation";
   description: string | null;
   location: string;
   id: number;
@@ -15,9 +21,12 @@ export type myEventProps = {
   };
   hostID: string;
   host: {
-    id: string;
-    aka: string;
-    profileImageURL: string | null;
+    verifiedStatus: "unverified" | "pending" | "verified" | "rejected" | null;
+    onUser: {
+      id: string;
+      aka: string;
+      profileImageURL: string | null;
+    };
   };
   startTime: Date;
   ratingAndReview: ratingAndReview | null;
