@@ -8,6 +8,7 @@ import { adminRouter } from "./routers/admin";
 import { reviewRouter } from "./routers/review";
 import { reportRouter } from "./routers/report";
 import { transactionRouter } from "./routers/transaction";
+import { meRouter } from "./routers/me";
 import { initTRPC } from "@trpc/server";
 import { user, withdrawalRequest } from "../db/schema";
 import { and, eq, sql } from "drizzle-orm";
@@ -30,6 +31,7 @@ export const appRouter = createTRPCRouter({
   review: reviewRouter,
   report: reportRouter,
   transaction: transactionRouter,
+  me: meRouter,
 });
 
 export type AppRouter = typeof appRouter;
