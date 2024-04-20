@@ -105,7 +105,7 @@
     "@vitest/ui": "^1.4.0",
     "autoprefixer": "^10.4.17",
     "cypress": "^13.7.2",
-    "drizzle-kit": "^0.20.15",
+    "drizzle-kit": "^0.20.16",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.1.0",
     "postcss": "^8.4.34",
