@@ -193,7 +193,7 @@ export const userRouter = createTRPCRouter({
                     eq(blockList.userID, ctx.session?.user.userId ?? ""),
                   ),
                 ),
-            )
+            ),
           ),
         )
         .innerJoin(user, eq(user.id, hostUser.userID))
