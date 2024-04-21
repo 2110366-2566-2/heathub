@@ -273,6 +273,25 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                   if (e.target.files && e.target.files.length > 0) {
                     const file = e.target.files[0];
                     if (!file) return;
+                    const ext = file.name
+                      .split(".")
+                      [file.name.split(".").length - 1]?.toLocaleLowerCase();
+
+                    if (ext != "jpg" && ext != "png") {
+                      setNotice("Please upload JPG or PNG file.");
+                      return;
+                    } else if (notice == "Please upload JPG or PNG file.") {
+                      setNotice("");
+                    }
+
+                    if (file.size > 20000000) {
+                      setNotice("Can not upload file larger than 20MB.");
+                      return;
+                    } else if (
+                      notice == "Can not upload file larger than 20MB."
+                    ) {
+                      setNotice("");
+                    }
                     const url = URL.createObjectURL(file);
                     setimageUrl(url);
                   }
