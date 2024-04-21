@@ -7,6 +7,9 @@ export const meRouter = createTRPCRouter({
     const blockList = await ctx.db.query.blockList.findMany({
       where: (blockList, { eq }) =>
         eq(blockList.userID, ctx.session.user.userId),
+      with: {
+        blockUser: true,
+      },
     });
     return blockList;
   }),
