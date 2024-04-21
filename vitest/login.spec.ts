@@ -2,14 +2,10 @@ import { signIn } from "@/action/auth";
 import { describe, test, beforeEach, expect, vi } from "vitest";
 import { auth } from "@/server/api/auth";
 
-// Mock the entire auth module
 vi.mock("@/server/api/auth", () => ({
   auth: {
     useKey: vi.fn().mockImplementation((email, mockEmail, mockPassword) => {
-      if (
-        mockEmail === process.env.EMAIL &&
-        mockPassword === process.env.PASSWORD
-      ) {
+      if (mockEmail === "happy@gmail.com" && mockPassword === "test1234") {
         return {
           userId: "123",
           key: "123",
@@ -18,25 +14,13 @@ vi.mock("@/server/api/auth", () => ({
         throw new Error("Invalid email or password");
       }
     }),
-    adapter: {
-      createSession: vi.fn(),
-      createSessionCookie: vi.fn(),
-      useKey: vi.fn(),
-    },
-    env: "DEV",
-    middleware: vi.fn(),
-    sessionCookie: {
-      expires: false,
-    },
-    getUserAttributes: vi.fn(),
     createSession: vi.fn(),
     createSessionCookie: vi.fn(),
   },
 }));
 
-// Mock the cookies function from next/headers
 vi.mock("next/headers", () => ({
-  cookies: vi.fn().mockReturnValue({ set: vi.fn() }), // Mock cookies function to return an set mock function object
+  cookies: vi.fn().mockReturnValue({ set: vi.fn() }),
 }));
 
 describe("signIn", () => {
@@ -46,8 +30,8 @@ describe("signIn", () => {
 
   test("TC2-1 Valid Email and Correct Password", async () => {
     const formData: FormData = new FormData();
-    const email = process.env.EMAIL;
-    const password = process.env.PASSWORD;
+    const email = "happy@gmail.com";
+    const password = "test1234";
     if (email) {
       formData.append("email", email);
     }
@@ -81,7 +65,7 @@ describe("signIn", () => {
 
   test("TC2-3 Password is empty", async () => {
     const formData = new FormData();
-    const email = process.env.EMAIL;
+    const email = "happy@gmail.com";
     if (email) {
       formData.append("email", email);
     }
@@ -95,8 +79,8 @@ describe("signIn", () => {
 
   test("TC2-4 Email is valid and does not exist in the system", async () => {
     const formData = new FormData();
-    const email = process.env.EMAIL2;
-    const password = process.env.PASSWORD2;
+    const email = "nothappy@gmail.com";
+    const password = "abcd1234";
     if (email) {
       formData.append("email", email);
     }
@@ -112,8 +96,8 @@ describe("signIn", () => {
   });
   test("TC2-5 Email is invalid", async () => {
     const formData = new FormData();
-    const email = process.env.INVALID_EMAIL;
-    const password = process.env.PASSWORD;
+    const email = "nothappyemail";
+    const password = "test1234";
     if (email) {
       formData.append("email", email);
     }
@@ -131,8 +115,8 @@ describe("signIn", () => {
 
   test("TC2-6 Password is incorrect compare with the database system", async () => {
     const formData = new FormData();
-    const email = process.env.EMAIL;
-    const password = process.env.PASSWORD2;
+    const email = "happy@gmail.com";
+    const password = "abcd1234";
 
     if (email) {
       formData.append("email", email);
