@@ -289,7 +289,7 @@ describe("Host Register", () => {
         "12345678",
       );
       HandlerTellUsAboutYourself(
-        ``,
+        "",
         `host${random}`,
         `host${random}`,
         `host${random}`,
@@ -354,7 +354,7 @@ describe("Host Register", () => {
       );
       HandlerTellUsAboutYourself(
         `host${random}`,
-        ``,
+        "",
         `host${random}`,
         `host${random}`,
         "9",
@@ -420,7 +420,7 @@ describe("Host Register", () => {
       HandlerTellUsAboutYourself(
         `host${random}`,
         `host${random}`,
-        ``,
+        "",
         `host${random}`,
         "9",
         "Male",
