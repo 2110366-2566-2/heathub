@@ -2,9 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/trpc/react";
-import {
-  faAngleLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,7 +31,7 @@ interface Blockprops {
 }
 
 export default function BlockedList() {
-  const { data } = api.me.myBlockedUsers.useQuery();
+  const { data } = api.me.myBlockedUsers.useQuery({}, {});
 
   return (
     <div className="flex w-full flex-col gap-y-6 p-9">
@@ -48,15 +46,13 @@ export default function BlockedList() {
       </div>
       <div className="flex w-full flex-col">
         {data ? (
-          (data as BlockedUserData[]).map(
-            (item: BlockedUserData, _index) => (
-              <BlockedUsers
-                id={item.blockedUserID}
-                name={item.blockUser.firstName+' '+item.blockUser.lastName}
-                image={item.blockUser.profileImageURL}
-              />
-            ),
-          )
+          (data as BlockedUserData[]).map((item: BlockedUserData, _index) => (
+            <BlockedUsers
+              id={item.blockedUserID}
+              name={item.blockUser.firstName + " " + item.blockUser.lastName}
+              image={item.blockUser.profileImageURL}
+            />
+          ))
         ) : (
           <></>
         )}
@@ -87,7 +83,7 @@ function BlockedUsers(props: Blockprops) {
 
   const handleUnBlock = async (id: string) => {
     try {
-      await unBlock.mutateAsync({blockUserID: id});
+      await unBlock.mutateAsync({ blockUserID: id });
       await utils.me.myBlockedUsers.invalidate();
     } catch (error) {
       console.error(error);
@@ -95,7 +91,7 @@ function BlockedUsers(props: Blockprops) {
   };
 
   return (
-    <div className="flex h-16 w-full flex-row items-center gap-x-4 rounded-lg hover:bg-neutral-50 p-3">
+    <div className="flex h-16 w-full flex-row items-center gap-x-4 rounded-lg p-3 hover:bg-neutral-50">
       <div className="flex h-11 w-11 items-center justify-center">
         <div className="relative h-11 w-11">
           <Image
@@ -109,14 +105,13 @@ function BlockedUsers(props: Blockprops) {
       </div>
       <div className="flex h-9 w-full flex-row items-center gap-x-1">
         <div className="flex h-full w-full flex-col justify-center">
-          <div className="h4 line-clamp-1 font-bold ">
-            {name}
-          </div>
+          <div className="h4 line-clamp-1 font-bold ">{name}</div>
         </div>
-        <Button 
+        <Button
           variant="default"
           className="bg-secondary-500 text-white hover:bg-secondary-600"
-          onClick={() => handleUnBlock(id)}>
+          onClick={() => handleUnBlock(id)}
+        >
           UnBlock
         </Button>
       </div>

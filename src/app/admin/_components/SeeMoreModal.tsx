@@ -55,7 +55,6 @@ export function SeeMoreModal(props: EventModalProps) {
   const reject = api.admin.rejectEventReport.useMutation();
   const { toast } = useToast();
 
-
   const handleRefund = async () => {
     try {
       await refund.mutateAsync({ reportID });

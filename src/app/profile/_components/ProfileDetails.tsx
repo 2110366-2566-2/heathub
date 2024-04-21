@@ -125,7 +125,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
               </div>
             </div>
           </div>
-          <div className="hidden h-full w-fit lg:flex flex-col gap-4">
+          <div className="hidden h-full w-fit flex-col gap-4 lg:flex">
             <EditProfileButton
               cUsername={name}
               cGender={gender}
@@ -135,8 +135,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
               id={id}
             />
             <Link href={`/blockedlist`}>
-              <Button variant={"secondaryOutline"}
-              className="lg:w-[126px]">
+              <Button variant={"secondaryOutline"} className="lg:w-[126px]">
                 Block Users
               </Button>
             </Link>
@@ -162,7 +161,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
             </div>
           </div>
         )}
-        <div className="flex h-24 w-full lg:hidden flex-col gap-4">
+        <div className="flex h-24 w-full flex-col gap-4 lg:hidden">
           <EditProfileButton
             cUsername={props.name}
             cGender={props.gender}
@@ -172,8 +171,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
             id={id}
           />
           <Link href={`/blockedlist`}>
-            <Button variant={"secondaryOutline"}
-            className="w-full">
+            <Button variant={"secondaryOutline"} className="w-full">
               Block Users
             </Button>
           </Link>
