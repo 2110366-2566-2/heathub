@@ -15,6 +15,8 @@ import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import EditProfileButton from "./EditProfileButton";
 import { type ProfilePreviewProps } from "./profile-container";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type ProfilePreviews = {
   aka: string;
@@ -123,7 +125,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
               </div>
             </div>
           </div>
-          <div className="hidden h-full w-fit lg:flex">
+          <div className="hidden h-full w-fit flex-col gap-4 lg:flex">
             <EditProfileButton
               cUsername={name}
               cGender={gender}
@@ -132,6 +134,11 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
               cProfileURL={image}
               id={id}
             />
+            <Link href={`/blockedlist`}>
+              <Button variant={"secondaryOutline"} className="lg:w-[126px]">
+                Block Users
+              </Button>
+            </Link>
           </div>
         </div>
         {props.reviews != -1 && (
@@ -154,7 +161,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
             </div>
           </div>
         )}
-        <div className="flex h-10 w-full lg:hidden">
+        <div className="flex h-24 w-full flex-col gap-4 lg:hidden">
           <EditProfileButton
             cUsername={props.name}
             cGender={props.gender}
@@ -163,6 +170,11 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
             cProfileURL={props.image}
             id={id}
           />
+          <Link href={`/blockedlist`}>
+            <Button variant={"secondaryOutline"} className="w-full">
+              Block Users
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

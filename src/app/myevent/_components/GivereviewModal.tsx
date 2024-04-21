@@ -84,7 +84,7 @@ export function GivereviewModal(prop: EventModalProps) {
               variant="default"
               className="bg-primary-500 text-white"
             >
-              Sent a Review
+              Send a Review
             </Button>
           </DialogFooter>
         </form>

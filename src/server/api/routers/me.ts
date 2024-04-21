@@ -18,6 +18,19 @@ export const meRouter = createTRPCRouter({
         z.object({
           userID: z.string(),
           blockedUserID: z.string(),
+          blockUser: z.object({
+            email: z.string(),
+            firstName: z.string(),
+            lastName: z.string(),
+            gender: z.string(),
+            role: z.enum(["host", "participant", "admin"]),
+            id: z.string(),
+            aka: z.string(),
+            bio: z.string().nullable(),
+            dateOfBirth: z.date().nullable(),
+            profileImageURL: z.string().nullable(),
+            balance: z.number(),
+          }),
         }),
       ),
     )
@@ -25,6 +38,9 @@ export const meRouter = createTRPCRouter({
       const blockList = await ctx.db.query.blockList.findMany({
         where: (blockList, { eq }) =>
           eq(blockList.userID, ctx.session.user.userId),
+        with: {
+          blockUser: true,
+        },
       });
       return blockList;
     }),

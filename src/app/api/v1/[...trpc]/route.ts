@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 import { createOpenApiFetchHandler } from "trpc-swagger";
 import { appRouter } from "../../../../server/api/root";
 
