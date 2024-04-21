@@ -14,6 +14,7 @@ import { type CreateFormInfo } from "./ChatEventCreateForm";
 import ChatEventInfo from "./ChatEventInfo";
 import { ChatMessage as ChatMessageComponent } from "./ChatMessage";
 import ChatMessageBox from "./ChatMessageBox";
+import { useRouter } from "next/navigation";
 export function ChatRoom({ withUser }: { withUser: string }) {
   const [messages, setMessages] = useState<RecentMessage[]>([]);
   const [isOpenChatEvent, setOpenChatEvent] = useState<boolean>(false);
@@ -27,6 +28,7 @@ export function ChatRoom({ withUser }: { withUser: string }) {
 
   const pusher = usePusher();
   let chatChannel: Channel | null = null;
+  const router = useRouter();
 
   const { data: user } = api.auth.me.useQuery(undefined, {
     onSuccess: (data) => {
@@ -57,6 +59,10 @@ export function ChatRoom({ withUser }: { withUser: string }) {
         if (latestPage) {
           setMessages((prev: RecentMessage[]) => [...prev, ...latestPage]);
         }
+      },
+      onError: (error) => {
+        console.log(error.message);
+        router.push("/chat");
       },
 
       refetchOnWindowFocus: false,

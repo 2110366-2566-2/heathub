@@ -177,6 +177,14 @@ export const chatRouter = createTRPCRouter({
 
       const { eventMap, messages } = await ctx.db.transaction(async (tx) => {
         limit ??= 10;
+        const blockUser = await ctx.db.query.blockList.findFirst({
+          where: and(
+            eq(blockList.blockedUserID, input.pairUserID),
+            eq(blockList.userID, ctx.session.user.userId),
+          ),
+        });
+        if (blockUser) throw new Error("User is blocked");
+
         const messages = await tx.query.chatMessage.findMany({
           limit: limit + 1,
           orderBy: (posts, { desc }) => [desc(posts.id)],
