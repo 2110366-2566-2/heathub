@@ -62,7 +62,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     useState<string>("");
 
   const formCheck = () => {
-    if (emailNotice != "This Email is already exits.") {
+    if (emailNotice != "This Email is already exist.") {
       setEmailNotice("");
     }
     setPasswordNotice("");
