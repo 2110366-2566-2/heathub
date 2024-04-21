@@ -83,6 +83,12 @@ export default function ComponentsGround(props: ComponentGroundProps) {
       valid = false;
     }
 
+    if (email && email.length > 128) {
+      setValid(false);
+      setEmailNotice("Email exceeds character limit.");
+      valid = false;
+    }
+
     if (password && password.length < 8) {
       setValid(false);
       setPasswordNotice("Password must be at least 8 characters.");
