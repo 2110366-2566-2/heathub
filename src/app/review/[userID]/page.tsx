@@ -22,7 +22,7 @@ export default function Reviews({ params }: { params: { userID: string } }) {
   const [filter, setFilter] = useState(0);
   const isMobile = useMediaQuery({ maxWidth: 1024 });
 
-  const { data:hostData } = api.user.getHostData.useQuery({
+  const { data: hostData } = api.user.getHostData.useQuery({
     hostID: userId,
   });
 
