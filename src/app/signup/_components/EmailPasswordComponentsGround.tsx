@@ -62,7 +62,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     useState<string>("");
 
   const formCheck = () => {
-    if (emailNotice != "This Email is already exits.") {
+    if (emailNotice != "This Email is already exist.") {
       setEmailNotice("");
     }
     setPasswordNotice("");
@@ -161,7 +161,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           setPage("ParticipantDetails");
         }
       } else {
-        setEmailNotice("This Email is already exits.");
+        setEmailNotice("This Email is already exist.");
       }
     } catch (error) {
       if (error instanceof Error) {
