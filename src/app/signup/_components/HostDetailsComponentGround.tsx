@@ -100,7 +100,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     } else if (gender.length > 32) {
       setNotice("Gender exceeds character limit.");
       return;
-    } else if (!imageInput || imageInput.name == "") {
+    } else if (!imageInput || imageInput.name == "" || !isFileValid) {
       setNotice("Please upload a profile picture.");
       return;
     } else {
@@ -142,6 +142,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const [usernameText, setUsernameText] = useState(host.Username ?? "");
   const [bioText, setBioText] = useState(host.Bio ?? "");
   const [DOBText, setDOBText] = useState<Date | undefined>(host.DOB);
+  const [isFileValid, setFileValid] = useState(host.Image ? true : false);
   useEffect(() => {
     setDOB(DOBText);
   }, [DOBText, setDOB]);
@@ -188,6 +189,10 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   useEffect(() => {
     autoSave();
   }, [firstText, lastText, usernameText, bioText, DOB, gender, imageUrl]);
+
+  useEffect(() => {
+    console.log(`imageUrl: ${imageUrl}`);
+  }, [imageUrl]);
 
   const uploadImage = async () => {
     if (!formRef.current) {
@@ -252,6 +257,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
                     if (ext != "jpg" && ext != "png") {
                       setNotice("Please upload JPG or PNG file.");
+                      setFileValid(false);
                       return;
                     } else if (notice == "Please upload JPG or PNG file.") {
                       setNotice("");
@@ -259,6 +265,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
 
                     if (file.size > 20000000) {
                       setNotice("Can not upload file larger than 20MB.");
+                      setFileValid(false);
                       return;
                     } else if (
                       notice == "Can not upload file larger than 20MB."
@@ -267,6 +274,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                     }
                     const url = URL.createObjectURL(file);
                     setimageUrl(url);
+                    setFileValid(true);
                   }
                 }}
               />
