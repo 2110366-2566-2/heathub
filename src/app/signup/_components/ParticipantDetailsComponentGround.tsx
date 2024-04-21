@@ -77,7 +77,19 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     ) {
       setNotice("Please fill in your details.");
       return;
-    } else if (!imageInput || imageInput.name == "") {
+    } else if (firstnameInput.length > 64) {
+      setNotice("Firstname exceeds character limit.");
+      return;
+    } else if (lastnameInput.length > 64) {
+      setNotice("Lastname exceeds character limit.");
+      return;
+    } else if (usernameInput.length > 128) {
+      setNotice("Username exceeds character limit.");
+      return;
+    } else if (gender.length > 32) {
+      setNotice("Gender exceeds character limit.");
+      return;
+    } else if (!imageInput || imageInput.name == "" || !isFileValid) {
       setNotice("Please upload a profile picture.");
       return;
     } else {
@@ -128,6 +140,9 @@ export default function ComponentsGround(props: ComponentGroundProps) {
   const [lastText, setLastText] = useState(participant.Lastname ?? "");
   const [usernameText, setUsernameText] = useState(participant.Username ?? "");
   const [DOBText, setDOBText] = useState<Date | undefined>(participant.DOB);
+  const [isFileValid, setFileValid] = useState(
+    participant.Image ? true : false,
+  );
   useEffect(() => {
     setDOB(DOBText);
   }, [DOBText, setDOB]);
@@ -261,8 +276,30 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                   if (e.target.files && e.target.files.length > 0) {
                     const file = e.target.files[0];
                     if (!file) return;
+                    const ext = file.name
+                      .split(".")
+                      [file.name.split(".").length - 1]?.toLocaleLowerCase();
+
+                    if (ext != "jpg" && ext != "png") {
+                      setNotice("Please upload JPG or PNG file.");
+                      setFileValid(false);
+                      return;
+                    } else if (notice == "Please upload JPG or PNG file.") {
+                      setNotice("");
+                    }
+
+                    if (file.size > 20000000) {
+                      setNotice("Can not upload file larger than 20MB.");
+                      setFileValid(false);
+                      return;
+                    } else if (
+                      notice == "Can not upload file larger than 20MB."
+                    ) {
+                      setNotice("");
+                    }
                     const url = URL.createObjectURL(file);
                     setimageUrl(url);
+                    setFileValid(true);
                   }
                 }}
               />
