@@ -102,7 +102,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     }
 
     if (!email || !password || !confirmPassword) {
-      console.log("Invalid");
       setValid(false);
     }
 
@@ -122,6 +121,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     //   const password = z.string().parse(formData.get("Password"));
     //   const email = z.string().parse(formData.get("Email"));
 
+    setEmailNotice("");
     if (!formRef.current || !isValid) {
       return;
     }
@@ -129,7 +129,6 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     const formData = new FormData(formRef.current);
     const password = formData.get("Password") as string | null;
     const email = formData.get("Email") as string | null;
-
     try {
       if (!(await isEmailDup(email ? email : ""))) {
         if (isHost(data)) {
@@ -162,7 +161,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
           setPage("ParticipantDetails");
         }
       } else {
-        setEmailNotice("This Email is already exits.");
+        setEmailNotice("This Email is already exist.");
       }
     } catch (error) {
       if (error instanceof Error) {
