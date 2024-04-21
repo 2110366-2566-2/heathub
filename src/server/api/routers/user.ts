@@ -1,5 +1,5 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { hostInterest, hostUser, user } from "@/server/db/schema";
+import { blockList, hostInterest, hostUser, user } from "@/server/db/schema";
 import {
   and,
   eq,
@@ -7,6 +7,7 @@ import {
   inArray,
   like,
   lte,
+  notExists,
   or,
   sql,
   type SQL,
@@ -182,6 +183,17 @@ export const userRouter = createTRPCRouter({
             lte(user.dateOfBirth, maxDate),
             gte(hostUser.avgRating, input.rating),
             and(...checkInput),
+            notExists(
+              ctx.db
+                .select()
+                .from(blockList)
+                .where(
+                  and(
+                    eq(blockList.blockedUserID, hostUser.userID),
+                    eq(blockList.userID, ctx.session?.user.userId ?? ""),
+                  ),
+                ),
+            ),
           ),
         )
         .innerJoin(user, eq(user.id, hostUser.userID))
