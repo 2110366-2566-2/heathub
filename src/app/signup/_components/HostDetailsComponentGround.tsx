@@ -85,6 +85,21 @@ export default function ComponentsGround(props: ComponentGroundProps) {
     ) {
       setNotice("Please fill in your details.");
       return;
+    } else if (firstnameInput.length > 64) {
+      setNotice("Firstname exceeds character limit.");
+      return;
+    } else if (lastnameInput.length > 64) {
+      setNotice("Lastname exceeds character limit.");
+      return;
+    } else if (usernameInput.length > 128) {
+      setNotice("Username exceeds character limit.");
+      return;
+    } else if (bioInput && bioInput.length > 256) {
+      setNotice("Bio exceeds character limit.");
+      return;
+    } else if (gender.length > 32) {
+      setNotice("Gender exceeds character limit.");
+      return;
     } else if (!imageInput || imageInput.name == "") {
       setNotice("Please upload a profile picture.");
       return;
