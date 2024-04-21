@@ -135,7 +135,8 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
               id={id}
             />
             <Link href={`/blockedlist`}>
-              <Button variant={"secondaryOutline"}>
+              <Button variant={"secondaryOutline"}
+              className="lg:w-[126px]">
                 Block Users
               </Button>
             </Link>
@@ -161,7 +162,7 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
             </div>
           </div>
         )}
-        <div className="flex h-10 w-full lg:hidden">
+        <div className="flex h-24 w-full lg:hidden flex-col gap-4">
           <EditProfileButton
             cUsername={props.name}
             cGender={props.gender}
@@ -170,6 +171,12 @@ export default function ProfileDetails(props: ProfilePreviewProps) {
             cProfileURL={props.image}
             id={id}
           />
+          <Link href={`/blockedlist`}>
+            <Button variant={"secondaryOutline"}
+            className="w-full">
+              Block Users
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>
