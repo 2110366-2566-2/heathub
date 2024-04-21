@@ -48,6 +48,7 @@ export default function BlockedList() {
         {data ? (
           (data as BlockedUserData[]).map((item: BlockedUserData, _index) => (
             <BlockedUsers
+              key={item.blockedUserID}
               id={item.blockedUserID}
               name={item.blockUser.firstName + " " + item.blockUser.lastName}
               image={item.blockUser.profileImageURL}

@@ -135,15 +135,12 @@ export const participantUser = sqliteTable("participant_user", {
   }).primaryKey(),
 });
 
-export const participantRelation = relations(
-  participantUser,
-  ({ one, many }) => ({
-    onUser: one(user, {
-      fields: [participantUser.userID],
-      references: [user.id],
-    }),
+export const participantRelation = relations(participantUser, ({ one }) => ({
+  onUser: one(user, {
+    fields: [participantUser.userID],
+    references: [user.id],
   }),
-);
+}));
 
 export const hostInterest = sqliteTable(
   "host_interest",
