@@ -27,7 +27,12 @@ export const eventRouter = createTRPCRouter({
         startTime: z.date(),
         endTime: z.date(),
         location: z.string().min(1),
-        priceStang: z.number(),
+        priceStang: z
+          .number()
+          .min(100)
+          .refine((v) => v % 100 === 0, {
+            message: "Price should not have decimal",
+          }),
       }),
     )
     .mutation(async ({ ctx, input }) => {
