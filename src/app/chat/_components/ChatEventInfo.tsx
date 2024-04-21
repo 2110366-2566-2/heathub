@@ -114,7 +114,7 @@ export default function ChatEventInfo(info: ChatEventInfoInterface) {
           {description && (
             <div className="flex flex-row justify-between">
               <div className="h6  flex-1 text-medium">Description</div>
-              <div className="h6 text-right font-bold text-high">
+              <div className="h6 break-all pl-3 text-right font-bold text-high">
                 {description}
               </div>
             </div>
