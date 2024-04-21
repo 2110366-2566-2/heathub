@@ -50,7 +50,7 @@ export default function BlockedList() {
             <BlockedUsers
               key={item.blockedUserID}
               id={item.blockedUserID}
-              name={item.blockUser.firstName + " " + item.blockUser.lastName}
+              name={item.blockUser.aka}
               image={item.blockUser.profileImageURL}
             />
           ))
@@ -113,7 +113,7 @@ function BlockedUsers(props: Blockprops) {
           className="bg-secondary-500 text-white hover:bg-secondary-600"
           onClick={() => handleUnBlock(id)}
         >
-          UnBlock
+          Unblock
         </Button>
       </div>
     </div>
