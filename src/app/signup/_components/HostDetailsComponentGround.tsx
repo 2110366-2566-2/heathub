@@ -263,7 +263,7 @@ export default function ComponentsGround(props: ComponentGroundProps) {
                       setNotice("");
                     }
 
-                    if (file.size > 20000000) {
+                    if (file.size > 4000000) {
                       setNotice("Can not upload file larger than 20MB.");
                       setFileValid(false);
                       return;
