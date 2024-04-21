@@ -93,11 +93,6 @@ export const reviewRouter = createTRPCRouter({
       const reviews = await ctx.db.query.ratingAndReview.findMany({
         where: eq(ratingAndReview.hostID, input.hostID),
       });
-      if (!hostData) {
-        return {
-          success: false,
-        };
-      }
       await ctx.db
         .update(hostUser)
         .set({
