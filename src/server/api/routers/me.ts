@@ -32,7 +32,7 @@ export const meRouter = createTRPCRouter({
     .meta({
       openapi: {
         method: "POST",
-        path: "/api/users/me/block/",
+        path: "/api/users/me/blocked/",
         description: "Block a user",
         protect: true,
       },
@@ -59,7 +59,7 @@ export const meRouter = createTRPCRouter({
     .meta({
       openapi: {
         method: "DELETE",
-        path: "/api/users/me/block/",
+        path: "/api/users/me/blocked/",
         description: "Unblock a user",
         protect: true,
       },
