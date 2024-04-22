@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  app:
+    platform: "linux/amd64"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    image: byte101/heathub
+    env_file:
+      - .env
+    dns:
+      - 1.1.1.1
+    # environment:
+    #   - DATABASE_URL=database_url_goes_here
